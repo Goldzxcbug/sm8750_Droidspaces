@@ -542,7 +542,8 @@ jobs:
           fi
           sed -i 's/${scm_version}//' ./common/scripts/setlocalversion
           echo "CONFIG_LOCALVERSION_AUTO=n" >> ./common/arch/arm64/configs/gki_defconfig
-           - name: 注入DroidSpaces内核配置
+          
+      - name: 注入DroidSpaces内核配置
         run: |
             cd kernel_workspace
             # cd kernel_workspace/common/drivers/kernelsu
