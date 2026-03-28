@@ -555,7 +555,7 @@ jobs:
             patch -p1 -N -F 3 < '02.fix_restore cgroup file prefix handling .patch'
             patch -p1 -N -F 3 < '03.5.15+_use_android_abi_padding_for_posix_mqueue.patch'
             patch -p1 -N -F 3 < '04.use_android_abi_padding_for_sysvipc_task_struct.patch'
-            cd kernel_workspace
+            cd /kernel_workspace
             # echo "CONFIG_EXPERT=y" >> ./common/arch/arm64/configs/gki_defconfig
             # 修复 [✗] PID namespace 和 [✗] IPC namespace
               echo "CONFIG_SYSCTL=y" >> ./common/arch/arm64/configs/gki_defconfig
