@@ -52,7 +52,7 @@ on:
           - 'true'
           - 'default'
       droidspaces_enable:
-        description: '是否启用Droidspaces容器支持(轻量化的完整Linux容器支持;false关闭,standard开启容器+ntsync支持,extend开启更多测试支持项)'
+        description: '是否启用Droidspaces容器支持(false关闭,standard开启容器+ntsync+CPU/PID限制,extend开启更多测试支持项)'
         required: true
         type: choice
         default: 'false'
@@ -106,6 +106,11 @@ jobs:
       actions: write
       contents: read
     steps:
+      - name: 检出本仓库补丁
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
       - name: 安装环境依赖+初始化源码仓库及llvm-Clang18工具链
         run: |
           rm -rf kernel_workspace
@@ -469,6 +474,26 @@ jobs:
           if [[ "${{ github.event.inputs.droidspaces_enable }}" != "false" ]]; then
             echo "正在启用 Droidspaces 容器支持..."
             cd kernel_workspace/common
+            # 只使用本次 checkout 中的补丁，失败即终止，不能忽略或下载上游同名文件。
+            KABI_LIMITS_PATCH="$GITHUB_WORKSPACE/droidspaces_patch/fix_cgroup_limits_kabi_6.6.89.patch"
+            if [[ ! -s "$KABI_LIMITS_PATCH" ]]; then
+              echo "错误：缺少本地 CPU/PID KABI 补丁，停止构建。" >&2
+              exit 1
+            fi
+            KABI_SOURCE_VERSION="$(awk '
+              $1 == "VERSION" { major = $3 }
+              $1 == "PATCHLEVEL" { minor = $3 }
+              $1 == "SUBLEVEL" { patch = $3 }
+              END { print major "." minor "." patch }
+            ' Makefile)"
+            if [[ "$KABI_SOURCE_VERSION" != "6.6.89" ]]; then
+              echo "错误：CPU/PID KABI 补丁要求 6.6.89，当前为 $KABI_SOURCE_VERSION。" >&2
+              exit 1
+            fi
+            patch -p1 --batch --forward --fuzz=0 --dry-run < "$KABI_LIMITS_PATCH"
+            patch -p1 --batch --forward --fuzz=0 --no-backup-if-mismatch < "$KABI_LIMITS_PATCH"
+            ./scripts/config --file ./arch/arm64/configs/gki_defconfig \
+              -e CFS_BANDWIDTH -e CGROUP_PIDS
             # 应用 Droidspaces 容器必须补丁
             wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/droidspaces_patch/fix_sysvipc_kabi_6_7_8.patch
             patch -p1 -F 3 < fix_sysvipc_kabi_6_7_8.patch || true
@@ -496,7 +521,6 @@ jobs:
             echo "CONFIG_PROC_CHILDREN=y" >> ./arch/arm64/configs/gki_defconfig
             # 未经测试的配置选项，可能导致bug
             #echo "CONFIG_CGROUP_DEVICE=y" >> ./arch/arm64/configs/gki_defconfig
-            #echo "CONFIG_CGROUP_PIDS=y" >> ./arch/arm64/configs/gki_defconfig
             #echo "CONFIG_FW_LOADER_COMPRESS=y" >> ./arch/arm64/configs/gki_defconfig
             #echo "CONFIG_BRIDGE_NETFILTER=y" >> ./arch/arm64/configs/gki_defconfig
             #echo "CONFIG_NF_TABLES=y" >> ./arch/arm64/configs/gki_defconfig
@@ -631,7 +655,15 @@ jobs:
           sudo rm -rf /usr/local/lib/android &
           sudo rm -rf /opt/ghc &
           sudo rm -rf /opt/hostedtoolcache/CodeQL &
-          make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="ccache clang" LD="ld.lld" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error gki_defconfig &&
+          make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="ccache clang" LD="ld.lld" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error gki_defconfig
+          if [[ "${{ github.event.inputs.droidspaces_enable }}" != "false" ]]; then
+            for option in CFS_BANDWIDTH CGROUP_PIDS MODVERSIONS ANDROID_KABI_RESERVE FAIR_GROUP_SCHED; do
+              if ! grep -qx "CONFIG_${option}=y" out/.config; then
+                echo "错误：最终配置未启用 CONFIG_${option}，停止构建。" >&2
+                exit 1
+              fi
+            done
+          fi
           make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="$(pwd)/cc-wrapper" LD="$(pwd)/ld-wrapper" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error Image
           
           # 编译后时间劫持二次校验
