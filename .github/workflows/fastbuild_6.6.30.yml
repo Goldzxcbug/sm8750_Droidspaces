@@ -481,6 +481,16 @@ jobs:
             patch -p1 -F 3 < ntsync_base.patch || true
             patch -p1 -F 3 < ntsync_compat_${{ env.ANDROID_VERSION }}-${{ env.KERNEL_VERSION }}.patch || true
             # 开启 Droidspaces 容器所需内核支持
+            echo "CONFIG_MACVLAN=y" >> ./arch/arm64/configs/gki_defconfig
+            #anland 前台调度
+            echo "CONFIG_UNIX_DIAG=y" >> ./arch/arm64/configs/gki_defconfig
+            echo "CONFIG_PROC_CHILDREN=y" >> ./arch/arm64/configs/gki_defconfig
+            #内存限制
+            wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/droidspaces_patch/fix_cgroup_limits_kabi_6.6.89.patch
+            patch -p1 -F 3 < fix_cgroup_limits_kabi_6.6.89.patch || true
+            echo "CONFIG_CFS_BANDWIDTH=y" >> ./arch/arm64/configs/gki_defconfig
+            echo "CONFIG_CGROUP_PIDS=y" >> ./arch/arm64/configs/gki_defconfig
+            
             echo "CONFIG_PID_NS=y" >> ./arch/arm64/configs/gki_defconfig
             echo "CONFIG_IPC_NS=y" >> ./arch/arm64/configs/gki_defconfig
             echo "CONFIG_USER_NS=y" >> ./arch/arm64/configs/gki_defconfig
