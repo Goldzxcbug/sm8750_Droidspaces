@@ -1,0 +1,35 @@
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -30,10 +30,19 @@
+ 
+ #ifdef CONFIG_KEXEC_CORE
+ #include <linux/list.h>
++/*
++ * These implementation dependencies complete otherwise opaque types in
++ * unrelated exports. Keep their definitions out of the genksyms view so
++ * enabling kexec does not change the existing module ABI.
++ */
++#ifndef __GENKSYMS__
+ #include <linux/compat.h>
++#endif
+ #include <linux/ioport.h>
++#ifndef __GENKSYMS__
+ #include <linux/module.h>
+ #include <linux/highmem.h>
++#endif
+ #include <asm/kexec.h>
+ 
+ /* Verify architecture specific macros are defined */
+--- a/drivers/base/cpu.c
++++ b/drivers/base/cpu.c
+@@ -145,7 +145,10 @@
+ #endif /* CONFIG_HOTPLUG_CPU */
+ 
+ #ifdef CONFIG_KEXEC_CORE
++/* Kexec-private types are not part of this file's exported interfaces. */
++#ifndef __GENKSYMS__
+ #include <linux/kexec.h>
++#endif
+ 
+ static ssize_t crash_notes_show(struct device *dev,
+ 				struct device_attribute *attr,
