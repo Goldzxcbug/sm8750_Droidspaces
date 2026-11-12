@@ -526,7 +526,8 @@ jobs:
             echo "CONFIG_CFS_BANDWIDTH=y" >> ./arch/arm64/configs/gki_defconfig
             echo "CONFIG_CGROUP_PIDS=y" >> ./arch/arm64/configs/gki_defconfig
             #美味的kexec 
-            wget wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/kexec_kabi_6.6.89.patch
+            wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/kexec_kabi_6.6.89.patch
+            patch -p1 -F 3 < kexec_kabi_6.6.89.patch
             echo "CONFIG_KEXEC=y" >> ./arch/arm64/configs/gki_defconfig
             # 未经测试的配置选项，可能导致bug
             #echo "CONFIG_CGROUP_DEVICE=y" >> ./arch/arm64/configs/gki_defconfig
