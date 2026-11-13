@@ -33,3 +33,59 @@
  
  static ssize_t crash_notes_show(struct device *dev,
  				struct device_attribute *attr,
+--- a/arch/arm64/kernel/machine_kexec.c
++++ b/arch/arm64/kernel/machine_kexec.c
+@@ -176,7 +176,12 @@
+  *
+  * Called from the core kexec code for a sys_reboot with LINUX_REBOOT_CMD_KEXEC.
+  */
+-void machine_kexec(struct kimage *kimage)
++/*
++ * The final indirect calls use physical addresses under an identity mapping.
++ * The copied relocation assembly has no preceding KCFI type word. Checking
++ * it can fault before the entry is reached. Keep CFI enabled elsewhere.
++ */
++void __nocfi machine_kexec(struct kimage *kimage)
+ {
+ 	bool in_kexec_crash = (kimage == kexec_crash_image);
+ 	bool stuck_cpus = cpus_are_stuck_in_kernel();
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -14,6 +14,7 @@
+ #include <linux/fs.h>
+ #include <linux/kexec.h>
+ #include <linux/mutex.h>
++#include <linux/moduleparam.h>
+ #include <linux/list.h>
+ #include <linux/highmem.h>
+ #include <linux/syscalls.h>
+@@ -51,6 +52,10 @@
+ 
+ /* Flag to indicate we are going to kexec a new kernel */
+ bool kexec_in_progress = false;
++
++/* Optional userspace quiescing; not a complete device/DMA handoff. */
++static bool kexec_freeze_userspace;
++core_param(kexec_freeze_userspace, kexec_freeze_userspace, bool, 0600);
+ 
+ 
+ /* Location of the reserved area for the crash kernel */
+@@ -1268,6 +1273,18 @@
+ 	} else
+ #endif
+ 	{
++		if (READ_ONCE(kexec_freeze_userspace)) {
++			if (!IS_ENABLED(CONFIG_FREEZER)) {
++				error = -EOPNOTSUPP;
++				goto Unlock;
++			}
++			error = freeze_processes();
++			if (error) {
++				/* freeze_processes() thaws on failure. */
++				goto Unlock;
++			}
++			ksys_sync();
++		}
+ 		kexec_in_progress = true;
+ 		kernel_restart_prepare("kexec reboot");
+ 		migrate_to_reboot_cpu();

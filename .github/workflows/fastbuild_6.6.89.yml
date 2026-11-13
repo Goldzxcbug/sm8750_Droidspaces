@@ -529,6 +529,14 @@ jobs:
             wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/other_patch/kexec_kabi_6.6.89.patch
             patch -p1 -F 3 < kexec_kabi_6.6.89.patch
             echo "CONFIG_KEXEC=y" >> ./arch/arm64/configs/gki_defconfig
+            # 同时开启基于文件描述符的 kexec_file_load(2)。两条路径并存，
+            # kexec_load 仍然可用，kexec-tools 默认行为不变（-c 才走新路径）。
+            # KEXEC_SIG 必须显式关闭：arm64 的 ARCH_DEFAULT_KEXEC_IMAGE_VERIFY_SIG
+            # 会让它默认打开，从而拒绝本仓库编译出的未签名 Image。
+            echo "CONFIG_KEXEC_FILE=y" >> ./arch/arm64/configs/gki_defconfig
+            echo "# CONFIG_KEXEC_SIG is not set" >> ./arch/arm64/configs/gki_defconfig
+            echo "# CONFIG_KEXEC_SIG_FORCE is not set" >> ./arch/arm64/configs/gki_defconfig
+            echo "# CONFIG_KEXEC_IMAGE_VERIFY_SIG is not set" >> ./arch/arm64/configs/gki_defconfig
             # 未经测试的配置选项，可能导致bug
             #echo "CONFIG_CGROUP_DEVICE=y" >> ./arch/arm64/configs/gki_defconfig
             #echo "CONFIG_FW_LOADER_COMPRESS=y" >> ./arch/arm64/configs/gki_defconfig
