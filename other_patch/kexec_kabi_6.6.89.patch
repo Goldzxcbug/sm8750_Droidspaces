@@ -35,7 +35,15 @@
  				struct device_attribute *attr,
 --- a/arch/arm64/kernel/machine_kexec.c
 +++ b/arch/arm64/kernel/machine_kexec.c
-@@ -176,7 +176,12 @@
+@@ -24,6 +24,7 @@
+ #include <asm/page.h>
+ #include <asm/sections.h>
+ #include <asm/trans_pgd.h>
++#include <asm/virt.h>
+ 
+ /**
+  * kexec_image_info - For debugging output.
+@@ -176,7 +177,12 @@
   *
   * Called from the core kexec code for a sys_reboot with LINUX_REBOOT_CMD_KEXEC.
   */
@@ -49,6 +57,15 @@
  {
  	bool in_kexec_crash = (kimage == kexec_crash_image);
  	bool stuck_cpus = cpus_are_stuck_in_kernel();
+@@ -184,6 +190,8 @@
+ 	/*
+ 	 * New cpus may have become stuck_in_kernel after we loaded the image.
+ 	 */
++	pr_emerg("KT: machine_kexec stuck=%d online=%d pkm=%d\n",
++		 stuck_cpus, num_online_cpus(), is_protected_kvm_enabled());
+ 	BUG_ON(!in_kexec_crash && (stuck_cpus || (num_online_cpus() > 1)));
+ 	WARN(in_kexec_crash && (stuck_cpus || smp_crash_stop_failed()),
+ 		"Some CPUs may be stale, kdump will be unreliable.\n");
 --- a/kernel/kexec_core.c
 +++ b/kernel/kexec_core.c
 @@ -14,6 +14,7 @@
@@ -59,18 +76,18 @@
  #include <linux/list.h>
  #include <linux/highmem.h>
  #include <linux/syscalls.h>
-@@ -51,6 +52,10 @@
- 
+@@ -52,6 +53,10 @@
  /* Flag to indicate we are going to kexec a new kernel */
  bool kexec_in_progress = false;
-+
+ 
 +/* Optional userspace quiescing; not a complete device/DMA handoff. */
 +static bool kexec_freeze_userspace;
 +core_param(kexec_freeze_userspace, kexec_freeze_userspace, bool, 0600);
- 
++
  
  /* Location of the reserved area for the crash kernel */
-@@ -1268,6 +1273,18 @@
+ struct resource crashk_res = {
+@@ -1268,10 +1273,26 @@
  	} else
  #endif
  	{
@@ -87,5 +104,51 @@
 +			ksys_sync();
 +		}
  		kexec_in_progress = true;
++		pr_emerg("KT: enter\n");
  		kernel_restart_prepare("kexec reboot");
++		pr_emerg("KT: after restart_prepare\n");
  		migrate_to_reboot_cpu();
++		pr_emerg("KT: after migrate_to_reboot_cpu\n");
+ 		syscore_shutdown();
++		pr_emerg("KT: after syscore_shutdown\n");
+ 
+ 		/*
+ 		 * migrate_to_reboot_cpu() disables CPU hotplug assuming that
+@@ -1280,12 +1301,17 @@
+ 		 * CPU hotplug again; so re-enable it here.
+ 		 */
+ 		cpu_hotplug_enable();
++		pr_emerg("KT: after cpu_hotplug_enable\n");
+ 		pr_notice("Starting new kernel\n");
+ 		machine_shutdown();
++		pr_emerg("KT: after machine_shutdown\n");
+ 	}
+ 
++	pr_emerg("KT: before kmsg_dump\n");
+ 	kmsg_dump(KMSG_DUMP_SHUTDOWN);
++	pr_emerg("KT: before machine_kexec\n");
+ 	machine_kexec(kexec_image);
++	pr_emerg("KT: after machine_kexec returned\n");
+ 
+ #ifdef CONFIG_KEXEC_JUMP
+ 	if (kexec_image->preserve_context) {
+--- a/drivers/base/syscore.c
++++ b/drivers/base/syscore.c
+@@ -122,6 +122,7 @@
+ 
+ 	list_for_each_entry_reverse(ops, &syscore_ops_list, node)
+ 		if (ops->shutdown) {
++			pr_emerg("KT: syscore %ps\n", ops->shutdown);
+ 			if (initcall_debug)
+ 				pr_info("PM: Calling %pS\n", ops->shutdown);
+ 			ops->shutdown();
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -4865,6 +4865,7 @@
+ 		device_lock(dev);
+ 
+ 		/* Don't allow any more runtime suspends */
++		pr_emerg("KT: dev %s\n", dev_name(dev));
+ 		pm_runtime_get_noresume(dev);
+ 		pm_runtime_barrier(dev);
+ 
