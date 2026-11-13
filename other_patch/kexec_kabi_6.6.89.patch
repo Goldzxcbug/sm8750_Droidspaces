@@ -35,15 +35,16 @@
  				struct device_attribute *attr,
 --- a/arch/arm64/kernel/machine_kexec.c
 +++ b/arch/arm64/kernel/machine_kexec.c
-@@ -24,6 +24,7 @@
+@@ -24,6 +24,8 @@
  #include <asm/page.h>
  #include <asm/sections.h>
  #include <asm/trans_pgd.h>
 +#include <asm/virt.h>
++#include <asm/kexec_trace.h>
  
  /**
   * kexec_image_info - For debugging output.
-@@ -176,7 +177,12 @@
+@@ -176,14 +178,43 @@
   *
   * Called from the core kexec code for a sys_reboot with LINUX_REBOOT_CMD_KEXEC.
   */
@@ -53,11 +54,33 @@
 + * The copied relocation assembly has no preceding KCFI type word. Checking
 + * it can fault before the entry is reached. Keep CFI enabled elsewhere.
 + */
++/**
++ * kexec_trace_mark - record a handoff stage in the SoC IMEM window
++ * @stage: KX_STAGE_* value
++ *
++ * ioremap keeps the write legal while the MMU is still on.  The assembly
++ * side writes the same slot with plain physical stores once translation is
++ * off, so the last value found after the reset names the furthest stage.
++ */
++void kexec_trace_mark(unsigned int stage)
++{
++	void __iomem *slot;
++
++	slot = ioremap(KEXEC_TRACE_PHYS, sizeof(u32));
++	if (!slot)
++		return;
++	writel(stage, slot);
++	dsb(sy);
++	iounmap(slot);
++}
++
 +void __nocfi machine_kexec(struct kimage *kimage)
  {
  	bool in_kexec_crash = (kimage == kexec_crash_image);
  	bool stuck_cpus = cpus_are_stuck_in_kernel();
-@@ -184,6 +190,8 @@
+ 
++	kexec_trace_mark(KX_STAGE_ENTER);
++
  	/*
  	 * New cpus may have become stuck_in_kernel after we loaded the image.
  	 */
@@ -66,6 +89,14 @@
  	BUG_ON(!in_kexec_crash && (stuck_cpus || (num_online_cpus() > 1)));
  	WARN(in_kexec_crash && (stuck_cpus || smp_crash_stop_failed()),
  		"Some CPUs may be stale, kdump will be unreliable.\n");
+@@ -205,6 +236,7 @@
+ 		typeof(cpu_soft_restart) *restart;
+ 
+ 		cpu_install_idmap();
++		kexec_trace_mark(KX_STAGE_AFTER_IDMAP);
+ 		restart = (void *)__pa_symbol(cpu_soft_restart);
+ 		restart(is_hyp_nvhe(), kimage->start, kimage->arch.dtb_mem,
+ 			0, 0);
 --- a/kernel/kexec_core.c
 +++ b/kernel/kexec_core.c
 @@ -14,6 +14,7 @@
@@ -152,7 +183,7 @@
  		pm_runtime_get_noresume(dev);
  		pm_runtime_barrier(dev);
  
---- /dev/null
+--- a/arch/arm64/include/asm/kexec_trace.h
 +++ b/arch/arm64/include/asm/kexec_trace.h
 @@ -0,0 +1,60 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
@@ -259,67 +290,3 @@
  	bl	record_mmu_state
  	bl	preserve_boot_args
  	bl	create_idmap
---- a/arch/arm64/kernel/machine_kexec.c
-+++ b/arch/arm64/kernel/machine_kexec.c
-@@ -24,6 +24,8 @@
- #include <asm/page.h>
- #include <asm/sections.h>
- #include <asm/trans_pgd.h>
-+#include <asm/virt.h>
-+#include <asm/kexec_trace.h>
- 
- /**
-  * kexec_image_info - For debugging output.
-@@ -176,14 +178,43 @@
-  *
-  * Called from the core kexec code for a sys_reboot with LINUX_REBOOT_CMD_KEXEC.
-  */
--void machine_kexec(struct kimage *kimage)
-+/*
-+ * The final indirect calls use physical addresses under an identity mapping.
-+ * The copied relocation assembly has no preceding KCFI type word. Checking
-+ * it can fault before the entry is reached. Keep CFI enabled elsewhere.
-+ */
-+/**
-+ * kexec_trace_mark - record a handoff stage in the SoC IMEM window
-+ * @stage: KX_STAGE_* value
-+ *
-+ * ioremap keeps the write legal while the MMU is still on.  The assembly
-+ * side writes the same slot with plain physical stores once translation is
-+ * off, so the last value found after the reset names the furthest stage.
-+ */
-+void kexec_trace_mark(unsigned int stage)
-+{
-+	void __iomem *slot;
-+
-+	slot = ioremap(KEXEC_TRACE_PHYS, sizeof(u32));
-+	if (!slot)
-+		return;
-+	writel(stage, slot);
-+	dsb(sy);
-+	iounmap(slot);
-+}
-+
-+void __nocfi machine_kexec(struct kimage *kimage)
- {
- 	bool in_kexec_crash = (kimage == kexec_crash_image);
- 	bool stuck_cpus = cpus_are_stuck_in_kernel();
- 
-+	kexec_trace_mark(KX_STAGE_ENTER);
-+
- 	/*
- 	 * New cpus may have become stuck_in_kernel after we loaded the image.
- 	 */
-+	pr_emerg("KT: machine_kexec stuck=%d online=%d pkm=%d\n",
-+		 stuck_cpus, num_online_cpus(), is_protected_kvm_enabled());
- 	BUG_ON(!in_kexec_crash && (stuck_cpus || (num_online_cpus() > 1)));
- 	WARN(in_kexec_crash && (stuck_cpus || smp_crash_stop_failed()),
- 		"Some CPUs may be stale, kdump will be unreliable.\n");
-@@ -205,6 +236,7 @@
- 		typeof(cpu_soft_restart) *restart;
- 
- 		cpu_install_idmap();
-+		kexec_trace_mark(KX_STAGE_AFTER_IDMAP);
- 		restart = (void *)__pa_symbol(cpu_soft_restart);
- 		restart(is_hyp_nvhe(), kimage->start, kimage->arch.dtb_mem,
- 			0, 0);
