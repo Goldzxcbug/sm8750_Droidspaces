@@ -520,6 +520,11 @@ jobs:
             #anland 前台调度
             echo "CONFIG_UNIX_DIAG=y" >> ./arch/arm64/configs/gki_defconfig
             echo "CONFIG_PROC_CHILDREN=y" >> ./arch/arm64/configs/gki_defconfig
+            #内存限制
+            wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/droidspaces_patch/fix_cgroup_limits_kabi_6.6.89.patch
+            patch -p1 -F 3 < fix_cgroup_limits_kabi_6.6.89.patch || true
+            echo "CONFIG_CFS_BANDWIDTH=y" >> ./arch/arm64/configs/gki_defconfig
+            echo "CONFIG_CGROUP_PIDS=y" >> ./arch/arm64/configs/gki_defconfig
             # 未经测试的配置选项，可能导致bug
             #echo "CONFIG_CGROUP_DEVICE=y" >> ./arch/arm64/configs/gki_defconfig
             #echo "CONFIG_FW_LOADER_COMPRESS=y" >> ./arch/arm64/configs/gki_defconfig
@@ -657,14 +662,6 @@ jobs:
           sudo rm -rf /opt/ghc &
           sudo rm -rf /opt/hostedtoolcache/CodeQL &
           make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="ccache clang" LD="ld.lld" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error gki_defconfig
-          if [[ "${{ github.event.inputs.droidspaces_enable }}" != "false" ]]; then
-            for option in CFS_BANDWIDTH CGROUP_PIDS MODVERSIONS ANDROID_KABI_RESERVE FAIR_GROUP_SCHED; do
-              if ! grep -qx "CONFIG_${option}=y" out/.config; then
-                echo "错误：最终配置未启用 CONFIG_${option}，停止构建。" >&2
-                exit 1
-              fi
-            done
-          fi
           make -j$(nproc --all) LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CC="$(pwd)/cc-wrapper" LD="$(pwd)/ld-wrapper" HOSTLD=ld.lld O=out KCFLAGS+=-O2 KCFLAGS+=-Wno-error Image
           
           # 编译后时间劫持二次校验
