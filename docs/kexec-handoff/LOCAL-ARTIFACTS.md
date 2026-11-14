@@ -1,8 +1,8 @@
-# 未随日志包复制的大制品
+# 未随日志包复制、现已清理的大制品
 
-以下仍在原主机。将仓库交给别人并不等于把这些二进制或全部out依赖交给别人；如需精确复现，可另行取出对应制品，或按构建身份和配置重新生成。
+2026-11-14，用户明确要求“所有产物去掉”，原主机的整个 `out/` 目录已删除。下表是已清理的历史路径，不能再直接取回这些制品。Git 中已归档的日志、配置、manifest、补丁和3个离线取证KO仍保留；需要大制品时须按身份重新构建，或在拥有设备时重新提取已安装版本。未随包交付的辅助脚本和完整源树也不能由日志自动还原。
 
-| 原主机路径（相对仓库） | 内容及边界 |
+| 已删除的历史路径（相对仓库） | 内容及边界 |
 | --- | --- |
 | `out/kexec-boot-fix/source-full-graphics-baseline/kexec-source-full-graphics-boot.img` | R43完整GPU普通临时boot包，Image7278不变；header SHA等见包内manifest。 |
 | `out/kexec-boot-fix/kgsl-blocked-quiet-source/build/arch/arm64/boot/Image`、`out/kexec-boot-fix/kgsl-blocked-quiet-source/build/vmlinux` | 源7278与符号。完整构建目录含继承诊断修改。 |

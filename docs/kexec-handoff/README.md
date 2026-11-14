@@ -2,6 +2,8 @@
 
 日期：2026-11-14。开发分支：`kexec`。设备：OnePlus Pad 2 Pro / SM8750，槽位 `_a`。
 
+清理补充：用户随后要求“所有产物去掉”，本机 `out/` 已整体删除，包括镜像、符号、临时源码副本和本地交接压缩包。Git 中的日志与补丁仍在；文内 `out/` 路径只作历史定位。
+
 **完整 Android 经 kexec 启动尚未成功。最后一次实际 kexec 是 R42；最后一次普通临时启动是 R43，原 GPU、桌面和触摸已恢复正常。R43 没有执行 kexec。** 本包整理已有材料，没有再重启或测试设备。
 
 ## 接手时先看
@@ -48,9 +50,9 @@
 
 正式改动保存在仓库 [other_patch](../../other_patch/) 中；[主kexec补丁](../../other_patch/kexec_kabi_6.6.89.patch)、[GPI NULL修复](../../other_patch/kexec_gpi_event_timeout_null_fix_6.6.89.patch)、[GPI观测补丁](../../other_patch/kexec_gpi_first_event_trace_diag_6.6.89.patch)、[GPI正常加载清单补丁](../../other_patch/kexec_gpi_initramfs_load_diag_6.6.89.patch)和[恢复完整GPU启动参数补丁](../../other_patch/kexec_source_full_graphics_boot_6.6.89.patch)均保留。
 
-用户要求先改补丁，再应用到独立的 `out/` 副本，不直接修改仓库 `kernel/`。不要复用旧GPU禁用/SF停止runner作为正常源启动流程。当前缺少“完整GPU源 + 未改已安装目标/原模块”的新kexec对照；该目标只完成了只读提取，尚未跳转验证。
+用户要求先改补丁，再应用到独立的 `out/` 副本，不直接修改仓库 `kernel/`。不要复用旧GPU禁用/SF停止runner作为正常源启动流程。当前缺少“完整GPU源 + 未改已安装目标/原模块”的新kexec对照；历史上只完成了该目标的只读提取，尚未跳转验证；提取的本地文件现已清理，需要时须重新取得。
 
-这里的3个小型 `.ko` 只供离线ELF核对；它们的存在和哈希不代表已经在目标运行。完整 Image、boot.img、vmlinux、initramfs、约44MB的page_owner压缩档及完整源树未放进本包，仍在原主机 `out/` 中；详见 [未打包制品说明](LOCAL-ARTIFACTS.md)。本包不是可直接执行的刷机/测试脚本合集。
+这里的3个小型 `.ko` 只供离线ELF核对；它们的存在和哈希不代表已经在目标运行。完整 Image、boot.img、vmlinux、initramfs、约44MB的page_owner压缩档及临时源码副本未放进本包，现已随本机 `out/` 删除；详见 [已清理制品说明](LOCAL-ARTIFACTS.md)。本包不是可直接执行的刷机/测试脚本合集。
 
 原报告里引用的 `/home/gold/.../out/...` 是采集时主机路径。按 `manifest.json` 的 `source_path → path` 映射查找本包文件；未映射的依赖说明没有随包复制，不能声称完整依赖闭包已交付。
 

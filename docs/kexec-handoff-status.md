@@ -2,6 +2,8 @@
 
 交接日志包与阅读入口：[kexec-handoff/README.md](kexec-handoff/README.md)。含历轮原始日志、关键证据索引、配置/制品身份和 SHA-256 校验。
 
+清理补充（2026-11-14）：按用户“所有产物去掉”的要求，本机 `out/` 已整体删除。本文的 out 路径均为历史记录；已归档证据按交接包 manifest 查找，未归档的大制品和临时文件现已不存在。
+
 日期：2026-11-14（R42单次跳转后自动回fastboot；R43恢复GPU，完整源Android及桌面触摸已通过，尚未执行新kexec）
 设备：OnePlus Pad 2 Pro（OPD2413 / OP615EL1，SM8750，A/B 槽位 `_a`，16GB）
 
@@ -1581,4 +1583,8 @@ ROOT汇总`out/kexec-boot-fix/round42/review.json` SHA `745583788a085c37998108b4
 
 ## 六十八、日志交接包
 
-按用户交接要求，将本地 out 中的历轮状态、关键原始pstore/dmesg、构建配置、原有独立报告及3个供离线反汇编的小型模块复制到`docs/kexec-handoff/`。入口README、关键证据表和43轮状态索引便于接手者查找；manifest给出源路径与原始哈希，verify.py只做本地校验。原始日志不修字、不重排，不以旧轮寄存器补缺。完整Image/vmlinux/ramdisk和page_owner大档案仍在原主机，包内说明未交付的边界；本次整理没有再运行设备测试。
+按用户交接要求，将本地 out 中的历轮状态、关键原始pstore/dmesg、构建配置、原有独立报告及3个供离线反汇编的小型模块复制到`docs/kexec-handoff/`。入口README、关键证据表和43轮状态索引便于接手者查找；manifest给出源路径与原始哈希，verify.py只做本地校验。原始日志不修字、不重排，不以旧轮寄存器补缺。完整Image/vmlinux/ramdisk和page_owner大档案没有进入Git，随后按用户要求随out全部清理；包内说明未交付和已清理的边界，本次整理没有再运行设备测试。
+
+## 六十九、全部本地产物清理
+
+用户在中间文件清理后追加要求“所有产物去掉”。本机整个未跟踪out目录已删除，包括临时源码副本、镜像、vmlinux、initramfs、原地日志及本地交接压缩包；仓库kernel输入源码、Git自身和已提交的交接证据/补丁保留。本包中out路径不再代表现存文件，后续复现需要重新准备构建或提取输入；此操作未运行设备测试，亦未改变此前尚未修好kexec的结论。
