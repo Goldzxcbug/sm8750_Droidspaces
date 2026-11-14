@@ -1,0 +1,52 @@
+{
+  "status": "R25_SINGLE_JUMP_TARGET_SCSI_AND_DM_PRESENT_USERSPACE_BOOTSTRAP_APEXD_FAILED_ORDERLY_REBOOT_EARLY_CONSOLE_WRAPPED",
+  "inputs_sha256": {
+    "sea-context-independent-review/round25-evidence.json": "e49de45555f6a4c5879b923c91ec86d89ca7f21c6f2afcf8163ecef713897220",
+    "sea-context-review/round25-path-review.json": "a12de13dc6c0deac2b2bd0535972bd262dd7e7e61fab9c11114b600dfc6fd123",
+    "sea-context-runner-review/log-retention-plan.json": "d85a8c5a5e6a0f40b8de536556bd7026194442568449625402043d19692c9ada",
+    "round25/device-test.json": "189fd0943413788ba5d7cdab458ae06c7348dffda1ade71b2f54966d2b964620",
+    "round25/recovery-readonly.json": "c621a24debd78130ac8123d0fb052cb7214df076f1c1da044c07e770f89f3761",
+    "round25/pstore-after-exec.txt": "d5db551c4c9f242dbffde712efb7f60f3f7690b09e95c8611416334a38a2f378",
+    "round25/phy-local-read-loaded-resource-audit.json": "4656d60048c3d86aa490e3389656f6892df8ffd0994093c53a77ff924324bfe7",
+    "sea-context-root-review/final-binding-audit.json": "f608b84a86f747442835b4db37927d1d2b16e1e46a010a0623cab3c0ebb1dce6"
+  },
+  "count_each": {
+    "temporary_boot": 1,
+    "helper": 1,
+    "load": 1,
+    "execute": 1,
+    "extra_recovery_reboots": 0
+  },
+  "source_boot_id": "aa4e24d2-4fe7-42c4-a1e4-0bcc8a8d3dc1",
+  "run_id": "ec670bd5f4eed0cb",
+  "target_build_id": "146835a59b80c2c467222aa7c28892c00044a135",
+  "actual_loaded_DTB_sha256": "dc6ac8a0cb461e02df6fb6414e1156f3643251aab0fa0c33e51ff1844b381fec",
+  "critical_pages_verified": 88,
+  "raw": {
+    "bytes": 262132,
+    "LF": 3478,
+    "begins_mid_line_after_wrap": true,
+    "KSEA1_literal_rows": 0,
+    "KT_device_literal_rows": 2671,
+    "KT_device_bytes": 174557
+  },
+  "positive_evidence": [
+    "actual target build ID in saved CPU-stop rows",
+    "SCSI sda..sdf cache sync rows",
+    "dm35..dm0 device list",
+    "PID1 bootstrap-apexd-failed orderly shutdown at LF511"
+  ],
+  "not_proven": [
+    "first matching SEA absent",
+    "first PCS/link return and first mount success",
+    "the exact apexd-bootstrap start/exit failure",
+    "AUX physical readiness",
+    "full target Android success",
+    "SP/TZ production handoff fix"
+  ],
+  "recovery_stock_boot_id": "5c4942b3-d45d-4e8c-a32c-43e24dddb77d",
+  "next": "R26 only deletes preexisting unconditional KT per-device emergency printk in target; original shutdown callbacks and hardware flow retained",
+  "repository_kernel_untouched": true,
+  "partition_flashed": false,
+  "watchdog_changed": false
+}

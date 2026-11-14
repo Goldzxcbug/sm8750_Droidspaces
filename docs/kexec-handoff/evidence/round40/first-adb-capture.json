@@ -1,0 +1,66 @@
+{
+  "status": "FIRST_ADB_READ_ONLY_CAPTURE_NOT_SOURCE_IDENTITY_OR_BOOT_SUCCESS",
+  "wait_iteration": 11,
+  "started_epoch": 1794655645.005688,
+  "completed_epoch": 1794655645.1419244,
+  "records": [
+    {
+      "label": "notes",
+      "read_only_command": "cat /sys/kernel/notes",
+      "started_epoch": 1794655645.0056894,
+      "completed_epoch": 1794655645.028616,
+      "exit": 0,
+      "timed_out": false,
+      "stdout_path": "first-adb-notes.stdout.bin",
+      "stdout_bytes": 84,
+      "stdout_sha256": "f1c77b2f060ea31e2f4b566043d037b36249d15ea7e6b5a3b588b04629aede51",
+      "stderr_path": "first-adb-notes.stderr.bin",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "cmdline",
+      "read_only_command": "cat /proc/cmdline",
+      "started_epoch": 1794655645.0286508,
+      "completed_epoch": 1794655645.051445,
+      "exit": 0,
+      "timed_out": false,
+      "stdout_path": "first-adb-cmdline.stdout.bin",
+      "stdout_bytes": 1532,
+      "stdout_sha256": "b45c5a4a67b4b09fb6b8a4a4fab97f7165b7aad323ac5ab22b2242bcb39cb0eb",
+      "stderr_path": "first-adb-cmdline.stderr.bin",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "boot_id",
+      "read_only_command": "cat /proc/sys/kernel/random/boot_id",
+      "started_epoch": 1794655645.0514715,
+      "completed_epoch": 1794655645.074019,
+      "exit": 0,
+      "timed_out": false,
+      "stdout_path": "first-adb-boot_id.stdout.bin",
+      "stdout_bytes": 37,
+      "stdout_sha256": "1d235a8e929e6acf5c6efa8fcfbf96d0372fa9b274ce32821ba80ce8f6e8b409",
+      "stderr_path": "first-adb-boot_id.stderr.bin",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "dmesg",
+      "read_only_command": "dmesg",
+      "started_epoch": 1794655645.0740383,
+      "completed_epoch": 1794655645.1408496,
+      "exit": 0,
+      "timed_out": false,
+      "stdout_path": "first-adb-dmesg.stdout.bin",
+      "stdout_bytes": 1603350,
+      "stdout_sha256": "a0d3f92c3fb9129a5eb17fcc2f0db71510a23d8379c8493a3fe78b3ddde984d7",
+      "stderr_path": "first-adb-dmesg.stderr.bin",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "capture_only_once_per_boot_request": true,
+  "may_be_non_root_partial_or_recovered_stock": true
+}

@@ -1,0 +1,98 @@
+{
+  "status": "SNAPSHOT_ONLY_NOT_SAFE_TO_BOOT",
+  "its_nodes": 1,
+  "active_lpi_redistributors": 8,
+  "property_tables": 1,
+  "pending_tables": 8,
+  "device_itts": 2,
+  "indirect_tables": 2,
+  "protected_ranges": 16,
+  "bounded_reads": 338,
+  "btf_sha256": "0963c117fe89911ab1af11ff30aeed937d5f3f5389b877c347494bdfa2941218",
+  "shutdown_verified": false,
+  "dma_quiescence_verified": false,
+  "hardware_memory_ranges": [
+    {
+      "start": "0x81ae5000",
+      "end_exclusive": "0x81ae6000",
+      "use": "its-baser"
+    },
+    {
+      "start": "0x81af0000",
+      "end_exclusive": "0x81b00000",
+      "use": "its-command-queue"
+    },
+    {
+      "start": "0x81b00000",
+      "end_exclusive": "0x81c00000",
+      "use": "its-baser"
+    },
+    {
+      "start": "0xa3e80000",
+      "end_exclusive": "0xa3e90000",
+      "use": "lpi-properties"
+    },
+    {
+      "start": "0xa3e90000",
+      "end_exclusive": "0xa3ea0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3ea0000",
+      "end_exclusive": "0xa3eb0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3eb0000",
+      "end_exclusive": "0xa3ec0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3ec0000",
+      "end_exclusive": "0xa3ed0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3ed0000",
+      "end_exclusive": "0xa3ee0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3ee0000",
+      "end_exclusive": "0xa3ef0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3ef0000",
+      "end_exclusive": "0xa3f00000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xad80f000",
+      "end_exclusive": "0xad810000",
+      "use": "its-device-itt"
+    },
+    {
+      "start": "0xb1af3000",
+      "end_exclusive": "0xb1af4000",
+      "use": "its-level2"
+    },
+    {
+      "start": "0xbe380000",
+      "end_exclusive": "0xbe390000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xc4b5e000",
+      "end_exclusive": "0xc4b5f000",
+      "use": "its-device-itt"
+    },
+    {
+      "start": "0x883ba2000",
+      "end_exclusive": "0x883ba3000",
+      "use": "its-level2"
+    }
+  ],
+  "overlaps": [],
+  "epoch": 1794571752.4200287
+}

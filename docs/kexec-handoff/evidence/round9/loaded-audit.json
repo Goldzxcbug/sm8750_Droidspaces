@@ -1,0 +1,30 @@
+{
+  "status": "LOADED_METADATA_CHECKS_PASS",
+  "relocation_code_sha256": "c8298ca16bf0e349826719887983aac4f8124eb79da61ccd93459e769062c11c",
+  "relocation_code_bytes": 288,
+  "list_pages": 28,
+  "destination_pages": 14030,
+  "sampled_linear_mappings": 97,
+  "memory_attribute_indices": [
+    1
+  ],
+  "linear_offset_untagged": true,
+  "entry_identity_mapping_executable": true,
+  "copied_page_tables_outside_destinations": true,
+  "target_image_header_matches_source": true,
+  "el2_vector_present": false,
+  "probe_payload_verified": false,
+  "modified_image_pages_verified": 20,
+  "actual_jump_entry_matches_Image_start": true,
+  "actual_x0_DTB_argument_matches_captured_segment": true,
+  "actual_segment_buffer_sizes_match_load_log": true,
+  "actual_segments_match_planner": true,
+  "bounded_reads": 551,
+  "jump_executed": false,
+  "captured_target_dtb": {
+    "bytes": 1601001,
+    "sha256": "d70bc83d39f1c13073eae7debb8e6068f1f5b8c4b2e1cf8885b4bac32c2064df",
+    "source": "Actual loaded relocation source pages, before execution",
+    "not_a_post_relocation_integrity_check": true
+  }
+}

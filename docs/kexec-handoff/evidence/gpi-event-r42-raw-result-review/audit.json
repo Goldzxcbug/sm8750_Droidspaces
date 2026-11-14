@@ -1,0 +1,196 @@
+{
+  "status": "INDEPENDENT_R42_RECOVERY_PSTORE_RAW_AUDIT_COMPLETE_TARGET_ADOPTION_FIRST_FAULT_AND_DIAGNOSTIC_CORRECTNESS_UNRESOLVED",
+  "round": 42,
+  "inputs": [
+    {
+      "path": "round42/target-ready.json",
+      "bytes": 30698,
+      "sha256": "c69f564f2030860d382973cb464dcd76505dcad30ae4777f2395c4638c7f2857"
+    },
+    {
+      "path": "round42/installed-recovery-readonly.json",
+      "bytes": 9735,
+      "sha256": "86761316704767e95fe6905a5a388d79409eb553fb379c3cec08dc879961ffc0"
+    },
+    {
+      "path": "round42/recovery-after-fastboot/first-post-exec-capture.json",
+      "bytes": 6580,
+      "sha256": "12bd44ce6c08bef62a331316052e418dc64586147d155c352fc4893c8b16f812"
+    },
+    {
+      "path": "round42/recovery-after-fastboot/first-post-exec-pstore-checkpoint.json",
+      "bytes": 2674,
+      "sha256": "6d2a456413cc6620a09eaad94994eb85901d463f5b1e6074380ccb6cc0da9f2d"
+    },
+    {
+      "path": "round42/USB-after-user-reboot-observation.json",
+      "bytes": 1311,
+      "sha256": "41bc66b4b2d312ff167ee11ffbfb9756d58a01bf7bd1a98da6913b4741d1730c"
+    },
+    {
+      "path": "round42/root-chain-08-execute-once-and-observe.stderr.txt",
+      "bytes": 459,
+      "sha256": "bbc5d71b0e52288c54982df9ad6dad893408f83c87e2fe1359041697e519f6d8"
+    },
+    {
+      "path": "gpi-event-r42-runner/execute-once.py",
+      "bytes": 27630,
+      "sha256": "c3b73c1c5ae155c08e3e0b303ea472169a2a4edab1a97968d8b99da2354e21cc"
+    }
+  ],
+  "expected_target_identity_not_a_raw_observation": {
+    "BID": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+    "nonce": "92363ab1bd2cf98f",
+    "new_GPI_BID": "44f9608d617294a503cf5c0ecebad2da5bccb9d6",
+    "parameter": "Y",
+    "source_UUID": "fafaed69-96b0-4bb1-8491-9a15cbe8d380"
+  },
+  "event_provenance": {
+    "user_statement": "User explicitly confirmed no operation and automatic reboot; this is recorded in the frozen recovery report. No manual fastboot action is inferred from the old USB observation filename.",
+    "USB_fact": "Archived observation records no ADB devices and serialf84de51c in fastboot usb:1-2. This establishes exposed USB mode, not the internal failure mechanism or first fault.",
+    "observer_fact": "execute-once raised No complete Android after its bounded wait. ROOT reports100 rounds without ADB; no natural-wait capture claim, final capture, pstore checkpoint or pstore-after-exec exists in the round root.",
+    "recovery_boundary": "ROOT then issued one ordinary fastboot reboot to installed stock, with no new kexec or temporary image request. The helper was invoked only in recovery-after-fastboot after that recovery boot; the data is not an immediate target live capture."
+  },
+  "collection_identity": {
+    "UUID_before_after_pstore_and_metadata": "d8c53019-2f45-4c1f-a999-d0667971464d",
+    "same_UUID_verified": true,
+    "kernel_GNU": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "GPI_GNU": [
+      "017204038f33bb4419f33057adedc2b0a2490c74"
+    ],
+    "GPI_parameter_exit": 1,
+    "GPI_parameter_stdout_bytes": 0,
+    "scope": "Installed recovery stock only, not target adoption evidence.",
+    "pstore_status": "READ_COMPLETE_NONEMPTY",
+    "collector_sequence": "boot-before -> pstore -> boot-after-pstore ->3-record checkpoint -> notes/cmdline/dmesg/GPI metadata -> boot-after",
+    "all9_capture_records_and15_recovery_query_stdout_stderr_hashes_verified": true,
+    "Android1_in_recovery": true,
+    "SF_recovery": "running",
+    "root_UID": "0",
+    "watchdog_disable": "0",
+    "same_UUID_does_not_establish_pstore_producer": true
+  },
+  "raw_scans": {
+    "round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin": {
+      "path": "round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+      "bytes": 262132,
+      "sha256": "a973b5803fcd39f7e402a6224b82e1f418f3a61967d1652f0ae86672fb628d78",
+      "LF_delimiters": 2246,
+      "LF_segments": 2247,
+      "NUL": 1808,
+      "C0_except_TAB_LF_CR_including_NUL": 6964,
+      "high_bit_bytes": 1406,
+      "ASCII_TAB_segments_at_least24B": 246,
+      "literal_occurrences": {
+        "nonce": 0,
+        "target_BID": 0,
+        "new_GPI_BID": 0,
+        "source_BID": 0,
+        "stock_BID": 0,
+        "KGPICMD1": 0,
+        "gpi_send_cmd": 0,
+        "Kernel_panic": 0,
+        "KUSR2": 0,
+        "KSEA1": 0,
+        "KSEAM1": 0,
+        "KGPUM3": 0,
+        "Internal_error": 0,
+        "Call_trace": 0,
+        "WARNING": 0,
+        "ESR_token": 1
+      }
+    },
+    "round42/pstore-before-exec.txt": {
+      "path": "round42/pstore-before-exec.txt",
+      "bytes": 262132,
+      "sha256": "9235cf6e4ac3cde5cd3e55c5980633dcdc6148c0be593f5d2ae13e99431cb325",
+      "LF_delimiters": 2063,
+      "LF_segments": 2064,
+      "NUL": 8,
+      "C0_except_TAB_LF_CR_including_NUL": 25,
+      "high_bit_bytes": 12,
+      "ASCII_TAB_segments_at_least24B": 2027,
+      "literal_occurrences": {
+        "nonce": 0,
+        "target_BID": 0,
+        "new_GPI_BID": 0,
+        "source_BID": 0,
+        "stock_BID": 2,
+        "KGPICMD1": 0,
+        "gpi_send_cmd": 0,
+        "Kernel_panic": 0,
+        "KUSR2": 0,
+        "KSEA1": 0,
+        "KSEAM1": 0,
+        "KGPUM3": 0,
+        "Internal_error": 0,
+        "Call_trace": 3,
+        "WARNING": 2,
+        "ESR_token": 0
+      }
+    },
+    "round42/recovery-after-fastboot/first-post-exec-dmesg.stdout.bin": {
+      "path": "round42/recovery-after-fastboot/first-post-exec-dmesg.stdout.bin",
+      "bytes": 2119669,
+      "sha256": "15c725a6d60c40271c39b15b11fced4e8b99709b48e63f80996071b09a752ebd",
+      "LF_delimiters": 20329,
+      "LF_segments": 20330,
+      "NUL": 0,
+      "C0_except_TAB_LF_CR_including_NUL": 0,
+      "high_bit_bytes": 0,
+      "ASCII_TAB_segments_at_least24B": 20249,
+      "literal_occurrences": {
+        "nonce": 0,
+        "target_BID": 0,
+        "new_GPI_BID": 0,
+        "source_BID": 0,
+        "stock_BID": 14,
+        "KGPICMD1": 0,
+        "gpi_send_cmd": 0,
+        "Kernel_panic": 0,
+        "KUSR2": 0,
+        "KSEA1": 0,
+        "KSEAM1": 0,
+        "KGPUM3": 0,
+        "Internal_error": 0,
+        "Call_trace": 14,
+        "WARNING": 13,
+        "ESR_token": 0
+      }
+    }
+  },
+  "byte_interpretation": {
+    "raw_integrity": "262132B/2246LF,1808NUL,6964C0 excluding TAB/LF/CR including NUL,1406high-bit bytes.246 ASCII/TAB segments>=24B do not constitute corruption-free semantic records.",
+    "association": "No complete current nonce, target68e8, new GPI44f9, source7278 or stock931f occurs in the recovered pstore. No complete KGPICMD1/gpi_send_cmd/KUSR2/KSEA1/KSEAM1/KGPUM3/panic/internal-error/call-trace/WARNING token.",
+    "false_ESR_candidate": "LF1097 contains the sole literal ESR substring inside damaged [ESROR...] charger device-tree-property error text; it is not an exception syndrome record.",
+    "boot_or_fault_sequence": "Unattributed init/service fragments remain, with damaged timestamps and text. They cannot prove target stage, exception registers, first fault, GPI wait/IRQ behavior or a reboot cause.",
+    "prehistory": "Before-exec retained pstore already contains installed931f build tokens and ordinary warning/call-trace history. Its existence does not identify later damaged bytes as target.",
+    "recovery_dmesg": "Live dmesg belongs to the bracketed installed stock session, contains complete stock931f tokens and no current nonce/target/newGPI markers; it is not target live evidence.",
+    "ring_limit": "Full capacity, fragmented edges and missing tokens do not establish wrap count, chronology, producer identity or an error-correction model."
+  },
+  "diagnostic_confound_not_dismissed": {
+    "question_open": "The diagnostic source/target kernel paths, GPI NULL-fix/trace, and retained GCC/UFS/PHY changes remain possible contributors. This raw audit cannot exonerate any of them or establish a unique underlying hardware cause.",
+    "ABI_limit": "Matching CRC/layout or static control-flow checks test compatibility and narrow implementation properties, not correctness of every enabled runtime path.",
+    "cold_boot_limit": "The earlier ordinary same-Image control used diagnostic guards off and stock modules; it cannot serve as an equivalent execution test of kexec-only diagnostics and the four altered module paths.",
+    "no_missing_marker_inference": "No44f9/KGPICMD1 does not prove new GPI was not adopted, nor does it prove it ran successfully. No panic does not prove absence of panic or successful NULL-timeout fix."
+  },
+  "conclusion": "Automatic transition to observed fastboot is supported by the user confirmation plus USB mode observation; its mechanism, current-target runtime identity, first failure, new-GPI adoption and involvement of diagnostic changes remain undetermined. Later stock success only establishes recovery availability.",
+  "record_artifact": {
+    "path": "gpi-event-r42-raw-result-review/raw-records.json",
+    "bytes": 7502,
+    "sha256": "c998c7a642df96b4b558f9ff82f91224de2736bc413d48fab72dae5539123457"
+  },
+  "bounded_host_reads": {
+    "unique_file_count": 57,
+    "unique_file_bytes": 2769944,
+    "largest_file_bytes": 2119669
+  },
+  "character_repair_or_register_reconstruction": false,
+  "device_commands": 0,
+  "runner_or_helper_invocations": 0,
+  "state_writes": 0,
+  "frozen_producer_or_evidence_modifications": 0,
+  "old_ABI_or_suite_runs": 0
+}

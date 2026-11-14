@@ -1,0 +1,89 @@
+{
+  "status": "FINAL_CURRENT_STATE_READONLY_NOT_NEW_TEST",
+  "started_epoch": 1794658958.228689,
+  "queries": [
+    {
+      "label": "boot-before",
+      "command": "cat /proc/sys/kernel/random/boot_id",
+      "epoch": 1794658958.3197513,
+      "exit": 0,
+      "stdout_hex": "35373139626438322d356131392d346362302d613364332d3264303336663836313638320a",
+      "stderr_hex": ""
+    },
+    {
+      "label": "notes",
+      "command": "cat /sys/kernel/notes",
+      "epoch": 1794658958.3817687,
+      "exit": 0,
+      "stdout_hex": "0600000001000000000100004c696e7578000000000000000600000004000000010100004c696e757800000000000000040000001400000003000000474e5500931f89c6463a6af0eea9436b61f059f31e451f6a",
+      "stderr_hex": ""
+    },
+    {
+      "label": "Android",
+      "command": "getprop sys.boot_completed",
+      "epoch": 1794658958.436365,
+      "exit": 0,
+      "stdout_hex": "310a",
+      "stderr_hex": ""
+    },
+    {
+      "label": "uid",
+      "command": "id -u",
+      "epoch": 1794658958.4799263,
+      "exit": 0,
+      "stdout_hex": "300a",
+      "stderr_hex": ""
+    },
+    {
+      "label": "SF",
+      "command": "getprop init.svc.surfaceflinger",
+      "epoch": 1794658958.5390966,
+      "exit": 0,
+      "stdout_hex": "72756e6e696e670a",
+      "stderr_hex": ""
+    },
+    {
+      "label": "pids",
+      "command": "pidof surfaceflinger system_server",
+      "epoch": 1794658958.5912158,
+      "exit": 0,
+      "stdout_hex": "3233303920333136310a",
+      "stderr_hex": ""
+    },
+    {
+      "label": "KGSL",
+      "command": "test -c /dev/kgsl-3d0",
+      "epoch": 1794658958.648306,
+      "exit": 0,
+      "stdout_hex": "",
+      "stderr_hex": ""
+    },
+    {
+      "label": "WD",
+      "command": "cat /sys/devices/platform/hypervisor/hypervisor:qcom,gh-watchdog/disable",
+      "epoch": 1794658958.7181134,
+      "exit": 0,
+      "stdout_hex": "300a",
+      "stderr_hex": ""
+    },
+    {
+      "label": "boot-after",
+      "command": "cat /proc/sys/kernel/random/boot_id",
+      "epoch": 1794658958.7851079,
+      "exit": 0,
+      "stdout_hex": "35373139626438322d356131392d346362302d613364332d3264303336663836313638320a",
+      "stderr_hex": ""
+    }
+  ],
+  "new_boot_load_execute_requests": 0,
+  "same_legal_UUID_verified": true,
+  "expected_recovered_stock_UUID": true,
+  "stock_kernel_note_contains_expected": true,
+  "Android1": true,
+  "root0": true,
+  "SF_running": true,
+  "graphics_PIDs_present": true,
+  "watchdog0": true,
+  "KGSL_char_device": true,
+  "completed_epoch": 1794658958.7856658
+}

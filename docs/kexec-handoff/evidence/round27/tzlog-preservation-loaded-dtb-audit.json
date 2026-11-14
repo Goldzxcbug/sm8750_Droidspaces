@@ -1,0 +1,102 @@
+{
+  "status": "ACTUAL_LOADED_DTB_ALL_FOUR_PINNED_TZ_RANGES_ORDERED_NOMAP_PASS",
+  "sha256": "ef80f9ed5e6be6c0eee07b104ae43c5769f889a04a18f7385c26e91ad960f5ec",
+  "source_fdt_sha256": "0441f347a940dc96569b0493a7f47a2e0e25dc868934736aba37ccd8dcb76658",
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "source_boot_id": "3832ee69-346e-43d3-b2c9-dadfbf1f9b5e",
+  "target_build_id": "87bae5a7d32c6d0a3103c2c067a52fc1b2d02138",
+  "target_run_id": "cd1bd079e10e2ceb",
+  "per_image_snapshot_sha256": "db1bc801a9bcf85a2db4a45cb274467c7fda59fcc9620d912376fff88c1680dd",
+  "four_ordered_ranges": [
+    {
+      "use": "raw_qsee",
+      "start": "0xecca0000",
+      "end_exclusive": "0xeccc0000",
+      "size": 131072,
+      "actual_memory_reg_fully_covers_range": true,
+      "other_static_GIC_and_header_reservations_disjoint": true
+    },
+    {
+      "use": "encrypted_qsee",
+      "start": "0xeccc0000",
+      "end_exclusive": "0xecce1000",
+      "size": 135168,
+      "actual_memory_reg_fully_covers_range": true,
+      "other_static_GIC_and_header_reservations_disjoint": true
+    },
+    {
+      "use": "encrypted_tz",
+      "start": "0xecc8c000",
+      "end_exclusive": "0xecc8f000",
+      "size": 12288,
+      "actual_memory_reg_fully_covers_range": true,
+      "other_static_GIC_and_header_reservations_disjoint": true
+    },
+    {
+      "use": "display",
+      "start": "0xecd00000",
+      "end_exclusive": "0xecd80000",
+      "size": 524288,
+      "actual_memory_reg_fully_covers_range": true,
+      "other_static_GIC_and_header_reservations_disjoint": true
+    }
+  ],
+  "all_other_reserved_memory_properties_unchanged": true,
+  "secure_heap_skip_audit": {
+    "heap_parent_unchanged": true,
+    "all_other_heap_nodes_unchanged": true,
+    "heap_subtree_nodes_checked": 8,
+    "secure_heaps": [
+      {
+        "heap": "/soc/qcom,dma-heaps/qcom,secure_sp_tz",
+        "status": "disabled",
+        "only_status_changed": true,
+        "region": "/reserved-memory/spu_secure_shared_memory_region@9b280000",
+        "base": "0x9b280000",
+        "size": "0x40000",
+        "all_secure_region_attributes_equal_source": true,
+        "region_property_names": [
+          "no-map",
+          "phandle",
+          "reg"
+        ],
+        "region_property_dict_sha256": "c5a2c57494e512be2ea131c9f4c45af0b2dfe66157001c597eba162df402bffe"
+      },
+      {
+        "heap": "/soc/qcom,dma-heaps/qcom,secure_sp_modem",
+        "status": "disabled",
+        "only_status_changed": true,
+        "region": "/reserved-memory/spu_secure_shared_memory_region@9b2c0000",
+        "base": "0x9b2c0000",
+        "size": "0x40000",
+        "all_secure_region_attributes_equal_source": true,
+        "region_property_names": [
+          "no-map",
+          "phandle",
+          "reg"
+        ],
+        "region_property_dict_sha256": "71b92511c0e4e67ea330c2810cecc299300717696d6885527a3fe7530846a442"
+      }
+    ],
+    "secure_reserved_root_unchanged": true
+  },
+  "source_CMA": {
+    "base": "0xec800000",
+    "size": 37748736,
+    "end_exclusive": "0xeec00000"
+  },
+  "target_dynamic_CMA": {
+    "path": "/reserved-memory/linux,cma",
+    "requested_bytes": 37748736,
+    "properties_unchanged": true,
+    "allocated_base_not_known_before_target_boot": true
+  },
+  "native_ramoops_conversion_is_known_separately_checked_exception": true,
+  "other_reserved_nodes_checked": 63,
+  "limits": [
+    "Loaded source DT pages before relocation, not a post-relocation integrity assertion.",
+    "Preflight reduces memblock_mark_nomap failure conditions but does not observe target allocator execution.",
+    "Static holes can move the dynamic CMA pool; actual target CMA bounds must come from target boot evidence.",
+    "No current firmware permission, revocation or final warm handoff protocol is established."
+  ]
+}

@@ -1,0 +1,222 @@
+{
+  "round": 28,
+  "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+  "temporary_boot_request_count": 2,
+  "helper_insmod_request_count": 1,
+  "load_request_count": 1,
+  "execute_request_count": 1,
+  "preflight_expected_boot_id": "feedca25-bb70-4429-a38c-904f5d922821",
+  "preflight_readonly_sha256": "2c1ac6219161fd2a22edf4c559cb5afbf022520b9973d0bcf671a7e6fb54fff3",
+  "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "target_expected_build_id": "b04f54de1c3320828089eea032cc23bb774d6631",
+  "host_validation_sha256": "aba6449d0cb464ed7b7f4bdf69ca87c8a265655c71d1c7c66a0ac0632e5ad0af",
+  "required_signal_diagnostic_tokens": [
+    "print-fatal-signals=1",
+    "sysctl.debug.exception-trace=1"
+  ],
+  "required_user_state_selector": "kexec_diag.user_state=1",
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "temporary_boot_requested_epoch": 1794620951.6408875,
+  "preflight_boot_id": "feedca25-bb70-4429-a38c-904f5d922821",
+  "boot_sha256": "4b06a1e5068f0769d11f0d19a8560f7b76476a60d0446538530872f5f88887b1",
+  "fastboot_boot_exit": 0,
+  "temporary_boot_returned_epoch": 1794620965.9870098,
+  "temporary_boot_retry_requested_epoch": 1794621734.8091722,
+  "fastboot_first_boot_exit": 1,
+  "fastboot_retry_observer_path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/user-state-usb-review/liburb_observe.so",
+  "fastboot_retry_observer_sha256": "6af672b3b8b50e347fc52b171f02161f916699d64656880985a26e1bc70b1f28",
+  "first_failed_fastboot_log_sha256": "dd8ebd9e58d212bd4f1b91ed423f84c56358300030997eb0c9f8aa108bc75b6e",
+  "fastboot_retry_exit": 0,
+  "temporary_boot_retry_returned_epoch": 1794621736.1490386,
+  "source_boot_id": "bd117c7f-5c34-46dd-9354-d6bcdeabbc9d",
+  "source_observed_build_ids": [
+    "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+  ],
+  "source_android_boot_completed": true,
+  "source_kernel": "6.6.89-Gold_Bug_kexec_tzlog_preserve_diag",
+  "source_module_count": 695,
+  "source_vendor_build_ids": {
+    "qcom_dma_heaps": "d06a59aeae01fb44d0ba7088ec1b6f142127d51c",
+    "secure_buffer": "534c89ce5f5981e302729f9f46aaf8f6d1d9db40",
+    "qcom_scm": "45818a2df3a2eb3401fae24aa624f6c312d5d9f9",
+    "qcom_spss": "bf2f7f319450e7aa8f2cc422aa33024abd2b8f2c",
+    "spss_utils": "23892a3ff1b07fd71f1f264a21f5ff5fd7d90d37",
+    "gh_rm_drv": "2081487b8b1b5eee1f6bf25ee4e4bfcde7a9a198"
+  },
+  "source_console_flush_parameter": true,
+  "source_verified_epoch": 1794621756.0802126,
+  "remote_directory": "/data/local/tmp/kexec-user-state-round28",
+  "target_run_id": "db9b4a3ba4016008",
+  "target_Image_sha256": "ffa73e57c5cb7544fc6e17d604a15ff15ec765a4ce8d37ab23fdef690d8b003d",
+  "target_Image_bytes": 37001728,
+  "probe_console_physical": "0x880000000",
+  "ramdisk_bytes": 18906392,
+  "ramdisk_sha256": "5387d934444dd3d498be5ea1d72bb714c88ab6789a1c221f90be3bff3995ee31",
+  "ramdisk_compressed_payload_sha256": "e75c9b029252460b33dc8bfc45ccf2dd645fa77c5202ce47d197ffd547e711f7",
+  "ramdisk_uncompressed_cpio_sha256": "81af6eb446331c274a6159506dc329c5efe5ecb7a215b786e97285b654a51b9a",
+  "source_console_flush_guard": {
+    "status": "SOURCE_CONSOLE_FLUSH_GUARD_CONSISTENT_SNAPSHOT_PASS",
+    "source_flag_value": true,
+    "context_memtype": 2,
+    "console_type": 2,
+    "physical": "0x880000000",
+    "vaddr": "0xffffffc0834c0000",
+    "size_with_header": 262144,
+    "data_capacity": 262132,
+    "all_driver_flush_gate_conditions": true,
+    "ECC_absent": true,
+    "all_console_pages_pfn_valid_snapshot": true,
+    "checked_page_count": 64,
+    "checked_pfn_interval": [
+      "0x880000",
+      "0x880040"
+    ],
+    "sparsemem_sections": [
+      {
+        "section_nr": 272,
+        "root_index": 2,
+        "section_pointer": "0xffffff8b7dc04bc0",
+        "section_mem_map": "0xfffffffdfe00000f",
+        "early": true,
+        "subsection_indices_checked": []
+      }
+    ],
+    "all_console_pages_PTE_MT_NORMAL0": true,
+    "linear_alias_absent": true,
+    "metadata_and_used_PTE_double_reads_unchanged": true,
+    "Normal_WB_basis": "Exact source MAIR initialization maps MT_NORMAL0 to0xff; live PTE index0 verified.",
+    "live_MAIR_register_read": false,
+    "source_basis_vmlinux_sha256": "dac00ce85323713277de0ea29fa7440e5150219e7d402d0ce550cfe588ad2d45",
+    "source_basis_btf_sha256": "1771cabfe73cf91129f0d3a7c479381292d2129124f200bb1c84f87b12842874",
+    "caller_identity_checks_required": [
+      "exact source build ID/BTF/code bytes",
+      "same boot UUID before and after"
+    ],
+    "limits": [
+      "Host reads cannot hold one RCU critical section across calls; double-read stability is not a proof against concurrent hotremove or ABA.",
+      "pfn_valid establishes struct-page metadata only; no target RAM ownership, secure-memory accessibility or firmware state is inferred.",
+      "PTE index0 is observed; live MAIR_EL1 is not read by this API."
+    ]
+  },
+  "target_initrd_payload_manifest_sha256": "51c3465c05e3e744f34d072670f8d85a7a84b794722d4197c9422ab24d626f98",
+  "target_ufs_module_sha256": "9a9d01348cdd893843a5c799bf056f19e9ec26ec050c43aba207f0c3b07500a9",
+  "target_ufs_diagnostic_module_option_verified": true,
+  "target_ufs_ah8_reset_diag_requested": true,
+  "target_sea_context_diag_requested": true,
+  "target_fatal_signal_context_diag_requested": true,
+  "target_user_state_diag_requested": true,
+  "target_signal_diagnostic_tokens": [
+    "print-fatal-signals=1",
+    "sysctl.debug.exception-trace=1"
+  ],
+  "target_ufs_aux_force_diag_requested": true,
+  "target_ufs_aux_swctrl_diag_requested": true,
+  "target_ufs_aux_halt_skip_diag_requested": true,
+  "target_gcc_module_parameters": [
+    "kexec_ufs_aux_force_diag=1",
+    "kexec_ufs_aux_swctrl_diag=1",
+    "kexec_ufs_aux_halt_skip_diag=1"
+  ],
+  "target_gcc_diagnostic_module_option_verified": true,
+  "target_gcc_module_sha256": "4fe792af469facc52b3d4e63041fbe72b10fcfb1def85e5355b792db887dcd0b",
+  "target_gcc_module_build_id": "c3e465dfcaa69f6e05441aa1409c10e3ea20a9b7",
+  "target_ufs_phy_power_trace_diag_requested": true,
+  "target_ufs_phy_local_read_diag_requested": true,
+  "target_phy_diagnostic_module_option_verified": true,
+  "target_phy_gdsc_dependency_verified": true,
+  "target_phy_module_sha256": "1061487cf69090ec2fdd2ca91950d61030a230360b891b14d886ed5d23c5d96b",
+  "target_phy_module_build_id": "e29ae60436e8e2bd860d89a6ec6693fcaf3f08f3",
+  "spss_recovery_path": "/sys/class/remoteproc/remoteproc0/recovery",
+  "spss_recovery_original": "enabled",
+  "spss_recovery_disable_requested_epoch": 1794621816.7318168,
+  "helper_init_requested_epoch": 1794621816.9914985,
+  "helper_insmod_exit": 0,
+  "helper_init_metadata_only": true,
+  "helper_armed": true,
+  "helper_preserve_for_skip_diag": true,
+  "freeze_userspace": true,
+  "target_staged_epoch": 1794621817.6748178,
+  "load_requested_epoch": 1794621817.7303026,
+  "load_exit": 0,
+  "load_returned_epoch": 1794621817.9388516,
+  "segments": [
+    {
+      "start": 2189426688,
+      "end_exclusive": 2227109888,
+      "bufsz": 37001728
+    },
+    {
+      "start": 2227109888,
+      "end_exclusive": 2246017024,
+      "bufsz": 18906392
+    },
+    {
+      "start": 51189383168,
+      "end_exclusive": 51190984704,
+      "bufsz": 1601399
+    }
+  ],
+  "load_result": "1",
+  "loaded_metadata_checks": "PASS",
+  "gic_overlap_count": 0,
+  "gic_range_set_stable_across_audit": true,
+  "critical_image_pages_verified": 119,
+  "captured_target_dtb_sha256": "fff75bd009b13b2c185f97bd3b05458b908a353112f4f17be6984f92accadbcc",
+  "audit_completed_epoch": 1794621928.6147478,
+  "secure_heap_skip_loaded_DTB_checks": "PASS",
+  "secure_heap_skip_loaded_DTB_audit_sha256": "0c5e7b94d7368f06a144c1d322a4420c918f93d8cd17df18c79a6846ff19c583",
+  "tzlog_preservation_loaded_DTB_checks": "PASS",
+  "tzlog_preservation_loaded_DTB_audit_sha256": "b5bc92ab791c1fe79e61a328a1326103563a25114ba721da69465fec3dd5e6ea",
+  "tzlog_preservation_all_kimage_pages_disjoint": true,
+  "tzlog_preservation_four_ranges_checked": 4,
+  "execute_requested_epoch": 1794621978.7812252,
+  "execute_adb_exit": 255,
+  "execute_command_returned_epoch": 1794621981.3461375,
+  "post_exec_pstore_exit": 0,
+  "post_exec_pstore_bytes": 262132,
+  "post_exec_user_state_parameter_verified": false,
+  "post_exec_signal_parameters_verified": false,
+  "post_exec_sea_context_parameter_verified": false,
+  "post_exec_module_scope": "observed_non_target_or_recovered_stock",
+  "observed_module_build_ids_after_exec": {
+    "gcc_sun": [
+      "fd0294bddc6fc79a28a1a6826e5328eee01567cb"
+    ],
+    "ufs_qcom": [
+      "a0f190cdb34943457dc4f4642b720838e77acda3"
+    ],
+    "phy_qcom_ufs": [
+      "da0d45e45f727c03861320cf4132255b22a0cf5c"
+    ]
+  },
+  "observed_gcc_parameters_after_exec": {
+    "kexec_ufs_aux_force_diag": {
+      "exit": 1,
+      "value": ""
+    },
+    "kexec_ufs_aux_swctrl_diag": {
+      "exit": 1,
+      "value": ""
+    },
+    "kexec_ufs_aux_halt_skip_diag": {
+      "exit": 1,
+      "value": ""
+    }
+  },
+  "target_diagnostic_runtime_verified": false,
+  "post_exec_module_identity_sha256": "abf21328345fdcdf4025f91e44433abeffa730bd6a4d4539bbb31c0cb2756b6c",
+  "observed_build_ids_after_exec": [
+    "931f89c6463a6af0eea9436b61f059f31e451f6a"
+  ],
+  "observed_boot_id_after_exec": "a7abdfb2-c01b-47b4-9427-9713388af0aa",
+  "observed_kernel_after_exec": "6.6.89-Gold_bug",
+  "observed_android_boot_completed": true,
+  "post_exec_capture_epoch": 1794622005.255202,
+  "target_kernel_identity_verified": false,
+  "android_target_success": false,
+  "pstore_sha256": "2f02ccf3288b269d1227e1077f63d8ce24f4f0641e79560fad24448e75c80387",
+  "recovery_root_available": true,
+  "primary_console_after_exec": "pstore-after-exec.txt",
+  "observed_dmesg_sha256": "2d20b4e8209765f6ae0e9f45ff34dee05b09a9ec9caf76a90447523c7beceffe"
+}

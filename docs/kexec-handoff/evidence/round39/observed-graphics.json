@@ -1,0 +1,22 @@
+{
+  "SFstate": {
+    "exit": 0,
+    "stdout_hex": "72756e6e696e670a",
+    "stderr_hex": ""
+  },
+  "SFpid": {
+    "exit": 0,
+    "stdout_hex": "323239380a",
+    "stderr_hex": ""
+  },
+  "SSpid": {
+    "exit": 0,
+    "stdout_hex": "333234350a",
+    "stderr_hex": ""
+  },
+  "KGSLdev": {
+    "exit": 0,
+    "stdout_hex": "",
+    "stderr_hex": ""
+  }
+}

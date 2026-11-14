@@ -1,0 +1,104 @@
+{
+  "status": "R35_SINGLE_KEXEC_TARGET_REACHED_SECOND_STAGE_ANDROID_FAILED_REVIEWED",
+  "epoch": 1794642053.7499373,
+  "counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "source_build_id": "4424630e5e18a578666635e066a255bdf42c3428",
+  "source_boot_id": "985424e2-23f9-49f9-8137-5ce33ca95ef4",
+  "target_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+  "prepared_run_id": "93037c1caf16fd7a",
+  "actual_loaded_DTB_sha256": "c1c02b3018f8c6097ee30262957dd63d640a63499560c4ba5fd53056182def71",
+  "host_cache_chosen_blob_sha256": "c788b09cdb4a0306498132033e08b52c5f1a12497fefde771ca6e47a58a5bd58",
+  "fresh_complete_initial_and_post_audit_repeat_agreed": true,
+  "original_initrd_prefix_bytes": 18906392,
+  "transport_bytes": 18906600,
+  "actual_loaded_initrd_excluded_transport_suffix": true,
+  "retained_kimage_allocation_pages_checked": 7927,
+  "actual_target_critical_pages_verified": 233,
+  "raw": {
+    "path": "pstore-after-exec.txt",
+    "sha256": "85cadf1a801bb592a4335bf2c122ff65ee623aaa8ac955f298ec9c40ee7568a4",
+    "bytes": 262132,
+    "LF_count": 2176,
+    "no_byte_repair": true
+  },
+  "positive_saved_target_facts": {
+    "exact_target_build_id_LFs": [
+      1072,
+      1089,
+      1137
+    ],
+    "init_first_stage_complete_LF": 110,
+    "init_second_stage_started_LF": 184,
+    "APEX_bootstrap_completed_LF": 1048,
+    "first_saved_user_DABT_ESR_hex": "92000005",
+    "first_saved_user_DABT_comm": "linkerconfig",
+    "first_saved_user_DABT_PC_hex": "7faa1138e4",
+    "first_saved_user_DABT_FAR_hex": "28",
+    "modprobe_user_DABT_LF": 1119,
+    "selftest_reboot_on_failure_LF": 2147,
+    "ordered_reboot_reason_LF": 2162,
+    "ordered_reboot_reason": "boringssl-self-check-failed"
+  },
+  "GPU_historical_coverage_evidence": {
+    "complete_nomap_mask_LF": 1058,
+    "meaningful_bits": 9,
+    "mask_hex": "1ff",
+    "complete_reserved_mask": false,
+    "complete_summary": false,
+    "exact_nonce_survives": false,
+    "complete_dual_mask_and_run_nonce_association": "UNPROVED",
+    "parser_associated_coverage": {
+      "snapshot": false,
+      "replay": false
+    }
+  },
+  "current_device": {
+    "kernel_build_ids": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "boot_id": "e601cc28-9c73-4f43-99d7-24fadaba842b",
+    "Android_completed": true,
+    "root": true,
+    "watchdog_disable": 0,
+    "no_additional_recovery_reboot": true
+  },
+  "source_archive_limits": "45-second non-atomic partial page_owner history; exit124, not EOF or full owner/ACL coverage",
+  "conditional_linker_analysis_limits": "Ordinary recovered file maps PC to vsnprintf TPIDR_EL0-related load, but saved live instruction word is damaged and target file identity/TLS cause is unproved.",
+  "next_discriminators": [
+    "Resolve earlier dynamic-linker fatal/logging context and verify any TLS hypothesis before changing context-switch code.",
+    "GPU public unbind is not a proven safe quiescence/unassign route; determine checked owner-driver PM stop path before attempting a repair."
+  ],
+  "limits": [
+    "No full Android kexec success, no production fix claim.",
+    "No saved SEA is not proof all secure-memory problems are fixed.",
+    "Metadata repeats and NOMAP history are not hardware ACL, lifetime sealing or full allocation coverage.",
+    "Persistent saved text corruption is independently known and does not alone prove user code/data corruption."
+  ],
+  "repository_kernel_untouched": true,
+  "main_patch_frozen_sha256": "2ff710c967cfdf8cf8247ac71d95d061fe93709730373f5d530cca42e55588b7",
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "input_sha256": {
+    "root-final-host-binding.json": "11f0b9eb79946ff39809ae3ca1d21498b875ce75b70eca2092f76267a9fff9ae",
+    "target-ready.json": "f508c65bc8109aa8e464d62ffcbc98e4f26a6e0306c8522a5bc4329d164f0876",
+    "gpu-transport-binding.json": "4db3696e12eb17fa4ad0612d48e5964294fd4acb92b5907d55f4a2838af6d45d",
+    "loaded-audit.json": "7042599b755749103301a6b2c2d3d5a218aa2a7ea6750566ceda2c5e12981c8f",
+    "loaded-fdt-audit.json": "4365c0fc751ea8a7392460ef83a3fdc66fe75add7ecf1fdbf4fd480f5553cae0",
+    "kgsl-nomap-loaded-audit.json": "e152fffc252a14661e186091b1607303a0792b5262938bfb5df043f8898170f3",
+    "phy-local-read-loaded-resource-audit.json": "19d9a4ef45780076c308e15043fb9a18227da5a9899a4d9dcdb77dfa93c855f4",
+    "kgsl-late-repeat-root-review.json": "5aecc4f4b6520ae86eaa3722785c2fefd5017c297390197ede6660e78b67a2be",
+    "source-page-owner-archive-before-load.json": "f915eeae129d2bf204093be4763e3322a923340bba9dc599b4905490198f9c1e",
+    "recovery-readonly.json": "01bb2c814af36634a0411863cd4f666a68fb43e4ab14784bce6026ff114d4012",
+    "kgsl-nomap-target-log-review.json": "56060a4ccffac82b5499ccfa60f9b3f75ae0e44cbadb1596673d1afd96f0becf",
+    "../kgsl-binary-r35-runner/validation.json": "a54e8848e1b0a090d7bb441705d41bc0938d6188ec85f16e6521b5c1104d01a4",
+    "../round35-independent-raw-review/audit.json": "51ebc5253f03b378b49830f8c37667a4c0a1319fa59833a414cdf63976f9eb28",
+    "../round35-independent-raw-review/conditional-linker-file-analysis.json": "a594d6c125f643e9de9d312e6171440db1bf3c9d6ce85b26372c904439fb82f5",
+    "../kgsl-binary-r35-source-helper-independent-review/round35-evidence.json": "7fd4623c29e5866b34625a092671304e182b63547136f49bf48fd17e3a0be19e",
+    "../kgsl-unbind-review/normal-unbind-lifecycle.json": "6570bf5eb90498786a2ee19121f0275b1bf1f8fe7519e0557c615bcdb6cc32db"
+  }
+}

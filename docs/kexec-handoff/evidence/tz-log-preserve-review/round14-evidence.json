@@ -1,0 +1,560 @@
+{
+  "status": "ROUND14_SINGLE_EXECUTION_TARGET_F93_REACHED_PID1_MOUNT_FAILURE_RECOVERED_INSTALLED_ANDROID",
+  "inputs": {
+    "device-test.json": {
+      "sha256": "db2adaa4629c8dbb0e287f014cc4ac8dee29e22eac9ffa36243806d0caaf6da1",
+      "bytes": 6635
+    },
+    "pstore-after-exec.txt": {
+      "sha256": "63767893c8db2249b2b41e16604ade568eb16f165513616b5047962baeb303f3",
+      "bytes": 262132
+    },
+    "target-ready.json": {
+      "sha256": "db5778c4a2bce4d2de2aacbc8446bbaecdf8109d690bd82f302d22bc6302d99d",
+      "bytes": 3634
+    },
+    "source-fdt.bin": {
+      "sha256": "c9ccbec8d47639d3cf0bfae0640f9655650030909d3e8da6a01084b3605e9cd8",
+      "bytes": 1600202
+    },
+    "loaded-target.dtb": {
+      "sha256": "c34d5c1b11237a1078d760749a3aee7bc2a46ad30736d3ad3452659f5ca8c7b0",
+      "bytes": 1601271
+    },
+    "loaded-audit.json": {
+      "sha256": "3018224ecd764f221b92393220d7841f2b52a8269c53c15669df55121245a7c0",
+      "bytes": 1480
+    },
+    "tz-log-kernel-capture.json": {
+      "sha256": "2de1ffd4d7fee2fdfadbc9c55b53750253682f2df4cfd545d8d49d0c83b7b24a",
+      "bytes": 2200
+    },
+    "tzlog-preservation-loaded-dtb-audit.json": {
+      "sha256": "09c607bdf5f9a5471c1b327b844a246acb941c233df895896d31248be8662623",
+      "bytes": 3807
+    },
+    "secure-heap-skip-loaded-dtb-audit.json": {
+      "sha256": "7b9703f60e065c42079d5a610af304be5faf7aaa26e6d03d3ce63c0e6910aa08",
+      "bytes": 2370
+    },
+    "retained-kimage-page-lists-audit.json": {
+      "sha256": "a5b988d6d4778a94709b1a99210cc7f1e81872c7e5431569c8b368143f483809",
+      "bytes": 1328
+    },
+    "host-audit-attempt1.json": {
+      "sha256": "fd31291bed37964c1e1009a4c5879efae7410a8993bcbac924fff9fee991b52f",
+      "bytes": 705
+    },
+    "source-startup-dmesg.txt": {
+      "sha256": "fda144ed78b3b63fd7894280feb8fd4b7307f2f1045a4933771b16c8c30d797f",
+      "bytes": 1941681
+    }
+  },
+  "identities": {
+    "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+    "source_UUID": "98887e59-b9df-4d55-afd5-2a4852beaab9",
+    "frozen_target_build_id": "f93a5b41fb60172452d1ba9cc767d9014162da82",
+    "target_expected_nonce": "07d066c804098959",
+    "target_nonce_in_saved_pstore": false,
+    "exact_F93_BID_record_LFs": [
+      554,
+      726,
+      786,
+      846,
+      905,
+      1037,
+      1318,
+      1384,
+      1449,
+      1513,
+      1577,
+      2576,
+      2660,
+      2730,
+      2755
+    ],
+    "nonce_attribution_limit": "The ring prefix does not contain the nonce. One execute, exact preloaded Image/DT and repeated intact target BID records correlate this evidence; an independent intact run-ID printk is unavailable.",
+    "recovery_build_id": "931f89c6463a6af0eea9436b61f059f31e451f6a",
+    "recovery_UUID": "81ba8eaa-ccd0-4444-9e93-4ef9fac14d0a",
+    "recovery_Android_complete_and_root": true,
+    "target_full_Android_success": false
+  },
+  "request_counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "preexecution_audit": {
+    "actual_DT_sha256": "c34d5c1b11237a1078d760749a3aee7bc2a46ad30736d3ad3452659f5ca8c7b0",
+    "four_ordered_TZ_ranges": [
+      {
+        "use": "raw_qsee",
+        "start": "0xecca0000",
+        "end_exclusive": "0xeccc0000",
+        "size": 131072,
+        "actual_memory_reg_fully_covers_range": true,
+        "other_static_GIC_and_header_reservations_disjoint": true
+      },
+      {
+        "use": "encrypted_qsee",
+        "start": "0xeccc0000",
+        "end_exclusive": "0xecce1000",
+        "size": 135168,
+        "actual_memory_reg_fully_covers_range": true,
+        "other_static_GIC_and_header_reservations_disjoint": true
+      },
+      {
+        "use": "encrypted_tz",
+        "start": "0xecc8c000",
+        "end_exclusive": "0xecc8f000",
+        "size": 12288,
+        "actual_memory_reg_fully_covers_range": true,
+        "other_static_GIC_and_header_reservations_disjoint": true
+      },
+      {
+        "use": "display",
+        "start": "0xed100000",
+        "end_exclusive": "0xed180000",
+        "size": 524288,
+        "actual_memory_reg_fully_covers_range": true,
+        "other_static_GIC_and_header_reservations_disjoint": true
+      }
+    ],
+    "pinned_per_image_capture_equals_actual_ordinary_globals": true,
+    "all_four_RAM_coverage_static_GIC_header_disjoint_checks": true,
+    "all_segment_source_destination_list_control_bookkeeping_pages_disjoint": true,
+    "relocation_dest_pages": 14030,
+    "indirection_pages": 28,
+    "critical_Image_pages_verified": 20,
+    "retained_control_pages": 7927,
+    "retained_dest_pages": 0,
+    "retained_unusable_pages": 0,
+    "retained_metadata_blocks": 2011,
+    "retained_reader_backend_calls": 4028,
+    "only_used_chain_and_allocation_order_fields_rechecked": true,
+    "two_secure_heap_children_disabled_reserved_nodes_unchanged": true,
+    "UFS_PHY_DT_properties_exactly_equal_source": [
+      "/soc/ufsphy_mem@1d80000",
+      "/soc/ufshc@1d84000"
+    ],
+    "limit": "These checks capture the image before relocation; no direct target runtime PTE/allocator read is performed."
+  },
+  "host_4096_guard_history": {
+    "initial_record": "round14/host-audit-attempt1.json",
+    "initial_combined_condition_did_not_save_exact_list_count_or_repeat_state": true,
+    "same_loaded_image_no_reload_successful_rerun_control_nodes": 7927,
+    "conclusion": "4096 was an invalid host ceiling for this valid 7927-control-page image. Initial exception alone did not distinguish a repeat from a cap; the later complete stable walk removes the basis for treating it as kernel corruption.",
+    "kernel_or_image_changed_to_fix_guard": false,
+    "extra_load_or_execute_requested_to_fix_guard": false
+  },
+  "positive_progress": {
+    "minidump_module_loaded": {
+      "LF": 715,
+      "raw_bytes": 74,
+      "raw_sha256": "6a68005b575de28ce1c5b56ef5d2c4b2f3525f5511adfe78939b997070d1fd4e",
+      "timestamp_if_intact": "1.054268",
+      "ascii_escaped": "[    1.054268][  T187] init: Loaded kernel module /lib/modules/minidump.ko",
+      "raw_hex": "5b20202020312e3035343236385d5b2020543138375d20696e69743a204c6f61646564206b65726e656c206d6f64756c65202f6c69622f6d6f64756c65732f6d696e6964756d702e6b6f"
+    },
+    "meaning": "The target successfully completed minidump module initialization and advanced beyond the earlier R11 minidump/CMA initialization crash. This does not identify its new allocation PA or prove that the old fault PA is now accessible.",
+    "CMA_assigned_name_record_only": {
+      "LF": 693,
+      "raw_bytes": 90,
+      "raw_sha256": "e9d97b0b3e4909603cc71a8834cd176e0b48556ad955d3d86c6278938fa31ed7",
+      "timestamp_if_intact": "1.029169",
+      "ascii_escaped": "[    1.029169][  T186] qcom_dma_iommu soc:dma_dev: assigned reserved memory node linux,cma",
+      "raw_hex": "5b20202020312e3032393136395d5b2020543138365d2071636f6d5f646d615f696f6d6d7520736f633a646d615f6465763a2061737369676e6564207265736572766564206d656d6f7279206e6f6465206c696e75782c636d61"
+    },
+    "target_runtime_CMA_base_end_observed": false,
+    "four_tuple_target_memblock_mark_nomap_success_records_observed": false,
+    "source_CMA_confirmed_only": {
+      "base": "0xec800000",
+      "size": 37748736,
+      "end_exclusive": "0xeec00000"
+    },
+    "source_CMA_boot_record": {
+      "LF": 27,
+      "raw_bytes": 106,
+      "raw_sha256": "71e1925949f7bc921b8e1a234c74f97bead233bb0fff1e2643d09f80ab9a35b2",
+      "timestamp_if_intact": "0.000000",
+      "ascii_escaped": "[    0.000000] OF: reserved mem: 0x00000000ec800000..0x00000000eebfffff (36864 KiB) map reusable linux,cma",
+      "raw_hex": "5b20202020302e3030303030305d204f463a207265736572766564206d656d3a203078303030303030303065633830303030302e2e30783030303030303030656562666666666620283336383634204b694229206d6170207265757361626c65206c696e75782c636d61"
+    },
+    "target_CMA_limit": "Target DT still requests a dynamic 36 MiB pool. No readable target pool base/end or per-tuple successful NOMAP printk survives; source ec800000/eec00000 is not assigned to the target by inference.",
+    "exact_literal_search_LFs": {
+      "07d066c804098959": [],
+      "kexec_diag.run_id=": [],
+      "cma:": [],
+      "OF: reserved mem": [],
+      "kexec-tzlog-preserved": [],
+      "no-map": [],
+      "nomap": [],
+      "ecca0000": [],
+      "ecc8c000": [],
+      "ed100000": []
+    }
+  },
+  "current_failure": {
+    "classification": "UFS clock/PHY bringup fails, followed by missing required block partitions and PID1 exit panic.",
+    "aux_clock_register_records": [
+      {
+        "LF": 1307,
+        "raw_bytes": 50,
+        "raw_sha256": "1ac43d564d75c54f1a6b4d3a2363f6bec39f2b6eb6e448084a3f44d23ca2252c",
+        "timestamp_if_intact": "1.212451",
+        "ascii_escaped": "[    1.212451][  T136] gcc_ufs_phy_phy_aux_clk_src",
+        "raw_hex": "5b20202020312e3231323435315d5b2020543133365d206763635f7566735f7068795f7068795f6175785f636c6b5f737263"
+      },
+      {
+        "LF": 1308,
+        "raw_bytes": 55,
+        "raw_sha256": "8acf7ae2d82860afcb9929f1ac4ae30e493845533727696b2fdebf974906aa06",
+        "timestamp_if_intact": "1.212465",
+        "ascii_escaped": "[    1.212465][  T136]             CMD_RCGR: 0x80000000",
+        "raw_hex": "5b20202020312e3231323436355d5b2020543133365d20202020202020202020202020434d445f524347523a2030783830303030303030"
+      },
+      {
+        "LF": 1309,
+        "raw_bytes": 55,
+        "raw_sha256": "c2e9158143d35f5a3aeea78874d2962711272fcb0c8e15ba54544e32f2ed8c36",
+        "timestamp_if_intact": "1.212478",
+        "ascii_escaped": "[    1.212478][  T136]             CFG_RCGR: 0x00100001",
+        "raw_hex": "5b20202020312e3231323437385d5b2020543133365d202020202020202020202020204346475f524347523a2030783030313030303031"
+      },
+      {
+        "LF": 1310,
+        "raw_bytes": 46,
+        "raw_sha256": "135f7977ba1d84a22946843c1d46860d235f1500ab819efd8917a3525a7babed",
+        "timestamp_if_intact": "1.212490",
+        "ascii_escaped": "[    1.212490][  T136] gcc_ufs_phy_phy_aux_clk",
+        "raw_hex": "5b20202020312e3231323439305d5b2020543133365d206763635f7566735f7068795f7068795f6175785f636c6b"
+      },
+      {
+        "LF": 1311,
+        "raw_bytes": 55,
+        "raw_sha256": "f85bf247054c0b1fc4d61a0af896aae3e2d9f4cd61d5e0656f75dd7f82b13c32",
+        "timestamp_if_intact": "1.212502",
+        "ascii_escaped": "[    1.212502][  T136]                 CBCR: 0x88000001",
+        "raw_hex": "5b20202020312e3231323530325d5b2020543133365d2020202020202020202020202020202020434243523a2030783838303030303031"
+      }
+    ],
+    "first_aux_clock_status_warning_damaged_text_preserved": {
+      "LF": 1313,
+      "raw_bytes": 82,
+      "raw_sha256": "11838d1f544119efbe6d031f15f35d879c874731fc0627db9fdce8e541bc7bb6",
+      "timestamp_if_intact": "1.212526",
+      "ascii_escaped": "[    1.212526][  T136] gcc_ufs_phy_phy_aux_clk: status stuck at 'off' aftEr 200 uS",
+      "raw_hex": "5b20202020312e3231323532365d5b2020543133365d206763635f7566735f7068795f7068795f6175785f636c6b3a2073746174757320737475636b20617420276f66662720616674457220323030207553"
+    },
+    "later_intact_aux_clock_status_warnings": [
+      {
+        "LF": 1378,
+        "raw_bytes": 82,
+        "raw_sha256": "fc1fd4c19c6640c87b928abba66e7b9173eebe6fbaf5c3a451ec241e9b4daef5",
+        "timestamp_if_intact": "1.214379",
+        "ascii_escaped": "[    1.214379][  T136] gcc_ufs_phy_phy_aux_clk: status stuck at 'off' after 200 us",
+        "raw_hex": "5b20202020312e3231343337395d5b2020543133365d206763635f7566735f7068795f7068795f6175785f636c6b3a2073746174757320737475636b20617420276f66662720616674657220323030207573"
+      },
+      {
+        "LF": 1444,
+        "raw_bytes": 82,
+        "raw_sha256": "5ad4d1ca255c07624ff0c75fea2ea55f99c2c51c20d35eab36833af97831930f",
+        "timestamp_if_intact": "1.273447",
+        "ascii_escaped": "[    1.273447][  T136] gcc_ufs_phy_phy_aux_clk: status stuck at 'off' after 200 us",
+        "raw_hex": "5b20202020312e3237333434375d5b2020543133365d206763635f7566735f7068795f7068795f6175785f636c6b3a2073746174757320737475636b20617420276f66662720616674657220323030207573"
+      },
+      {
+        "LF": 1508,
+        "raw_bytes": 82,
+        "raw_sha256": "4e115f50fcf69904874d5545fecdea807425dfbc570054a3d5e8e57c15a31a1e",
+        "timestamp_if_intact": "1.332369",
+        "ascii_escaped": "[    1.332369][  T136] gcc_ufs_phy_phy_aux_clk: status stuck at 'off' after 200 us",
+        "raw_hex": "5b20202020312e3333323336395d5b2020543133365d206763635f7566735f7068795f7068795f6175785f636c6b3a2073746174757320737475636b20617420276f66662720616674657220323030207573"
+      },
+      {
+        "LF": 1572,
+        "raw_bytes": 82,
+        "raw_sha256": "a509501501f1a035131fac780ac875e14eba40e60ca01e7f76e9a1e46ced4bb4",
+        "timestamp_if_intact": "1.391528",
+        "ascii_escaped": "[    1.391528][  T136] gcc_ufs_phy_phy_aux_clk: status stuck at 'off' after 200 us",
+        "raw_hex": "5b20202020312e3339313532385d5b2020543133365d206763635f7566735f7068795f7068795f6175785f636c6b3a2073746174757320737475636b20617420276f66662720616674657220323030207573"
+      }
+    ],
+    "error_propagation": {
+      "initial_ref_aux_failure": {
+        "LF": 1363,
+        "raw_bytes": 125,
+        "raw_sha256": "33846e52d5281adea6f9df4224dbfa2d5d713da09a1768372a7cfa0fd909b757",
+        "timestamp_if_intact": "1.213311",
+        "ascii_escaped": "[    1.213311][  T136] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_phy_enable_ref_clk: ref_aux_clk enable failed -16",
+        "raw_hex": "5b20202020312e3231333331315d5b2020543133365d207566735f71636f6d5f7068795f716d705f76345f73756e20316438303030302e7566737068795f6d656d3a207566735f71636f6d5f7068795f656e61626c655f7265665f636c6b3a207265665f6175785f636c6b20656e61626c65206661696c6564202d3136"
+      },
+      "initial_phy_poweron_failure": {
+        "LF": 1365,
+        "raw_bytes": 79,
+        "raw_sha256": "e6ee8f01c7ad87aced97d6bec98ff3253e439b3409a316e7bdefbc7ab8882025",
+        "timestamp_if_intact": "1.213375",
+        "ascii_escaped": "[    1.213375][  T136] phy phy-1d80000.ufsphy_mem.0: phy poweron failed --> -16",
+        "raw_hex": "5b20202020312e3231333337355d5b2020543133365d20706879207068792d316438303030302e7566737068795f6d656d2e303a2070687920706f7765726f6e206661696c6564202d2d3e202d3136"
+      },
+      "initial_host_reset_failure": {
+        "LF": 1367,
+        "raw_bytes": 96,
+        "raw_sha256": "28ce343cb9f280e9cda4471e88291ce49ad2be3371d50ac0ede0c8d9ca7d2ccb",
+        "timestamp_if_intact": "1.213400",
+        "ascii_escaped": "[    1.213400][  T136] ufshcd-qcom 1d84000.ufshc: ufs_qcom_device_reset: host reset returned -16",
+        "raw_hex": "5b20202020312e3231333430305d5b2020543133365d207566736863642d71636f6d20316438343030302e75667368633a207566735f71636f6d5f6465766963655f72657365743a20686f73742072657365742072657475726e6564202d3136"
+      },
+      "controller_enable_failure": {
+        "LF": 1627,
+        "raw_bytes": 79,
+        "raw_sha256": "a3c7c568d020fe3893426d406b3cde00396dbe19264dd8ffbf20f0ec1762198b",
+        "timestamp_if_intact": "1.449679",
+        "ascii_escaped": "[    1.449679][  T136] ufshcd-qcom 1d84000.ufshc: Host controller enable failed",
+        "raw_hex": "5b20202020312e3434393637395d5b2020543133365d207566736863642d71636f6d20316438343030302e75667368633a20486f737420636f6e74726f6c6c657220656e61626c65206661696c6564"
+      },
+      "initialization_EIO": {
+        "LF": 2568,
+        "raw_bytes": 97,
+        "raw_sha256": "9d33cacd19ceeb376d47e5fefcfcf9b776c2cf70e9905cda524ddf00f2733e98",
+        "timestamp_if_intact": "1.470524",
+        "ascii_escaped": "[    1.470524][  T136] ufshcd-qcom 1d84000.ufshc: error -EIO: Initialization failed with error -5",
+        "raw_hex": "5b20202020312e3437303532345d5b2020543133365d207566736863642d71636f6d20316438343030302e75667368633a206572726f72202d45494f3a20496e697469616c697a6174696f6e206661696c65642077697468206572726f72202d35"
+      },
+      "platform_init_EIO": {
+        "LF": 2569,
+        "raw_bytes": 89,
+        "raw_sha256": "05e19ca2a6756eae7de77a7bec7cd872251ebda7f3895b90525b5ae75d848800",
+        "timestamp_if_intact": "1.479226",
+        "ascii_escaped": "[    1.479226][  T136] ufshcd-qcom 1d84000.ufshc: error -EIO: ufshcd_pltfrm_init() failed",
+        "raw_hex": "5b20202020312e3437393232365d5b2020543133365d207566736863642d71636f6d20316438343030302e75667368633a206572726f72202d45494f3a207566736863645f706c7466726d5f696e69742829206661696c6564"
+      },
+      "probe_failed": {
+        "LF": 2570,
+        "raw_bytes": 79,
+        "raw_sha256": "e91cb84811ad369879aeb8b2ce84d1580c7342605e875e57832b2dd40e5593c5",
+        "timestamp_if_intact": "1.479239",
+        "ascii_escaped": "[    1.479239][  T136] ufshcd-qcom: probe of 1d84000.ufshc failed with error -5",
+        "raw_hex": "5b20202020312e3437393233395d5b2020543133365d207566736863642d71636f6d3a2070726f6265206f6620316438343030302e7566736863206661696c65642077697468206572726f72202d35"
+      }
+    },
+    "initial_partition_wait": {
+      "LF": 1376,
+      "raw_bytes": 297,
+      "raw_sha256": "221049ee61aff5c72196b669c6ec25c53c04c41ffb7c4c5fa3182bc1f18d3a37",
+      "timestamp_if_intact": "1.214376",
+      "ascii_escaped": "[    1.214376][    T1] init: bool android::init::BlockDevInitializer::InitDevices(std::set<std::string>): partition(s) not found in /sys, waiting for their uevent(s): boot_a, dtbo_a, init_boot_a, metadata, oplusreserve2, recovery_a, super, vbmeta_a, vbmeta_system_a, vbmeta_vendor_a, vendor_boot_a",
+      "raw_hex": "5b20202020312e3231343337365d5b2020202054315d20696e69743a20626f6f6c20616e64726f69643a3a696e69743a3a426c6f636b446576496e697469616c697a65723a3a496e697444657669636573287374643a3a7365743c7374643a3a737472696e673e293a20706172746974696f6e287329206e6f7420666f756e6420696e202f7379732c2077616974696e6720666f7220746865697220756576656e742873293a20626f6f745f612c206474626f5f612c20696e69745f626f6f745f612c206d657461646174612c206f706c757372657365727665322c207265636f766572795f612c2073757065722c2076626d6574615f612c2076626d6574615f73797374656d5f612c2076626d6574615f76656e646f725f612c2076656e646f725f626f6f745f61"
+    },
+    "partition_timeout_damaged_text_not_reconstructed": {
+      "LF": 2657,
+      "raw_bytes": 282,
+      "raw_sha256": "d73c8c9f0aaae73b76d0a8d8cc1b9dac2bfc3d700cff83a4e3def388bb3acad4",
+      "timestamp_if_intact": "11.225009",
+      "ascii_escaped": "[   11.225009][    T1] init: bool android::init::BlockDevInitializer::InitDeviaes(qtd::set<std::string>): partition(s) not found after polling timeou4: b\u007fop_a, dtbo_a, init_boot_a, metadata, oplusreserve2, recovery_a, super, vbmeta_a, vbmeta_system_a, vbmeta_vendor_a, vendor_boot_a",
+      "raw_hex": "5b20202031312e3232353030395d5b2020202054315d20696e69743a20626f6f6c20616e64726f69643a3a696e69743a3a426c6f636b446576496e697469616c697a65723a3a496e697444657669616573287174643a3a7365743c7374643a3a737472696e673e293a20706172746974696f6e287329206e6f7420666f756e6420616674657220706f6c6c696e672074696d656f75343a20627f6f705f612c206474626f5f612c20696e69745f626f6f745f612c206d657461646174612c206f706c757372657365727665322c207265636f766572795f612c2073757065722c2076626d6574615f612c2076626d6574615f73797374656d5f612c2076626d6574615f76656e646f725f612c2076656e646f725f626f6f745f61"
+    },
+    "first_stage_mount_failure": {
+      "LF": 2658,
+      "raw_bytes": 84,
+      "raw_sha256": "16093f28fd4e5e2d49d0d45d79b5a9199c202accca6d2119056f0e426faef7cf",
+      "timestamp_if_intact": "11.225047",
+      "ascii_escaped": "[   11.225047][    T1] init: Failed to create devices required for first stage mount",
+      "raw_hex": "5b20202031312e3232353034375d5b2020202054315d20696e69743a204661696c656420746f20637265617465206465766963657320726571756972656420666f72206669727374207374616765206d6f756e74"
+    },
+    "init_exit_reason_with_damaged_prefix_not_reconstructed": {
+      "LF": 2659,
+      "raw_bytes": 94,
+      "raw_sha256": "32639f2368cf865ca7ea97c1da1af1da5ff2b74f0553baab1ef0c4425b5aba4f",
+      "timestamp_if_intact": "11.225065",
+      "ascii_escaped": "[   11.225065][    T1] Ker.el \u0010aNic - not syfcing: Attempted to kill init! exitcode=0x00007f00",
+      "raw_hex": "5b20202031312e3232353036355d5b2020202054315d204b65722e656c2010614e6963202d206e6f742073796663696e673a20417474656d7074656420746f206b696c6c20696e6974212065786974636f64653d30783030303037663030"
+    },
+    "F93_PID1_identity": {
+      "LF": 2660,
+      "raw_bytes": 158,
+      "raw_sha256": "0562f6ef086fd732f4f4ec805781f0e86f522c5faed48c7c8d7da16e1891f021",
+      "timestamp_if_intact": "11.225078",
+      "ascii_escaped": "[   11.225078][    T1] CPU: 6 PID: 1 Comm: init Taint%d: G        W  K       6.6.89-Gold_Bug_kexec_native_log_diag #5 f93a5b41fb60172452d1ba9cc767d9014162da82",
+      "raw_hex": "5b20202031312e3232353037385d5b2020202054315d204350553a2036205049443a203120436f6d6d3a20696e6974205461696e7425643a204720202020202020205720204b20202020202020362e362e38392d476f6c645f4275675f6b657865635f6e61746976655f6c6f675f646961672023352066393361356234316662363031373234353264316261396363373637643930313431363264613832"
+    },
+    "supporting_intact_exit_syscall_trace": [
+      {
+        "LF": 2666,
+        "raw_bytes": 41,
+        "raw_sha256": "906a45b068318cf5f7e5be9a7523a4ed6c15d30e65eb4752256303c2f71619fe",
+        "timestamp_if_intact": "11.225165",
+        "ascii_escaped": "[   11.225165][    T1]  panic+0x158/0x3a4",
+        "raw_hex": "5b20202031312e3232353136355d5b2020202054315d202070616e69632b30783135382f3078336134"
+      },
+      {
+        "LF": 2668,
+        "raw_bytes": 63,
+        "raw_sha256": "964982c110616d80439116c35f53fd92da48a34d11dbfe6863174a9e0ca2a9d7",
+        "timestamp_if_intact": "11.225190",
+        "ascii_escaped": "[   11.225190][    T1]  trace_android_vh_do_group_exit+0x0/0x90",
+        "raw_hex": "5b20202031312e3232353139305d5b2020202054315d202074726163655f616e64726f69645f76685f646f5f67726f75705f657869742b3078302f30783930"
+      },
+      {
+        "LF": 2669,
+        "raw_bytes": 56,
+        "raw_sha256": "a8cbec1e15c65772f0dc686aaaafe39e7a0ae32e99e860f68170374626c74b86",
+        "timestamp_if_intact": "11.225202",
+        "ascii_escaped": "[   11.225202][    T1]  __arm64_sys_exit_group+0x18/0x1c",
+        "raw_hex": "5b20202031312e3232353230325d5b2020202054315d20205f5f61726d36345f7379735f657869745f67726f75702b307831382f30783163"
+      },
+      {
+        "LF": 2670,
+        "raw_bytes": 49,
+        "raw_sha256": "07569cfb3ca3073fea930524a14e2dce5b696fc687609e28ceddc68d2d7efab9",
+        "timestamp_if_intact": "11.225215",
+        "ascii_escaped": "[   11.225215][    T1]  invoke_syscall+0x58/0x114",
+        "raw_hex": "5b20202031312e3232353231355d5b2020202054315d2020696e766f6b655f73797363616c6c2b307835382f3078313134"
+      }
+    ],
+    "inference": "The repeated aux-clock enable failures propagate through PHY/host initialization to UFS probe EIO. Required partitions never appear and init exits. This is the next concrete boot blocker; the hardware reason for the stuck clock and other later Android issues remain unproved.",
+    "actual_same_initrd_module_identities": {
+      "clk-qcom.ko": {
+        "sha256": "6204445deb627e53aea964b61446de690978edceb269fecac0c6e4114ae4ba17",
+        "build_id": "91d44fc19669bcbe13c2525725cf337b4f693cd3",
+        "exact_same_CPIO_member": "lib/modules/clk-qcom.ko",
+        "build_id_source": "Actual ELF note; not damaged pstore text"
+      },
+      "gcc-sun.ko": {
+        "sha256": "3f2e3d23a789368d5844e233625cb02a84894379ef1faaebcefbd5175f13c946",
+        "build_id": "fd0294bddc6fc79a28a1a6826e5328eee01567cb",
+        "exact_same_CPIO_member": "lib/modules/gcc-sun.ko",
+        "build_id_source": "Actual ELF note; not damaged pstore text"
+      },
+      "phy-qcom-ufs.ko": {
+        "sha256": "7264caa06381e71930ca43c59781901eb19fb42fff22cc8ecdd737dbeb8341ac",
+        "build_id": "da0d45e45f727c03861320cf4132255b22a0cf5c",
+        "exact_same_CPIO_member": "lib/modules/phy-qcom-ufs.ko",
+        "build_id_source": "Actual ELF note; not damaged pstore text"
+      },
+      "phy-qcom-ufs-qmp-v4-sun.ko": {
+        "sha256": "d982f3dec2a1f628fd7462543fd3b1c355db1a13df6918453af6a917fba64e81",
+        "build_id": "e1e6e12bf616daa14ea9c9bbf9455a878e6a3ded",
+        "exact_same_CPIO_member": "lib/modules/phy-qcom-ufs-qmp-v4-sun.ko",
+        "build_id_source": "Actual ELF note; not damaged pstore text"
+      },
+      "ufs_qcom.ko": {
+        "sha256": "2a8d1cf2239461a019ae7798294b5a8fe2f6e8030d7054f2f72fe39123ae8343",
+        "build_id": "a0f190cdb34943457dc4f4642b720838e77acda3",
+        "exact_same_CPIO_member": "lib/modules/ufs_qcom.ko",
+        "build_id_source": "Actual ELF note; not damaged pstore text"
+      }
+    },
+    "module_BID_corruption_rule": "Differing characters in pstore clock-module IDs are not used to claim another module build."
+  },
+  "normal_source_comparison": {
+    "same_boot_source_log_sha256": "fda144ed78b3b63fd7894280feb8fd4b7307f2f1045a4933771b16c8c30d797f",
+    "MCQ_configured_records": [
+      {
+        "LF": 2277,
+        "raw_bytes": 127,
+        "raw_sha256": "3735ffcc8c8a221eec58c1db12c2cbdda609f9e17b8c265b25eb2371b6303e16",
+        "timestamp_if_intact": "0.874374",
+        "ascii_escaped": "[    0.874374] ufshcd-qcom 1d84000.ufshc: MCQ configured, nr_queues=9, io_queues=8, read_queue=0, poll_queues=1, queue_depth=64",
+        "raw_hex": "5b20202020302e3837343337345d207566736863642d71636f6d20316438343030302e75667368633a204d435120636f6e666967757265642c206e725f7175657565733d392c20696f5f7175657565733d382c20726561645f71756575653d302c20706f6c6c5f7175657565733d312c2071756575655f64657074683d3634"
+      }
+    ],
+    "block_device_present_records": [
+      {
+        "LF": 2804,
+        "raw_bytes": 138,
+        "raw_sha256": "58371e7587999dc01c95673f7bc6360a4020f0ac74ec3c67cb513fe7fca62264",
+        "timestamp_if_intact": "1.122649",
+        "ascii_escaped": "[    1.122649] selinux: SELinux: Could not set context for /dev/block/platform/soc/1d84000.ufshc/by-name/oplusreserve2:  Permission denied",
+        "raw_hex": "5b20202020312e3132323634395d2073656c696e75783a2053454c696e75783a20436f756c64206e6f742073657420636f6e7465787420666f72202f6465762f626c6f636b2f706c6174666f726d2f736f632f316438343030302e75667368632f62792d6e616d652f6f706c757372657365727665323a20205065726d697373696f6e2064656e696564"
+      },
+      {
+        "LF": 6752,
+        "raw_bytes": 78,
+        "raw_sha256": "9c170913285402af498422fc4c59fe28883beb99bcd90a3007838da7beafea2d",
+        "timestamp_if_intact": "2.097940",
+        "ascii_escaped": "[    2.097940] init: wait for '/dev/block/platform/soc/1d84000.ufshc' took 0ms",
+        "raw_hex": "5b20202020322e3039373934305d20696e69743a207761697420666f7220272f6465762f626c6f636b2f706c6174666f726d2f736f632f316438343030302e75667368632720746f6f6b20306d73"
+      }
+    ],
+    "exact_aux_clock_stuck_failures_observed": 0,
+    "exact_ref_aux_enable_failures_observed": 0,
+    "same_regulator_assumed_enabled_warning_present": [
+      {
+        "LF": 2264,
+        "raw_bytes": 99,
+        "raw_sha256": "e6385e1c9a94244c6e674a6e588a9d16f31686df47b03bc6ad5664ddf1c3b0dc",
+        "timestamp_if_intact": "0.839394",
+        "ascii_escaped": "[    0.839394] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_vreg: unable to find vdd-hba-max-microamp",
+        "raw_hex": "5b20202020302e3833393339345d207566736863642d71636f6d20316438343030302e75667368633a207566736863645f706f70756c6174655f767265673a20756e61626c6520746f2066696e64207664642d6862612d6d61782d6d6963726f616d70"
+      },
+      {
+        "LF": 2265,
+        "raw_bytes": 119,
+        "raw_sha256": "253e89a4e3b3baf94e6d17e3c44829d5e8b786b2e864ed3f8ad8dadd1fbfdfce",
+        "timestamp_if_intact": "0.839417",
+        "ascii_escaped": "[    0.839417] ufshcd-qcom 1d84000.ufshc: ufshcd_populate_vreg: Unable to find vccq2-supply regulator, assuming enabled",
+        "raw_hex": "5b20202020302e3833393431375d207566736863642d71636f6d20316438343030302e75667368633a207566736863645f706f70756c6174655f767265673a20556e61626c6520746f2066696e642076636371322d737570706c7920726567756c61746f722c20617373756d696e6720656e61626c6564"
+      },
+      {
+        "LF": 2266,
+        "raw_bytes": 134,
+        "raw_sha256": "5b2b7e7693e6c5fbbc1504e04236a0e04b07625c9d883670555fc7b901756bc6",
+        "timestamp_if_intact": "0.840474",
+        "ascii_escaped": "[    0.840474] ufshcd-qcom 1d84000.ufshc: ufs_qcom_parse_reg_info: Unable to find qcom,vccq2-parent-supply regulator, assuming enabled",
+        "raw_hex": "5b20202020302e3834303437345d207566736863642d71636f6d20316438343030302e75667368633a207566735f71636f6d5f70617273655f7265675f696e666f3a20556e61626c6520746f2066696e642071636f6d2c76636371322d706172656e742d737570706c7920726567756c61746f722c20617373756d696e6720656e61626c6564"
+      }
+    ],
+    "interpretation": "Several regulator-property warnings also occur in the normally booted source; they alone do not explain the target UFS failure."
+  },
+  "log_integrity": {
+    "bytes": 262132,
+    "LF": 2888,
+    "NUL": 187,
+    "control_bytes_except_HT_CR_LF": 742,
+    "non_ASCII_bytes": 148,
+    "UTF8_replacement_count_if_decoded": 148,
+    "full_console_capacity": true,
+    "first_LF_record": {
+      "LF": 1,
+      "raw_bytes": 87,
+      "raw_sha256": "5d4b1b9702fac02bb71c58785a5039220340cf275c9d7dd556ea42e90d44f999",
+      "timestamp_if_intact": null,
+      "ascii_escaped": "  0.242750][    T1] /soc/lpass-stm: Fixed dependency cycle(s) with /soc/funnel@10b50000",
+      "raw_hex": "2020302e3234323735305d5b2020202054315d202f736f632f6c706173732d73746d3a20466978656420646570656e64656e6379206379636c652873292077697468202f736f632f66756e6e656c403130623530303030"
+    },
+    "last_nonempty_LF_record": {
+      "LF": 2888,
+      "raw_bytes": 132,
+      "raw_sha256": "65b01b504bf05ebfd1ebd8ef41efe5ae8b5b213c29869596e30fa06e32902669",
+      "timestamp_if_intact": "11.244121",
+      "ascii_escaped": "[   11.244121][    T1] gh-watchdog hypervisor:qcom,gh-watchdog: vWdog-CTL: 1, vWdog-time since last pet: 16, vWdog-expired status: 1",
+      "raw_hex": "5b20202031312e3234343132315d5b2020202054315d2067682d7761746368646f672068797065727669736f723a71636f6d2c67682d7761746368646f673a207657646f672d43544c3a20312c207657646f672d74696d652073696e6365206c617374207065743a2031362c207657646f672d65787069726564207374617475733a2031"
+    },
+    "intact_timestamp_min": 0.057815,
+    "intact_timestamp_max": 80.240008,
+    "no_corrupt_bytes_repaired_or_missing_text_synthesized": true,
+    "boundary": "Full-capacity output starts partway through a line at about0.242s. Earlier boot arguments/CMA reservation records may have been overwritten; corruption and absence prevent a stronger conclusion."
+  },
+  "timing": {
+    "target_minidump_loaded_uptime": "1.054268",
+    "target_UFS_probe_failed_uptime": "1.479239",
+    "target_init_exit_uptime": "11.225065",
+    "last_intact_target_record_uptime": "11.244121",
+    "execute_request_to_adb_command_return_seconds": 20.147030353546143,
+    "execute_request_to_recovery_capture_seconds": 51.69876503944397,
+    "hardware_reset_exact_time_observed": false,
+    "limit": "Host intervals include ADB disconnect and installed Android recovery; they are not an exact target reset timestamp."
+  },
+  "not_proved": [
+    "Full Android boot of F93",
+    "Actual target CMA pool base/end",
+    "All four target NOMAP calls individually succeeded",
+    "Firmware ownership or permission revocation",
+    "Whether preserving one/all TZ buffers is a production-safe repeated handoff protocol",
+    "Complete hardware explanation for UFS aux clock stuck or absence of other boot blockers"
+  ],
+  "device_operations_by_this_audit": 0,
+  "frozen_runner_or_kernel_source_edits": 0
+}

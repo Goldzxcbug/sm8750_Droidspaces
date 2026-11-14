@@ -1,0 +1,238 @@
+[
+  [
+    159,
+    "[    0.000000][    T0] Kernel command line: console=ttynull stack_depot_disable=on cgroup\u001fdisable9pressEre kasan.stacktrace=off kvm-arm.mode=protected bootconfig ioremap_guard kexec_diag.run_id=05160cb2b82875bc kexec_diag.early_ramoops=1 kexec_diag.skip_secure_sp_heaps=1 kexec_diag.preserve_tzlog=1 kexec_diag.ufs_clocks=1 console=ttynull s4ack_depot_dksable9on cgroup_dIsable=pressure kasan.stacktrace=off kvm-arm.mode=protected bootconf9g iorEmap_guard log_btf_len=512I cpufreq.default_governor=pErformance sysctl.kernel.sched_pelt_multiplier=4 no-steal-acc kpti=0 swiotlb=0 loop.max_part=7 irqafdinity50!1 pcie_ports=compat printk.console_no_auto_verbose=0 kQsan=off rcuPdate.rcu_expedited=1 pcu_nocbs=0-5 kernel,panic\u000fon_rcu_stall=1 disable_dma32=on cgroup_disable=pressure fw_devlink.strict=1 can.stats_timer=0 pci-msm-drv.pcie_sm_regs=0x1\u000007000,0x1040,0x1048,0x3000,0x1 ftrace_dump_on_oops slub_debug=- minidump.stack_dump=\ufffdrue video=vfb26$0x400,bpp=32,memsize=3072000 log_\"uf_len=2M nosoftlockup cojsola=ttynull qcom_geni_serial.con_ena"
+  ],
+  [
+    1513,
+    "[    1.218775][  T159] CPU: 7 PID: 159 Comm: init Tainted: G           O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    1516,
+    "[    1.218928][  T159] pc : proc_register+0x124/0x1a4"
+  ],
+  [
+    1675,
+    "[    1.359244][   T90] CPU: 7 PID: 90 Comm: kworker/u18:2 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    1679,
+    "[    1.359451][   T90] pc : pmic_arb_wait_for_done+0x130/0x168 [spmi_pmic_arb]"
+  ],
+  [
+    1735,
+    "[    1.362604][   T90] CPU: 7 PID: 90 Comm: kworker/u18:2 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    1739,
+    "[    1.362805][   T90] pc : pmic_arb_wait_for_done+0x130/0x168 [spmi_pmic_arb]"
+  ],
+  [
+    1795,
+    "[    1.370041][   T90] CPU: 7 PID: 90 Comm: kworker/u18:2 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    1799,
+    "[    1.370241][   T90] pc : pmic_arb_wait_for_done+0x130/0x168 [spmi_pmic_arb]"
+  ],
+  [
+    1855,
+    "[    1.378579][   T90] CPU: 7 PID: 90 Comm: kwovker/u08:2 Tainted: G     \u0000  W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    1859,
+    "[    1.378779][   T90] pc : pmic_arb_wait_for_done+0x130/0x168 [spmi_pmic_arb]"
+  ],
+  [
+    1990,
+    "[    1.420200][  T203] CPU: 7 PID: 203 Comm: init Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    1993,
+    "[    1.420349][  T203] pc : proc_register+0x124/0x1a4"
+  ],
+  [
+    2127,
+    "[    1.727747][  T237] init: Loading module /lib/modules/ufs_qcom.ko with args 'kexec_handoff_diag=1 kexec_ah8_reset_diag=1'"
+  ],
+  [
+    2136,
+    "[    1.731433][  T237] init: Loaded kernel module /lib/modules/ufs_qcom.ko"
+  ],
+  [
+    2146,
+    "[    1.734586][  T138] gcc-sun 100000.clock-controller: KUFSAUX1 stage=before-clock-registration clock=gcc_ufs_phy_phy_aux_clk_src old_rcg_flags=2 new_rcg_flags=3 force_mask=1 hw_ctl_kept=1"
+  ],
+  [
+    2147,
+    "[    1.734603][  T138] gcc-sun 100000.clock-controller: KUFSAUX2 stage=before-clock-registration clock=gcc_ufs_phy_phy_aux_clk_src flags_before=3 flags_after=1 force_kept=1 hw_ctrl=0"
+  ],
+  [
+    2148,
+    "[    1.734618][  T138] gcc-sun 100000.clock-controller: KUFSAUX3 stage=before-clock-registration clock=gcc_ufs_phy_phy_aux_clk old_halt_check=128 new_halt_check=3"
+  ],
+  [
+    2149,
+    "[    1.741234][  T138] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=11 parent_prepare=12 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    2150,
+    "[    1.741291][  T138] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=12 parent_prepare=12 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    2151,
+    "[    1.741353][  T138] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=12 parent_prepare=12 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    2152,
+    "[    1.741403][  T138] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk_src enable=1 prepare=1 parent=bi_tcxo parent_enable=12 parent_prepare=12 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    2245,
+    "[    1.797703][  T138] ufshcd-qcom 1d84000.ufshc: ufs_qcom_parse_reg_info: Unable to find qcom,vccq2-parent-supply regulator, assuming enabled"
+  ],
+  [
+    2250,
+    "[    1.812743][  T138] ufshcd-qcom 1d84000.ufshc: UFSKH2 stage=ah8-req-clear major=6 old=0000183c desired=00001800 readback=00001800 mask=0000003c full_match=1"
+  ],
+  [
+    2251,
+    "[    1.812829][  T138] ufshcd-qcom 1d84000.ufshc: UFSKH1 stage=pre-bcr-assert major=6 ret=0 is_phy_pwr_on=0 ahit=00000000 hce=00000000 cfg1=d85c052c hw_version=60010000 ah8_cfg=00001800"
+  ],
+  [
+    2252,
+    "[    1.812894][  T138] ufshcd-qcom 1d84000.ufshc: UFSKH1 stage=post-bcr-assert major=6 ret=0 is_phy_pwr_on=0 ahit=00000000 hce=00000000 cfg1=00000000 hw_version=00000000 ah8_cfg=00000000"
+  ],
+  [
+    2253,
+    "[    1.812945][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-enter major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=0 ret_valid=0 ret=0"
+  ],
+  [
+    2254,
+    "[    1.812996][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-vote provider=gdsc-regulator"
+  ],
+  [
+    2257,
+    "[    1.813142][  T138] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    2258,
+    "[    1.813189][  T138] GDSCR: 0x02222801 CFG: 0x04088000 CFG2: 0x0002022f"
+  ],
+  [
+    2259,
+    "[    1.813246][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdd-phy-gdsc reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    2260,
+    "[    1.813298][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-qref reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    2261,
+    "[    1.813351][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-refgen reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    2262,
+    "[    1.813825][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-phy reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    2263,
+    "[    1.813878][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR2 stage=post-power-control action=read-enter"
+  ],
+  [
+    2264,
+    "[    1.813929][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR2 stage=post-power-control action=read-result power_down_control=00000000 sw_reset=00000000"
+  ],
+  [
+    2265,
+    "[    1.814002][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-pll reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    2266,
+    "[    1.814062][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=qref-return combined_ret=0 ignored=1"
+  ],
+  [
+    2267,
+    "[    1.814110][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-before major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=0 ret=0"
+  ],
+  [
+    2268,
+    "[    1.814160][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-aux provider=gdsc-regulator"
+  ],
+  [
+    2271,
+    "[    1.814303][  T138] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    2272,
+    "[    1.814350][  T138] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    2273,
+    "[    1.814398][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR2 stage=aux-before action=read-enter"
+  ],
+  [
+    2274,
+    "[    1.814448][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR2 stage=aux-before action=read-result power_down_control=00000000 sw_reset=00000000"
+  ],
+  [
+    2275,
+    "[    1.814496][  T138] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=2 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    2276,
+    "[    1.814546][  T138] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk_src enable=1 prepare=2 parent=bi_tcxo parent_enable=18 parent_prepare=18 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    2277,
+    "[    1.814595][  T138] KUFSCLK: event=enable.skip-count name=gcc_ufs_phy_phy_aux_clk_src enable=1 prepare=2 parent=bi_tcxo parent_enable=18 parent_prepare=18 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    2278,
+    "[    1.814644][  T138] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk_src enable=2 prepare=2 parent=bi_tcxo parent_enable=18 parent_prepare=18 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    2279,
+    "[    1.814693][  T138] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=2 parent_prepare=2 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    2280,
+    "[    1.814744][  T138] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=2 parent_prepare=2 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    2281,
+    "[    1.814792][  T138] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk enable=1 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=2 parent_prepare=2 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    2282,
+    "[    1.814841][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-qfteR major=6 ref_cached=0 iFace_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=1 ret=0"
+  ],
+  [
+    2283,
+    "[    1.814890][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-after-aux provider=gdsc-regulator"
+  ],
+  [
+    2286,
+    "[    1.815033][  T138] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    2287,
+    "[    1.815080][  T138] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    2288,
+    "[    1.815127][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-return major=6 ref_cached=1 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=1 ret=0"
+  ],
+  [
+    2289,
+    "[    1.8151\u00181][  T138] ufshcd)qcom 1d84000.ufshc: UFSKH1 stage=post-phy-power-on major=6 ret=0 is_phy_pwr_on=1 ahit=00000000 hce=00000000 cfg1=00000000 hw_version=00000000 ah8_cfg=00000000"
+  ],
+  [
+    2290,
+    "[    1.815481][  T138] ufshcd-qcom 1d84000.ufshc: UFSKH1 stage=post-bcr-deassert major=6 ret=0 is_phy_pwr_on=1 ahit=00000000 hce=00000000 cfg1=1c00052c hw_version=60010000 ah8_cfg=00001800"
+  ],
+  [
+    2294,
+    "[    1.828530][  T138] Internal error: synchronous external abort: 0000000096000010 [#1] PREEMPT SMP"
+  ]
+]

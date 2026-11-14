@@ -1,0 +1,695 @@
+camera_extension 573440 0 - Live 0x0000000000000000 (O)
+qca_cld3_peach_v2 12349440 2 - Live 0x0000000000000000 (O)
+rmnet_perf 57344 0 - Live 0x0000000000000000 (O)
+rmnet_perf_tether 20480 0 - Live 0x0000000000000000 (O)
+rmnet_shs 192512 0 - Live 0x0000000000000000 (O)
+rmnet_wlan 53248 0 - Live 0x0000000000000000 (O)
+rmnet_aps 36864 0 - Live 0x0000000000000000 (O)
+rmnet_offload 28672 0 - Live 0x0000000000000000 (O)
+rmnet_core 294912 7 rmnet_perf,rmnet_perf_tether,rmnet_shs,rmnet_wlan,rmnet_aps,rmnet_offload, Live 0x0000000000000000 (O)
+rmnet_ctl 20480 1 rmnet_core, Live 0x0000000000000000 (O)
+ipanetm 12288 0 - Live 0x0000000000000000 (O)
+msm_drm 4087808 33 - Live 0x0000000000000000 (O)
+ipam 4452352 4 qca_cld3_peach_v2,rmnet_core,rmnet_ctl,ipanetm, Live 0x0000000000000000 (O)
+camera 5517312 27 camera_extension, Live 0x0000000000000000 (O)
+machine_dlkm 139264 0 - Live 0x0000000000000000 (O)
+coresight_tmc 73728 0 - Live 0x0000000000000000
+usb_f_gsi 69632 7 ipam, Live 0x0000000000000000
+usb_f_qdss 28672 7 coresight_tmc, Live 0x0000000000000000
+swr_dmic_dlkm 24576 0 - Live 0x0000000000000000 (O)
+wcd9378_dlkm 446464 1 machine_dlkm, Live 0x0000000000000000 (O)
+wcd939x_dlkm 229376 3 machine_dlkm,swr_dmic_dlkm, Live 0x0000000000000000 (O)
+wcd938x_dlkm 151552 0 - Live 0x0000000000000000 (O)
+dwc3_msm 106496 4 msm_drm,usb_f_gsi,usb_f_qdss, Live 0x0000000000000000
+mbhc_dlkm 73728 3 wcd9378_dlkm,wcd939x_dlkm,wcd938x_dlkm, Live 0x0000000000000000 (O)
+qcom_hv_haptics 139264 0 - Live 0x0000000000000000
+wcd_usbss_i2c 57344 5 msm_drm,machine_dlkm,wcd939x_dlkm,dwc3_msm,mbhc_dlkm, Live 0x0000000000000000
+swr_haptics_dlkm 28672 0 - Live 0x0000000000000000 (O)
+fsa4480_i2c 24576 3 msm_drm,machine_dlkm,mbhc_dlkm, Live 0x0000000000000000
+leds_qti_flash 32768 1 camera, Live 0x0000000000000000
+oplus_bsp_geas_system 40960 0 - Live 0x0000000000000000 (O)
+audio_pkt_dlkm 24576 2 - Live 0x0000000000000000 (O)
+lpass_cdc_va_macro_dlkm 73728 0 - Live 0x0000000000000000 (O)
+lpass_bt_swr_dlkm 20480 0 - Live 0x0000000000000000 (O)
+lpass_cdc_wsa2_macro_dlkm 135168 0 - Live 0x0000000000000000 (O)
+lpass_cdc_rx_macro_dlkm 139264 1 machine_dlkm, Live 0x0000000000000000 (O)
+lpass_cdc_wsa_macro_dlkm 135168 0 - Live 0x0000000000000000 (O)
+lpass_cdc_tx_macro_dlkm 90112 0 - Live 0x0000000000000000 (O)
+msm_kgsl 1875968 9 oplus_bsp_geas_system, Live 0x0000000000000000 (O)
+msm_eva 466944 0 - Live 0x0000000000000000 (O)
+wcd9xxx_dlkm 36864 25 wcd9378_dlkm,wcd939x_dlkm,wcd938x_dlkm, Live 0x0000000000000000 (O)
+audpkt_ion_dlkm 24576 2 audio_pkt_dlkm, Live 0x0000000000000000 (O)
+swr_ctrl_dlkm 81920 5 lpass_cdc_va_macro_dlkm,lpass_bt_swr_dlkm,lpass_cdc_wsa2_macro_dlkm,lpass_cdc_rx_macro_dlkm,lpass_cdc_wsa_macro_dlkm, Live 0x0000000000000000 (O)
+audio_prm_dlkm 20480 2 machine_dlkm,wcd9xxx_dlkm, Live 0x0000000000000000 (O)
+oplus_audio_daemon 24576 7 machine_dlkm,wcd9378_dlkm,wcd939x_dlkm,audio_pkt_dlkm,audpkt_ion_dlkm,swr_ctrl_dlkm,audio_prm_dlkm, Live 0x0000000000000000 (O)
+lpass_cdc_dlkm 77824 7 machine_dlkm,lpass_cdc_va_macro_dlkm,lpass_cdc_wsa2_macro_dlkm,lpass_cdc_rx_macro_dlkm,lpass_cdc_wsa_macro_dlkm,lpass_cdc_tx_macro_dlkm, Live 0x0000000000000000 (O)
+pinctrl_lpi_dlkm 32768 9 - Live 0x0000000000000000 (O)
+adsp_loader_dlkm 24576 4 machine_dlkm,mbhc_dlkm,swr_ctrl_dlkm,oplus_audio_daemon, Live 0x0000000000000000 (O)
+synx_driver 131072 4 msm_drm,camera,msm_kgsl,msm_eva, Live 0x0000000000000000 (O)
+spf_core_dlkm 20480 8 machine_dlkm,audio_pkt_dlkm,lpass_bt_swr_dlkm,swr_ctrl_dlkm,audio_prm_dlkm,lpass_cdc_dlkm,pinctrl_lpi_dlkm,adsp_loader_dlkm, Live 0x0000000000000000 (O)
+gpr_dlkm 28672 3 audio_pkt_dlkm,audio_prm_dlkm,spf_core_dlkm, Live 0x0000000000000000 (O)
+msm_hw_fence 180224 2 msm_drm,synx_driver, Live 0x0000000000000000 (O)
+spcom 69632 0 - Live 0x0000000000000000 (O)
+adsp_sleepmon 40960 1 - Live 0x0000000000000000
+q6_notifier_dlkm 28672 3 audio_prm_dlkm,pinctrl_lpi_dlkm,gpr_dlkm, Live 0x0000000000000000 (O)
+bt_fm_swr 16384 0 - Live 0x0000000000000000 (O)
+oplus_chg_v2 4755456 5 qcom_hv_haptics,wcd_usbss_i2c,swr_haptics_dlkm,fsa4480_i2c,leds_qti_flash, Live 0x0000000000000000
+oplus_bsp_tp_ft3658u_spi 94208 0 - Live 0x0000000000000000 (O)
+slc_mpam 16384 0 - Live 0x0000000000000000
+btfm_slim_codec 32768 0 - Live 0x0000000000000000 (O)
+tz_log_dlkm 36864 0 - Live 0x0000000000000000 (O)
+oplus_haptic 364544 0 - Live 0x0000000000000000
+oplus_bsp_tp_ft3683g 176128 0 - Live 0x0000000000000000 (O)
+oplus_magcvr_mkh100a 12288 0 [permanent], Live 0x0000000000000000 (O)
+qcedev_mod_dlkm 90112 0 - Live 0x0000000000000000 (O)
+goodix_ts 159744 0 - Live 0x0000000000000000 (O)
+cnss2 425984 1 qca_cld3_peach_v2, Live 0x0000000000000000 (O)
+oplus_magcvr_ak09973 20480 0 - Live 0x0000000000000000 (O)
+slim_qcom_ngd_ctrl 57344 0 - Live 0x0000000000000000
+qcrypto_msm_dlkm 86016 0 - Live 0x0000000000000000 (O)
+qce50_dlkm 94208 2 qcedev_mod_dlkm,qcrypto_msm_dlkm, Live 0x0000000000000000 (O)
+qcom_q6v5_pas 65536 6 msm_kgsl,msm_hw_fence,adsp_sleepmon, Live 0x0000000000000000
+focaltech_fts 90112 0 - Live 0x0000000000000000 (O)
+spss_utils 36864 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_ft3681 172032 0 - Live 0x0000000000000000 (O)
+oplus_magcvr_mxm1120 20480 0 - Live 0x0000000000000000 (O)
+repeater_qti_pmic_eusb2 24576 1 - Live 0x0000000000000000
+phy_msm_m31_eusb2 28672 2 - Live 0x0000000000000000
+gsim 278528 1 ipam, Live 0x0000000000000000 (O)
+phy_msm_snps_eusb2 32768 0 - Live 0x0000000000000000
+btpower 69632 2 bt_fm_swr,btfm_slim_codec, Live 0x0000000000000000 (O)
+oplus_bsp_tp_ft3518 90112 0 - Live 0x0000000000000000 (O)
+platform_mpam 20480 1 slc_mpam, Live 0x0000000000000000
+oplus_bsp_tp_ft8057p 90112 0 - Live 0x0000000000000000 (O)
+qti_amoled_ecm 20480 0 - Live 0x0000000000000000
+mhi_dev_uci 24576 0 - Live 0x0000000000000000
+qrtr_mhi 16384 0 - Live 0x0000000000000000
+mhi_dev_satellite 24576 0 - Live 0x0000000000000000
+oplus_bsp_tp_gt9916 122880 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_gt9966 118784 0 - Live 0x0000000000000000 (O)
+st_fts 229376 0 - Live 0x0000000000000000 (O)
+qcom_pon 12288 0 - Live 0x0000000000000000
+nb7vpq904m 24576 0 - Live 0x0000000000000000
+qcom_spmi_adc5_gen3 45056 0 - Live 0x0000000000000000
+oplus_audio_sipa_tuning 20480 0 - Live 0x0000000000000000 (O)
+cpu_mpam 20480 0 - Live 0x0000000000000000
+charger_ulog_glink 16384 0 - Live 0x0000000000000000
+qti_glink_adc 12288 0 - Live 0x0000000000000000
+oplus_audio_sipa 98304 2 machine_dlkm,oplus_audio_sipa_tuning, Live 0x0000000000000000 (O)
+nxp_nci 49152 0 - Live 0x0000000000000000 (O)
+pmic_glink_debug 12288 0 - Live 0x0000000000000000
+qti_battery_debug 20480 0 - Live 0x0000000000000000
+msm_memshare 28672 0 - Live 0x0000000000000000
+qcom_spss 28672 1 spss_utils, Live 0x0000000000000000
+oplus_ak09970 28672 0 - Live 0x0000000000000000 (O)
+mpam_msc_slc 16384 0 - Live 0x0000000000000000
+oplus_bsp_tp_td4377_noflash 106496 0 - Live 0x0000000000000000 (O)
+altmode_glink 24576 1 msm_drm, Live 0x0000000000000000
+btfmcodec 49152 5 bt_fm_swr,btfm_slim_codec, Live 0x0000000000000000 (O)
+oplus_bsp_game_opt 237568 1 oplus_bsp_geas_system, Live 0x0000000000000000 (O)
+oplus_bsp_tp_nt36536_noflash 126976 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_nt36672c_noflash 86016 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_nt36528_noflash 98304 0 - Live 0x0000000000000000 (O)
+oplus_network_sim_detect 12288 0 - Live 0x0000000000000000 (O)
+oplus_network_score 65536 0 - Live 0x0000000000000000 (O)
+oplus_bsp_kshrink_slabd 16384 0 - Live 0x0000000000000000 (O)
+i2c_msm_geni 69632 0 - Live 0x0000000000000000
+oplus_bsp_uff_fp_driver 57344 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_hbp_syna_s3910 147456 0 [permanent], Live 0x0000000000000000 (O)
+coresight_dummy 12288 0 - Live 0x0000000000000000
+oplus_wireless_pen 57344 0 - Live 0x0000000000000000
+coresight_remote_etm 12288 0 - Live 0x0000000000000000
+coresight_tpda 28672 0 - Live 0x0000000000000000
+coresight_trace_noc 24576 0 - Live 0x0000000000000000
+hdmi_dlkm 28672 1 - Live 0x0000000000000000 (O)
+glink_pkt 40960 4 - Live 0x0000000000000000
+qrtr_smd 12288 0 - Live 0x0000000000000000
+ucsi_qti_glink 24576 2 wcd_usbss_i2c,fsa4480_i2c, Live 0x0000000000000000
+oplus_audio_aw87xxx 106496 0 - Live 0x0000000000000000 (O)
+mhi 139264 4 cnss2,mhi_dev_uci,qrtr_mhi,mhi_dev_satellite, Live 0x0000000000000000
+wcd9378_slave_dlkm 16384 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_hbp_goodix_gt99x6 32768 0 - Live 0x0000000000000000 (O)
+oplus_ft3683g 32768 0 [permanent], Live 0x0000000000000000 (O)
+oplus_sensor_kookong_ir_spi 20480 0 - Live 0x0000000000000000 (O)
+smmu_proxy_dlkm 24576 2 msm_drm,camera,[permanent], Live 0x0000000000000000 (O)
+qsee_ipc_irq_bridge 12288 0 - Live 0x0000000000000000
+hdcp_qseecom_dlkm 49152 1 msm_drm, Live 0x0000000000000000 (O)
+frpc_adsprpc 147456 1 msm_eva, Live 0x0000000000000000 (O)
+oplus_bsp_tp_goodix_comnon 24576 2 oplus_bsp_tp_gt9966,oplus_bsp_tp_gt9916, Live 0x0000000000000000 (O)
+oplus_ipa_thermal 45056 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_nt36532_noflash 122880 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_focal_common 36864 5 oplus_bsp_tp_ft3683g,oplus_bsp_tp_ft3658u_spi,oplus_bsp_tp_ft3681,oplus_bsp_tp_ft3518,oplus_bsp_tp_ft8057p, Live 0x0000000000000000 (O)
+atmel_mxt_ts 36864 0 - Live 0x0000000000000000 (O)
+radio_i2c_rtc6226_qca 49152 0 - Live 0x0000000000000000 (O)
+oplus_network_vnet 24576 0 - Live 0x0000000000000000 (O)
+rmnet_mem 32768 2 rmnet_core,ipam, Live 0x0000000000000000 (O)
+oplus_bsp_uxmem_opt 28672 0 - Live 0x0000000000000000 (O)
+oplus_network_satellite_rpc 36864 0 - Live 0x0000000000000000 (O)
+oplus_exit_mm_optimize 28672 0 - Live 0x0000000000000000 (O)
+oplus_freqqos_monitor 32768 0 - Live 0x0000000000000000 (O)
+mtk_wdt 12288 0 - Live 0x0000000000000000 (O)
+qcom_i2c_pmic 20480 0 - Live 0x0000000000000000
+slimbus 36864 2 slim_qcom_ngd_ctrl,btfm_slim_codec, Live 0x0000000000000000
+qcom_pil_info 20480 1 qcom_q6v5_pas, Live 0x0000000000000000
+hwmon 45056 1 qti_amoled_ecm, Live 0x0000000000000000
+governor_msm_adreno_tz 20480 1 msm_kgsl, Live 0x0000000000000000
+oplus_bsp_zstdn 319488 0 - Live 0x0000000000000000 (O)
+oplus_fan 28672 0 - Live 0x0000000000000000
+oplus_rpmh_statics 20480 0 - Live 0x0000000000000000 (O)
+qti_devfreq_cdev 12288 0 - Live 0x0000000000000000
+reboot_mode 16384 1 qcom_pon, Live 0x0000000000000000
+leds_qpnp_vibrator_ldo 12288 0 - Live 0x0000000000000000
+oplus_network_sched 28672 0 - Live 0x0000000000000000 (O)
+stm_heartbeat 16384 0 - Live 0x0000000000000000
+bwmon 53248 1 oplus_bsp_geas_system, Live 0x0000000000000000
+stm_console 12288 0 - Live 0x0000000000000000
+cnss_nl 24576 1 qca_cld3_peach_v2, Live 0x0000000000000000 (O)
+sys_pm_vx 32768 0 - Live 0x0000000000000000
+nvmem_qfprom 24576 0 - Live 0x0000000000000000
+ufcs_class 131072 1 oplus_chg_v2, Live 0x0000000000000000
+qcom_vadc_common 32768 1 qcom_spmi_adc5_gen3, Live 0x0000000000000000
+spi_msm_geni 61440 0 - Live 0x0000000000000000
+qcom_spmi_temp_alarm 16384 0 - Live 0x0000000000000000
+gh_ctrl 20480 0 - Live 0x0000000000000000
+test_kit 32768 1 oplus_chg_v2, Live 0x0000000000000000
+thermal_config 16384 0 - Live 0x0000000000000000
+ddr_cdev 12288 0 - Live 0x0000000000000000
+coresight_uetm 20480 0 - Live 0x0000000000000000
+tmecom_intf 16384 1 tz_log_dlkm, Live 0x0000000000000000
+i3c_master_msm_geni 77824 0 - Live 0x0000000000000000
+usb_f_ccid 24576 2 - Live 0x0000000000000000
+oplus_audio_netlink 24576 0 - Live 0x0000000000000000 (O)
+oplus_lock_torture 565248 0 - Live 0x0000000000000000 (O)
+stm_st54se_gpio 12288 0 - Live 0x0000000000000000 (O)
+oplus_network_dns_hook 20480 0 - Live 0x0000000000000000 (O)
+sysmon_subsystem_stats 28672 0 - Live 0x0000000000000000
+oplus_network_esim 24576 0 - Live 0x0000000000000000 (O)
+qti_qmi_cdev 20480 0 - Live 0x0000000000000000
+msm_video 753664 0 - Live 0x0000000000000000 (O)
+coresight_replicator 28672 0 - Live 0x0000000000000000
+governor_gpubw_mon 12288 0 - Live 0x0000000000000000
+mem_offline 36864 0 - Live 0x0000000000000000
+msm_show_epoch 12288 0 [permanent], Live 0x0000000000000000
+coresight_tgu 20480 0 - Live 0x0000000000000000
+cnss_utils 28672 3 qca_cld3_peach_v2,cnss2,btpower, Live 0x0000000000000000 (O)
+cpucp_log 36864 0 [permanent], Live 0x0000000000000000
+dmesg_dumper 20480 0 - Live 0x0000000000000000
+oplus_magnetic_cover 45056 3 oplus_magcvr_mkh100a,oplus_magcvr_ak09973,oplus_magcvr_mxm1120, Live 0x0000000000000000 (O)
+coresight_cti 57344 0 - Live 0x0000000000000000
+coresight_funnel 28672 0 - Live 0x0000000000000000
+haptic_feedback 28672 2 qcom_hv_haptics,oplus_haptic, Live 0x0000000000000000
+cdsprm 53248 0 - Live 0x0000000000000000
+dynpf_scmi 12288 0 - Live 0x0000000000000000
+llcc_heuristics 12288 0 - Live 0x0000000000000000
+hung_task_enh 16384 0 - Live 0x0000000000000000
+cpufreq_stats_scmi_v3 20480 0 - Live 0x0000000000000000
+rmnet_sch 20480 0 - Live 0x0000000000000000 (O)
+oplus_wifi_wsa 12288 0 - Live 0x0000000000000000 (O)
+msm_ext_display 20480 2 msm_drm,hdmi_dlkm,[permanent], Live 0x0000000000000000 (O)
+debugcc_sun 40960 0 [permanent], Live 0x0000000000000000
+cpufreq_stats_scmi_v2 20480 0 - Live 0x0000000000000000
+oplus_bsp_pogo_keyboard 106496 0 - Live 0x0000000000000000 (O)
+oplus_secure_guard_new 53248 0 - Live 0x0000000000000000 (O)
+oplus_network_stats_calc 16384 0 - Live 0x0000000000000000 (O)
+oplus_bsp_mglru_opt 12288 0 - Live 0x0000000000000000 (O)
+oplus_bsp_memleak_detect 65536 0 - Live 0x0000000000000000 (O)
+sdca_registers_dlkm 16384 1 wcd9378_dlkm, Live 0x0000000000000000 (O)
+wsa883x_dlkm 65536 1 machine_dlkm, Live 0x0000000000000000 (O)
+wsa884x_dlkm 110592 1 machine_dlkm, Live 0x0000000000000000 (O)
+wcd939x_slave_dlkm 20480 1 wcd939x_dlkm, Live 0x0000000000000000 (O)
+qmp_dlkm 45056 0 - Live 0x0000000000000000 (O)
+wcd938x_slave_dlkm 20480 0 - Live 0x0000000000000000 (O)
+coresight_tmc_sec 24576 0 - Live 0x0000000000000000
+oplus_audio_tfa98xx_v6 217088 0 - Live 0x0000000000000000 (O)
+q2spi_geni 135168 0 - Live 0x0000000000000000
+coresight_tpdm 81920 0 - Live 0x0000000000000000
+coresight_stm 24576 1 - Live 0x0000000000000000
+qcom_q6v5 28672 1 qcom_q6v5_pas, Live 0x0000000000000000
+gh_tlmm_vm_mem_access 12288 0 - Live 0x0000000000000000
+repeater 20480 4 dwc3_msm,repeater_qti_pmic_eusb2,phy_msm_m31_eusb2,phy_msm_snps_eusb2, Live 0x0000000000000000
+gh_rm_booster 12288 0 - Live 0x0000000000000000
+stm_nfc_i2c 32768 0 - Live 0x0000000000000000 (O)
+oplus_sensor_interact 28672 1 - Live 0x0000000000000000 (O)
+oplus_network_linkpower_module 462848 0 - Live 0x0000000000000000 (O)
+sync_fence 24576 1 msm_drm, Live 0x0000000000000000 (O)
+oplus_audio_aw882xx 200704 6 - Live 0x0000000000000000 (O)
+oplus_gauge_i2c_rst 16384 2 oplus_chg_v2,i2c_msm_geni, Live 0x0000000000000000
+qcom_va_minidump 24576 6 qca_cld3_peach_v2,msm_drm,ipam,camera,msm_kgsl,gsim, Live 0x0000000000000000
+qbt_handler 32768 0 - Live 0x0000000000000000 (O)
+horae_shell_temp 20480 1 oplus_ipa_thermal, Live 0x0000000000000000 (O)
+rdbg 20480 0 - Live 0x0000000000000000
+usb_f_cdev 32768 7 - Live 0x0000000000000000
+redriver 20480 2 dwc3_msm,nb7vpq904m, Live 0x0000000000000000
+msm_sharedmem 12288 0 - Live 0x0000000000000000
+oplus_magcvr_notify 20480 2 oplus_chg_v2,oplus_magnetic_cover, Live 0x0000000000000000
+phy_generic 20480 0 - Live 0x0000000000000000
+sps_drv 212992 1 qce50_dlkm, Live 0x0000000000000000
+spmi_pmic_arb_debug 20480 0 - Live 0x0000000000000000
+oplus_network_702_satellite 28672 0 - Live 0x0000000000000000 (O)
+msm_mmrm 53248 4 msm_drm,camera,msm_eva,msm_video, Live 0x0000000000000000 (O)
+qcom_rng 24576 0 - Live 0x0000000000000000
+qts 28672 3 goodix_ts,focaltech_fts,st_fts, Live 0x0000000000000000 (O)
+f_fs_ipc_log 40960 0 - Live 0x0000000000000000
+qcom_ramdump 20480 3 ipam,cnss2,qcom_q6v5_pas, Live 0x0000000000000000
+qti_pmic_glink 24576 8 oplus_chg_v2,charger_ulog_glink,qti_glink_adc,pmic_glink_debug,qti_battery_debug,altmode_glink,oplus_wireless_pen,ucsi_qti_glink, Live 0x0000000000000000
+pm8941_pwrkey 12288 0 - Live 0x0000000000000000
+gh_mem_notifier 16384 3 msm_drm,gh_tlmm_vm_mem_access,qts, Live 0x0000000000000000
+mpam 20480 2 platform_mpam,cpu_mpam, Live 0x0000000000000000
+q6_pdr_dlkm 16384 1 q6_notifier_dlkm, Live 0x0000000000000000 (O)
+phy_msm_ssusb_qmp 24576 3 - Live 0x0000000000000000
+cnss_prealloc 20480 2 qca_cld3_peach_v2,cnss2, Live 0x0000000000000000 (O)
+snd_event_dlkm 20480 5 machine_dlkm,lpass_bt_swr_dlkm,lpass_cdc_dlkm,pinctrl_lpi_dlkm,gpr_dlkm, Live 0x0000000000000000 (O)
+oplus_bsp_dfr_kmsg_wb 16384 0 - Live 0x0000000000000000 (O)
+oplus_network_dns_optimizer 614400 0 - Live 0x0000000000000000 (O)
+oplus_bsp_ist_up 20480 0 - Live 0x0000000000000000 (O)
+oplus_network_dns_cache 12288 0 - Live 0x0000000000000000 (O)
+oplus_icc_mcu 32768 0 - Live 0x0000000000000000 (O)
+gh_irq_lend 20480 2 msm_drm,qts, Live 0x0000000000000000
+oplus_bsp_ist_down 24576 0 - Live 0x0000000000000000 (O)
+oplus_sys_stability_helper 32768 8 - Live 0x0000000000000000 (O)
+qrng_dlkm 24576 0 - Live 0x0000000000000000 (O)
+oplus_audio_extend 20480 1 machine_dlkm, Live 0x0000000000000000 (O)
+oplus_network_sk_predict 20480 0 - Live 0x0000000000000000 (O)
+mpam_msc 20480 2 slc_mpam,mpam_msc_slc, Live 0x0000000000000000
+qcom_iommu_debug 49152 0 - Live 0x0000000000000000
+oplus_network_tcpdump_enhance 20480 0 - Live 0x0000000000000000 (O)
+oplus_network_snapshot 36864 0 - Live 0x0000000000000000 (O)
+wlan_firmware_service 94208 1 cnss2,[permanent], Live 0x0000000000000000 (O)
+oplus_network_kernel_state_monitor 16384 0 - Live 0x0000000000000000 (O)
+oplus_bsp_mxm_up 32768 0 - Live 0x0000000000000000 (O)
+oplus_audio_pa_manager 32768 3 machine_dlkm,oplus_audio_sipa,oplus_audio_aw87xxx, Live 0x0000000000000000 (O)
+oplus_network_oem_qmi 20480 2 oplus_network_sim_detect,oplus_network_esim, Live 0x0000000000000000 (O)
+oplus_network_tuning 57344 0 - Live 0x0000000000000000 (O)
+oplus_network_vip_task 28672 0 - Live 0x0000000000000000 (O)
+oplus_bsp_mxm_down 28672 0 - Live 0x0000000000000000 (O)
+oplus_bsp_fg_protect 24576 0 - Live 0x0000000000000000 (O)
+cnss_plat_ipc_qmi_svc 28672 1 cnss2, Live 0x0000000000000000 (O)
+oplus_sensor_feedback 36864 1 oplus_sensor_interact,[permanent], Live 0x0000000000000000 (O)
+swr_dlkm 40960 13 swr_dmic_dlkm,wcd9378_dlkm,wcd939x_dlkm,wcd938x_dlkm,swr_haptics_dlkm,swr_ctrl_dlkm,bt_fm_swr,wcd9378_slave_dlkm,wsa883x_dlkm,wsa884x_dlkm,wcd939x_slave_dlkm,qmp_dlkm,wcd938x_slave_dlkm, Live 0x0000000000000000 (O)
+oplus_patch 24576 0 - Live 0x0000000000000000 (O)
+oplus_network_qr_scan 20480 0 - Live 0x0000000000000000 (O)
+usb_f_rndis 36864 3 usb_f_gsi, Live 0x0000000000000000
+lt9611uxc 36864 0 - Live 0x0000000000000000
+oplus_sensor_deviceinfo 49152 0 [permanent], Live 0x0000000000000000 (O)
+phy_qcom_emu 20480 0 - Live 0x0000000000000000
+oplus_sys_hans 32768 0 - Live 0x0000000000000000 (O)
+oplus_sync_fence 28672 1 - Live 0x0000000000000000 (O)
+oplus_network_satellite 32768 0 - Live 0x0000000000000000 (O)
+oplus_standby_netlink 12288 0 - Live 0x0000000000000000 (O)
+wcd_core_dlkm 45056 11 machine_dlkm,wcd9378_dlkm,wcd939x_dlkm,wcd938x_dlkm,lpass_cdc_va_macro_dlkm,lpass_bt_swr_dlkm,lpass_cdc_wsa2_macro_dlkm,lpass_cdc_rx_macro_dlkm,lpass_cdc_wsa_macro_dlkm,wsa883x_dlkm,wsa884x_dlkm, Live 0x0000000000000000 (O)
+oplus_sensor_ir_core 20480 1 oplus_sensor_kookong_ir_spi, Live 0x0000000000000000 (O)
+oplus_bsp_tp_novatek_common 20480 4 oplus_bsp_tp_nt36536_noflash,oplus_bsp_tp_nt36672c_noflash,oplus_bsp_tp_nt36528_noflash,oplus_bsp_tp_nt36532_noflash, Live 0x0000000000000000 (O)
+oplus_network_game_first 16384 0 - Live 0x0000000000000000 (O)
+oplus_network_satellite_hl7603 12288 0 - Live 0x0000000000000000 (O)
+oplus_bsp_zram_opt 24576 0 - Live 0x0000000000000000 (O)
+stub_dlkm 12288 1 - Live 0x0000000000000000 (O)
+oplus_bsp_zstdn_o 348160 0 - Live 0x0000000000000000 (O)
+oplus_network_rf_cable_monitor 20480 0 - Live 0x0000000000000000 (O)
+oplus_power_hook 36864 0 - Live 0x0000000000000000 (O)
+oplus_bsp_sched_ext 122880 1 oplus_bsp_game_opt, Live 0x0000000000000000 (O)
+smem_mailbox 20480 1 cnss_utils, Live 0x0000000000000000 (O)
+q6_dlkm 20480 0 - Live 0x0000000000000000 (O)
+oplus_connectivity_sla 24576 0 - Live 0x0000000000000000 (O)
+oplus_connectivity_routerboost 12288 0 - Live 0x0000000000000000 (O)
+oplus_wificapcenter 20480 0 - Live 0x0000000000000000 (O)
+oplus_secure_common 20480 0 - Live 0x0000000000000000 (O)
+oplus_subsys_sleep_monitor 24576 0 - Live 0x0000000000000000 (O)
+oplus_hbp_core 98304 3 oplus_bsp_tp_hbp_syna_s3910,oplus_bsp_tp_hbp_goodix_gt99x6,oplus_ft3683g,[permanent], Live 0x0000000000000000 (O)
+oplus_network_satellite_rsmc 77824 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_tcm_S3908 135168 0 - Live 0x0000000000000000 (O)
+thermal_pa_adc 12288 0 - Live 0x0000000000000000 (O)
+oplus_network_fast_bwe 16384 0 - Live 0x0000000000000000 (O)
+oplus_bsp_midas 2555904 1 - Live 0x0000000000000000 (O)
+qcom_stats 45056 2 sys_pm_vx,oplus_rpmh_statics, Live 0x0000000000000000
+oplus_bsp_tp_tcm_S3910 135168 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_ilitek7807s 249856 0 - Live 0x0000000000000000 (O)
+oplus_network_data_module 897024 9 oplus_network_score,oplus_network_linkpower_module,oplus_network_dns_optimizer,oplus_network_dns_cache,oplus_network_sk_predict,oplus_network_snapshot,oplus_network_tuning,oplus_network_vip_task,oplus_network_fast_bwe, Live 0x0000000000000000 (O)
+oplus_network_app_monitor 45056 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tp_syna_common 36864 3 oplus_bsp_tp_td4377_noflash,oplus_bsp_tp_tcm_S3908,oplus_bsp_tp_tcm_S3910, Live 0x0000000000000000 (O)
+oplus_bsp_tp_ilitek_common 16384 1 oplus_bsp_tp_ilitek7807s, Live 0x0000000000000000 (O)
+oplus_binder_strategy 135168 1 oplus_bsp_sched_ext,[permanent], Live 0x0000000000000000 (O)
+oplus_bsp_tp_common 405504 19 oplus_bsp_tp_ft3658u_spi,oplus_bsp_tp_ft3683g,oplus_bsp_tp_ft3681,oplus_bsp_tp_ft3518,oplus_bsp_tp_ft8057p,oplus_bsp_tp_gt9966,oplus_bsp_tp_gt9916,oplus_bsp_tp_td4377_noflash,oplus_bsp_tp_nt36536_noflash,oplus_bsp_tp_nt36672c_noflash,oplus_bsp_tp_nt36528_noflash,oplus_bsp_tp_goodix_comnon,oplus_bsp_tp_nt36532_noflash,oplus_bsp_tp_focal_common,oplus_bsp_tp_novatek_common,oplus_bsp_tp_tcm_S3908,oplus_bsp_tp_tcm_S3910,oplus_bsp_tp_ilitek7807s,oplus_bsp_tp_syna_common, Live 0x0000000000000000 (O)
+qcom_sysmon 28672 3 qcom_q6v5_pas,qcom_spss,qcom_q6v5, Live 0x0000000000000000
+gh_panic_notifier 24576 1 dmesg_dumper, Live 0x0000000000000000
+smp2p 28672 9 oplus_standby_netlink, Live 0x0000000000000000
+stm_ftrace 16384 0 - Live 0x0000000000000000
+stm_p_ost 16384 1 - Live 0x0000000000000000
+pdr_interface 24576 4 slim_qcom_ngd_ctrl,frpc_adsprpc,qti_pmic_glink,q6_pdr_dlkm, Live 0x0000000000000000
+oplus_bsp_dfr_combkey_monitor 28672 8 - Live 0x0000000000000000 (O)
+mac80211 1093632 0 - Live 0x0000000000000000
+oplus_bsp_synaptics_tcm2 307200 0 - Live 0x0000000000000000 (O)
+pci_msm_drv 237568 2 cnss2,mhi, Live 0x0000000000000000
+oplus_bsp_kswapd_opt 28672 0 - Live 0x0000000000000000 (O)
+glink_probe 20480 0 - Live 0x0000000000000000
+qti_qmi_sensor_v2 24576 0 - Live 0x0000000000000000
+smcinvoke_dlkm 36864 69 camera,nxp_nci,hdcp_qseecom_dlkm,smmu_proxy_dlkm,stm_nfc_i2c, Live 0x0000000000000000 (O)
+qcom_glink_spss 20480 2 qcom_spss,glink_probe, Live 0x0000000000000000
+oplus_bsp_pcppages_opt 12288 0 - Live 0x0000000000000000 (O)
+oplus_bsp_geas_cpu 12288 0 - Live 0x0000000000000000 (O)
+oplus_bsp_file_read_record 20480 0 - Live 0x0000000000000000 (O)
+rproc_qcom_common 40960 23 qca_cld3_peach_v2,ipam,qcom_hv_haptics,swr_haptics_dlkm,adsp_loader_dlkm,synx_driver,msm_hw_fence,adsp_sleepmon,q6_notifier_dlkm,oplus_chg_v2,slim_qcom_ngd_ctrl,qcom_q6v5_pas,spss_utils,qcom_spss,msm_memshare,qcom_q6v5,btfmcodec,qsee_ipc_irq_bridge,qti_pmic_glink,qcom_sysmon,pdr_interface,pci_msm_drv,glink_probe, Live 0x0000000000000000
+oplus_locking_strategy 94208 2 oplus_lock_torture,oplus_bsp_sched_ext, Live 0x0000000000000000 (O)
+oplus_bsp_tp_custom 20480 16 oplus_bsp_tp_ft3658u_spi,oplus_bsp_tp_ft3683g,oplus_bsp_tp_ft3681,oplus_bsp_tp_ft3518,oplus_bsp_tp_ft8057p,oplus_bsp_tp_gt9966,oplus_bsp_tp_gt9916,oplus_bsp_tp_td4377_noflash,oplus_bsp_tp_nt36672c_noflash,oplus_bsp_tp_nt36536_noflash,oplus_bsp_tp_nt36528_noflash,oplus_bsp_tp_tcm_S3908,oplus_bsp_tp_tcm_S3910,oplus_bsp_tp_ilitek7807s,oplus_bsp_tp_common,oplus_bsp_synaptics_tcm2, Live 0x0000000000000000 (O)
+oplus_bsp_dfr_pmic_monitor 36864 0 [permanent], Live 0x0000000000000000 (O)
+oplus_bsp_level_protect 20480 0 - Live 0x0000000000000000 (O)
+oplus_bsp_dfr_fdleak_check 36864 8 - Live 0x0000000000000000 (O)
+oplus_bsp_dfr_ubt 24576 0 - Live 0x0000000000000000 (O)
+oplus_bsp_dfr_shutdown_detect 28672 0 - Live 0x0000000000000000 (O)
+oplus_bsp_tri_key 77824 5 oplus_ak09970,oplus_bsp_ist_up,oplus_bsp_ist_down,oplus_bsp_mxm_up,oplus_bsp_mxm_down, Live 0x0000000000000000 (O)
+oplus_bsp_sigkill_diagnosis 12288 0 - Live 0x0000000000000000 (O)
+oplus_bsp_dfr_pmic_watchdog 40960 0 - Live 0x0000000000000000 (O)
+oplus_bsp_hybridswap_zram 221184 5 oplus_exit_mm_optimize,oplus_bsp_fg_protect,oplus_bsp_zram_opt, Live 0x0000000000000000 (O)
+memlat 53248 2 oplus_bsp_geas_system,oplus_bsp_game_opt, Live 0x0000000000000000
+oplus_bsp_dfr_last_boot_reason 20480 0 [permanent], Live 0x0000000000000000 (O)
+oplus_bsp_dfr_force_shutdown 12288 0 [permanent], Live 0x0000000000000000 (O)
+oplus_bsp_dfr_kp_freeze_detect 24576 8 - Live 0x0000000000000000 (O)
+oplus_bsp_dfr_dump_reason 24576 0 [permanent], Live 0x0000000000000000 (O)
+qpnp_power_on 40960 1 oplus_bsp_dfr_pmic_watchdog, Live 0x0000000000000000
+oplus_bsp_dfr_dump_device_info 49152 1 oplus_bsp_dfr_dump_reason, Live 0x0000000000000000 (O)
+oplus_bsp_dfr_theia 65536 17 oplus_bsp_dfr_combkey_monitor, Live 0x0000000000000000 (O)
+oplus_bsp_dfr_hung_task_enhance 32768 8 - Live 0x0000000000000000 (O)
+oplus_bsp_dfr_ordump 12288 0 [permanent], Live 0x0000000000000000 (O)
+oplus_bsp_dfr_phoenix 36864 1 oplus_bsp_dfr_kmsg_wb,[permanent], Live 0x0000000000000000 (O)
+oplus_bsp_dfr_init_watchdog 16384 0 - Live 0x0000000000000000 (O)
+oplus_bsp_proactive_compact 16384 0 - Live 0x0000000000000000 (O)
+oplus_bsp_zsmalloc 45056 1 oplus_bsp_hybridswap_zram, Live 0x0000000000000000 (O)
+oplus_bsp_dynamic_readahead 12288 0 - Live 0x0000000000000000 (O)
+qrtr_tun 12288 0 - Live 0x0000000000000000
+snd_soc_hdmi_codec 20480 0 - Live 0x0000000000000000
+cfg80211 1146880 2 qca_cld3_peach_v2,mac80211, Live 0x0000000000000000
+oplus_bsp_cs_press_f71 114688 0 - Live 0x0000000000000000 (O)
+snd_usb_audio_qmi 36864 0 - Live 0x0000000000000000
+stm_core 36864 9 stm_heartbeat,stm_console,coresight_stm,stm_ftrace,stm_p_ost, Live 0x0000000000000000
+oplus_bsp_abort_mm_opt 12288 0 - Live 0x0000000000000000 (O)
+oplus_bsp_dfr_keyevent_handler 20480 1 oplus_bsp_dfr_combkey_monitor, Live 0x0000000000000000 (O)
+coresight_qmi 20480 3 coresight_dummy,coresight_remote_etm,coresight_tmc_sec, Live 0x0000000000000000
+mem_object 20480 1 smcinvoke_dlkm, Live 0x0000000000000000
+coresight_csr 28672 7 coresight_tmc,coresight_uetm,coresight_dummy,coresight_remote_etm,coresight_stm,coresight_tmc_sec,coresight_tpdm, Live 0x0000000000000000
+xhci_sideband 20480 1 snd_usb_audio_qmi, Live 0x0000000000000000
+oplus_mm_kevent_fb 24576 18 machine_dlkm,wcd9378_dlkm,wcd939x_dlkm,mbhc_dlkm,wcd_usbss_i2c,fsa4480_i2c,audio_pkt_dlkm,audpkt_ion_dlkm,swr_ctrl_dlkm,audio_prm_dlkm,oplus_audio_daemon,adsp_loader_dlkm,gpr_dlkm,oplus_audio_sipa,qcom_q6v5,oplus_audio_aw87xxx,oplus_audio_tfa98xx_v6,oplus_audio_aw882xx, Live 0x0000000000000000
+coresight 98304 16 coresight_tmc,msm_kgsl,coresight_uetm,coresight_dummy,coresight_remote_etm,coresight_tpda,coresight_trace_noc,coresight_replicator,coresight_tgu,coresight_cti,coresight_funnel,coresight_tmc_sec,coresight_tpdm,coresight_stm,coresight_qmi,coresight_csr, Live 0x0000000000000000
+gpu_dump_skip_cdev 12288 0 - Live 0x0000000000000000
+osml_monitor 36864 0 - Live 0x0000000000000000
+leds_qcom_lpg 24576 0 - Live 0x0000000000000000
+c1dcvs_scmi_v2 20480 0 - Live 0x0000000000000000
+qcom_lpm 57344 1 oplus_bsp_game_opt,[permanent], Live 0x0000000000000000
+si_core_module 36864 2 smcinvoke_dlkm,mem_object, Live 0x0000000000000000
+qti_userspace_cdev 12288 0 - Live 0x0000000000000000
+qseecom_proxy 20480 3 hdcp_qseecom_dlkm,smcinvoke_dlkm,si_core_module, Live 0x0000000000000000
+leds_aw210xx_algo 98304 0 - Live 0x0000000000000000
+max31760_fan 16384 0 - Live 0x0000000000000000
+qcom_cpufreq_hw_debug 20480 0 - Live 0x0000000000000000
+qcom_edac 12288 0 - Live 0x0000000000000000
+leds_qcom_flash 16384 0 - Live 0x0000000000000000
+bcl_soc 12288 0 - Live 0x0000000000000000
+boot_stats 20480 0 - Live 0x0000000000000000
+videocc_tuna 20480 0 - Live 0x0000000000000000
+qti_cpufreq_cdev 12288 0 - Live 0x0000000000000000
+oplus_bsp_fw_update 16384 3 oplus_chg_v2,oplus_bsp_tp_common,oplus_bsp_synaptics_tcm2, Live 0x0000000000000000
+heap_mem_ext_v01 16384 1 msm_memshare, Live 0x0000000000000000
+qcom_dynamic_ramoops 12288 0 - Live 0x0000000000000000
+qcom_smd 28672 1 rproc_qcom_common, Live 0x0000000000000000
+qfprom_sys 12288 0 - Live 0x0000000000000000
+oplus_mm_kevent 24576 1 oplus_mm_kevent_fb, Live 0x0000000000000000
+qti_ocp_notifier 12288 0 - Live 0x0000000000000000
+qti_fixed_regulator 12288 0 - Live 0x0000000000000000
+oplus_bsp_tp_notify 16384 6 msm_drm,oplus_bsp_tp_nt36672c_noflash,oplus_bsp_uff_fp_driver,oplus_hbp_core,oplus_bsp_tp_common,oplus_bsp_synaptics_tcm2, Live 0x0000000000000000
+hvc_gunyah 24576 0 - Live 0x0000000000000000
+oplus_trackpoint_report 20480 1 msm_drm, Live 0x0000000000000000
+panel_event_notifier 20480 20 msm_drm,oplus_chg_v2,goodix_ts,focaltech_fts,qti_amoled_ecm,st_fts,oplus_bsp_uff_fp_driver,oplus_wireless_pen,atmel_mxt_ts,oplus_bsp_pogo_keyboard,qts,oplus_sensor_interact,oplus_network_linkpower_module,oplus_hbp_core,oplus_bsp_tp_common,oplus_bsp_synaptics_tcm2,oplus_bsp_tri_key,oplus_bsp_hybridswap_zram,oplus_bsp_dfr_theia,oplus_bsp_cs_press_f71, Live 0x0000000000000000
+mem_hooks 12288 0 [permanent], Live 0x0000000000000000
+drm_display_helper 172032 1 msm_drm, Live 0x0000000000000000
+oplus_ss_sleep_monitor 24576 0 - Live 0x0000000000000000
+oplus_camera_aw37004 20480 0 - Live 0x0000000000000000
+qmi_helpers 32768 18 qca_cld3_peach_v2,rmnet_core,ipam,slim_qcom_ngd_ctrl,cnss2,msm_memshare,qti_qmi_cdev,oplus_network_linkpower_module,wlan_firmware_service,oplus_network_kernel_state_monitor,oplus_network_oem_qmi,cnss_plat_ipc_qmi_svc,qcom_sysmon,pdr_interface,qti_qmi_sensor_v2,snd_usb_audio_qmi,coresight_qmi,heap_mem_ext_v01, Live 0x0000000000000000
+qcom_pm8008_regulator 24576 0 - Live 0x0000000000000000
+msm_geni_serial 114688 1 oplus_bsp_pogo_keyboard, Live 0x0000000000000000
+qti_dmof_scmi 20480 0 [permanent], Live 0x0000000000000000
+drm_dp_aux_bus 20480 0 - Live 0x0000000000000000
+oplus_trace_sensor 24576 9 qcom_q6v5, Live 0x0000000000000000
+qcom_amoled_regulator 20480 0 - Live 0x0000000000000000
+qcom_glink_smem 20480 2 glink_probe,rproc_qcom_common, Live 0x0000000000000000
+eud 28672 0 - Live 0x0000000000000000
+smp2p_sleepstate 12288 0 [permanent], Live 0x0000000000000000
+pinctrl_spmi_gpio 32768 13 - Live 0x0000000000000000
+debugcc_tuna 40960 0 [permanent], Live 0x0000000000000000
+debugcc_kera 40960 0 [permanent], Live 0x0000000000000000
+qcom_cpuss_sleep_stats_v4 20480 0 - Live 0x0000000000000000
+pwm_qti_lpg 40960 0 - Live 0x0000000000000000
+pinctrl_spmi_mpp 24576 0 - Live 0x0000000000000000
+qcom_cpuss_sleep_stats 28672 0 - Live 0x0000000000000000
+clk_scmi 12288 35 - Live 0x0000000000000000
+qcom_glink 53248 8 qcom_spss,msm_memshare,glink_pkt,qrtr_smd,glink_probe,qcom_glink_spss,rproc_qcom_common,qcom_glink_smem, Live 0x0000000000000000
+evacc_tuna 20480 0 - Live 0x0000000000000000
+pcie_pdc 20480 1 pci_msm_drv, Live 0x0000000000000000
+msm_show_resume_irq 20480 0 - Live 0x0000000000000000
+msm_sysstats 28672 1 msm_kgsl, Live 0x0000000000000000
+msm_gpi 77824 7 i2c_msm_geni,i3c_master_msm_geni,q2spi_geni, Live 0x0000000000000000
+bam_dma 36864 0 - Live 0x0000000000000000
+oplus_bsp_waker_identify 20480 0 - Live 0x0000000000000000
+cdc_ncm 32768 0 - Live 0x0000000000000000
+r8153_ecm 12288 0 - Live 0x0000000000000000
+virtio_pci 36864 0 - Live 0x0000000000000000
+r8152 155648 1 r8153_ecm, Live 0x0000000000000000
+mac802154 147456 0 - Live 0x0000000000000000
+regmap_kunit 57344 0 - Live 0x0000000000000000
+ptp 40960 0 - Live 0x0000000000000000
+nhc_routing 12288 0 - Live 0x0000000000000000
+tls 114688 0 - Live 0x0000000000000000
+ieee802154_socket 32768 0 - Live 0x0000000000000000
+regmap_raw_ram 16384 1 regmap_kunit, Live 0x0000000000000000
+ppp_mppe 12288 0 - Live 0x0000000000000000
+ppp_deflate 12288 0 - Live 0x0000000000000000
+vmw_vsock_virtio_transport 24576 0 - Live 0x0000000000000000
+pps_core 24576 1 ptp, Live 0x0000000000000000
+ieee802154_6lowpan 32768 0 - Live 0x0000000000000000
+pptp 32768 0 - Live 0x0000000000000000
+time_test 12288 0 - Live 0x0000000000000000
+l2tp_ppp 32768 0 - Live 0x0000000000000000
+hidp 36864 0 - Live 0x0000000000000000
+soc_utils_test 12288 0 - Live 0x0000000000000000
+hci_uart 81920 0 - Live 0x0000000000000000
+iio_test_format 32768 0 - Live 0x0000000000000000
+macsec 73728 0 - Live 0x0000000000000000
+ieee802154 147456 3 mac802154,ieee802154_socket,ieee802154_6lowpan, Live 0x0000000000000000
+aqc111 24576 0 - Live 0x0000000000000000
+asix 45056 0 - Live 0x0000000000000000
+cdc_ether 20480 2 cdc_ncm,r8153_ecm, Live 0x0000000000000000
+fat_test 24576 0 - Live 0x0000000000000000
+open_dice 12288 0 - Live 0x0000000000000000
+gzvm 61440 0 - Live 0x0000000000000000
+pppox 20480 2 l2tp_ppp,pptp, Live 0x0000000000000000
+slcan 24576 0 - Live 0x0000000000000000
+input_test 16384 0 - Live 0x0000000000000000
+rfcomm 73728 0 - Live 0x0000000000000000
+usbmon 45056 0 - Live 0x0000000000000000
+kunit_test 49152 0 - Live 0x0000000000000000
+regmap_ram 16384 1 regmap_kunit, Live 0x0000000000000000
+kunit_example_test 20480 0 - Live 0x0000000000000000
+virtio_console 40960 0 - Live 0x0000000000000000
+soc_topology_test 28672 0 - Live 0x0000000000000000
+nhc_udp 12288 0 - Live 0x0000000000000000
+btsdio 16384 0 - Live 0x0000000000000000
+nfc 102400 0 - Live 0x0000000000000000
+lib_test 12288 0 - Live 0x0000000000000000
+rtl8150 24576 0 - Live 0x0000000000000000
+nhc_hop 12288 0 - Live 0x0000000000000000
+virtio_pci_legacy_dev 24576 1 virtio_pci, Live 0x0000000000000000
+nhc_dest 12288 0 - Live 0x0000000000000000
+nhc_mobility 12288 0 - Live 0x0000000000000000
+virtio_balloon 32768 0 - Live 0x0000000000000000
+nhc_ipv6 12288 0 - Live 0x0000000000000000
+nhc_fragment 12288 0 - Live 0x0000000000000000
+diag 12288 0 - Live 0x0000000000000000
+wwan 32768 0 - Live 0x0000000000000000
+virtio_pci_modern_dev 32768 1 virtio_pci, Live 0x0000000000000000
+libarc4 16384 2 mac80211,ppp_mppe, Live 0x0000000000000000
+virtio_blk 32768 0 - Live 0x0000000000000000
+l2tp_core 69632 1 l2tp_ppp, Live 0x0000000000000000
+cdc_eem 12288 0 - Live 0x0000000000000000
+vcpu_stall_detector 20480 0 - Live 0x0000000000000000
+ax88179_178a 40960 0 - Live 0x0000000000000000
+vcan 16384 0 - Live 0x0000000000000000
+ftdi_sio 57344 0 - Live 0x0000000000000000
+clk_test 106496 0 - Live 0x0000000000000000
+btqca 20480 1 hci_uart, Live 0x0000000000000000
+btbcm 24576 1 hci_uart, Live 0x0000000000000000
+clk_gate_test 32768 0 - Live 0x0000000000000000
+ext4_inode_test 12288 0 - Live 0x0000000000000000
+hid_uclogic_test 28672 0 - Live 0x0000000000000000
+dev_addr_lists_test 20480 0 - Live 0x0000000000000000
+can 28672 0 - Live 0x0000000000000000
+usbnet 53248 7 cdc_ncm,r8153_ecm,cdc_ether,asix,aqc111,cdc_eem,ax88179_178a, Live 0x0000000000000000
+9pnet_fd 28672 0 - Live 0x0000000000000000
+tipc 372736 3 diag, Live 0x0000000000000000
+bluetooth 716800 6 hidp,hci_uart,rfcomm,btsdio,btqca,btbcm, Live 0x0000000000000000
+kunit 57344 15 regmap_kunit,kunit_test,time_test,soc_utils_test,iio_test_format,fat_test,input_test,kunit_example_test,soc_topology_test,lib_test,clk_test,clk_gate_test,hid_uclogic_test,ext4_inode_test,dev_addr_lists_test, Live 0x0000000000000000
+usbserial 45056 1 ftdi_sio, Live 0x0000000000000000
+cdc_acm 40960 0 - Live 0x0000000000000000
+bsd_comp 12288 0 - Live 0x0000000000000000
+cctrng 20480 0 - Live 0x0000000000000000
+ppp_generic 45056 6 l2tp_ppp,ppp_mppe,ppp_deflate,pptp,pppox,bsd_comp, Live 0x0000000000000000
+rfkill 36864 4 btpower,cfg80211,nfc,bluetooth, Live 0x0000000000000000
+can_dev 49152 2 slcan,vcan, Live 0x0000000000000000
+slhc 24576 1 ppp_generic, Live 0x0000000000000000
+8021q 40960 0 - Live 0x0000000000000000
+mii 24576 4 asix,r8152,ax88179_178a,usbnet, Live 0x0000000000000000
+9pnet 94208 1 9pnet_fd, Live 0x0000000000000000
+6lowpan 32768 8 nhc_routing,ieee802154_6lowpan,nhc_udp,nhc_hop,nhc_dest,nhc_mobility,nhc_ipv6,nhc_fragment, Live 0x0000000000000000
+qnoc_sun 577536 0 [permanent], Live 0x0000000000000000
+qnoc_tuna 532480 0 [permanent], Live 0x0000000000000000
+qnoc_kera 389120 0 [permanent], Live 0x0000000000000000
+icc_rpmh 24576 3 qnoc_sun,qnoc_tuna,qnoc_kera, Live 0x0000000000000000
+qcom_dcvs 73728 4 oplus_bsp_geas_system,msm_kgsl,bwmon,memlat, Live 0x0000000000000000
+icc_bcm_voter 28672 1 icc_rpmh,[permanent], Live 0x0000000000000000
+ufs_qcom 212992 1 - Live 0x0000000000000000
+tcsrcc_sun 12288 4 - Live 0x0000000000000000
+dcvs_fp 16384 1 qcom_dcvs, Live 0x0000000000000000
+sdhci_msm 65536 0 - Live 0x0000000000000000
+camcc_kera 69632 0 - Live 0x0000000000000000
+cambistmclkcc_sun 20480 4 - Live 0x0000000000000000
+evacc_sun 20480 6 - Live 0x0000000000000000
+clk_rpmh 49152 21 - Live 0x0000000000000000
+dispcc_sun 61440 32 - Live 0x0000000000000000
+rpmh_regulator 28672 111 - Live 0x0000000000000000
+gpucc_kera 28672 0 - Live 0x0000000000000000
+tcsrcc_tuna 16384 0 - Live 0x0000000000000000
+videocc_sun 20480 7 - Live 0x0000000000000000
+cambistmclkcc_tuna 20480 0 - Live 0x0000000000000000
+gcc_tuna 77824 0 - Live 0x0000000000000000
+gpucc_tuna 36864 0 - Live 0x0000000000000000
+gcc_sun 86016 104 - Live 0x0000000000000000
+camcc_tuna 69632 0 - Live 0x0000000000000000
+gpucc_sun 36864 6 - Live 0x0000000000000000
+gcc_kera 81920 0 - Live 0x0000000000000000
+clk_dummy 16384 3 debugcc_sun,debugcc_tuna,debugcc_kera, Live 0x0000000000000000
+dispcc_tuna 65536 0 - Live 0x0000000000000000
+camcc_sun 69632 141 - Live 0x0000000000000000
+clk_qcom 241664 34 msm_drm,camera,dwc3_msm,msm_kgsl,msm_video,debugcc_sun,msm_mmrm,oplus_standby_netlink,pci_msm_drv,videocc_tuna,debugcc_tuna,debugcc_kera,evacc_tuna,ufs_qcom,tcsrcc_sun,sdhci_msm,camcc_kera,cambistmclkcc_sun,clk_rpmh,evacc_sun,dispcc_sun,gpucc_kera,tcsrcc_tuna,videocc_sun,cambistmclkcc_tuna,gcc_tuna,gpucc_tuna,gcc_sun,camcc_tuna,gpucc_sun,gcc_kera,clk_dummy,dispcc_tuna,camcc_sun, Live 0x0000000000000000
+qcom_rpmh 65536 5 camera,icc_bcm_voter,dcvs_fp,clk_rpmh,rpmh_regulator,[permanent], Live 0x0000000000000000
+qrtr_gunyah 20480 0 - Live 0x0000000000000000
+gh_virt_wdt 16384 0 - Live 0x0000000000000000
+mem_buf 40960 0 - Live 0x0000000000000000
+msm_qmp 32768 1 - Live 0x0000000000000000
+qrtr 65536 324 qrtr_mhi,qrtr_smd,qrtr_tun,qrtr_gunyah, Live 0x0000000000000000
+crm_v2 49152 6 msm_drm,camera,pci_msm_drv,icc_bcm_voter,clk_qcom,qcom_rpmh, Live 0x0000000000000000
+qcom_wdt_core 24576 1 gh_virt_wdt, Live 0x0000000000000000
+ufshcd_crypto_qti 20480 1 ufs_qcom, Live 0x0000000000000000
+qcom_dload_mode 20480 0 - Live 0x0000000000000000
+tms_device_modules 90112 0 - Live 0x0000000000000000
+qcom_tsens 65536 0 - Live 0x0000000000000000
+qcom_aoss 28672 127 msm_kgsl,cnss2,btpower,qcom_spss,sys_pm_vx,mem_offline,qcom_q6v5,qcom_stats,msm_qmp, Live 0x0000000000000000
+pinctrl_tuna 86016 0 - Live 0x0000000000000000
+mem_buf_msgq 24576 1 mem_buf, Live 0x0000000000000000
+gunyah_loader 102400 5 dmesg_dumper,gh_irq_lend,gh_panic_notifier,hvc_gunyah,qrtr_gunyah, Live 0x0000000000000000
+qcom_logbuf_vendor_hooks 12288 0 [permanent], Live 0x0000000000000000
+dcc_v2 45056 0 - Live 0x0000000000000000
+bcl_pmic5 45056 8 - Live 0x0000000000000000
+pmic_pon_log 16384 0 - Live 0x0000000000000000
+arm_smmu 151552 53 - Live 0x0000000000000000
+pinctrl_kera 86016 0 - Live 0x0000000000000000
+pinctrl_sun 94208 17 - Live 0x0000000000000000
+memory_dump_v2 28672 1 cnss2, Live 0x0000000000000000
+qcom_logbuf_boot_log 12288 0 - Live 0x0000000000000000
+pinctrl_msm 45056 89 msm_drm,cnss2,btpower,nxp_nci,i3c_master_msm_geni,gh_tlmm_vm_mem_access,stm_nfc_i2c,qts,wcd_core_dlkm,pci_msm_drv,sdhci_msm,tms_device_modules,pinctrl_tuna,pinctrl_kera,pinctrl_sun, Live 0x0000000000000000
+qcom_pdc 24576 0 [permanent], Live 0x0000000000000000
+qcom_ipc_logging 36864 53 rmnet_ctl,ipanetm,msm_drm,ipam,usb_f_gsi,usb_f_qdss,dwc3_msm,audio_pkt_dlkm,spcom,cnss2,slim_qcom_ngd_ctrl,gsim,mhi_dev_uci,mhi_dev_satellite,qcom_spmi_adc5_gen3,nxp_nci,charger_ulog_glink,altmode_glink,i2c_msm_geni,glink_pkt,ucsi_qti_glink,mhi,qsee_ipc_irq_bridge,spi_msm_geni,i3c_master_msm_geni,q2spi_geni,sps_drv,f_fs_ipc_log,qti_pmic_glink,oplus_network_kernel_state_monitor,cnss_plat_ipc_qmi_svc,smp2p,pci_msm_drv,glink_probe,snd_usb_audio_qmi,qti_ocp_notifier,msm_geni_serial,qcom_glink_smem,qcom_glink,msm_gpi,bam_dma,ufs_qcom,sdhci_msm,rpmh_regulator,qcom_rpmh,msm_qmp,qrtr,crm_v2,qcom_tsens,qcom_aoss,bcl_pmic5,pmic_pon_log,qcom_pdc,[permanent], Live 0x0000000000000000
+minidump 1130496 13 msm_kgsl,cnss2,qcom_va_minidump,dmesg_dumper,oplus_bsp_sched_ext,ufs_qcom,qcom_wdt_core,qcom_dload_mode,qcom_logbuf_vendor_hooks,dcc_v2,memory_dump_v2,qcom_logbuf_boot_log,qcom_ipc_logging, Live 0x0000000000000000
+qcom_dma_heaps 94208 243 smmu_proxy_dlkm,msm_sysstats,minidump,[permanent], Live 0x0000000000000000
+mem_buf_dev 110592 12 msm_drm,camera,msm_kgsl,msm_eva,qcedev_mod_dlkm,frpc_adsprpc,smmu_proxy_dlkm,msm_video,mem_object,mem_buf,mem_buf_msgq,qcom_dma_heaps, Live 0x0000000000000000
+oplus_bsp_fpga_monitor 69632 9 msm_drm, Live 0x0000000000000000 (O)
+secure_buffer 36864 4 msm_kgsl,gunyah_loader,qcom_dma_heaps,mem_buf_dev, Live 0x0000000000000000
+qcom_ice 28672 3 ufs_qcom,sdhci_msm,ufshcd_crypto_qti, Live 0x0000000000000000
+mdt_loader 16384 8 ipam,camera,msm_kgsl,msm_eva,qcom_q6v5_pas,qcom_spss,msm_video,gunyah_loader, Live 0x0000000000000000
+qcom_iommu_util 81920 9 qca_cld3_peach_v2,msm_drm,ipam,camera,coresight_tmc,msm_kgsl,cnss2,qcom_iommu_debug,arm_smmu,[permanent], Live 0x0000000000000000
+ufs_oplus_dbg 36864 1 ufs_qcom, Live 0x0000000000000000
+oplus_bsp_fpga_notify 16384 8 msm_drm,oplus_chg_v2,oplus_bsp_tp_gt9966,oplus_bsp_tp_gt9916,oplus_audio_tfa98xx_v6,oplus_audio_aw882xx,oplus_bsp_tri_key,oplus_bsp_fpga_monitor, Live 0x0000000000000000
+qcom_scm 102400 41 msm_drm,ipam,camera,msm_kgsl,msm_eva,audpkt_ion_dlkm,msm_hw_fence,tz_log_dlkm,qcom_q6v5_pas,phy_msm_m31_eusb2,phy_msm_snps_eusb2,msm_memshare,qcom_spss,hdcp_qseecom_dlkm,frpc_adsprpc,governor_msm_adreno_tz,msm_video,dmesg_dumper,coresight_tmc_sec,coresight_tpdm,msm_sharedmem,oplus_secure_common,gh_panic_notifier,smcinvoke_dlkm,mem_object,si_core_module,eud,qcom_cpuss_sleep_stats,qrtr_gunyah,qcom_wdt_core,qcom_dload_mode,gunyah_loader,arm_smmu,memory_dump_v2,pinctrl_msm,qcom_pdc,qcom_dma_heaps,secure_buffer,qcom_ice,mdt_loader,qcom_iommu_util, Live 0x0000000000000000
+device_info 32768 5 msm_drm,oplus_chg_v2,oplus_bsp_tp_common,oplus_bsp_synaptics_tcm2,ufs_oplus_dbg,[permanent], Live 0x0000000000000000
+ua_cpu_ioctl 40960 0 - Live 0x0000000000000000
+oplus_nfc 20480 2 nxp_nci,tms_device_modules, Live 0x0000000000000000
+oplus_bsp_boot_projectinfo 24576 19 msm_drm,oplus_chg_v2,cnss2,oplus_wireless_pen,oplus_wifi_wsa,oplus_bsp_pogo_keyboard,oplus_bsp_dfr_kmsg_wb,oplus_sensor_deviceinfo,oplus_network_rf_cable_monitor,oplus_bsp_tp_custom,oplus_bsp_dfr_shutdown_detect,oplus_bsp_dfr_pmic_watchdog,oplus_bsp_dfr_dump_device_info,oplus_bsp_dfr_hung_task_enhance,oplus_bsp_dfr_phoenix,oplus_trace_sensor,oplus_bsp_fpga_monitor,device_info,oplus_nfc,[permanent], Live 0x0000000000000000
+oplus_mdmfeature 28672 0 - Live 0x0000000000000000 (O)
+gh_rm_drv 110592 17 msm_drm,msm_eva,msm_hw_fence,dmesg_dumper,qts,gh_tlmm_vm_mem_access,gh_rm_booster,gh_mem_notifier,gh_irq_lend,gh_panic_notifier,hvc_gunyah,qrtr_gunyah,gunyah_loader,minidump,mem_buf_dev,secure_buffer,qcom_scm, Live 0x0000000000000000
+oplus_btuart_ux 12288 0 - Live 0x0000000000000000
+oplus_bsp_task_sched 135168 0 - Live 0x0000000000000000
+qcom_cpufreq_hw 36864 0 - Live 0x0000000000000000
+qcom_spmi_pmic 20480 0 - Live 0x0000000000000000
+oplus_f2fslog_storage 16384 0 - Live 0x0000000000000000
+oplus_bsp_dfr_reboot_speed 28672 0 - Live 0x0000000000000000 (O)
+oplus_bsp_task_cpustats 2027520 0 - Live 0x0000000000000000
+oplus_uprobe 45056 0 - Live 0x0000000000000000
+oplus_bsp_close_loop 61440 1 ua_cpu_ioctl,[permanent], Live 0x0000000000000000
+thermal_pause 20480 0 - Live 0x0000000000000000
+phy_qcom_ufs_qrbtc_sdm845 24576 0 - Live 0x0000000000000000
+oplus_wq_dynamic_priority 12288 0 - Live 0x0000000000000000
+oplus_bsp_qos_sched 32768 0 - Live 0x0000000000000000
+gdsc_regulator 32768 56 clk_qcom, Live 0x0000000000000000
+stub_regulator 12288 0 - Live 0x0000000000000000
+oplus_bsp_schedinfo 196608 2 oplus_bsp_fg_protect,oplus_bsp_hybridswap_zram, Live 0x0000000000000000
+phy_qcom_ufs_qmp_v4_niobe 24576 0 - Live 0x0000000000000000
+phy_qcom_ufs_qmp_v4_sun 24576 1 - Live 0x0000000000000000
+boot_mode 20480 13 msm_drm,qcom_hv_haptics,wcd_usbss_i2c,oplus_chg_v2,oplus_haptic,cnss2,nxp_nci,i2c_msm_geni,oplus_network_rf_cable_monitor,oplus_bsp_tp_common,oplus_bsp_synaptics_tcm2,oplus_bsp_dfr_phoenix,leds_aw210xx_algo,[permanent], Live 0x0000000000000000
+cpucp_fast 12288 0 - Live 0x0000000000000000
+msm_performance 40960 1 msm_kgsl,[permanent], Live 0x0000000000000000
+qcom_pmu_lib 36864 3 oplus_bsp_geas_system,memlat,msm_performance, Live 0x0000000000000000
+qcom_llcc_pmu 24576 1 qcom_pmu_lib, Live 0x0000000000000000
+sched_walt 536576 14 qca_cld3_peach_v2,rmnet_shs,bwmon,oplus_bsp_game_opt,oplus_bsp_sched_ext,qcom_lpm,ufs_qcom,oplus_bsp_schedinfo,oplus_bsp_close_loop,thermal_pause,cpucp_fast,msm_performance,[permanent], Live 0x0000000000000000
+oplus_bsp_task_overload 77824 1 sched_walt,[permanent], Live 0x0000000000000000
+oplusboot 20480 6 msm_memshare,oplus_secure_guard_new,oplus_bsp_tp_common,oplus_bsp_dfr_dump_device_info,oplus_bsp_boot_projectinfo,boot_mode, Live 0x0000000000000000
+icc_debug 16384 1 icc_rpmh, Live 0x0000000000000000
+qnoc_qos 16384 3 qnoc_sun,qnoc_tuna,qnoc_kera, Live 0x0000000000000000
+nvmem_qcom_spmi_sdam 12288 15 - Live 0x0000000000000000
+cpu_phys_log_map 16384 4 memlat,qti_dmof_scmi,qcom_pmu_lib,qcom_llcc_pmu,[permanent], Live 0x0000000000000000
+oplus_bsp_frame_boost 176128 5 oplus_bsp_geas_system,ua_cpu_ioctl,oplus_bsp_task_sched,sched_walt,oplus_bsp_task_overload,[permanent], Live 0x0000000000000000
+gh_arm_drv 20480 1 gh_rm_drv, Live 0x0000000000000000
+gh_dbl 24576 5 msm_hw_fence,dmesg_dumper,gh_panic_notifier,qrtr_gunyah,gh_rm_drv, Live 0x0000000000000000
+gh_msgq 24576 5 msm_drm,msm_eva,smmu_proxy_dlkm,mem_buf_msgq,gh_rm_drv, Live 0x0000000000000000
+debug_regulator 32768 7 oplus_standby_netlink,qti_fixed_regulator,qcom_pm8008_regulator,qcom_amoled_regulator,rpmh_regulator,gdsc_regulator,stub_regulator, Live 0x0000000000000000
+cqhci 36864 1 sdhci_msm, Live 0x0000000000000000
+oplus_bsp_omrg 49152 2 qcom_cpufreq_hw,sched_walt, Live 0x0000000000000000
+spmi_pmic_arb 40960 1 msm_drm, Live 0x0000000000000000
+qti_thermal_vendor_hooks 12288 0 - Live 0x0000000000000000
+oplus_bsp_mm_osvelte 73728 8 msm_kgsl,oplus_bsp_uxmem_opt,oplus_bsp_zram_opt,oplus_bsp_file_read_record,oplus_bsp_hybridswap_zram,qcom_dma_heaps, Live 0x0000000000000000
+qti_regmap_debugfs 24576 11 wcd9378_dlkm,wcd939x_dlkm,wcd938x_dlkm,wcd_usbss_i2c,fsa4480_i2c,lpass_cdc_dlkm,wsa883x_dlkm,qcom_i2c_pmic,wsa884x_dlkm,qmp_dlkm,qcom_spmi_pmic, Live 0x0000000000000000
+sg 53248 0 - Live 0x0000000000000000
+msm_dma_iommu_mapping 20480 2 msm_drm,qcom_dma_heaps, Live 0x0000000000000000
+oplus_bsp_sched_assist 1011712 15 oplus_lock_torture,oplus_bsp_uxmem_opt,oplus_bsp_zram_opt,oplus_binder_strategy,oplus_locking_strategy,oplus_bsp_dynamic_readahead,oplus_btuart_ux,oplus_bsp_task_sched,oplus_bsp_task_cpustats,oplus_bsp_schedinfo,oplus_wq_dynamic_priority,oplus_bsp_qos_sched,sched_walt,oplus_bsp_task_overload,oplus_bsp_frame_boost,[permanent], Live 0x0000000000000000
+iommu_logger 16384 1 arm_smmu, Live 0x0000000000000000
+socinfo 53248 6 camera,machine_dlkm,msm_kgsl,qti_dmof_scmi,icc_rpmh,sched_walt, Live 0x0000000000000000
+proxy_consumer 20480 3 qti_fixed_regulator,rpmh_regulator,gdsc_regulator, Live 0x0000000000000000
+qcom_scmi_client 16384 11 mpam_msc_slc,coresight_uetm,cpucp_log,dynpf_scmi,llcc_heuristics,cpufreq_stats_scmi_v2,mpam,memlat,c1dcvs_scmi_v2,qti_dmof_scmi,qcom_pmu_lib, Live 0x0000000000000000
+oplus_file_record 20480 0 - Live 0x0000000000000000
+qcom_enhance_watchdog 20480 1 qcom_wdt_core,[permanent], Live 0x0000000000000000
+qcom_scmi_vendor 12288 1 - Live 0x0000000000000000
+oplus_mdmrst 20480 1 qcom_q6v5, Live 0x0000000000000000
+smem 28672 29 ipam,adsp_sleepmon,oplus_chg_v2,cnss2,qcom_q6v5_pas,qcom_q6v5,oplus_rpmh_statics,sysmon_subsystem_stats,rdbg,oplus_sensor_feedback,qcom_stats,oplus_sensor_deviceinfo,oplus_network_rf_cable_monitor,smem_mailbox,oplus_subsys_sleep_monitor,smp2p,qcom_glink_spss,rproc_qcom_common,oplus_bsp_dfr_pmic_monitor,oplus_bsp_dfr_dump_reason,oplus_bsp_dfr_ordump,qcom_smd,oplus_ss_sleep_monitor,qcom_glink_smem,msm_qmp,minidump,oplus_bsp_boot_projectinfo,oplus_mdmfeature,socinfo, Live 0x0000000000000000
+olc 20480 8 camera,oplus_chg_v2,oplus_bsp_uff_fp_driver,oplus_hbp_core,oplus_bsp_tp_common,oplus_bsp_synaptics_tcm2,oplus_bsp_tri_key,oplus_bsp_fpga_monitor, Live 0x0000000000000000
+oplus_storage_log 20480 2 oplus_f2fslog_storage,oplus_uprobe, Live 0x0000000000000000
+qcom_cpucp 24576 9 - Live 0x0000000000000000
+gic_intr_routing 28672 0 - Live 0x0000000000000000
+phy_qcom_ufs 32768 4 ufs_qcom,phy_qcom_ufs_qrbtc_sdm845,phy_qcom_ufs_qmp_v4_niobe,phy_qcom_ufs_qmp_v4_sun, Live 0x0000000000000000
+oplus_bsp_schedtune 24576 0 - Live 0x0000000000000000
+cdt_integrity 12288 0 - Live 0x0000000000000000
+ipclite 57344 1 synx_driver, Live 0x0000000000000000 (O)
+oplus_ftm_mode 12288 1 boot_mode, Live 0x0000000000000000
+qcom_cpufreq_thermal 12288 0 [permanent], Live 0x0000000000000000
+cpu_hotplug 12288 0 - Live 0x0000000000000000
+cmd_db 20480 7 msm_kgsl,cnss2,icc_rpmh,dcvs_fp,clk_rpmh,rpmh_regulator,qcom_rpmh,[permanent], Live 0x0000000000000000
+llcc_qcom 49152 5 msm_drm,camera,msm_kgsl,msm_eva,msm_video, Live 0x0000000000000000
+cpufreq_bouncing 28672 1 sched_walt, Live 0x0000000000000000
+oplus_bsp_dfr_shutdown_speed 12288 1 oplus_bsp_dfr_reboot_speed, Live 0x0000000000000000 (O)
+debug_symbol 16384 3 oplus_bsp_dfr_dump_device_info,qcom_logbuf_vendor_hooks,minidump,[permanent], Live 0x0000000000000000
+bootloader_log 12288 0 - Live 0x0000000000000000
+qcom_cpu_vendor_hooks 16384 0 - Live 0x0000000000000000
+kernel_fb 24576 13 camera,oplus_chg_v2,oplus_ak09970,haptic_feedback,oplus_bsp_pogo_keyboard,oplus_bsp_ist_up,oplus_bsp_ist_down,oplus_bsp_mxm_up,oplus_bsp_mxm_down,oplus_sensor_feedback,oplus_bsp_dfr_combkey_monitor,oplus_bsp_tri_key,oplus_bsp_cs_press_f71, Live 0x0000000000000000
+rtc_pm8xxx 12288 1 - Live 0x0000000000000000
+qcom_hwspinlock 12288 3 - Live 0x0000000000000000
+qcom_reboot_reason 12288 0 - Live 0x0000000000000000
+oplus_charger_present 12288 1 boot_mode, Live 0x0000000000000000
+sched_penalty 20480 1 sched_walt, Live 0x0000000000000000
+buildvariant 12288 1 oplus_bsp_boot_projectinfo, Live 0x0000000000000000
+oplus_bsp_storage_io_metrics 1105920 0 - Live 0x0000000000000000
+tango32 28672 1 - Live 0x0000000000000000
+qcom_ipcc 24576 32 [permanent], Live 0x0000000000000000
+kernelsu 208896 1 - Live 0x0000000000000000 (O)

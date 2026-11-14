@@ -1,0 +1,102 @@
+{
+  "status": "SINGLE_JUMP_REVIEWED_CFG_HWCTRL_CLEARED_ROOT_ON_LEAF_OFF_ANDROID_NOT_BOOTED",
+  "epoch": 1794606412.1187673,
+  "device_request_counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "source_boot_id": "c60882e9-d8cf-496d-9f92-5b13e4fa8e9a",
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "target_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+  "run_id": "b33ca89166fc34ef",
+  "android_target_success": false,
+  "recovery_build_id": "931f89c6463a6af0eea9436b61f059f31e451f6a",
+  "recovery_boot_id": "0c81463d-b87a-4fd7-858c-29c0a35985f8",
+  "pstore_bytes": 262132,
+  "pstore_LFs": 2717,
+  "pstore_sha256": "85355340d89b087d51fced0b0fddaac3d5f571064faebbc12eb67bd85e086729",
+  "ramdisk_sha256": "fc3a926f5fd864426ae3c9265045e94388b01fcd977a1f6c1825bba66eb25374",
+  "actual_loaded_DTB_sha256": "60edf88bd300c32b5e7536e12258d049976f229c1512129a6013776bdddcdc1d",
+  "loaded_metadata_summary": {
+    "status": "LOADED_METADATA_CHECKS_PASS",
+    "retained_kimage_page_list_nodes": {
+      "control_pages": 7927,
+      "dest_pages": 0,
+      "unusable_pages": 0
+    },
+    "retained_kimage_allocation_pages_checked": 7927,
+    "retained_struct_page_metadata_blocks": 126,
+    "retained_page_list_backend_reads": 258,
+    "kimage_bookkeeping_pages_checked": 5,
+    "all_source_list_destination_control_and_bookkeeping_pages_avoid_protected": true,
+    "relocation_code_sha256": "c8298ca16bf0e349826719887983aac4f8124eb79da61ccd93459e769062c11c",
+    "relocation_code_bytes": 288,
+    "list_pages": 28,
+    "destination_pages": 14207,
+    "sampled_linear_mappings": 97,
+    "memory_attribute_indices": [
+      1
+    ],
+    "linear_offset_untagged": true,
+    "entry_identity_mapping_executable": true,
+    "copied_page_tables_outside_destinations": true,
+    "target_image_header_matches_source": true,
+    "el2_vector_present": false,
+    "probe_payload_verified": false,
+    "modified_image_pages_verified": 76,
+    "actual_jump_entry_matches_Image_start": true,
+    "actual_x0_DTB_argument_matches_captured_segment": true,
+    "actual_segment_buffer_sizes_match_load_log": true,
+    "actual_segments_match_planner": true,
+    "bounded_reads": 827,
+    "jump_executed": false,
+    "captured_target_dtb": {
+      "bytes": 1601295,
+      "sha256": "60edf88bd300c32b5e7536e12258d049976f229c1512129a6013776bdddcdc1d",
+      "source": "Actual loaded relocation source pages, before execution",
+      "not_a_post_relocation_integrity_check": true
+    }
+  },
+  "evidence_report_sha256": {
+    "ufs-aux-swctrl-review/round19-evidence.json": "cdee3abb3d40c59f02a586a15c64535c036095e07586e71535eb770c0a03d863",
+    "ufs-aux-swctrl-review/round19-phy-evidence.json": "22ce25f80af53c3a27d808ece7703eae7d02e4ac209fa4e86b4a32b449d33175",
+    "ufs-aux-swctrl-independent-review/round19-evidence.json": "64b6381d45058c11627d33a0d2856e8d61e4f18e5a0443255d20f78bd12c1e9c"
+  },
+  "round_file_sha256": {
+    "device-test.json": "1b7d8eb8b5281df2ddde772dbc0b6418393ca9f5e0e86861ee3314aad193e19c",
+    "target-ready.json": "a3713eb6c2fec549a9c77c78f14fa10ef93b23c8efe05d36a44a11fc252e2a70",
+    "pstore-after-exec.txt": "85355340d89b087d51fced0b0fddaac3d5f571064faebbc12eb67bd85e086729",
+    "loaded-audit.json": "49e8f02543271f44ecf678a46ae556e38f04bfa5361a403b017e29d57df73549",
+    "kernel-gic-capture.json": "152bf20603eb418036820b52dc531e348a903d140fcaa79c67bb408b99191dc6",
+    "tz-log-kernel-capture.json": "213119cb6fc4ee2e9beb48526a0f311caf3a47720c2399baa69b4481d8e9ed4b",
+    "tzlog-preservation-loaded-dtb-audit.json": "d8bb9ab4172a09be26d50a0a966e2b6adc4b51fbb63aec06736c400dc14e2c17",
+    "secure-heap-skip-loaded-dtb-audit.json": "e82af9a1951cfd732d8b49ce3ad4611b700639bac50ef683ff0260a3dde230af",
+    "recovery-readonly.json": "896637af139ce18d952f44cfa1dac60bc8172a550abfb230ac17fd8e8754d40c",
+    "ramdisk.img": "fc3a926f5fd864426ae3c9265045e94388b01fcd977a1f6c1825bba66eb25374",
+    "loaded-target.dtb": "60edf88bd300c32b5e7536e12258d049976f229c1512129a6013776bdddcdc1d",
+    "observed-dmesg-after-exec.txt": "1789bd665bbf3baf842a1fe5d729a7334fde23ae977d733efb3e1e18629efbce"
+  },
+  "host_final_binding_sha256": "19e9674ce4ca22f0b8ebc529ef7e71ef91ff5b03de05b3d9bf6fe2b8ebe20d5b",
+  "next_local_read_plan": {
+    "path": "ufs-aux-swctrl-review/round20-local-read-plan.json",
+    "sha256": "ae1dc2102dcb7dd479c23a43ef6323d035e0b1495bc7fb47d57a9daec0f42553",
+    "not_yet_patched_built_or_tested": true
+  },
+  "conclusions": [
+    "Four complete later CFG/CMD/CBCR groups positively establish CFG20 clear, parent root ON and leaf still OFF. Damaged first group and K2 marker are not repaired or used as complete readback.",
+    "First complete GDSC group transitions OFF/DOWN to ON/UP and remains ON/UP after aux failure; PHY/qref errors remain consistent with R18.",
+    "Preserving FORCE while removing HW_CLK_CTRL_MODE through existing provider operations is insufficient to restore the aux leaf.",
+    "First-stage boot-device creation fails and init panics with exit7f00; panic timestamp is damaged, subsequent watchdog bite request is not the initiating failure."
+  ],
+  "limits": [
+    "No physical clock waveform or analog rail voltage measured.",
+    "GCC complete new BID is not present in raw pstore; actual payload/module ABI plus K2 marker and CFG readback provide separate evidence.",
+    "PHY local +404/+408 and the exact downstream clamp/reset condition remain unsampled. No successful causal repair of target Android has been demonstrated.",
+    "Both secure SP heap isolation and four TZ reserved buffers remain diagnostic; final functional warm handoff is incomplete."
+  ],
+  "kernel_repository_source_changes": false,
+  "partition_flashed": false,
+  "watchdog_setting_changed": false
+}

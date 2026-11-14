@@ -1,0 +1,45 @@
+{
+  "PSCI": {
+    "path": "/soc/psci",
+    "compatible": [
+      "arm,psci-1.0"
+    ],
+    "method": "smc"
+  },
+  "source_build_id": "6081c037cab4c9e169ee897e5d9ad65a98de5109",
+  "source_boot_id": "bcda5c37-0b62-45a8-b464-2839aecae259",
+  "epoch": 1794567474.1004128,
+  "ring_physical": "0x880000000",
+  "capacity": 262132,
+  "console_PTE_attr_index_zero_verified": true,
+  "Normal_WB_basis": "Matched source kernel MAIR[0] initialization; no direct source MAIR read",
+  "linear_alias_absent": true,
+  "ECC_absent": true,
+  "bounded_reads": 11,
+  "status": "HOST_TARGET_READY_NOT_LOADED_NOT_EXECUTED",
+  "target": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/post-mmu-runner/kexec-post-mmu.Image",
+  "target_sha256": "bc7b46f6e1e5f8fd2a11c642ec334b0f1324158087a70e9062ce89920d5e8ecb",
+  "target_bytes": 37707776,
+  "template_sha256": "9a76077f6e64a5194f11c75d49ee2dbf3d8da66009d369313239157137543045",
+  "modified_instruction_sites": 19,
+  "modified_image_page_offsets": [
+    0,
+    30478336,
+    30580736,
+    37683200,
+    37687296,
+    37691392,
+    37695488,
+    37699584,
+    37703680
+  ],
+  "all_other_original_Image_bytes_unchanged": true,
+  "source_Image_header_declared_size": 37683200,
+  "scope": "Seven original stages, pre-SCTLR register snapshot, eleven post-MMU stages; console mapping removed before start_kernel",
+  "source_boot_Image_unchanged": true,
+  "watchdog_state_changed": false,
+  "fatal_exception_capture": "Temporary EL1 capture ends at normal VBAR replacement",
+  "fatal_reset": "PSCI SYSTEM_RESET via runtime-verified smc",
+  "new_page_table_entries": "Previously empty idmap root[34] and two own table pages",
+  "mapping_cleanup": "Final stage clears only own descriptor using verified high virtual alias, with cache/TLB maintenance"
+}

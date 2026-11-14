@@ -1,0 +1,33 @@
+{
+  "ramdisk_sha256": "b9d50144482f916a157e548a3c79e20e1b3683bc982d6a8e01b0c8e8dd9eae02",
+  "cpio_sha256": "0569fae5dfcbfb26caebb22c954c23267a0a243a8aa780d269ac81c2889c1a11",
+  "modules": [
+    {
+      "name": "lib/modules/mem_buf_dev.ko",
+      "size": 165664,
+      "cpio_offset": 12471612,
+      "sha256": "2d64d2842885eaf3645b318a710fa28ecbd846c35875dd2068daa3ef1226b09f",
+      "build_id": [
+        "c9e7e3fd998db40ed6018ad8677406397b47e983"
+      ]
+    },
+    {
+      "name": "lib/modules/qcom_dma_heaps.ko",
+      "size": 172472,
+      "cpio_offset": 53602204,
+      "sha256": "ab7c562caae199b8a14d06c28bd3479e0c5c78e5e91a8cd77dcb459e51eebe80",
+      "build_id": [
+        "d06a59aeae01fb44d0ba7088ec1b6f142127d51c"
+      ]
+    },
+    {
+      "name": "lib/modules/secure_buffer.ko",
+      "size": 53200,
+      "cpio_offset": 59102544,
+      "sha256": "9eb3118662b8ef74b633b453e3cc2a760a0dfaaab99c91fb52bf09cb445929c8",
+      "build_id": [
+        "534c89ce5f5981e302729f9f46aaf8f6d1d9db40"
+      ]
+    }
+  ]
+}

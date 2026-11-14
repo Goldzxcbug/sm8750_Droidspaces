@@ -1,0 +1,707 @@
+{
+  "status": "HOST_ONLY_R38_R43_MINIMAL_ADDITIONS_TO_ROOT_BASE_SELECTION_READY",
+  "schema_version": 1,
+  "created_epoch": 1794662986.836371,
+  "repository_root": "/home/gold/文档/仓库/sm8750_Droidspaces",
+  "maximum_single_file_bytes": 8388608,
+  "selected_file_count": 34,
+  "selected_total_bytes": 1372529,
+  "groups": [
+    {
+      "id": "r38",
+      "title": "R38 实际 GPI 异常与原 ELF 对照",
+      "can_prove": [
+        "源为7278且GPU未加载/SF被停止；目标实际保存 current-EL DABT，fault VA=0x128，PC指向 gpi_send_cmd。",
+        "实际原GPI0172040的超时分支含对可为NULL的channel解引用；随附从本轮initrd提取的GPI/SPI ELF和provenance。"
+      ],
+      "cannot_prove": [
+        "该NULL错误不能解释最先发生的EV命令completion超时。",
+        "pstore保存opcode f94086c8 与实际ELF f94096c8不一致，不能补字或据此声称live代码被改。",
+        "不证明DMA、IRQ或固件最初失效原因。"
+      ],
+      "source_paths": [
+        "out/kexec-boot-fix/round38/device-test.json",
+        "out/kexec-boot-fix/round38/pstore-after-exec.txt",
+        "out/kexec-boot-fix/round38/loaded-audit.json",
+        "out/kexec-boot-fix/round38/source-kgsl-blocked-boot-verification.json",
+        "out/kexec-boot-fix/round38/source-surfaceflinger-stop-stability.json",
+        "out/kexec-boot-fix/round38/source-startup-dmesg.txt",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/fault-review.json",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/module-provenance.json",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/msm_gpi.ko",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/spi-msm-geni.ko",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/provenance.json",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/msm_gpi-4553152f.c.txt",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/msm_gpi-0671d4da.c.txt"
+      ],
+      "additional_paths_not_in_base": [
+        "out/kexec-boot-fix/round38/source-kgsl-blocked-boot-verification.json",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/fault-review.json",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/module-provenance.json",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/msm_gpi.ko",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/spi-msm-geni.ko",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/provenance.json",
+        "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/msm_gpi-4553152f.c.txt"
+      ],
+      "source_paths_already_in_base": [
+        "out/kexec-boot-fix/round38/device-test.json",
+        "out/kexec-boot-fix/round38/pstore-after-exec.txt",
+        "out/kexec-boot-fix/round38/loaded-audit.json",
+        "out/kexec-boot-fix/round38/source-startup-dmesg.txt"
+      ]
+    },
+    {
+      "id": "r39",
+      "title": "R39 同目标 Image 的普通启动基线",
+      "can_prove": [
+        "同68e8 Image以普通临时启动进入Android，695原vendor模块、原GPU/GPI/SPI及图形进程有保存记录。"
+      ],
+      "cannot_prove": [
+        "没有执行kexec。",
+        "未证明kexec-only参数、四个修改模块或热硬件交接无因果；不能用该普通启动排除诊断改动。"
+      ],
+      "source_paths": [
+        "out/kexec-boot-fix/round39/device-test.json",
+        "out/kexec-boot-fix/round39/review.json",
+        "out/kexec-boot-fix/round39/observed-final-dmesg.txt",
+        "out/kexec-boot-fix/round39/observed-notes.bin",
+        "out/kexec-boot-fix/round39/observed-cmdline.bin",
+        "out/kexec-boot-fix/round39/observed-graphics.json",
+        "out/kexec-boot-fix/round39/observed-modules.txt",
+        "out/kexec-boot-fix/round39/observed-msm_kgsl-note.bin",
+        "out/kexec-boot-fix/round39/observed-msm_gpi-note.bin",
+        "out/kexec-boot-fix/round39/observed-spi_msm_geni-note.bin"
+      ],
+      "additional_paths_not_in_base": [
+        "out/kexec-boot-fix/round39/observed-notes.bin",
+        "out/kexec-boot-fix/round39/observed-cmdline.bin",
+        "out/kexec-boot-fix/round39/observed-msm_kgsl-note.bin",
+        "out/kexec-boot-fix/round39/observed-msm_gpi-note.bin",
+        "out/kexec-boot-fix/round39/observed-spi_msm_geni-note.bin"
+      ],
+      "source_paths_already_in_base": [
+        "out/kexec-boot-fix/round39/device-test.json",
+        "out/kexec-boot-fix/round39/review.json",
+        "out/kexec-boot-fix/round39/observed-graphics.json",
+        "out/kexec-boot-fix/round39/observed-modules.txt"
+      ]
+    },
+    {
+      "id": "r40",
+      "title": "R40 新GPI请求已打包，运行采用未证",
+      "can_prove": [
+        "本地initrd含94669/44f9新GPI和290B options；源/装载/单次执行有记录。",
+        "正常modules.load及其依赖闭包当时未选中GPI；仅把KO放入archive不能证明采用。"
+      ],
+      "cannot_prove": [
+        "严重损坏的postexec pstore不能可靠解析故障类型/PC或新GPI执行。",
+        "first-post捕获为恢复stock身份，不是目标成功；缺marker不证明目标未进入。"
+      ],
+      "source_paths": [
+        "out/kexec-boot-fix/round40/device-test.json",
+        "out/kexec-boot-fix/round40/pstore-after-exec.txt",
+        "out/kexec-boot-fix/round40/pstore-before-exec.txt",
+        "out/kexec-boot-fix/round40/first-post-exec-capture.json",
+        "out/kexec-boot-fix/round40/first-post-exec-boot-before.stdout.bin",
+        "out/kexec-boot-fix/round40/first-post-exec-boot-after.stdout.bin",
+        "out/kexec-boot-fix/round40/first-post-exec-notes.stdout.bin",
+        "out/kexec-boot-fix/round40/first-post-exec-gpi-note.stdout.bin",
+        "out/kexec-boot-fix/round40/first-post-exec-dmesg.stdout.bin",
+        "out/kexec-boot-fix/gpi-event-r40-payload-runtime-review/audit.json",
+        "out/kexec-boot-fix/gpi-event-r40-independent-review/target-raw-audit.json"
+      ],
+      "additional_paths_not_in_base": [
+        "out/kexec-boot-fix/round40/first-post-exec-capture.json",
+        "out/kexec-boot-fix/round40/first-post-exec-boot-before.stdout.bin",
+        "out/kexec-boot-fix/round40/first-post-exec-boot-after.stdout.bin",
+        "out/kexec-boot-fix/round40/first-post-exec-notes.stdout.bin",
+        "out/kexec-boot-fix/round40/first-post-exec-gpi-note.stdout.bin",
+        "out/kexec-boot-fix/gpi-event-r40-payload-runtime-review/audit.json",
+        "out/kexec-boot-fix/gpi-event-r40-independent-review/target-raw-audit.json"
+      ],
+      "source_paths_already_in_base": [
+        "out/kexec-boot-fix/round40/device-test.json",
+        "out/kexec-boot-fix/round40/pstore-after-exec.txt",
+        "out/kexec-boot-fix/round40/pstore-before-exec.txt"
+      ]
+    },
+    {
+      "id": "r41",
+      "title": "R41 normal-list修正与人工介入边界",
+      "can_prove": [
+        "normal modules.load明确追加msm_gpi.ko，实际加载233页/DTB/initrd extent审计通过。",
+        "源7278/f632实际运行；first-post实际为stock931f/73f15，非目标新GPI身份。",
+        "用户确认手动重进fastboot，准确时点未知；随后ROOT仅普通reboot恢复stock。"
+      ],
+      "cannot_prove": [
+        "100轮未Android1受到人工介入影响，不能当作完整自然失败链。",
+        "normal-list选择不等于44f9实际运行；首次stock切换是自动还是人工未定。",
+        "晚取pstore经过人工fastboot及普通reboot，不是原始即时目标console。"
+      ],
+      "source_paths": [
+        "out/kexec-boot-fix/round41/device-test.json",
+        "out/kexec-boot-fix/round41/device-test-runner-terminal.json",
+        "out/kexec-boot-fix/round41/source-kgsl-blocked-boot-verification.json",
+        "out/kexec-boot-fix/round41/source-surfaceflinger-stop-stability.json",
+        "out/kexec-boot-fix/round41/loaded-audit.json",
+        "out/kexec-boot-fix/round41/first-post-exec-capture.json",
+        "out/kexec-boot-fix/round41/first-post-exec-boot-before.stdout.bin",
+        "out/kexec-boot-fix/round41/first-post-exec-boot-after.stdout.bin",
+        "out/kexec-boot-fix/round41/first-post-exec-notes.stdout.bin",
+        "out/kexec-boot-fix/round41/first-post-exec-dmesg.stdout.bin",
+        "out/kexec-boot-fix/round41/screen-state-discrepancy-review.json",
+        "out/kexec-boot-fix/round41/installed-recovery-readonly.json",
+        "out/kexec-boot-fix/round41/installed-recovery-capture/pstore-console.stdout.bin",
+        "out/kexec-boot-fix/gpi-event-r41-result-review/audit.json"
+      ],
+      "additional_paths_not_in_base": [
+        "out/kexec-boot-fix/round41/device-test-runner-terminal.json",
+        "out/kexec-boot-fix/round41/first-post-exec-capture.json",
+        "out/kexec-boot-fix/round41/first-post-exec-boot-before.stdout.bin",
+        "out/kexec-boot-fix/round41/first-post-exec-boot-after.stdout.bin",
+        "out/kexec-boot-fix/round41/first-post-exec-notes.stdout.bin",
+        "out/kexec-boot-fix/round41/installed-recovery-capture/pstore-console.stdout.bin",
+        "out/kexec-boot-fix/gpi-event-r41-result-review/audit.json"
+      ],
+      "source_paths_already_in_base": [
+        "out/kexec-boot-fix/round41/device-test.json",
+        "out/kexec-boot-fix/round41/source-kgsl-blocked-boot-verification.json",
+        "out/kexec-boot-fix/round41/source-surfaceflinger-stop-stability.json",
+        "out/kexec-boot-fix/round41/loaded-audit.json",
+        "out/kexec-boot-fix/round41/screen-state-discrepancy-review.json",
+        "out/kexec-boot-fix/round41/installed-recovery-readonly.json"
+      ]
+    },
+    {
+      "id": "r42",
+      "title": "R42 自动回fastboot，自然窗口无新身份日志",
+      "can_prove": [
+        "源7278/fafa、693模块+SF60s、helper后694和233页装载审计有正证据。",
+        "用户明确确认没有操作，是自动重启；USB实际观察为fastboot。",
+        "自然execute等待没有保存first-post新UUID记录；ROOT随后一次普通reboot后在stock d8c5/931f采pstore和UUID夹取。"
+      ],
+      "cannot_prove": [
+        "不能将recovery-after-fastboot采集当作自然目标ADB首接触。",
+        "pstore没有完整68e8/nonce/44f9/KGPICMD1等标记，不证明目标从未进入。",
+        "自动reset原因、首个目标fault和新GPI实际采用仍未知；不排除诊断Image/四KO的热启动影响。"
+      ],
+      "source_paths": [
+        "out/kexec-boot-fix/round42/device-test.json",
+        "out/kexec-boot-fix/round42/user-reboot-observation.json",
+        "out/kexec-boot-fix/round42/USB-after-user-reboot-observation.json",
+        "out/kexec-boot-fix/round42/normal-recovery-reboot.json",
+        "out/kexec-boot-fix/round42/installed-recovery-readonly.json",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-capture.json",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-pstore-checkpoint.json",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-boot-before.stdout.bin",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-boot-after-pstore.stdout.bin",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-boot-after.stdout.bin",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-notes.stdout.bin",
+        "out/kexec-boot-fix/gpi-event-r42-result-review/source-loaded-audit.json",
+        "out/kexec-boot-fix/gpi-event-r42-result-review/audit.json"
+      ],
+      "additional_paths_not_in_base": [],
+      "source_paths_already_in_base": [
+        "out/kexec-boot-fix/round42/device-test.json",
+        "out/kexec-boot-fix/round42/user-reboot-observation.json",
+        "out/kexec-boot-fix/round42/USB-after-user-reboot-observation.json",
+        "out/kexec-boot-fix/round42/normal-recovery-reboot.json",
+        "out/kexec-boot-fix/round42/installed-recovery-readonly.json",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-capture.json",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-pstore-checkpoint.json",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-boot-before.stdout.bin",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-boot-after-pstore.stdout.bin",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-boot-after.stdout.bin",
+        "out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-notes.stdout.bin",
+        "out/kexec-boot-fix/gpi-event-r42-result-review/source-loaded-audit.json",
+        "out/kexec-boot-fix/gpi-event-r42-result-review/audit.json"
+      ]
+    },
+    {
+      "id": "r43",
+      "title": "R43 恢复GPU后的普通启动与用户物理确认",
+      "can_prove": [
+        "仅boot header删除GPU黑名单和page_owner，Image仍逐字为7278/8401；没有SF stop/helper/load/execute。",
+        "实际Android1/root0/WD0/kexec0、695原模块、GPUf95、SF PID2345及SS PID3114、UUID8212前后相同。",
+        "用户原话确认“桌面和触摸都正常”；物理确认来自用户，不是主机审阅者亲眼看屏。"
+      ],
+      "cannot_prove": [
+        "这是普通临时启动，不是kexec成功或GPU热停机/权限回收修复。",
+        "原Image编译诊断hook仍在，不能称为干净内核或排除warm-only问题。"
+      ],
+      "source_paths": [
+        "out/kexec-boot-fix/round43/device-test.json",
+        "out/kexec-boot-fix/round43/user-display-touch-confirmation.json",
+        "out/kexec-boot-fix/source-full-graphics-baseline/result-audit.json",
+        "out/kexec-boot-fix/source-full-graphics-baseline/host-audit.json",
+        "out/kexec-boot-fix/source-full-graphics-baseline/manifest.json",
+        "out/kexec-boot-fix/source-full-graphics-baseline/boot-once.py",
+        "out/kexec-boot-fix/round43/observed-dmesg.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-notes.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-modules.stdout.bin",
+        "out/kexec-boot-fix/round43/module-msm_kgsl.stdout.bin",
+        "out/kexec-boot-fix/round43/module-msm_gpi.stdout.bin",
+        "out/kexec-boot-fix/round43/module-spi_msm_geni.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-Android.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-SF.stdout.bin",
+        "out/kexec-boot-fix/round43/SFpid.stdout.bin",
+        "out/kexec-boot-fix/round43/SSpid.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-UUID-before.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-UUID-after.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-blacklist.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-cmdline.stdout.bin"
+      ],
+      "additional_paths_not_in_base": [],
+      "source_paths_already_in_base": [
+        "out/kexec-boot-fix/round43/device-test.json",
+        "out/kexec-boot-fix/round43/user-display-touch-confirmation.json",
+        "out/kexec-boot-fix/source-full-graphics-baseline/result-audit.json",
+        "out/kexec-boot-fix/source-full-graphics-baseline/host-audit.json",
+        "out/kexec-boot-fix/source-full-graphics-baseline/manifest.json",
+        "out/kexec-boot-fix/round43/observed-dmesg.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-notes.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-modules.stdout.bin",
+        "out/kexec-boot-fix/round43/module-msm_kgsl.stdout.bin",
+        "out/kexec-boot-fix/round43/module-msm_gpi.stdout.bin",
+        "out/kexec-boot-fix/round43/module-spi_msm_geni.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-Android.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-SF.stdout.bin",
+        "out/kexec-boot-fix/round43/SFpid.stdout.bin",
+        "out/kexec-boot-fix/round43/SSpid.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-UUID-before.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-UUID-after.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-blacklist.stdout.bin",
+        "out/kexec-boot-fix/round43/observed-cmdline.stdout.bin"
+      ]
+    },
+    {
+      "id": "bindings",
+      "title": "关键模块/打包/目标构建绑定（复用现成结果）",
+      "can_prove": [
+        "可核对实际原GPI0172与构建新GPI44f9及其补丁、Image68e8/source7278身份和R40→R41 normal-list唯一变化。"
+      ],
+      "cannot_prove": [
+        "ABI/布局/构建通过只说明静态兼容检查，不证明运行采用、硬件状态正确或热启动无副作用。",
+        "未随交接复制大于8MiB的Image、boot、initrd、vmlinux/BTF；用manifest中的完整SHA定位原artifact。"
+      ],
+      "source_paths": [
+        "out/kexec-boot-fix/gpi-event-timeout-trace-module/validation.json",
+        "out/kexec-boot-fix/gpi-event-timeout-trace-module/build-result.json",
+        "out/kexec-boot-fix/gpi-event-timeout-trace-module/input-provenance.json",
+        "out/kexec-boot-fix/gpi-event-timeout-trace-module/msm_gpi.ko",
+        "out/kexec-boot-fix/gpi-vendor-baseline/validation.json",
+        "out/kexec-boot-fix/gpi-event-r40-independent-review/module-audit.json",
+        "out/kexec-boot-fix/gpi-event-timeout-payload/manifest.json",
+        "out/kexec-boot-fix/gpi-normal-load-payload/manifest.json",
+        "out/kexec-boot-fix/gpi-normal-load-adoption-independent-review/audit.json",
+        "out/kexec-boot-fix/kgsl-binary-target/manifest.json",
+        "out/kexec-boot-fix/kgsl-blocked-quiet-source/manifest.json",
+        "other_patch/kexec_gpi_event_timeout_null_fix_6.6.89.patch",
+        "other_patch/kexec_gpi_first_event_trace_diag_6.6.89.patch",
+        "other_patch/kexec_gpi_initramfs_load_diag_6.6.89.patch",
+        "other_patch/kexec_source_full_graphics_boot_6.6.89.patch"
+      ],
+      "additional_paths_not_in_base": [
+        "out/kexec-boot-fix/gpi-event-timeout-trace-module/validation.json",
+        "out/kexec-boot-fix/gpi-event-timeout-trace-module/build-result.json",
+        "out/kexec-boot-fix/gpi-event-timeout-trace-module/input-provenance.json",
+        "out/kexec-boot-fix/gpi-event-timeout-trace-module/msm_gpi.ko",
+        "out/kexec-boot-fix/gpi-vendor-baseline/validation.json",
+        "out/kexec-boot-fix/gpi-event-r40-independent-review/module-audit.json",
+        "out/kexec-boot-fix/gpi-event-timeout-payload/manifest.json",
+        "out/kexec-boot-fix/gpi-normal-load-adoption-independent-review/audit.json"
+      ],
+      "source_paths_already_in_base": [
+        "out/kexec-boot-fix/gpi-normal-load-payload/manifest.json",
+        "out/kexec-boot-fix/kgsl-binary-target/manifest.json",
+        "out/kexec-boot-fix/kgsl-blocked-quiet-source/manifest.json"
+      ]
+    }
+  ],
+  "selected_files": [
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round38/source-kgsl-blocked-boot-verification.json",
+      "suggested_export_relative_path": "evidence/round38/source-kgsl-blocked-boot-verification.json",
+      "bytes": 18688,
+      "sha256": "5dd02f465c166af11eaa69d466e6f0f0eb5bc15251dc81b7011834f3eedb043a",
+      "groups": [
+        "r38"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/fault-review.json",
+      "suggested_export_relative_path": "evidence/kgsl-blocked-r38-fault-review/fault-review.json",
+      "bytes": 24725,
+      "sha256": "f84257417b86f1c3831c70df8bb55676378615c30bd04a99fd3e22ff89a51d09",
+      "groups": [
+        "r38"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/module-provenance.json",
+      "suggested_export_relative_path": "evidence/kgsl-blocked-r38-fault-review/module-provenance.json",
+      "bytes": 4199,
+      "sha256": "e3518aa9e7144e63f3fc0c21a8b22d5c41f9dfccc043e0511af800498ce1cf41",
+      "groups": [
+        "r38"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/msm_gpi.ko",
+      "suggested_export_relative_path": "evidence/kgsl-blocked-r38-fault-review/msm_gpi.ko",
+      "bytes": 150400,
+      "sha256": "058a56c5a88bbbcf02a804e609b255c1b4dc38e5fe87daedd9c7ec918a9f855e",
+      "groups": [
+        "r38"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/spi-msm-geni.ko",
+      "suggested_export_relative_path": "evidence/kgsl-blocked-r38-fault-review/spi-msm-geni.ko",
+      "bytes": 118752,
+      "sha256": "829cf4ea5c273ca62f78ff53f99fc06097fea08ed0ac1bdcccf558d2019dc291",
+      "groups": [
+        "r38"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/provenance.json",
+      "suggested_export_relative_path": "evidence/kgsl-blocked-r38-fault-review/official-reference/provenance.json",
+      "bytes": 1016,
+      "sha256": "61ff7f4eccbf220dcb6d94ce91ae118af521364afcabf7340d468ac3ac5c3d29",
+      "groups": [
+        "r38"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/msm_gpi-4553152f.c.txt",
+      "suggested_export_relative_path": "evidence/kgsl-blocked-r38-fault-review/official-reference/msm_gpi-4553152f.c.txt",
+      "bytes": 126556,
+      "sha256": "9db24bafdecc50586f30177a0f7817314084fdeabe935c3a68bb78c9896db442",
+      "groups": [
+        "r38"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round39/observed-notes.bin",
+      "suggested_export_relative_path": "evidence/round39/observed-notes.bin",
+      "bytes": 84,
+      "sha256": "8953a9bbe212130abfede57f9b97aaea35308faf588d6566c5a7364f65f4d985",
+      "groups": [
+        "r39"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round39/observed-cmdline.bin",
+      "suggested_export_relative_path": "evidence/round39/observed-cmdline.bin",
+      "bytes": 1492,
+      "sha256": "1c04ae15e34026fadb0576508e82e9bf243283877c814d263d9f26aca426cc5a",
+      "groups": [
+        "r39"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round39/observed-msm_kgsl-note.bin",
+      "suggested_export_relative_path": "evidence/round39/observed-msm_kgsl-note.bin",
+      "bytes": 36,
+      "sha256": "32d3c199e1403b30a0aded5a0865823eef7cf4621b4e541153c24a6264ab0796",
+      "groups": [
+        "r39"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round39/observed-msm_gpi-note.bin",
+      "suggested_export_relative_path": "evidence/round39/observed-msm_gpi-note.bin",
+      "bytes": 36,
+      "sha256": "0cc3e5a283a51e1ba60b5d9539cfb9e19318c2ed4f672059feca7cd2a00e547e",
+      "groups": [
+        "r39"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round39/observed-spi_msm_geni-note.bin",
+      "suggested_export_relative_path": "evidence/round39/observed-spi_msm_geni-note.bin",
+      "bytes": 36,
+      "sha256": "4cce9dc40bbde8b4102e1f95490a2697ccfdd64c578935e01e23fc92cdf337b1",
+      "groups": [
+        "r39"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round40/first-post-exec-capture.json",
+      "suggested_export_relative_path": "evidence/round40/first-post-exec-capture.json",
+      "bytes": 4430,
+      "sha256": "5c8445048385e135abd22112737ead37998ebf322bec939d9ebb4a315cc1dd4c",
+      "groups": [
+        "r40"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round40/first-post-exec-boot-before.stdout.bin",
+      "suggested_export_relative_path": "evidence/round40/first-post-exec-boot-before.stdout.bin",
+      "bytes": 37,
+      "sha256": "7b3222e880d0b6331a8d8abecad15c4121521fdc68fde9a96fdbf2de321e8f86",
+      "groups": [
+        "r40"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round40/first-post-exec-boot-after.stdout.bin",
+      "suggested_export_relative_path": "evidence/round40/first-post-exec-boot-after.stdout.bin",
+      "bytes": 37,
+      "sha256": "7b3222e880d0b6331a8d8abecad15c4121521fdc68fde9a96fdbf2de321e8f86",
+      "groups": [
+        "r40"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round40/first-post-exec-notes.stdout.bin",
+      "suggested_export_relative_path": "evidence/round40/first-post-exec-notes.stdout.bin",
+      "bytes": 84,
+      "sha256": "555f7afcdc056ea7737eef09081f008e803cb1322736be1e24d7d43916b75885",
+      "groups": [
+        "r40"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round40/first-post-exec-gpi-note.stdout.bin",
+      "suggested_export_relative_path": "evidence/round40/first-post-exec-gpi-note.stdout.bin",
+      "bytes": 36,
+      "sha256": "0cc3e5a283a51e1ba60b5d9539cfb9e19318c2ed4f672059feca7cd2a00e547e",
+      "groups": [
+        "r40"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-event-r40-payload-runtime-review/audit.json",
+      "suggested_export_relative_path": "evidence/gpi-event-r40-payload-runtime-review/audit.json",
+      "bytes": 14456,
+      "sha256": "83a422d6fb47897c4a5cecb1d42294eb2bd06b1c043e3a57f156b096f47e20ea",
+      "groups": [
+        "r40"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-event-r40-independent-review/target-raw-audit.json",
+      "suggested_export_relative_path": "evidence/gpi-event-r40-independent-review/target-raw-audit.json",
+      "bytes": 18311,
+      "sha256": "6a1eb3e588f0b0da705666923d8c727d380e20bc166352132dd26ce556bb03a7",
+      "groups": [
+        "r40"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round41/device-test-runner-terminal.json",
+      "suggested_export_relative_path": "evidence/round41/device-test-runner-terminal.json",
+      "bytes": 11226,
+      "sha256": "321acc728acba0227186774f1cb860e369ea805149b059991e18a08211938b6d",
+      "groups": [
+        "r41"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round41/first-post-exec-capture.json",
+      "suggested_export_relative_path": "evidence/round41/first-post-exec-capture.json",
+      "bytes": 4430,
+      "sha256": "e301c458d3e47364ba48c3b759e61b508d386f6c9da9ab85629601ef94203949",
+      "groups": [
+        "r41"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round41/first-post-exec-boot-before.stdout.bin",
+      "suggested_export_relative_path": "evidence/round41/first-post-exec-boot-before.stdout.bin",
+      "bytes": 37,
+      "sha256": "70e2593000dd020067aab40db60531d38cf31a927a9e864ec61c643f4968ebbb",
+      "groups": [
+        "r41"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round41/first-post-exec-boot-after.stdout.bin",
+      "suggested_export_relative_path": "evidence/round41/first-post-exec-boot-after.stdout.bin",
+      "bytes": 37,
+      "sha256": "70e2593000dd020067aab40db60531d38cf31a927a9e864ec61c643f4968ebbb",
+      "groups": [
+        "r41"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round41/first-post-exec-notes.stdout.bin",
+      "suggested_export_relative_path": "evidence/round41/first-post-exec-notes.stdout.bin",
+      "bytes": 84,
+      "sha256": "555f7afcdc056ea7737eef09081f008e803cb1322736be1e24d7d43916b75885",
+      "groups": [
+        "r41"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/round41/installed-recovery-capture/pstore-console.stdout.bin",
+      "suggested_export_relative_path": "evidence/round41/installed-recovery-capture/pstore-console.stdout.bin",
+      "bytes": 262132,
+      "sha256": "f5154810597ece16f61ba872203c77b6d93538632e2b199ede3ec3837c179aa4",
+      "groups": [
+        "r41"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-event-r41-result-review/audit.json",
+      "suggested_export_relative_path": "evidence/gpi-event-r41-result-review/audit.json",
+      "bytes": 13988,
+      "sha256": "9f39e4894ca3b9721ce17d017adc77f0ad12acf1f48e6e36485e6ba572c957a6",
+      "groups": [
+        "r41"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-event-timeout-trace-module/validation.json",
+      "suggested_export_relative_path": "evidence/gpi-event-timeout-trace-module/validation.json",
+      "bytes": 17511,
+      "sha256": "867acecb3a9308f19b1e6407384a6cccb2c0434a83c2565c21b4c842c1aa44b0",
+      "groups": [
+        "bindings"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-event-timeout-trace-module/build-result.json",
+      "suggested_export_relative_path": "evidence/gpi-event-timeout-trace-module/build-result.json",
+      "bytes": 29350,
+      "sha256": "6d51010bcaba3f5d20ab5528281ff8db7b0c916fa0e56017f1a2f6db4fd8d0ce",
+      "groups": [
+        "bindings"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-event-timeout-trace-module/input-provenance.json",
+      "suggested_export_relative_path": "evidence/gpi-event-timeout-trace-module/input-provenance.json",
+      "bytes": 6582,
+      "sha256": "2dc40726782ac00f9f50995f37c3864c81e1a882a4faf229b636b222ef8a2860",
+      "groups": [
+        "bindings"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-event-timeout-trace-module/msm_gpi.ko",
+      "suggested_export_relative_path": "evidence/gpi-event-timeout-trace-module/msm_gpi.ko",
+      "bytes": 479976,
+      "sha256": "94669c47c94ab1e0bc9391f9e124b35e1b00d4ed18b8381dbf5bd0be8b65e111",
+      "groups": [
+        "bindings"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-vendor-baseline/validation.json",
+      "suggested_export_relative_path": "evidence/gpi-vendor-baseline/validation.json",
+      "bytes": 15279,
+      "sha256": "ed0a5090de13f13ac951e18b5ea8ea7e5151e6c75fbdb2e4ea07fa2499ca99b5",
+      "groups": [
+        "bindings"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-event-r40-independent-review/module-audit.json",
+      "suggested_export_relative_path": "evidence/gpi-event-r40-independent-review/module-audit.json",
+      "bytes": 21161,
+      "sha256": "b3fbe1a1996854fe2eea1b24ee3fc7a02f0fe961dba1d63c15f0c4901a4a8889",
+      "groups": [
+        "bindings"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-event-timeout-payload/manifest.json",
+      "suggested_export_relative_path": "evidence/gpi-event-timeout-payload/manifest.json",
+      "bytes": 4637,
+      "sha256": "86cea07753b23547d733aa7b42f388a5fb7d21fdb100d79a69b0206cc67637e3",
+      "groups": [
+        "bindings"
+      ]
+    },
+    {
+      "source_repo_relative_path": "out/kexec-boot-fix/gpi-normal-load-adoption-independent-review/audit.json",
+      "suggested_export_relative_path": "evidence/gpi-normal-load-adoption-independent-review/audit.json",
+      "bytes": 22688,
+      "sha256": "c1d044772d8b2899a21d240d227659d138897ca625cc6b2a00d4f6bba52d11a1",
+      "groups": [
+        "bindings"
+      ]
+    }
+  ],
+  "critical_editorial_notes": [
+    {
+      "path": "out/kexec-boot-fix/source-full-graphics-baseline/result-audit.json",
+      "note": "冻结旧result-audit在用户回答之前生成，其中physical confirmation pending为历史状态，不得当作当前结果。以round43/user-display-touch-confirmation.json和新版device-test.json为准；不要改冻结原报告。"
+    },
+    {
+      "note": "R41用户手动进fastboot、时间未知；R42用户明确没有操作、自动重启。两轮不得混用人工介入结论。"
+    },
+    {
+      "note": "R38/R40/R41/R42源GPU被黑名单且SF主动停止；这不是正常GUI条件。R43已撤销，用户确认图形和触摸正常，但未执行kexec。"
+    },
+    {
+      "note": "所有raw保留原始字节；行号以raw.split(b'\\n')为准，不修复损坏字符，不用旧轮次寄存器/栈填缺。"
+    }
+  ],
+  "omitted_large_or_redundant_artifacts": [
+    "完整boot/Image/initrd/vmlinux/BTF及旧大套件日志",
+    "重复startup/final dmesg、重复恢复stock dmesg和全部380+历史依赖；关键身份由所选原notes/state/review绑定",
+    "旧打包二进制由已选manifest的SHA引用，不把全部549 CPIO记录逐一导出"
+  ],
+  "actions": {
+    "device_operations": 0,
+    "builds_or_tests_run": 0,
+    "git_operations": 0,
+    "original_logs_or_frozen_reports_modified": 0,
+    "actual_export_or_commit_done": false
+  },
+  "base_selection_path": "out/kexec-handoff-export/base-selection.json",
+  "base_selection_sha256": "45217a434735a53009ac79098d8452739aca13014bd68e48475c1491ea659f1d",
+  "full_context_selection_path": "out/kexec-handoff-export/latest-selection-full-context.json",
+  "full_context_selection_sha256": "1cd55eed210176c3c852bd17e8b70e9eb1ad74d5ef422a81dd8efeb58656fdb9",
+  "root_base_already_covers_file_count": 638,
+  "context_files_already_in_base": 53,
+  "optional_or_repository_references_not_requested_as_additions": [
+    {
+      "path": "out/kexec-boot-fix/round38/source-surfaceflinger-stop-stability.json",
+      "reason": "源SF60s已由state/source验证及结果报告绑定；不重复237KB完整样本"
+    },
+    {
+      "path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/msm_gpi-0671d4da.c.txt",
+      "reason": "早版本比较仅辅助；455参考/actualELF与fault报告足够当前handoff"
+    },
+    {
+      "path": "out/kexec-boot-fix/round39/observed-final-dmesg.txt",
+      "reason": "base已有R39 startup dmesg，免再附约1.95MB重复normal日志"
+    },
+    {
+      "path": "out/kexec-boot-fix/round40/first-post-exec-dmesg.stdout.bin",
+      "reason": "base已有恢复stock dmesg；首接触notes/UUID/manifest足以身份界定"
+    },
+    {
+      "path": "out/kexec-boot-fix/round41/first-post-exec-dmesg.stdout.bin",
+      "reason": "本次只补首接触notes/UUID/manifest和latepstore；stock全dmesg非最小额外项"
+    },
+    {
+      "path": "out/kexec-boot-fix/source-full-graphics-baseline/boot-once.py",
+      "reason": "base已含package/state/host结果审阅；不为日志交接重复导出执行脚本"
+    },
+    {
+      "path": "other_patch/kexec_gpi_event_timeout_null_fix_6.6.89.patch",
+      "reason": "canonical补丁保留在仓库other_patch路径，作为引用而非再复制到日志材料"
+    },
+    {
+      "path": "other_patch/kexec_gpi_first_event_trace_diag_6.6.89.patch",
+      "reason": "canonical补丁保留在仓库other_patch路径，作为引用而非再复制到日志材料"
+    },
+    {
+      "path": "other_patch/kexec_gpi_initramfs_load_diag_6.6.89.patch",
+      "reason": "canonical补丁保留在仓库other_patch路径，作为引用而非再复制到日志材料"
+    },
+    {
+      "path": "other_patch/kexec_source_full_graphics_boot_6.6.89.patch",
+      "reason": "canonical补丁保留在仓库other_patch路径，作为引用而非再复制到日志材料"
+    }
+  ],
+  "selection_note": "只需将selected_files作为近期必要额外项合并ROOT638文件base；groups完整路径只供理解证明边界，不要求重复复制。"
+}

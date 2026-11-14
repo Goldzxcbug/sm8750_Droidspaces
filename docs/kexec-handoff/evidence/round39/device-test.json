@@ -1,0 +1,66 @@
+{
+  "round": 39,
+  "kind": "ORDINARY_EXACT_TARGET_IMAGE_DEFAULT_OFF_CONTROL",
+  "stage": "EXACT68E8_ORDINARY_ANDROID_BOOT_VERIFIED_DEFAULT_OFF",
+  "temporary_boot_request_count": 1,
+  "helper_insmod_request_count": 0,
+  "load_request_count": 0,
+  "execute_request_count": 0,
+  "expected_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+  "preflight_boot_id": "89361880-a80b-45c4-9066-e163cc02fc2b",
+  "boot_sha256": "01d496ca7ba1404f6d0f42045cdf5f4ca17e9f5b76a7b73df2d0cf262eaabec5",
+  "Image_sha256": "8824087346c58ea7ff57b31fdcee795c509f7cc58699c558b234f1417851130f",
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "cold_boot_host_validation_sha256": "f0dbd0b6a64c83e8bdab2026356ebc2a2f4fd357b85603162d0b44d3c7b1bb46",
+  "root_final_host_binding_path": "root-final-host-binding.json",
+  "root_final_host_binding_sha256": "7b21ff93f13892cb280d335e8910abae5fbc8d0c236579b3a271e7d42e134943",
+  "GPI_fix_not_present_in_this_control": true,
+  "created_epoch": 1794650264.3288734,
+  "requested_epoch": 1794650265.452165,
+  "upload_exit": 0,
+  "upload_returned_epoch": 1794650280.258933,
+  "observed_build_ids": [
+    "68e85e134a894c34b5fef3ac30f4dd450d00a6b5"
+  ],
+  "observed_boot_id": "55cf2d03-4429-4d36-8115-8d3dbe078e57",
+  "observed_kernel": "6.6.89-Gold_Bug_kexec_kgsl_fdt_nomap_diag",
+  "android_boot_completed": true,
+  "post_boot_pstore_exit": 0,
+  "post_boot_pstore_sha256": "5cf83a0499b1e8574c4a42830a15cacf233f1aa9d23c518f4be915f32c84f7be",
+  "observed_log_scope": "target",
+  "module_count": 695,
+  "module_build_ids": {
+    "gcc_sun": [
+      "fd0294bddc6fc79a28a1a6826e5328eee01567cb"
+    ],
+    "ufs_qcom": [
+      "a0f190cdb34943457dc4f4642b720838e77acda3"
+    ],
+    "phy_qcom_ufs": [
+      "da0d45e45f727c03861320cf4132255b22a0cf5c"
+    ],
+    "msm_kgsl": [
+      "f95e145481d6423dffac1f0cb3e1236dfbb1b753"
+    ],
+    "msm_gpi": [
+      "017204038f33bb4419f33057adedc2b0a2490c74"
+    ],
+    "spi_msm_geni": [
+      "00ff969c6f4d78e2791618072577c2aa0b1a4b62"
+    ]
+  },
+  "module_names_match_previous_source": true,
+  "modules_missing": [],
+  "modules_added": [],
+  "verified_epoch": 1794650301.6215389,
+  "same_kernel_Image_normally_boots_Android": true,
+  "cold_control_does_not_prove_kexec_or_GPU_quarantine": true,
+  "does_not_separate_diag_parameters_from_three_modified_modules": true,
+  "chosen_kexec_marker_absent": true,
+  "quarantine_selector_absent": true,
+  "full_graphics_and_six_module_notes_verified": true,
+  "review_path": "review.json",
+  "review_sha256": "6f86f639ce8517c8cf7c44974f96f59e807acd49c0118d75eeb239df1ffe96bb",
+  "post_normal_boot_readonly_sha256": "4e1afbd9ecc788716327c4cb5e9e714a956f15d4558c99f57156e52f54c26ae1"
+}

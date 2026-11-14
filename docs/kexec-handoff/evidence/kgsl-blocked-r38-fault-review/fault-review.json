@@ -1,0 +1,457 @@
+{
+  "status": "R38_SAVED_FIRST_KERNEL_FAULT_ACTUAL_GPI_EVENT_TIMEOUT_PATH_REVIEWED_WITH_RAW_LIMITS",
+  "raw": {
+    "path": "round38/pstore-after-exec.txt",
+    "sha256": "f689111c71917278d996c9d1d47f91c9451967d408b522467fb34f606bafa7df",
+    "bytes": 262132,
+    "literal_LF_count": 2817,
+    "ring_full": true,
+    "no_character_repairs": true,
+    "complete_saved_nonce_occurrences": 0,
+    "scope": "First saved complete ESR/current-EL/PC block, not a claim about the overwritten boot prefix."
+  },
+  "target": {
+    "manifest_sha256": "3ef281065bac2dea83f3a7aa13e5514e6abd8cdd0131fca76d6e531768d38f92",
+    "build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+    "vmlinux_sha256": "2f6190f83800da589f82c1da9386ae2b5c91b2103999fa409828523349ec0676",
+    "raw_exact_build_id_occurrences": 1,
+    "runtime_absolute_module_base_not_recovered": true
+  },
+  "positive_fault_fields": {
+    "ESR_LF": 2540,
+    "ESR_hex": "96000005",
+    "EC": 37,
+    "current_EL_DABT_LF": 2541,
+    "DFSC_from_complete_ESR": 5,
+    "DFSC_meaning": "level 1 translation fault",
+    "WnR_from_ESR": 0,
+    "this_is_not_DFSC_0x10_SEA": true,
+    "page_table_address_LF": 2550,
+    "page_table_address_hex": "0000000000000128",
+    "page_table_pgd_p4d_pud_all_zero": true,
+    "PC_LF": 2571,
+    "PC": "gpi_send_cmd+0x180/0x2e8 [msm_gpi]",
+    "Call_trace_header_LF": 2584,
+    "complete_SMP_stopping_LF": 2616
+  },
+  "actual_module": {
+    "path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/msm_gpi.ko",
+    "sha256": "058a56c5a88bbbcf02a804e609b255c1b4dc38e5fe87daedd9c7ec918a9f855e",
+    "build_id": "017204038f33bb4419f33057adedc2b0a2490c74",
+    "from_actual_R38_initrd": true,
+    "independent_recovered_stock_copy_matches": true,
+    "gpi_send_cmd_section_offset": "0x275c",
+    "ELF_function_size": "0x2e4",
+    "kallsyms_span_to_next_function": "0x2e8",
+    "ELF_plus180_opcode": "f94096c8",
+    "ELF_plus180": "ldr x8, [x22, #0x128]",
+    "raw_Code_parenthesized_opcode_LF": 2613,
+    "raw_Code_parenthesized_opcode": "f94086c8",
+    "raw_opcode_decodes": "ldr x8, [x22, #0x108]",
+    "XOR_opcode_difference": "0x1000",
+    "saved_code_disagrees_with_immutable_ELF": true,
+    "live_code_corruption_proved": false,
+    "x22_zero_is_only_an_intact_local_token_in_damaged_LF": 2576
+  },
+  "actual_error_path": {
+    "caller": "gpi_alloc_ev_chan",
+    "caller_section_offset": "0x94ac",
+    "caller_plus74": "mov x1, xzr",
+    "caller_plus78": "mov w2, #0xa",
+    "caller_plus7c": "bl gpi_send_cmd",
+    "caller_plus80_saved_return_offset": true,
+    "send_plus24": "mov x22, x1",
+    "send_plus120": "BL wait_for_completion_timeout (relocation target)",
+    "send_plus124": "cbz x0, timeout block at +0x164",
+    "timeout_block_plus180": "unconditional load of second argument +0x128 before later MMIO helper",
+    "cmd_info_row_10": {
+      "command": 10,
+      "opcode": 0,
+      "expected_state": 1,
+      "timeout_ms": 500
+    },
+    "static_defect": "A legitimate event-channel allocation passes a NULL channel pointer; its command-completion timeout path unconditionally dereferences that pointer. This actual-module defect is statically established independently of damaged registers.",
+    "runtime_inference": "The saved complete PC offset and complete page-table address are consistent with that static error path. Because the saved Code opcode disagrees and several registers/stack rows are damaged, do not claim all live instruction bytes, fields or the entire stack were recovered.",
+    "unanswered": "Why event-command completion was not observed: preexisting GPI state, reset/IRQ routing or another cause remains unproved."
+  },
+  "source_reference": {
+    "files": [
+      {
+        "path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/msm_gpi-0671d4da.c.txt",
+        "sha256": "2983685a24be0ec096f45a3e3140f32247ca5ce2547215c79cd32caecb7e6995"
+      },
+      {
+        "path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/msm_gpi-4553152f.c.txt",
+        "sha256": "9db24bafdecc50586f30177a0f7817314084fdeabe935c3a68bb78c9896db442"
+      }
+    ],
+    "matching_vendor_path": "drivers/dma/qcom/msm_gpi.c (not generic drivers/dma/qcom/gpi.c)",
+    "official455_URL": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/4553152f62a3bd9f39bb6d068a4d94a15a8c07fd/drivers/dma/qcom/msm_gpi.c",
+    "official455_lines": {
+      "timeout_unconditional_gpi_read_ch_state": 1703,
+      "event_NULL_call": 2997,
+      "read_ch_state_definition": 3975
+    },
+    "official0671_URL": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/0671d4da634e8898e9d6a1f1c0a55978736b9567/drivers/dma/qcom/msm_gpi.c",
+    "official0671_timeout_lines": [
+      1656,
+      1662
+    ],
+    "earlier_revision": "Timeout reads IRQ status and returns -EIO; it lacks the unconditional channel-state fallback. This comparison does not establish full-module build equivalence."
+  },
+  "stack_limits": {
+    "literal_complete_PC_row": 2571,
+    "corroborating_saved_path": "The damaged stack names/offsets are consistent with event allocation/configuration from SPI hardware preparation during a deferred touch-device probe. Only exact preserved tokens are retained; no repaired complete call chain is asserted.",
+    "actual_kernel_ELF_symbols": {
+      "do_mem_abort": {
+        "VA": "0xffffffc08003b9d4",
+        "ELF_size": "0x118"
+      },
+      "do_translation_fault": {
+        "VA": "0xffffffc0810b3efc",
+        "ELF_size": "0x50"
+      },
+      "do_page_fault": {
+        "VA": "0xffffffc0810b3f50",
+        "ELF_size": "0x48c"
+      },
+      "__do_kernel_fault": {
+        "VA": "0xffffffc08003c45c",
+        "ELF_size": "0x280"
+      },
+      "die_kernel_fault": {
+        "VA": "0xffffffc08003baec",
+        "ELF_size": "0x88"
+      },
+      "__spi_pump_transfer_message": {
+        "VA": "0xffffffc080a1e230",
+        "ELF_size": "0x680"
+      },
+      "__spi_sync": {
+        "VA": "0xffffffc080a1c538",
+        "ELF_size": "0x460"
+      },
+      "spi_probe": {
+        "VA": "0xffffffc080a180d8",
+        "ELF_size": "0xdc"
+      },
+      "kthread": {
+        "VA": "0xffffffc0800e39c4",
+        "ELF_size": "0x138"
+      },
+      "ret_from_fork": {
+        "VA": "0xffffffc0800164e0",
+        "ELF_size": "0x20"
+      }
+    },
+    "damaged_rows": [
+      2551,
+      2567,
+      2569,
+      2572,
+      2574,
+      2576,
+      2585,
+      2586,
+      2587,
+      2588,
+      2589,
+      2590,
+      2591,
+      2592,
+      2593,
+      2594,
+      2595,
+      2596,
+      2597,
+      2598,
+      2599,
+      2600,
+      2601,
+      2602,
+      2603,
+      2604,
+      2605,
+      2606,
+      2607,
+      2608,
+      2609,
+      2610,
+      2611,
+      2613,
+      2615
+    ]
+  },
+  "R35_comparison": {
+    "same_immutable_target": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+    "R35_first_saved_user_DABT": "linkerconfig / ESR92000005 / FAR28, followed by boringssl self-test failure and orderly reboot per frozen R35 review",
+    "R38_saved_block": "Current-EL kernel translation fault in GPI event allocation at about3.23s, followed by stopping CPUs and damaged watchdog-bite records.",
+    "same_failure_signature": false,
+    "TLS_cause_or_sole_GPU_cause_proved": false,
+    "control_limit": "Source-GPU-never-loaded/SF-stopped control remains an experiment with source and target diagnostic/module/settings differences; this failure neither completes Android nor proves all earlier faults shared one cause."
+  },
+  "next_minimal_step": "Use ROOT-selected unchanged68e8 ordinary temporary-boot control to verify its default path and stock GPI/SPI identities. It does not isolate kexec parameters or the three modified target modules. A correct event-timeout error fix would still need separate evidence for the underlying completion failure; no new patch or device action was performed here.",
+  "host_tool_limits": [
+    "Initial temporary terminal search used splitlines and misnumbered damaged CR/VT as rows; the frozen report exclusively uses raw0x0a LF offsets.",
+    "bpftool cannot resolve this split module BTF against either the new GKI target base IDs or the previously saved stock BTF IDs. No private struct layout or whole-BTF equivalence is claimed from these failed attempts. Field128 and NULL/error-flow facts come from actual instructions and pinned vendor source."
+  ],
+  "selected_raw_LFs": {
+    "2538": {
+      "offset": 229061,
+      "bytes": 107,
+      "sha256": "a332ead6f4c1da29b06f3da8c325f85f5eae53a2d7e4ab8228dc8606e121796a",
+      "hex": "5b20202020332e3233303830345d5b2020543139345d20552e61626c6520776f2068616e646c65206b65726e656c204e554c4c20706f696e7465722064657265666572656e6365206174207669727475616c20616464726573732030303030303030303030303030313238",
+      "display_escaped": "b'[    3.230804][  T194] U.able wo handle kernel NULL pointer dereference at virtual address 0000000000000128'"
+    },
+    "2540": {
+      "offset": 229208,
+      "bytes": 49,
+      "sha256": "408efd9d806f6b59d01258043f54bff24d762131f1dd95d33481185facc959fb",
+      "hex": "5b20202020332e3233303833375d5b2020543139345d202020455352203d20307830303030303030303936303030303035",
+      "display_escaped": "b'[    3.230837][  T194]   ESR = 0x0000000096000005'"
+    },
+    "2541": {
+      "offset": 229258,
+      "bytes": 67,
+      "sha256": "74be68cddc954c316016fe981a4e1be6172e1c465680f4d472c289e17d7b44f3",
+      "hex": "5b20202020332e3233303835335d5b2020543139345d2020204543203d20307832353a2044414254202863757272656e7420454c292c20494c203d2033322062697473",
+      "display_escaped": "b'[    3.230853][  T194]   EC = 0x25: DABT (current EL), IL = 32 bits'"
+    },
+    "2543": {
+      "offset": 229368,
+      "bytes": 42,
+      "sha256": "15c2f273862b143f51ac971e574ddc17c966397062e57db3280ecd2f84cc5cda",
+      "hex": "5b20202020332e3233303838345d5b2020543139345d2020204541203d20302c205331505457203d2030",
+      "display_escaped": "b'[    3.230884][  T194]   EA = 0, S1PTW = 0'"
+    },
+    "2546": {
+      "offset": 229514,
+      "bytes": 69,
+      "sha256": "bb31e28759a58c84f86702870d2d4ee0e763ef3a4210ec1fbd1421bfe9a6a3f2",
+      "hex": "5b20202020332e3233303933325d5b2020543139345d202020495356203d20302c20495353203d20307830303030303030352c2049535332203d2030783030303030303030",
+      "display_escaped": "b'[    3.230932][  T194]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000'"
+    },
+    "2549": {
+      "offset": 229717,
+      "bytes": 80,
+      "sha256": "4797eeb273956bce2feb34822f9a544329dd6f0b76427f265b32b8147cde69b2",
+      "hex": "5b20202020332e3233303937395d5b2020543139345d20757365722070677461626c653a20346b2070616765732c2033392d626974205641732c20706764703d30303030303030306236366533303030",
+      "display_escaped": "b'[    3.230979][  T194] user pgtable: 4k pages, 39-bit VAs, pgdp=00000000b66e3000'"
+    },
+    "2550": {
+      "offset": 229798,
+      "bytes": 106,
+      "sha256": "131f6b78acc8ab8b96edacd968cc718ad38d4917bbac08333260a58aab60ac5f",
+      "hex": "5b20202020332e3233303939365d5b2020543139345d205b303030303030303030303030303132385d207067643d303030303030303030303030303030302c207034643d303030303030303030303030303030302c207075643d30303030303030303030303030303030",
+      "display_escaped": "b'[    3.230996][  T194] [0000000000000128] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000'"
+    },
+    "2551": {
+      "offset": 229905,
+      "bytes": 78,
+      "sha256": "2f8f3040cf348a6fe037810758211bbc6c3ae01cf16cf91e21a91deda61ad75e",
+      "hex": "5b20202020332e3233313031335d5b2020543139341d00490e7465726e6168206572726f723a204f6f30733a2030303030303030303936303030303035205b23315d20505245454d505420534d50",
+      "display_escaped": "b'[    3.231013][  T194\\x1d\\x00I\\x0eternah error: Oo0s: 0000000096000005 [#1] PREEMPT SMP'"
+    },
+    "2569": {
+      "offset": 242189,
+      "bytes": 73,
+      "sha256": "f6ed6b15b6ba689a667ae407d34b1aad72b32709082819273b6a44e11b16051b",
+      "hex": "5b20202820332e3233313731365d5b2020543139345d20576f726b71756575653a206576656e74735f756e626f7566642064656665727265645f70726f62655f776f726b5f66756e62",
+      "display_escaped": "b'[  ( 3.231716][  T194] Workqueue: events_unboufd deferred_probe_work_funb'"
+    },
+    "2571": {
+      "offset": 242350,
+      "bytes": 62,
+      "sha256": "2e4124052d295c0d2c9a615fb0324e6d27a804ef6c5b8c75e636b3fab7db7712",
+      "hex": "5b20202020332e3233313735325d5b2020543139345d207063203a206770695f73656e645f636d642b30783138302f3078326538205b6d736d5f6770695d",
+      "display_escaped": "b'[    3.231752][  T194] pc : gpi_send_cmd+0x180/0x2e8 [msm_gpi]'"
+    },
+    "2572": {
+      "offset": 242413,
+      "bytes": 62,
+      "sha256": "8f32b5d94c60d40540b094c54789a32876416a8980d0a36f48b6ee26db6e0950",
+      "hex": "5b20202020332e323331373733555b2020543139345d206c72003a206770695f77656e645f636d642b30383138302f3078326538205b6d736d5f6770695d",
+      "display_escaped": "b'[    3.231773U[  T194] lr\\x00: gpi_wend_cmd+08180/0x2e8 [msm_gpi]'"
+    },
+    "2576": {
+      "offset": 242699,
+      "bytes": 88,
+      "sha256": "46fd75aea57b4bbbf0b68e092338a7ad6c3385cef1f491a17d1b47a15235d576",
+      "hex": "5b00202020332e3233313834335d5b2020543139345d207832333a2066666666666638303331336538343738207832323a2030303030303030303030303030303030207832313a2030303030303030303010203030303022",
+      "display_escaped": "b'[\\x00   3.231843][  T194] x23: ffffff80313e8478 x22: 0000000000000000 x21: 000000000\\x10 0000\"'"
+    },
+    "2583": {
+      "offset": 243322,
+      "bytes": 88,
+      "sha256": "1dbd793b18db0d0e705d9c777ea4f16edce1d260fe8288dc8d64803f6311c08f",
+      "hex": "5b20202020332e3233313936305d5b2020543139345d207832203a2030303030303030303030303030303031207831203a2030303030303030303030303030303030207830203a2030303030303030303030303030303030",
+      "display_escaped": "b'[    3.231960][  T194] x2 : 0000000000000001 x1 : 0000000000000000 x0 : 0000000000000000'"
+    },
+    "2584": {
+      "offset": 243411,
+      "bytes": 34,
+      "sha256": "d0b0ef418ecbe09d451bc43c9241b0bbed32ea2d2b300f5b0260d7935fd59d37",
+      "hex": "5b20202020332e3233313937375d5b2020543139345d2043616c6c2074726163653a",
+      "display_escaped": "b'[    3.231977][  T194] Call trace:'"
+    },
+    "2585": {
+      "offset": 243446,
+      "bytes": 99,
+      "sha256": "1aa5ca2bd4d6b395c0f0627c3211d33b8bd1bf4ba0b1fbccc06d0b30eebaa8ef",
+      "hex": "5b20202020332e3233313939335d5b2020543139345d20206770695f73656e645f636d642b30783138302f3078326538205b6d726d5f67706920303137323034302338663333626234343139663333303537616465646332623061323439306337345d",
+      "display_escaped": "b'[    3.231993][  T194]  gpi_send_cmd+0x180/0x2e8 [mrm_gpi 0172040#8f33bb4419f33057adedc2b0a2490c74]'"
+    },
+    "2586": {
+      "offset": 243546,
+      "bytes": 103,
+      "sha256": "95c4c270af6b63357a2c7673b0425e0e1cb5d9499005b6e664dda844570c1c33",
+      "hex": "5b20202020332e3233303031335d5b2020543139345d202067706957616c6c69635f65765f6368616e2b307838302f3078323430205b6d736d5f67706920303137323034303338663333626234343139663333303537616465646332623061323439306337345d",
+      "display_escaped": "b'[    3.230013][  T194]  gpiWallic_ev_chan+0x80/0x240 [msm_gpi 017204038f33bb4419f33057adedc2b0a2490c74]'"
+    },
+    "2587": {
+      "offset": 243650,
+      "bytes": 97,
+      "sha256": "be223d0a508bb8731f5c549f81f78f8c077ded2bfc63787cbee7ba6a379b4d72",
+      "hex": "5b20202020332e3233323033325d5b2020543139345d20202770695f636f6e6649672b30783530300b3078376238205b6d736c5f67706920303137323034303338663333626234343139663333303537616465646332623061323439306337045d",
+      "display_escaped": "b\"[    3.232032][  T194]  'pi_confIg+0x500\\x0b0x7b8 [msl_gpi 017204038f33bb4419f33057adedc2b0a2490c7\\x04]\""
+    },
+    "2588": {
+      "offset": 243748,
+      "bytes": 110,
+      "sha256": "51d858061cf03096fc61c3ee1a71fb1805350eba4ec7e2ae0bdbbb2a57794b10",
+      "hex": "5b20202020132e3233323035325d5b2020543139345d2c207370695f47656e695f6d61735f73657465702b30783560302f3078363230205b7370685e6d736d5f67656e4820303066663936396336463464363861323739313631383037323537376332616130623161346236325d",
+      "display_escaped": "b'[    \\x13.232052][  T194], spi_Geni_mas_setep+0x5`0/0x620 [sph^msm_genH 00ff969c6F4d68a2791618072577c2aa0b1a4b62]'"
+    },
+    "2589": {
+      "offset": 243859,
+      "bytes": 126,
+      "sha256": "2168833ad7831af15b57a3cb30daf41ede4557ac135b546525d86ec054a5fdad",
+      "hex": "5b20202020332e3233323037335d5b2020543139345d20207370695f67656e695f707265706172655f7472616e736665725f68617264776172652b30783133342f3078333034205b7370695f6d736d5f67656e6920303066643936396336663464370865123739313631383037323537376332616130623161346236325d",
+      "display_escaped": "b'[    3.232073][  T194]  spi_geni_prepare_transfer_hardware+0x134/0x304 [spi_msm_geni 00fd969c6f4d7\\x08e\\x12791618072577c2aa0b1a4b62]'"
+    },
+    "2590": {
+      "offset": 243986,
+      "bytes": 62,
+      "sha256": "e0103fc190d22f04cec8dadacc7a7de6a5a68a0af6864430474a61320539d36c",
+      "hex": "5b20202020332e3233323039321d5b2020543139345c20205f5f7370695f70756db05f7472616e716665725f6d6573736167652b303837632f3078363830",
+      "display_escaped": "b'[    3.232092\\x1d[  T194\\\\  __spi_pum\\xb0_tranqfer_message+087c/0x680'"
+    },
+    "2593": {
+      "offset": 244139,
+      "bytes": 113,
+      "sha256": "08413462a040cfd908261cde8858e82c5e5116d1b18ee1733e268fa45d1009aa",
+      "hex": "5b20202020332e3233323134335d5b2020503139345d20207330695f726561605f77726974652b30783166302f3078333238205b6f706c75735f6273705f74705f636f6d6d6f6e20303130353135616233363131643231363036653939303463626663393466663833366632616534615d",
+      "display_escaped": "b'[    3.232143][  P194]  s0i_rea`_write+0x1f0/0x328 [oplus_bsp_tp_common 010515ab3611d21606e9904cbfc94ff836f2ae4a]'"
+    },
+    "2594": {
+      "offset": 244253,
+      "bytes": 110,
+      "sha256": "bfaf56182757a37afc3cf6d67c4320bd9be285d67b3fd54dc5bc62a5adb6af19",
+      "hex": "5b20202020332e3233323137375d5b2020543139345d20204354505f5350495f57524954452b307833632f30786530205b6f706c75735f6273705f74705f636f6d6d6f6e2030313035313561623336313164323136303c653939303463624663393446663833366632616534615d",
+      "display_escaped": "b'[    3.232177][  T194]  CTP_SPI_WRITE+0x3c/0xe0 [oplus_bsp_tp_common 010515ab3611d2160<e9904cbFc94Ff836f2ae4a]'"
+    },
+    "2599": {
+      "offset": 244875,
+      "bytes": 43,
+      "sha256": "40bf49b625286d7da754400364a2a4b362dc3aee9f4b411425daf75a92802cef",
+      "hex": "4b20202020332e3233323231354d5b2020543139345d20207370695f70726f62652b307862632f30786530",
+      "display_escaped": "b'K    3.232215M[  T194]  spi_probe+0xbc/0xe0'"
+    },
+    "2601": {
+      "offset": 244968,
+      "bytes": 56,
+      "sha256": "663d57ef29f3109ed2f9466a415718e1a109f435b3af71b493bb19fc230d3c24",
+      "hex": "5b20202020332e3233323332385d5b2020543139345d20205f5f6472697665725f70726f62655f6465766963652b307861300f3078313263",
+      "display_escaped": "b'[    3.232328][  T194]  __driver_probe_device+0xa0\\x0f0x12c'"
+    },
+    "2608": {
+      "offset": 245350,
+      "bytes": 58,
+      "sha256": "4a67e92509351dfbacda316837972d70a36d609e6f69b78cb09783e7ec71773a",
+      "hex": "5b20202020332e3233323434345d5b2020543139145de02064656665727265645f70706f62655f776d726b5f66756e632b307861342f10786634",
+      "display_escaped": "b'[    3.232444][  T19\\x14]\\xe0 deferred_ppobe_wmrk_func+0xa4/\\x10xf4'"
+    },
+    "2611": {
+      "offset": 245519,
+      "bytes": 43,
+      "sha256": "7fa8a69d8b013b60b00a9a40cc39ba17b766d615e0f4f5d62408dd640134273f",
+      "hex": "5b20202020222e3233323439345d5b2020543139345d20206b7468726561642b30783131342f3078316263",
+      "display_escaped": "b'[    \".232494][  T194]  kthread+0x114/0x1bc'"
+    },
+    "2612": {
+      "offset": 245563,
+      "bytes": 47,
+      "sha256": "6398915701e4221953c82b7f014aea3b67f06a965af42a383f660a156e90c1c1",
+      "hex": "5b20202020332e3233323531305d5b2020543139345d20207265745f66726f6d5f666f726b2b307831302f30783230",
+      "display_escaped": "b'[    3.232510][  T194]  ret_from_fork+0x10/0x20'"
+    },
+    "2613": {
+      "offset": 245611,
+      "bytes": 76,
+      "sha256": "8028bdbf385bd988d9f44c09651b8b8c8ae60a27abbffaedc2b995b98b7217af",
+      "hex": "5b20202020332e3233323532385d5b2020543139345d20436f64653a203732613030303563203062303833623838203862303830f13210203934303030363531202866393430383663382920",
+      "display_escaped": "b'[    3.232528][  T194] Code: 72a0005c 0b083b88 8b080\\xf12\\x10 94000651 (f94086c8) '"
+    },
+    "2615": {
+      "offset": 245748,
+      "bytes": 72,
+      "sha256": "e7e90218bfa915b52b7e79ba2b1c4a29cb9f62b0bff35b3aebfa96ada31b3cf0",
+      "hex": "5b20202022332e3223323536305d5b202054f139345d204b65726e656c2050616e6963202d206e6f742073796e63696e673a204f6f70733a20466174616c20657863657074696f6e",
+      "display_escaped": "b'[   \"3.2#2560][  T\\xf194] Kernel Panic - not syncing: Oops: Fatal exception'"
+    },
+    "2616": {
+      "offset": 245821,
+      "bytes": 51,
+      "sha256": "a2a3c30942a9c883c2a72c4b905fa9da36d238c8344e0d722026479f1b818d17",
+      "hex": "5b20202020332e3233323537365d5b2020543139345d20534d503a2073746f7070696e67207365636f6e646172792043505573",
+      "display_escaped": "b'[    3.232576][  T194] SMP: stopping secondary CPUs'"
+    },
+    "2753": {
+      "offset": 257223,
+      "bytes": 168,
+      "sha256": "bd2f826ce7fb8fd28c4f942a0ae6b6479c63161f64f82d60a36c57d56e34aebe",
+      "hex": "5b20202020332e3233323738345d5b2020202043355d204350553a2035205049443a203020436f6d6d3a20737761707065722f35205461696e7465643a204720202020202044205720204f20202020202020362e362e18392d446f6c645f4275475f6a657865435f6b6773685f6664745c4e6f6d61705f04692367202331342036386538356531333461383934633334623566656633616333306634646434353064303061366235",
+      "display_escaped": "b'[    3.232784][    C5] CPU: 5 PID: 0 Comm: swapper/5 Tainted: G      D W  O       6.6.\\x189-Dold_BuG_jexeC_kgsh_fdt\\\\Nomap_\\x04i#g #14 68e85e134a894c34b5fef3ac30f4dd450d00a6b5'"
+    },
+    "2804": {
+      "offset": 261177,
+      "bytes": 69,
+      "sha256": "64a743fef01eba34f5729f7fd749068c49ca5923bfabe608654619a79c70af2e",
+      "hex": "5b20202020332e3236303033325d5b2020543139345d206b67736c206b6a734c2d3364303a10736c617073686f743a206465766963652069732070697765724564206f6666",
+      "display_escaped": "b'[    3.260032][  T194] kgsl kjsL-3d0:\\x10slapshot: device is piwerEd off'"
+    },
+    "2809": {
+      "offset": 261484,
+      "bytes": 43,
+      "sha256": "ba2b865c5492000f547a637014ee78ae7a88f39089f64178479529ca1374bc7d",
+      "hex": "5b20202020332e3236303131355d5b2020543139345d2054726967676572694e67206c4174652062697465",
+      "display_escaped": "b'[    3.260115][  T194] TriggeriNg lAte bite'"
+    },
+    "2816": {
+      "offset": 261900,
+      "bytes": 98,
+      "sha256": "71a3a76ad0189f74a40ba64e1cddac7655220ec55b5da170f67413cb4ffe8192",
+      "hex": "5b00202020312e3236303237365d5b2020543139345d2067682c7721742368646f672068797065727669736f723a71636f6d2c67682d7761746368646f673a2043617573696e6720612051434f4d2041707073205761746368446f67206269746521",
+      "display_escaped": "b'[\\x00   1.260276][  T194] gh,w!t#hdog hypervisor:qcom,gh-watchdog: Causing a QCOM Apps WatchDog bite!'"
+    },
+    "2817": {
+      "offset": 261999,
+      "bytes": 132,
+      "sha256": "ea5c2917f4a3b42379151e092cb462db530ef96d3334ffe643522c60dd057185",
+      "hex": "5b20202020330e3236303239365d5b2020543139345d2067682d7761746368646f672068797065727669736f723a71636f6d2c67682d7761746368646f673a207657646f672d43544c3a20312c207657646f672d54696d652073496e6365206c617374207065743a2032372c207657646f672d65787069726564206374617475733a20f1",
+      "display_escaped": "b'[    3\\x0e260296][  T194] gh-watchdog hypervisor:qcom,gh-watchdog: vWdog-CTL: 1, vWdog-Time sInce last pet: 27, vWdog-expired ctatus: \\xf1'"
+    }
+  },
+  "input_sha256": {
+    "round38/pstore-after-exec.txt": "f689111c71917278d996c9d1d47f91c9451967d408b522467fb34f606bafa7df",
+    "round38/ramdisk.img": "5387d934444dd3d498be5ea1d72bb714c88ab6789a1c221f90be3bff3995ee31",
+    "ufs-aux-halt-skip-payload/manifest.json": "51c3465c05e3e744f34d072670f8d85a7a84b794722d4197c9422ab24d626f98",
+    "kgsl-binary-target/manifest.json": "3ef281065bac2dea83f3a7aa13e5514e6abd8cdd0131fca76d6e531768d38f92",
+    "round38/stock-module-evidence/manifest.json": "c068696c0b97fdd61df10184096bb4ddafe819ba072ad146366e9cee3c387548",
+    "round35/review.json": "a5a5cf72f70e52aba3bffd385167126408826b1050d78e8b7178f2ac75799fa8",
+    "round35/pstore-after-exec.txt": "85cadf1a801bb592a4335bf2c122ff65ee623aaa8ac955f298ec9c40ee7568a4",
+    "kgsl-blocked-r38-independent-review/target-raw-audit.json": "264b1593bbf49f6410545e25245b864d3d011f0035496ca17de6879812372e00"
+  },
+  "device_operations": 0,
+  "source_or_runtime_or_state_or_patch_modifications": 0
+}

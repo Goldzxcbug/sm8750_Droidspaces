@@ -1,0 +1,20 @@
+{
+  "exit_code": 0,
+  "elapsed_seconds": 42.388284315995406,
+  "source_unchanged_during_build": true,
+  "source_before_sha256": {
+    "drivers/base/core.c": "11e7697ba90863932c70c94f5afd1bd38ccbd9941880b92eff6a37aa53353374"
+  },
+  "source_after_sha256": {
+    "drivers/base/core.c": "11e7697ba90863932c70c94f5afd1bd38ccbd9941880b92eff6a37aa53353374"
+  },
+  "patch_sha256": "2cacafea0871231d02fd096968e7af68eabb1416d331fa5e999c1d64ec1cb6c8",
+  "baseline_vmlinux_unchanged": true,
+  "baseline_config_unchanged": true,
+  "new_config_unchanged": true,
+  "build_source_symlink": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/kgsl-blocked-quiet-source/source",
+  "new_source_wrapper": true,
+  "no_direct_C_or_assembly_edits": true,
+  "device_operations": 0,
+  "log_sha256": "748be5b12afc393ec3eec3af1ca3664d24635bec294e0cffd4470d39945527fe"
+}

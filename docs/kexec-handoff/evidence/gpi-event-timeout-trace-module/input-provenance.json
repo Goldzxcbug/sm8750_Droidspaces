@@ -1,0 +1,110 @@
+{
+  "status": "CANONICAL_NULL_FIX_PLUS_FIRST_EVENT_DIAGNOSTIC_INPUTS_READY_FOR_SINGLE_AUTHORIZED_HOST_BUILD",
+  "files": {
+    "vendor/drivers/dma/qcom/msm_gpi.c": {
+      "relative_path": "drivers/dma/qcom/msm_gpi.c",
+      "reference_only_path": "out/kexec-boot-fix/gpi-vendor-module-build-review/official-inputs/drivers/dma/qcom/msm_gpi.c.txt",
+      "url": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/4553152f62a3bd9f39bb6d068a4d94a15a8c07fd/drivers/dma/qcom/msm_gpi.c",
+      "commit": "4553152f62a3bd9f39bb6d068a4d94a15a8c07fd",
+      "sha256": "0b379492340d9d1ba2eee782171c0181736a3a9d2060b40b456812cdf6ba503b",
+      "bytes": 130087,
+      "origin": "untouched_official_baseline_copy_then_two_canonical_patches_fuzz0_offset0",
+      "same_as_actual_target_common_source": null,
+      "target_common_sha256": null,
+      "official_original_sha256": "9db24bafdecc50586f30177a0f7817314084fdeabe935c3a68bb78c9896db442"
+    },
+    "vendor/drivers/dma/qcom/msm_gpi_mmio.h": {
+      "relative_path": "drivers/dma/qcom/msm_gpi_mmio.h",
+      "reference_only_path": "out/kexec-boot-fix/gpi-vendor-module-build-review/official-inputs/drivers/dma/qcom/msm_gpi_mmio.h.txt",
+      "url": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/4553152f62a3bd9f39bb6d068a4d94a15a8c07fd/drivers/dma/qcom/msm_gpi_mmio.h",
+      "commit": "4553152f62a3bd9f39bb6d068a4d94a15a8c07fd",
+      "sha256": "24c2f8b90821d26670e3be2af9258bdea4033f9db1632cf24cd4d1a7a5e9fc77",
+      "bytes": 9883,
+      "origin": "single_primary_file_fetch",
+      "same_as_actual_target_common_source": null,
+      "target_common_sha256": null
+    },
+    "vendor/drivers/dma/dmaengine.h": {
+      "relative_path": "drivers/dma/dmaengine.h",
+      "reference_only_path": "out/kexec-boot-fix/gpi-vendor-module-build-review/official-inputs/drivers/dma/dmaengine.h.txt",
+      "url": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/4553152f62a3bd9f39bb6d068a4d94a15a8c07fd/drivers/dma/dmaengine.h",
+      "commit": "4553152f62a3bd9f39bb6d068a4d94a15a8c07fd",
+      "sha256": "09d1c31b6a025adc25a6529854642689ab4302ae19007923f9cfa68f7733ec28",
+      "bytes": 5350,
+      "origin": "single_primary_file_fetch",
+      "same_as_actual_target_common_source": true,
+      "target_common_sha256": "09d1c31b6a025adc25a6529854642689ab4302ae19007923f9cfa68f7733ec28"
+    },
+    "vendor/drivers/dma/virt-dma.h": {
+      "relative_path": "drivers/dma/virt-dma.h",
+      "reference_only_path": "out/kexec-boot-fix/gpi-vendor-module-build-review/official-inputs/drivers/dma/virt-dma.h.txt",
+      "url": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/4553152f62a3bd9f39bb6d068a4d94a15a8c07fd/drivers/dma/virt-dma.h",
+      "commit": "4553152f62a3bd9f39bb6d068a4d94a15a8c07fd",
+      "sha256": "3fa605a956eeb5a117a9233a67d626d41bd9db6b006a74e98ff2770fc04d42e8",
+      "bytes": 6044,
+      "origin": "single_primary_file_fetch",
+      "same_as_actual_target_common_source": true,
+      "target_common_sha256": "3fa605a956eeb5a117a9233a67d626d41bd9db6b006a74e98ff2770fc04d42e8"
+    },
+    "vendor/include/linux/msm_gpi.h": {
+      "relative_path": "include/linux/msm_gpi.h",
+      "reference_only_path": "out/kexec-boot-fix/gpi-vendor-module-build-review/official-inputs/include/linux/msm_gpi.h.txt",
+      "url": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/4553152f62a3bd9f39bb6d068a4d94a15a8c07fd/include/linux/msm_gpi.h",
+      "commit": "4553152f62a3bd9f39bb6d068a4d94a15a8c07fd",
+      "sha256": "b23d8a3c2181f2a57f224d47c9254dfa2cd8269cc60adc2fdc78741cee48b652",
+      "bytes": 16447,
+      "origin": "single_primary_file_fetch",
+      "same_as_actual_target_common_source": null,
+      "target_common_sha256": null
+    },
+    "vendor/include/linux/ipc_logging.h": {
+      "relative_path": "include/linux/ipc_logging.h",
+      "reference_only_path": "out/kexec-boot-fix/gpi-vendor-module-build-review/official-inputs/include/linux/ipc_logging.h.txt",
+      "url": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/4553152f62a3bd9f39bb6d068a4d94a15a8c07fd/include/linux/ipc_logging.h",
+      "commit": "4553152f62a3bd9f39bb6d068a4d94a15a8c07fd",
+      "sha256": "bd844816a83ec14c872fa3cfe74f4f1c906ea81a27f255b20c6e3bf36d76fd72",
+      "bytes": 8559,
+      "origin": "existing_local_cache",
+      "same_as_actual_target_common_source": null,
+      "target_common_sha256": null
+    },
+    "Makefile": {
+      "kind": "external Kbuild object selection + actual IPC module config projection",
+      "sha256": "0d0d40bb38a1334829c1f831f4e8f04c552b0206a2f2ed8316298e99852beb26"
+    },
+    "vendor.symvers": {
+      "kind": "three actual qcom_ipc_logging ordinary exports read from provider CRC/ksymtab",
+      "sha256": "5b46598b9865c6ae8525f3d54d1e016ee3642ef771a46a4889574ad15296513f"
+    }
+  },
+  "reference_plan_sha256": "b19b0343728e9c17443f220407c29dc4c65e82f05c832f966114099315c6208e",
+  "actual_provider_inventory_sha256": "4daf6b52ad156b31e3837897477cc97a1b15f627ffc5dd514d823add839ae66d",
+  "original_C_and_headers_modified": true,
+  "debug_config_disabled": true,
+  "actual_IPC_LOGGING_module_config_projected_only": true,
+  "no_CRC_or_vermagic_overrides": true,
+  "canonical_patch_chain": [
+    {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/other_patch/kexec_gpi_event_timeout_null_fix_6.6.89.patch",
+      "sha256": "b5f5c372dd61d8464dd8539e29d9e4a71dc0eccd9242ed14f639c2135aa6b9d0",
+      "source_before_sha256": "9db24bafdecc50586f30177a0f7817314084fdeabe935c3a68bb78c9896db442",
+      "source_after_sha256": "8f25be64d2c0cde8ac596e3a79b3f4ae7bcc211d0f292cc74311cca31d6e5720",
+      "dry_run_exit": 0,
+      "apply_exit": 0,
+      "fuzz": 0,
+      "offset": 0
+    },
+    {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/other_patch/kexec_gpi_first_event_trace_diag_6.6.89.patch",
+      "sha256": "bde050531ba3d5f4936cf6eb4c16c31e0008ecde257eb947332d61754f82d022",
+      "source_before_sha256": "8f25be64d2c0cde8ac596e3a79b3f4ae7bcc211d0f292cc74311cca31d6e5720",
+      "source_after_sha256": "0b379492340d9d1ba2eee782171c0181736a3a9d2060b40b456812cdf6ba503b",
+      "dry_run_exit": 0,
+      "apply_exit": 0,
+      "fuzz": 0,
+      "offset": 0
+    }
+  ],
+  "baseline_provenance_path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/gpi-vendor-baseline/input-provenance.json",
+  "baseline_provenance_sha256": "8acafeefebb37bd2a14eaa2ff995fdd77547f034caa15dddcf68576c65da4f2e"
+}

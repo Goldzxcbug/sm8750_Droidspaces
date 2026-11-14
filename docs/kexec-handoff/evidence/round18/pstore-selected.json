@@ -1,0 +1,934 @@
+[
+  [
+    239,
+    "[    1.154211][  T155] CPU: 6 PID: 155 Comm: init Tainted: G           O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    242,
+    "[    1.154252][  T155] pc : proc_register+0x124/0x1a4"
+  ],
+  [
+    394,
+    "[    1.205351][   T82] pc : pmic_arb_wait_for_done+0x130/0x168 [spmi_pmic_arb]"
+  ],
+  [
+    450,
+    "[    1.206190][   T82] CPU: 6 PID: 82 Comm: kworker/u18:1 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    454,
+    "[    1.206242][   T82] pc : pmic_arb_wait_for_done+0x130/0x168 [spmi_pmic_arb]"
+  ],
+  [
+    510,
+    "[    1.208663][   T82] CPU: 7 PID: 82 Comm: kworker/u18:1 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    514,
+    "[    1.208716][   T82] pc : pmic_arb_wait_for_done+0x130/0x168 [spmi_pmic_arb]"
+  ],
+  [
+    574,
+    "[    1.211278][   T82] pc : pmic_arb_wait_for_done+0x130/0x168 [spmi_pmic_arb]"
+  ],
+  [
+    701,
+    "[    1.234316][  T195] CPU: 6 PID: 195 Comm: init Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    704,
+    "[    1.234355][  T195] pc : proc_register+0x124/0x1a4"
+  ],
+  [
+    840,
+    "[    1.321221][  T235] init: Loading module /lib/modules/ufs_qcom.ko with args 'kexec_handoff_diag=1 kexec_ah8_reset_diag=1'"
+  ],
+  [
+    852,
+    "[    1.323223][   T75] gcc-sun 100000.clock-controller: KUFSAUX1 stage=before-clock-registration clock=gcc_ufs_phy_p`y_aux_c\fk_src old_rcg_flags=2 new_rcg_flags=3 force_mask=1 hw_ctl_kept=1"
+  ],
+  [
+    859,
+    "[    1.323796][  T235] init: Loaded kernel module /lib/modules/ufs_qcom.ko"
+  ],
+  [
+    953,
+    "[    1.353373][   T75] ufshcd-qcom 1d84000.ufshc: ufs_qcom_parse_reg_info: Unable to find qcom,vccq2-parent-supply regulator, assuming enabled"
+  ],
+  [
+    957,
+    "[    1.357549][   T75] ufshcd-qcom 1d84000.ufshc: UFSKH1 stage=device-reset-enter major=6 ret=0 is_phy_pwr_on=0 ahit=00000000 hce=00000000 cfg1=d85c052c hw_version=60010000 ah8_cfg=0000183c"
+  ],
+  [
+    958,
+    "[    1.357565][   T75] ufshcd-qcom 1d84000.ufshc: UFSKH2 stage=ah8-req-clear major=6 old=0000183c desired=00001800 readback=00001800 mask=0000003c full_match=1"
+  ],
+  [
+    959,
+    "[    1.357604][   T75] ufshcd-qcom 1d84000.ufshc: UFSKH1 stage=pre-bcr-assert major=6 ret=0 is_phy_pwr_on=0 ahit=00000000 hce=00000000 cfg1=d85c052c hw_version=60010000 ah8_cfg=00001800"
+  ],
+  [
+    960,
+    "[    1.357628][   T75] ufshcd-qcom 1d84000.ufshc: UFSKH1 stage=post-bcr-assert major=6 ret=0 is_phy_pwr_on=0 ahit=00000000 hce=00000000 cfg1=00000000 hw_version=00000\u001000 !h8_cfg=00\u001000000"
+  ],
+  [
+    961,
+    "[    1.357641][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-enter major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=0 ret_valid=0 ret=0"
+  ],
+  [
+    962,
+    "[    1.357654][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-vote provider=gdsc-regulator"
+  ],
+  [
+    965,
+    "[    1.357693][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    966,
+    "[    1.357705][   T75] GDSCR: 0x02222801 CFG: 0x04088000 CFG2: 0x0002022f"
+  ],
+  [
+    967,
+    "[    1.357726][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdd-phy-gdsc reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    968,
+    "[    1.357741][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-qref reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    969,
+    "[    1.357755][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-refgen reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    970,
+    "[    1.358154][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-phy reg_pqesent=1 cached_before=0 cacHed_after=1 ret=0"
+  ],
+  [
+    971,
+    "[    1.358187][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-pll reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    972,
+    "[    1.358211][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=qref-return combined_ret=0 ignored=1"
+  ],
+  [
+    973,
+    "[    1.358223][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-before major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=0 ret=0"
+  ],
+  [
+    974,
+    "[    1.358236][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-aux provider=gdsc-regulator"
+  ],
+  [
+    977,
+    "[    1.358274][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    978,
+    "[    1.358285][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    979,
+    "[    1.358298][   T75] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=0 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    980,
+    "[    1.358311][   T75] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=16 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    981,
+    "[    1.358323][   T75] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    982,
+    "[    1.358341][   T75] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    983,
+    "[    1.358353][   T75] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk_src enable=1 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    984,
+    "[    1.358365][   T75] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    996,
+    "[    1.358872][   T75] Modules linked in: qnoc_tuna qnoc_kera qnoc_sun icc_rpmh qcom_dcvs icc_bcm_voter ufs_qcom(O) tcsrcc_sun sdhci_msm dcvs_fp camcc_kera cambistmclkcc_sun clk_rpmh evacc_sun dispcc_sun rpmh_regulator gpucc_kera tcsrcc_tuna cambistmclkcc_tuna videocc_sun gpucc_tuna gcc_tuna gcc_sun(O) camcc_tuna gpucc_sun gcc_kera clk_dummy dispcc_tuna camcc_sun clk_qcom qrtr_gunyah qcom_rpmh msm_qmp gh_virt_wdt mem_buf qrtr crm_v2 qcom_wdt_core ufshcd_crypto_qti qcom_dload_mode tms_device_modules qcom_tsens gunyah_loader qcom_aoss mem_buf_msgq qcom_logbuf_vendor_hooks dcc_v2 bcl_pmic5 pmic_pon_log arm_smmu pinctrl_kera pinctrl_tuna pinctrl_sun memory_dump_v2 qcom_logbuf_boot_log pinctrl_msm qcom_pdc qcom_ipc_logging minidump qcom_dma_heaps mem_buf_dev oplus_bsp_fpga_monitor(O) qcom_ice secure_buffeB qcom_ikmiu_util mdt_loader ufs_oplus_dbg oplus_bsp_fpga_notify qcom_scm device_info oplus_nfc ua_cpu_ioctl oplus_bsp_boot_projectinfo gh_rm_drv qcom_cpufreq_hw oplus_mdmfeature(O) qcom_spmi_pmic oplus_btuart_ux oplus_bsp_task_sched"
+  ],
+  [
+    999,
+    "[    1.358958][   T75] CPU: 7 PID: 75 Comm: kworker/u17:0 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    1003,
+    "[    1.359010][   T75] pc : clk_branch_toggle+0x1c4/0x1d4 [clk_qcom]"
+  ],
+  [
+    1022,
+    "[    1.359304][   T75]  ufs_qcom_phy_power_on+0x320/0x710 [phy_qcom_ufs 1e1816bf13e6731ccc1481afee9fb9e61575ff58]"
+  ],
+  [
+    1024,
+    "[    1.359333][   T75]  ufs_qcom_device_reset+0x188/0x3d4 [ufs_qcom dac4ecf95ba43474bc1de478988329668fd4d75c]"
+  ],
+  [
+    1028,
+    "[    1.359396][   T75]  ufs_qcom_probe+0x108/0x284 [ufs_qcom dac4ecf95ba43474bc1de4\u00178988329668fd4d75cm"
+  ],
+  [
+    1044,
+    "[    1.359605][   T75] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=-16"
+  ],
+  [
+    1045,
+    "[    1.359618][   T75] KUFSCLK: event=dirable.enter naae\u001dgcc_ufs_phy_phy_aux_clk_src enable=1 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 hasKenable=1 has_disable=1 ret_valid=0 ret=0\ufffd[    1.359630\u001d[   T75\u001d KUFSCLK: event=disable.callback-begin name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1046,
+    "[    1.359648][   T75] KUFSCLK: event=disable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1047,
+    "[    1.359660][   T75] KUFSCLK: event=disable.return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=16 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1048,
+    "[    1.359672][   T75] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=0 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=-16"
+  ],
+  [
+    1049,
+    "[    1.359685][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-after major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=1 ret=-16"
+  ],
+  [
+    1050,
+    "[    1.359697][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-after-aux provider=gdsc-regulator"
+  ],
+  [
+    1053,
+    "[    1.359735][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1054,
+    "[    1.359747][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1055,
+    "[    1.359759][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_phy_enable_ref_clk: ref_aux_clk enable failed -16"
+  ],
+  [
+    1056,
+    "[    1.359771][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_phy_power_on enable phy ref clock failed, err=-16"
+  ],
+  [
+    1057,
+    "[    1.359823][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-return major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=7 ret_valid=1 ret=-16"
+  ],
+  [
+    1059,
+    "[    1.359852][   T75] ufshcd-qcom 1d84000.ufshc: UFSKH1 stage=post-phy-power-on major=6 ret=-16 is_phy_pwr_on=0 ahit=00000000 hce=00000000 cfg1=00000000 hw_version=01000000 ah8_cfg=00000000\u0002[    1.359865][   T75] ufshcd-qcom 1d84000.ufshc: ufs_qcom_host_reset: phy power on failed, ret = -16"
+  ],
+  [
+    1060,
+    "[    1.359877][   T75] ufshcd-qcom 1d84000.ufshc: ufs_qcom_device_rdset: hoqt reset returoed -16"
+  ],
+  [
+    1061,
+    "[    1.359965][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-enter major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=7 ret_valid=0 ret=0"
+  ],
+  [
+    1062,
+    "[    1.359978][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-vote provider=gdsc-regulator"
+  ],
+  [
+    1065,
+    "[    1.360015][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1066,
+    "[    1.360027][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1067,
+    "[    1.360039][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdd-phy-gdsc reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1068,
+    "[    1.360051][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-qref reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1069,
+    "[    1.360064][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-refgen reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1070,
+    "[    1.360544][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-phy reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    1071,
+    "[    1.360561][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-pll reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    1072,
+    "[    1.360574][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=qref-return combined_ret=0 ignored=1"
+  ],
+  [
+    1073,
+    "[    1.360586][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-before major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=0 ret=0"
+  ],
+  [
+    1074,
+    "[    1.360599][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-aux provider=gdsc-regulator"
+  ],
+  [
+    1077,
+    "[    1.360637][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1078,
+    "[    1.360649][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1079,
+    "[    1.360661][   T75] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=0 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1080,
+    "[    1.360674][   T75] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=16 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1081,
+    "[    1.360687][   T75] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1082,
+    "[    1.360704][   T75] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    1083,
+    "[    1.360716][   T75] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk_src enable=1 prepare=1 parent=bi_tcxo parent_enaBle=97 par%nt_prepare=17 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    1084,
+    "[    1.360729][   T75] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1096,
+    "[    1.361222][   T75] Modules linked in: qnoc_tuna qnoc_kera qnoc_sun icc_rpmh qcom_dcvs icc_bcm_voter ufs_qcom(O) tcsrcc_sun sdhci_msm dcvs_fp camcc_kera cambistmclkcc_sun clk_rpmh evacc_sun dispcc_sun rpmh_regulator gpucc_kera tcsrcc_tuna cambistmclkcc_tuna videocc_sun gpucc_tuna gcc_tuna gcc_sun(O) camcc_tuna gpucc_sun gcc_kera clk_dummy dispcc_tuna camcc_sun clk_qcom qrtr_gunyah qcom_rpmh msm_qmp gh_virt_wdt mem_buf qrtr crm_v2 qcom_wdt_core ufshcd_crypto_qti qcom_dload_mode tms_device_modules pcom_tse.s genyah_loader qcom_aoss mem_buf_msgq qcom_logbuf_vendor_hooks dcc_v2 bcl_pmic5 pmic_pon_log arm_smmu pinctrl_kera pinctrl_tuna pinctrl_sun memory_dump_v2 qcom_logbuf_boot_log pinctrl_msm qcom_pdc qcom_ipc_logging minidump qcom_dma_heaps mem_buf_dev oplus_bsp_fpga_monitor(O) qcom_ice secure_buffer qcom_iommu_util mdt_loader ufs_oplus_dbg oplus_bsp_fpga_notify qcom_scm device_info oplus_nfc ua_cpu_ioctl oplus_bsp_boot_projectinfo gh_rm_drv qcom_cpufreq_hw oplus_mdmfeature(O) qcom_spmi_pmic oplus_btuart_ux oplus_bsp_task_sched"
+  ],
+  [
+    1099,
+    "[    1.361301][   T75] CPU: 6 PID: 75 Comm: kworker/u17:0 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    1103,
+    "[    1.361351][   T75] pc : clk_branch_toggle+0x1c4/0x1d4 [clk_qcom]"
+  ],
+  [
+    1122,
+    "[    1.361646][   T75]  ufs_qcom_phy_power_on+0x320/0x710 [phy_qcom_ufs 1e1816bf13e6731ccc1481afee9fb9e61575ff58]"
+  ],
+  [
+    1124,
+    "[    1.361675][   T75]  ufs_qcom_hce_enable_notify+0x228/0x808 [ufs_qcom dac4ecf95ba43474bc1de478988329668fd4d75c]"
+  ],
+  [
+    1128,
+    "[    1.361738][   T75]  ufs_qcom_probe+0x108/0x284 [ufs_qcom dac4ecf95ba4347$bc1de47(988229668fd4d75c]"
+  ],
+  [
+    1144,
+    "[    1.361946][   T75] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=-16"
+  ],
+  [
+    1145,
+    "[    1.361958][   T75] KUFSCLK: event=disable.enter name=gcc_ufs_phy_phy_aux_clk_src enable=1 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1146,
+    "[    1.361971][   T75] KUFSCLK: event=disable.callback-begin name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1147,
+    "[    1.361988][   T75] KUFSCLK: event=disable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1148,
+    "[    1.362001][   T75] KUFSCLK: event=disable.return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=16 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1149,
+    "[    1.362013][   T75] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=0 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=-16"
+  ],
+  [
+    1150,
+    "[    1.362025][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-after major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=1 ret=-16"
+  ],
+  [
+    1151,
+    "[    1.362038][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-after-aux provider=gdsc-regulator"
+  ],
+  [
+    1154,
+    "[    1.362076][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1155,
+    "[    1.362088][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1156,
+    "[    1.362100][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_phy_enable_ref_clk: ref_aux_clk enable failed -16"
+  ],
+  [
+    1157,
+    "[    1.362112][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_phy_power_on enable phy ref clock failed, err=-16"
+  ],
+  [
+    1158,
+    "[    1.362163][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-return major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=7 ret_valid=1 ret=-16"
+  ],
+  [
+    1160,
+    "[    1.362189][   T75] ufshcd-qcom 1d84000.ufshc: ufs_qcom_power_up_sequence: phy power on failed, ret = -16"
+  ],
+  [
+    1165,
+    "[    1.419207][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-enter major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=7 ret_valid=0 ret=0"
+  ],
+  [
+    1166,
+    "[    1.419219][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-vote provider=gdsc-regulator"
+  ],
+  [
+    1169,
+    "[    1.419257][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1170,
+    "[    1.419269][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1171,
+    "[    1.419280][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdd-phy-gdsc reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1172,
+    "[    1.419292][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-qref reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1173,
+    "[    1.419303][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-refgen reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1174,
+    "[    1.419811][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-phy reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    1175,
+    "[    1.419829][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-pll reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    1176,
+    "[    1.419841][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=qref-return combined_ret=0 ignored=1"
+  ],
+  [
+    1177,
+    "[    1.419852][   T75] ufs_qcomWphy\u001fqmp\\v4_sun 1d80000.5fsphy]mem: \u0015FSPWR1 stage=aux-before major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=0 ret=0"
+  ],
+  [
+    1178,
+    "[    1.419864][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-aux provider=gdsc-regulator"
+  ],
+  [
+    1181,
+    "[    1.419901][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1182,
+    "[    1.419912][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1183,
+    "[    1.419925][   T75] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=0 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1184,
+    "[    1.419937][   T75] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=16 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1185,
+    "[    1.419949][   T75] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1186,
+    "[    1.419965][   T75] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    1187,
+    "[    1.419977][   T75] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk_src enable=1 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    1188,
+    "[    1.419989][   T75] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk enabli=0 prepard=1 parent=gcc_ufsYphy_ph\ufffd_aux_Clk_crc parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1200,
+    "[    1.420478][   T75] Modules linked in: qnoc_tuna qnoc_kera qnoc_sun icc_rpmh qcom_dcvs icc_bcm_voter ufs_qcom(O) tcsrcc_sun sdhci_msm dcvs_fp camcc_kera cambistmclkcc_sun clk_rpmh evacc_sun dispcc_sun rpmh_regulator gpucc_kera tcsrcc_tuna cambistmclkcc_tuna videocc_sun gpucc_tuna gcc_tuna gcc_sun(O) camcc_tuna gpucc_sun gcc_kera clk_dummy dispcc_tuna camcc_sun clk_qcom qrtr_gunyah qcom_rpmh msm_qmp gh_virt_wdt mem_buf qrtr crm_v2 qcom_wdt_core ufshcd_crypto_qti qcom_dload_mode tms_device_modules qcom_tsens gunyah_loader qcom_aoss mem_buf_msgq qcom_logbuf_vendor_hooks dcc_v2 bcl_pmic5 pmic_pon_log arm_smmu pinctrl_kera pinctrl_tuna pinctrl_sun memory_dump_v2 qcom_logbuf_boot_log pinctrl_msm qcom_pdc qcom_ipc_logging minidump qcom_dma_heaps mam_buf^dev oplus_bsp_fpgA_monitor(O) qcom_ice secure_buffer qcoe_io-mu_util mdt_loader vfs_oplus_dbg oplus_bsp_fpga_notify qcom_scm device_info oplus_nfc ua_cpu_ioctl oplus_bsp_boot_projectinfo gh_rm_drv qcom_cpufreq_hw oplus_mdmfeature(O) qcom_spmi_pmic oplus_btuart_ux oplus_bsp_task_sched"
+  ],
+  [
+    1203,
+    "[ \u0000  1.420555][   T75] CPU: 6 PID: 75 Comm: kworker/u17:0 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    1207,
+    "[    1.420605][   T75] pc : clk_branch_toggle+0x1c4/0x1d4 [clk_qcom]"
+  ],
+  [
+    1226,
+    "[    1.420883][   T75]  ufs_qcom_phy_power_on+0x320/0x710 [phy_qcom_ufs 1e1816bf13e6731ccc1481afee9fb9e61575ff58]"
+  ],
+  [
+    1228,
+    "[    1.420910][   T75]  ufs_qcom_hce_enable_notify+0x228/0x808 [ufs_qcom dac4ecf95ba43474bc1de478988329668fd4d75c]"
+  ],
+  [
+    1232,
+    "[    1.420970][   T75]  ufs_qcom_probe+0x108/0x284 [ufs_qcom dac4ecf95ba43474bc1de478988329668fd4d75c]"
+  ],
+  [
+    1248,
+    "[    1.421168][   T75] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=-16"
+  ],
+  [
+    1249,
+    "[    1.421180][   T75] KUFSCLK: event=disable.enter name=gcc_ufs_phy_phy_aux_clk_src enable=1 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1250,
+    "[    1.421192][   T75] KUFSCLK: event=disable.callback-begin name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1251,
+    "[    1.421209][   T75] KUFSCLK: event=disable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1252,
+    "[    1.421221][   T75] KUFSCLK: event=disable.return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=16 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1253,
+    "[    1.421232][   T75] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=0 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=-16"
+  ],
+  [
+    1254,
+    "[    1.421251][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-after major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=1 ret=-16"
+  ],
+  [
+    1255,
+    "[    1.421263][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-after-aux provider=gdsc-regulator"
+  ],
+  [
+    1258,
+    "[    1.421298][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1259,
+    "[    1.421309][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1260,
+    "[    1.421321][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_phy_enable_ref_clk: ref_aux_clk enable failed -16"
+  ],
+  [
+    1261,
+    "[    1.421333][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_phy_power_on enable phy ref clock failed, err=-16"
+  ],
+  [
+    1262,
+    "[    1.421384][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-return major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=7 ret_valid=1 ret=-16"
+  ],
+  [
+    1264,
+    "[    1.421409][   T75] ufshcd-qcom 1d84000.ufshc: ufs_qcom_power_up_sequence: phy power on failed, ret = -16"
+  ],
+  [
+    1266,
+    "[    1.478817][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-enter major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=7 ret_valid=0 ret=0"
+  ],
+  [
+    1267,
+    "[    1.478830][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-vote provider=gdsc-regulator"
+  ],
+  [
+    1270,
+    "[    1.478866][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1271,
+    "[    1.478877][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1272,
+    "[    1.478889][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdd-phy-gdsc reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1273,
+    "[    1.478901][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-qref reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1274,
+    "[    1.478912][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-refgen reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1275,
+    "[    1.479463][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-phy reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    1276,
+    "[    1.479481][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-pll reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    1277,
+    "[    1.479493][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=qref-return combined_ret=0 ignored=1"
+  ],
+  [
+    1278,
+    "[    1.479505][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-before major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=0 ret=0"
+  ],
+  [
+    1279,
+    "[    1.479517][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-aux provider=gdsc-regulator"
+  ],
+  [
+    1282,
+    "[    1.479554][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1283,
+    "[    1.479565][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1284,
+    "[    1.479577][   T75] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=0 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1285,
+    "[    1.479589][   T75] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=b)_tc\ufffdo parent_enable=16 pareNt_pr%pare=17 has_ena\"le=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1286,
+    "[    1.479601][   T75] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 r!t=0"
+  ],
+  [
+    1287,
+    "[    1.479618][   T75] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    1288,
+    "[    1.479629][   T75] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk_src enable=1 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    1289,
+    "[    1.479641][   T75] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1301,
+    "[    1.480124][   T75] Modules linked in: qnoc_tuna qnoc_kera qnoc_sun icc_rpmh qcom_dcvs icc_bcm_voter ufs_qcom(O) tcsrcc_sun sdhci_msm dcvs_fp camcc_kera cambistmclkcc_sun clk_rpmh evacc_sun dispcc_sun rpmh_regulator gpucc_kera tcsrcc_tuna cambistmclkcc_tuna videocc_sun gpucc_tuna gcc_tuna gcc_sun(O) camcc_tuna gpucc_sun gcc_kera clk_dummy dispcc_tuna camcc_sun clk_qcom qrtr_gunyah qcom_rpmh msm_qmp gh]virt_wdt lem_buf qrTr crm_v2 qcom_wdt_core ufshcd_crypto_qti qcom_dload_mode tms_device_modules qcom_tsens gunyah_loader qcom_aoss mem_buf_msgq qcom_logbuf_vendor_hooks dcc_v2 bcl_pmic5 pmic_pon_log arm_smmu pinctrl_kera pinctrl_tuna pinctrl_sun memory_dump_v2 qcom_logbuf_boot_log pinctrl_msm qcom_pdc qcom_ipc_logging minidump qcom_dma_heaps mem_buf_dev oplus_bsp_fpga_monitor(O) qcom_ice secure_buffer qcom_iommu_util mdt_loader ufs_oplus_dbg oplus_bsp_fpga_notify qcom_scm device_info oplus_nfc ua_cpu_ioctl oplus_bsp_boot_projectinfo gh_rm_drv qcom_cpufreq_hw oplus_mdmfeature(O) qcom_spmi_pmic oplus_bpuart_ux oplus_bsp[task_sched"
+  ],
+  [
+    1308,
+    "[    1.480246][   T75] pc : clk_branch_toggle+0x1c4/0x1d4 [clk_qcom]"
+  ],
+  [
+    1327,
+    "[    1.480524][   T75]  ufs_qcom_phy_power_on+0x320/0x710 [phy_qcom_ufs 1e1816bf13e6731ccc1481afee9fb9e61575ff58]"
+  ],
+  [
+    1329,
+    "[    1.480551][   T75]  ufs_qcom_hce_enable_notify+0x228/0x808 [ufs_qcom dac4ecf95ba43474bc1de478988329668fd4d75c]"
+  ],
+  [
+    1333,
+    "[    1.480610][   T75]  ufs_qcom_probe+0x108/0x284 [efS_qcom dac6ecf95ba43474bc1de478988329668fd4d75c]"
+  ],
+  [
+    1349,
+    "[    1.480808][   T75] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=-16"
+  ],
+  [
+    1350,
+    "[    1.480820][   T75] KUFSCLK: event=disable.enter name=gcc_ufs_phy_phy_aux_clk_src enable=1 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1351,
+    "[    1.480832][   T75] KUFSCLK: event=disable.callback-begin name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1352,
+    "[    1.480849][   T75] KUFSCLK: event=disable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare-1 par%nt=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1353,
+    "[    1.480860][   T75] KUFSCLK: event=disable.return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=16 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1354,
+    "[    1.480872][   T75] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=0 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=-16"
+  ],
+  [
+    1355,
+    "[    1.480902][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-after major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=1 ret=-16"
+  ],
+  [
+    1356,
+    "[    1.480914][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-after-aux provider=gdsc-regulator"
+  ],
+  [
+    1359,
+    "[ \u0000  1.4\ufffd0949][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1360,
+    "[    1.480961][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1361,
+    "[    1.480973][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_phy_enable_ref_clk: ref_aux_clk enable failed -16"
+  ],
+  [
+    1362,
+    "[    1.480984][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_phy_power_on enable phy ref clock failed, err=-16"
+  ],
+  [
+    1363,
+    "[    1.481036][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-return major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=7 ret_valid=1 ret=-16"
+  ],
+  [
+    1365,
+    "[    1.481059][   T75] ufshcd-qcom 1d84000.ufshc: ufs_qcom_power_up_sequence: phy power on failed, ret = -16"
+  ],
+  [
+    1367,
+    "[    1.538419][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-enter major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=7 ret_valid=0 ret=0"
+  ],
+  [
+    1368,
+    "[    1.538432][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-vote provider=gdsc-regulator"
+  ],
+  [
+    1371,
+    "[    1.538469][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1372,
+    "[    1.538480][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1373,
+    "[    1.538492][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdd-phy-gdsc reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1374,
+    "[    1.538504][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-qref reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1375,
+    "[    1.538516][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-refgen reg_present=1 cached_before=1 cached_after=1 ret=0"
+  ],
+  [
+    1376,
+    "[    1.539065][   P7\u0015] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdda-phy reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    1377,
+    "[    1.539082][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return r\"ih=vdda-pll reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    1378,
+    "[    1.539094][   D75] ufs_qcom_ph9_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=qref-return combined_ret=0 ignored=1"
+  ],
+  [
+    1379,
+    "[    1.539105][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-before major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=0 ret=0"
+  ],
+  [
+    1380,
+    "[    1.539118][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-aux provider=gdsc-regulator"
+  ],
+  [
+    1383,
+    "[    1.539154][   T75] Dumping gcc_ufs_mem_phy_gdsc ReGisters::[    1.539165][   T75] GDSCR: 0xfa222800 CFG: 0x04070000 CFG2: 0x0002022f"
+  ],
+  [
+    1384,
+    "[    1.539178][   T75] KUFSCLK: event=enable.enter name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=0 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1385,
+    "[    1.539190][   T75] KUFSCLK: event=enable.enter name=gbc_ufs^phy_phy_aux_c,k_sBc enable=0 prepare=1 parent=bi_tcx_ parent_enable=16 p!rent_prep`re=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1386,
+    "[    1.539201][   T75] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1387,
+    "[    1.539218][   T75] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    1388,
+    "[    1.539230][   T75] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_chk_src ejable=1 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    1389,
+    "[    1.539241][   T75] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1404,
+    "[    1.539797][   T75] CPU: 6 PID: 75 Comm: kworker/u17:0 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    1408,
+    "[    1.539845][   T75] pc : clk_branch_toggle+0x1c4/0x1d4 [clk_qcom]"
+  ],
+  [
+    1427,
+    "[    1.540124][   T75]  ufs_qcom_phy_power_on+0x320/0x710 [phy_qcom_ufs 1e1816bf13e6731ccc1481afee9fb9e61575ff58]"
+  ],
+  [
+    1429,
+    "[    1.540151][   T75]  ufs_qcom_hce_enable_notify+0x228/0x808 [ufs_qcom dac4ecf95ba43474bc1de478988329668fd4d75c]"
+  ],
+  [
+    1433,
+    "[    1.540210][   T75]  ufs_qcom_probe+0x108/0x284 [ufs_qcom dac4ecf95ba43474bc1de478988329668fd4d75c]"
+  ],
+  [
+    1449,
+    "[    1.540410][   T75] KUFSCLK: event=enable.callbac[-return name=gcc_ufr_phy_phi_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=-16"
+  ],
+  [
+    1450,
+    "[    1.540422][   T'5] KUFSCLK:\u0010event=disabLe.enter name=gcc_ufs_phy_phy_aux_clk_src ena`le=1 prepare=\u0011 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1451,
+    "[    1.540434][   T75] KUFSCLK: event=disable.callback-begin!name=Gcc_ufs_Phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1452,
+    "[    1.540451][   T75] KUFSCLK: event=disable.callback-return name=gcc_ufs_phy_phy_aux_clk_src enable=0 prepare=1 parent=bi_tcxo parent_enable=17 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1453,
+    "[    1.540463][   T75] KUFSCLK: event=disable.return name=gcc_ufs_phy_phy_aux_clk[src enable=0 prepar%=9 parent=bi_tcxo parent_enable=16 parent_prepare=17 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    1454,
+    "[    1.540475][   T75] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=0 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=-16"
+  ],
+  [
+    1455,
+    "[    1.540495][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-after major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=1 ret=-16"
+  ],
+  [
+    1456,
+    "[    1.540507][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-after-aux provider=gdsc-regulator"
+  ],
+  [
+    1459,
+    "[  \u0000 1.540543][   T75] Dumping gcc_ufs_mem_phy_gdsc Registers:"
+  ],
+  [
+    1460,
+    "[    1.540555][   T75] GDSCR: 0xfa222(00 CFG: 0x05070000 CFG2: \u0010x0002022f"
+  ],
+  [
+    1461,
+    "[    1.540567][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_phy_enable_ref_clk: ref_aux_clk enabLe faihed \ufffd16"
+  ],
+  [
+    1462,
+    "[    1.140579][  \u0000T75] ufs_Acom_phy_qmp_v4_sun 1d80000.ufsphy_mem: ufs_qcom_Phy_power_on eNable phy ref clock failed, err=-16"
+  ],
+  [
+    1463,
+    "[    1.540631][   T75] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-return major=6 ref_cached=0 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=7 ret_valid=1 ret=-16"
+  ],
+  [
+    1465,
+    "[    1.540655][   T75] ufshcd-qcom 1d84000.ufshc: ufs_qcom_power_up_sequence: phy power on faiLed, rat = -16"
+  ],
+  [
+    2420,
+    "[    1.631016][   T75] Modules linked in: qnoc_tuna qnoc_kera qnoc_sun icc_rpmh qcmmWdcvs icc_bcm_voter ufs_qcom(O) tcsrcc_sun sdhci_msm dcvs_fp camcc_kera cambistmclkcc_sun clk_rpmh evacc_sun dispcc_sun rpmh_regulator gpucc_kera tcsrcc_tuna cambistmclkcc_tuna videocc_sun gpucc_tuna gcc_tuna gcc_sun(O) camcc_tuna gpucc_sun gcc_kera clk_dummy dispcc_tuna camcc_sun clk_qcom qrtr_gunyah qcom_rpmh msm_qmp gh_virt_wdt mem_buf qrtr crm_v2 qcom_wdt_core ufshcd_crypto_qti qcom_dload_mode tms_device_modules qcom_tsens gunyah_loader qcom_aoss mem_buf_msgq qcom_logbuf_vendor_hooks dccOv\" bcd_pmic5 pmic_pon_log arm_smmu pinctrl_kera pinctrl_tuna pinctrl_sun memory_dump_v2 qcom_logbuf_boot_log pinctrl_msm qcom_pdc 1com_ipcWloggijg minidump qcom_dma_(eaps -em_buf_Dev oplus_bsp_fpga_monitor(O) qcom_ice secure_buffer qcom_iommu_util mdt_loa`er ufs_oplus_dbg opluu_bsp_fpga_notify qcom_scm device_info oplus_nfc ua_cpu_ioctl oplus_bsp_boot_projEcTinfo gh_r-_drv qcom_cpufreq_h7 oplus_\ufffddefeature(O) qcom_spmi_pmic oplus_btuart_ux oplus_bsp_task_qc`ed"
+  ],
+  [
+    2423,
+    "[    1.631090][   T75] CPU: 6 PID: 75 Comm: kworker/u17:0 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufsOclk[diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    2427,
+    "[    1.631138][   47\u0011] pc : _regulator_put+0x120/0x134"
+  ],
+  [
+    2461,
+    "[    1.631593][   T75] ModulEi8hinked in: qn/c_tuna qnoc_kera qnoc_sun icc_rpmh qcom_dcvs icc_bcm_voter ufs_qcom(O) tcsrcc_sun sdhci_msm dcvs_fp camcc_kera cambistmclkcc_sun clk_rpmh evacc_sun dispcc_sun rpmh_re'ulator gpucc_ke2a tcsrcc_tuna cambistmclkcc_tuna videocc_sun gpucc_tuna gcc_tuna gcc_sun(O) camcc_tuna$gpuccOsu\u000e gcb_keba #lk\u001fdum-y dispcc_tu.a c`mcc_sun clk_qcom qrtr_gunyah qcom_rpmh msm_qmp gh_virt_wdt mem_buf qrtr crm_v2 ucom_wdt_cor% ufshcd_cpyptm_qti qcom_dload_mode tms_device_modules qcom_tsens gunyah_loader qcom_aoss mem_buf_msgq qcom_logbuf_vendor_hooks dcc_v2 bcl_pmic5 pmic_pon_log arm_smmu pinctrl_kera pinctrl_tuna pinctrl_sun mem/ry_$ump_v2 qcom_logbuf_foot_log pinctrl_msm qcom_pdc qcom_ipc_logging minidump qcom_dma_heaps mem_buf_dev oplus_bsp_fpga_monitor(O) qcom_ice secure_buffer qcom_iommu_util mdt_loader ufs_oplus_dbg nplus_bsv_dpea_notifq qcom_scm device_info oplus_nfc ua_cpu_ioctl oplus\ufffdbsp_boot_projecTinfo gh_rm_drv qcom_cpufreq_hw oplus_mdmfeature(O) qcom_spmi_pmic opl\ufffds_btuar4_ux oplus^bsp_task_sched"
+  ],
+  [
+    2464,
+    "[    1.631666][   T75] CPU: 6 PID: 75 Comm: kworker/u17:0 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    2468,
+    "[    1.631713][   T75] pc : _2egudapor_pup+0x120/0x1\u00134"
+  ],
+  [
+    2507,
+    "[   11.375497][    T1] Kernel panic - not syncing: Attempted to kill init! exitcode=0x00007f00"
+  ],
+  [
+    2527,
+    "[   1\u0011.3717\u00173][`   C0] CHU\" 0 PID: 0\u0000Co-m: swapper/0 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    2530,
+    "[   11.375777][    C0] pc : arch_local_irq_enable+0x4/0x8"
+  ],
+  [
+    2557,
+    "[   11.375811][    C2] pc : archOlkcal_irq_enable+0x4/0x8"
+  ],
+  [
+    2582,
+    "[   11.375838][    C1] pc : arch_local_irq_enable+0x4/0x8"
+  ],
+  [
+    2604,
+    "[   11.375861][    C5] CPU: 5 PID: 0 Comm: swappar/5 Tai.ted: C        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    2607,
+    "[   11.375864][    C5] pc : arch_local_irq_enable+0x4/0x8"
+  ],
+  [
+    2630,
+    "[   11.375891][    C4] pc : arch_local_orq_Enable)0x4/0x8"
+  ],
+  [
+    2652,
+    "[   11.375914][    C3] CPU: 3 PID: 0 Comm: swapper/3 Tainted: G        W  O       6.6.89-Gold_Bug_kexecKufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    2655,
+    "[   10.375917][  \ufffd C3] pc : arch_local_irq_enable+0x4/0x8"
+  ],
+  [
+    2677,
+    "[   10.+'594\u0011][    C7] APT: 7 PID2 0 Comm: swapper/7 Tainted: G        W  O       6.6.89-Gold_Bug_kexec_ufs_clk_diag #6 7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5"
+  ],
+  [
+    2680,
+    "[   11.375944][    C7] pc : arch_local_irq_enable+0x4/0x8"
+  ]
+]

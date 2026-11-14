@@ -1,0 +1,228 @@
+{
+  "status": "R42_SOURCE_PREJUMP_VERIFIED_AUTOMATIC_FASTBOOT_TARGET_RUNTIME_UNRESOLVED",
+  "round": 42,
+  "source": {
+    "actual_UUID": "fafaed69-96b0-4bb1-8491-9a15cbe8d380",
+    "GNU_build_id": "72782e2196eb1c46c8c5205ccd93f2acf42de294",
+    "module_count_before_helper": 693,
+    "preexec_with_only_helper": 694,
+    "original_GPI_SPI_notes_and_traceparam_absence_verified": true,
+    "same_UUID_SF_samples": 13,
+    "SF_stop_count": 1,
+    "SF_stable_seconds": 60.4865579350153,
+    "root_and_vendor_ready_verified": true,
+    "boot_completed_raw": "",
+    "GUI_or_full_Android_not_claimed": true,
+    "screen_directly_observed_by_auditor": false,
+    "GPU_firmware_ownership_quiescence_not_proved": true,
+    "startup_raw_sha256": "225dd18a0e6e119d46232df3ed14f574588b806ff7c359855fda853cd73cd38a",
+    "bounded_raw_witnesses": [
+      {
+        "LF": 2,
+        "hex": "5b20202020302e3030303030305d204c696e75782076657273696f6e20362e362e38392d476f6c645f4275675f6b657865635f6b67736c5f62696e6172795f736f757263655f6469616720286275696c646572406c6f63616c292028416e64726f6964202831313336383330382c202b70676f2c202b626f6c742c202b6c746f2c202b6d6c676f2c206261736564206f6e20723531303932382920636c616e672076657273696f6e2031382e302e30202868747470733a2f2f616e64726f69642e676f6f676c65736f757263652e636f6d2f746f6f6c636861696e2f6c6c766d2d70726f6a6563742034373736313064346430643938386536396462633366616534666538366266663366303766326235292c204c4c442031382e302e30292023313220534d5020505245454d505420536174204e6f762031342031363a34313a3130204353542032303236",
+        "ASCII_backslashreplace": "[    0.000000] Linux version 6.6.89-Gold_Bug_kexec_kgsl_binary_source_diag (builder@local) (Android (11368308, +pgo, +bolt, +lto, +mlgo, based on r510928) clang version 18.0.0 (https://android.googlesource.com/toolchain/llvm-project 477610d4d0d988e69dbc3fae4fe86bff3f07f2b5), LLD 18.0.0) #12 SMP PREEMPT Sat Nov 14 16:41:10 CST 2026"
+      },
+      {
+        "LF": 8683,
+        "hex": "5b20202020322e3634383533385d204d6f64756c65206d736d5f6b67736c20697320626c61636b6c6973746564",
+        "ASCII_backslashreplace": "[    2.648538] Module msm_kgsl is blacklisted"
+      }
+    ]
+  },
+  "requested_and_loaded": {
+    "target_build_id_requested": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+    "nonce_actual_DTB": "92363ab1bd2cf98f",
+    "critical_Image_source_pages_verified": 233,
+    "actual_DTB_sha256": "c229e046f6547510d0011fddf1be5024cd10e9e4dc5c3ecc086cc3007a96f85c",
+    "actual_initrd_start": "0x86800000",
+    "actual_initrd_end": "0x87a33004",
+    "actual_initrd_bufsz": 19083268,
+    "local_ramdisk_sha256": "c19bf0b15f96786b079353f3b5fb28ce28f925ed3a9e83001ac5fc74d038075b",
+    "local_GPI_KO_sha256": "94669c47c94ab1e0bc9391f9e124b35e1b00d4ed18b8381dbf5bd0be8b65e111",
+    "GPI_build_requested": "44f9608d617294a503cf5c0ecebad2da5bccb9d6",
+    "normal_load_sha256": "ff5116fb9eb9a12dfdaead42fbda2efc74779c7b89f636019e9d0922d0a79753",
+    "normal_explicit_root_count": 154,
+    "normal_GPI_row_count": 1,
+    "options_bytes": 290,
+    "actual_CPIO_records": 549,
+    "GPU_transport_disabled_and_PHY_extent_pass": true,
+    "GPI_runtime_adoption_not_proved_by_this_report": true,
+    "all_initrd_source_bytes_hashed": false,
+    "post_relocation_integrity_not_proved": true
+  },
+  "single_request_counters": {
+    "temporary_boot_request_count": 1,
+    "source_surfaceflinger_stop_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "source_and_loaded_independent_record": {
+    "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/gpi-event-r42-result-review/source-loaded-audit.json",
+    "bytes": 6933,
+    "sha256": "22cf2c2fab16a07078f0fc7e7dfb72fd7e656a7e24706bf6860527ab6ddee2cb"
+  },
+  "full_host_validation": {
+    "status": "HOST_R42_EARLY_PSTORE_GPI_TARGET_BINDING_PASS",
+    "sha256": "0a47d0bedcda8ef5f6c259d9d83dc058b69eb7eb10d22f98ece5ce76b1ac49a5",
+    "dependency_count_recorded": 383,
+    "old_dependencies_or_ABI_not_rerun": true,
+    "not_runtime_adoption_proof": true
+  },
+  "execution_and_natural_observation": {
+    "root_chain_step_exit_codes": [
+      [
+        "source-boot-and-single-SF-stop",
+        0
+      ],
+      [
+        "real-page-owner-sample",
+        0
+      ],
+      [
+        "bind-actual-source-runtime",
+        0
+      ],
+      [
+        "root-final-binding",
+        0
+      ],
+      [
+        "prepare-target",
+        0
+      ],
+      [
+        "stage-helper-load-once",
+        0
+      ],
+      [
+        "audit-actual-loaded-image",
+        0
+      ],
+      [
+        "audit-actual-PHY-extent",
+        0
+      ],
+      [
+        "execute-once-and-observe",
+        1
+      ]
+    ],
+    "execute_requested_epoch": 1794660138.4421294,
+    "execute_ADB_exit": 255,
+    "execute_wait_completed_epoch": 1794660254.279766,
+    "final_wait_stage": "SINGLE_EXECUTED_ANDROID_NOT_OBSERVED_WITHIN_BOUND",
+    "target_Android_completion_not_observed": true,
+    "natural_wait_first_post_capture_artifacts": [],
+    "no_saved_natural_new_UUID_capture_evidence": true,
+    "absence_is_not_proof_target_never_entered": true,
+    "user_clarification": "\u6ca1\u6709\u64cd\u4f5c\uff0c\u662f\u81ea\u52a8\u91cd\u542f",
+    "manual_reboot_reported_this_round": false,
+    "automatic_reboot_and_fastboot_observed": true,
+    "kernel_reset_reason_not_known": true,
+    "USB_inventory_epoch": 1794660218.4872499,
+    "source_GUI_or_screen_success_not_inferred": true
+  },
+  "separate_normal_installed_recovery": {
+    "normal_fastboot_reboot_request_count": 1,
+    "new_kexec_count": 0,
+    "reboot_requested_epoch": 1794660351.5639043,
+    "stock_collection_UUID": "d8c53019-2f45-4c1f-a999-d0667971464d",
+    "stock_kernel_GNU_build_id": "931f89c6463a6af0eea9436b61f059f31e451f6a",
+    "Android1_and_same_UUID_verified": true,
+    "GPI_GNU_build_id": "017204038f33bb4419f33057adedc2b0a2490c74",
+    "GPI_trace_parameter_absent_read_exit": 1,
+    "not_target_Android_or_target_GPI_adoption": true
+  },
+  "recovery_pstore_collection": {
+    "scope": "Installed stock after ROOT ordinary recovery reboot, not natural target first ADB",
+    "collector_manifest_sha256": "12bd44ce6c08bef62a331316052e418dc64586147d155c352fc4893c8b16f812",
+    "helper_sha256": "bada967d86ca731ed0ad307137faaecdfae0e011cfebc6387f99b08e578b53a0",
+    "pstore_UUID_bracket_and_metadata_UUID": "d8c53019-2f45-4c1f-a999-d0667971464d",
+    "pstore_read_status": "READ_COMPLETE_NONEMPTY",
+    "bytes": 262132,
+    "sha256": "a973b5803fcd39f7e402a6224b82e1f418f3a61967d1652f0ae86672fb628d78",
+    "LF_count": 2246,
+    "pstore_started_epoch": 1794660452.2687867,
+    "seconds_after_single_execute_request": 313.82665729522705,
+    "checkpoint_before_large_metadata": true,
+    "literal_marker_LFs": {
+      "68e85e134a894c34b5fef3ac30f4dd450d00a6b5": [],
+      "92363ab1bd2cf98f": [],
+      "44f9608d617294a503cf5c0ecebad2da5bccb9d6": [],
+      "KGPICMD1": [],
+      "KUSR2": [],
+      "KSEA1": [],
+      "Internal error": [],
+      "Kernel panic": [],
+      "gpi_send_cmd": []
+    },
+    "collection_UUID_does_not_identify_persisted_log_origin": true,
+    "missing_or_damaged_marker_not_evidence_of_nonexecution": true
+  },
+  "causal_limits": [
+    "Target Image diagnostics, four modified modules and warm handoff remain possible contributors; this report does not exclude them.",
+    "Source boot, ABI compatibility, and a prior normal target boot cannot exclude a kexec-specific diagnostic interaction.",
+    "Requested and staged GPI44f9 plus normal-list selection are not proof it became the executing target module.",
+    "The automatic reset cause, first target fault and target module adoption are not established by these saved records.",
+    "Subsequent experiments were stopped by ROOT; no additional test is requested or run by this review."
+  ],
+  "raw_handling": {
+    "LF_method": "raw.split(b'\\n')",
+    "damaged_bytes_repaired": false,
+    "old_fault_registers_or_stacks_reused": false
+  },
+  "inputs": {
+    "device-test.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round42/device-test.json",
+      "bytes": 11278,
+      "sha256": "007d2561abda72f566e0c66e19c38d39ecf66392856de0050c4182629be5141c"
+    },
+    "root-chain-events.jsonl": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round42/root-chain-events.jsonl",
+      "bytes": 1095,
+      "sha256": "d124ed05adb498c1531e359dd02c0c9b0c56e9736ef59e8568e020b4d8acb7d3"
+    },
+    "execute-output.txt": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round42/execute-output.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "user-reboot-observation.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round42/user-reboot-observation.json",
+      "bytes": 384,
+      "sha256": "134e8f68bd9d48adf9451ae5488505c5e7800cc28a32781482f14c5cbdf60ec0"
+    },
+    "USB-after-user-reboot-observation.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round42/USB-after-user-reboot-observation.json",
+      "bytes": 1311,
+      "sha256": "41bc66b4b2d312ff167ee11ffbfb9756d58a01bf7bd1a98da6913b4741d1730c"
+    },
+    "normal-recovery-reboot.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round42/normal-recovery-reboot.json",
+      "bytes": 1654,
+      "sha256": "d4f38cbfad840fbfdc27c340cd574b86aa812bb9ee6028e1a2f4defecb17065f"
+    },
+    "installed-recovery-readonly.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round42/installed-recovery-readonly.json",
+      "bytes": 9735,
+      "sha256": "86761316704767e95fe6905a5a388d79409eb553fb379c3cec08dc879961ffc0"
+    },
+    "recovery-after-fastboot/first-post-exec-capture.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-capture.json",
+      "bytes": 6580,
+      "sha256": "12bd44ce6c08bef62a331316052e418dc64586147d155c352fc4893c8b16f812"
+    },
+    "recovery-after-fastboot/first-post-exec-pstore.stdout.bin": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+      "bytes": 262132,
+      "sha256": "a973b5803fcd39f7e402a6224b82e1f418f3a61967d1652f0ae86672fb628d78"
+    }
+  },
+  "review_actions": {
+    "device_operations": 0,
+    "runner_main_invocations": 0,
+    "actual_state_or_frozen_file_changes": 0,
+    "old_ABI_or_suite_reruns": 0
+  }
+}

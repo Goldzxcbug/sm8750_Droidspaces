@@ -1,0 +1,51 @@
+{
+  "stage": "NORMAL_ANDROID_OBSERVED_REFERENCE_NOT_ESTABLISHED",
+  "temporary_boot_request_count": 1,
+  "helper_insmod_request_count": 0,
+  "load_request_count": 0,
+  "execute_request_count": 0,
+  "host_final_binding_sha256": "d70dd5d139314c80408b21730d37b71b026b875a9d563ed550d94097237eaaf3",
+  "host_validated_epoch": 1794608532.1278157,
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "test_kind": "normal_bootloader_boot_reference",
+  "temporary_boot_requested_epoch": 1794608541.0065613,
+  "preflight_boot_id": "f954f6df-97e0-43e9-a484-e73c6bfc1ea2",
+  "fastboot_boot_exit": 0,
+  "temporary_boot_returned_epoch": 1794608556.2660937,
+  "observed_build_ids": [
+    "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+  ],
+  "observed_boot_id": "d8eaa728-6b0e-4b94-a82e-caf447e2f3ab",
+  "observed_kernel": "6.6.89-Gold_Bug_kexec_tzlog_preserve_diag",
+  "observed_android_boot_completed": true,
+  "observed_module_build_ids": {
+    "phy_qcom_ufs": [
+      "da0d45e45f727c03861320cf4132255b22a0cf5c"
+    ],
+    "ufs_qcom": [
+      "a0f190cdb34943457dc4f4642b720838e77acda3"
+    ],
+    "gcc_sun": [
+      "fd0294bddc6fc79a28a1a6826e5328eee01567cb"
+    ]
+  },
+  "observed_phy_parameters": {
+    "kexec_ufs_phy_power_trace_diag": "ABSENT",
+    "kexec_ufs_phy_local_read_diag": "ABSENT",
+    "kexec_ufs_phy_cold_reference_diag": "ABSENT"
+  },
+  "cold_reference_observer_active": false,
+  "dmesg_sha256": "eb374caf045e213407badf49e4a82c413b88950d91f95c616aa5787601d0b7af",
+  "capture_epoch": 1794608575.901906,
+  "root_available": true,
+  "watchdog_disable": "0",
+  "electrical_power_cycle_performed": false,
+  "recovery_reboot_request_count": 1,
+  "recovery_requested_epoch": 1794608841.2100482,
+  "recovery_boot_id": "5ea13afb-0e5f-4019-b064-ad2a3bd10765",
+  "recovery_kernel": "6.6.89-Gold_bug",
+  "recovery_verified_epoch": 1794608871.5352356,
+  "recovery_root_available": true,
+  "recovery_watchdog_disable": "0"
+}

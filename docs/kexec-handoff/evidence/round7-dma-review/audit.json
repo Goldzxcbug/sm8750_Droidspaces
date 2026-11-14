@@ -1,0 +1,181 @@
+{
+  "status": "EXACT_ROUND7_DMA_HEAP_BINARY_DTB_OWNERSHIP_LIFECYCLE_AUDIT_PASS",
+  "ramdisk_sha256": "b9d50144482f916a157e548a3c79e20e1b3683bc982d6a8e01b0c8e8dd9eae02",
+  "cpio_sha256": "0569fae5dfcbfb26caebb22c954c23267a0a243a8aa780d269ac81c2889c1a11",
+  "modules": {
+    "mem_buf_dev.ko": {
+      "cpio_path": "lib/modules/mem_buf_dev.ko",
+      "cpio_offset": 12471612,
+      "bytes": 165664,
+      "sha256": "2d64d2842885eaf3645b318a710fa28ecbd846c35875dd2068daa3ef1226b09f",
+      "build_id": "c9e7e3fd998db40ed6018ad8677406397b47e983"
+    },
+    "qcom-scm.ko": {
+      "cpio_path": "lib/modules/qcom-scm.ko",
+      "cpio_offset": 53127204,
+      "bytes": 177992,
+      "sha256": "bf40685633f2d6f26f9baa1421ebee18e531dc80c937835af33830d485bb614b",
+      "build_id": "45818a2df3a2eb3401fae24aa624f6c312d5d9f9"
+    },
+    "qcom_dma_heaps.ko": {
+      "cpio_path": "lib/modules/qcom_dma_heaps.ko",
+      "cpio_offset": 53602204,
+      "bytes": 172472,
+      "sha256": "ab7c562caae199b8a14d06c28bd3479e0c5c78e5e91a8cd77dcb459e51eebe80",
+      "build_id": "d06a59aeae01fb44d0ba7088ec1b6f142127d51c"
+    },
+    "secure_buffer.ko": {
+      "cpio_path": "lib/modules/secure_buffer.ko",
+      "cpio_offset": 59102544,
+      "bytes": 53200,
+      "sha256": "9eb3118662b8ef74b633b453e3cc2a760a0dfaaab99c91fb52bf09cb445929c8",
+      "build_id": "534c89ce5f5981e302729f9f46aaf8f6d1d9db40"
+    }
+  },
+  "actual_target_dtb_sha256": "adc2b069cdd8b161e87a95d5967b4a3865bc7dca43b55f0db11f0aa25b4779d3",
+  "fault": {
+    "ESR": "0x96000010",
+    "function": "__memset+0x16c",
+    "instruction": "DC ZVA x8",
+    "word": "0xd50b7428",
+    "physical_base": "0x9b280000",
+    "size": "0x40000",
+    "module_caller": "__carveout_heap_init+0x60 (memset return point)",
+    "aligned_path_first_memory_write": true,
+    "interpretation_limit": "External abort does not by itself identify the rejecting TZ/interconnect/EL2 authority or prove current owner."
+  },
+  "exact_module_order": [
+    "__carveout_heap_init .text+0x8db8 ioremap_prot(NormalNC)",
+    "__carveout_heap_init .text+0x8dcc memset (fault before return .text+0x8dd0)",
+    "__carveout_heap_init .text+0x8dd4 iounmap",
+    "__carveout_heap_init gen_pool_create/add; rwsem init",
+    "qcom_secure_carveout_heap_create .text+0x8eb8 hyp_assign_from_flags",
+    "hyp_assign_from_flags .text+0x82ec qcom_scm_assign_mem",
+    "secure-create sets token/is_secure then dma_heap_add"
+  ],
+  "actual_FDT_secure_heaps": [
+    {
+      "heap_path": "/soc/qcom,dma-heaps/qcom,secure_sp_tz",
+      "heap_name": "qcom,secure-sp-tz",
+      "region_path": "/reserved-memory/spu_secure_shared_memory_region@9b280000",
+      "physical": "0x9b280000",
+      "size": "0x40000",
+      "token": "0x1000000",
+      "no_map": true
+    },
+    {
+      "heap_path": "/soc/qcom,dma-heaps/qcom,secure_sp_modem",
+      "heap_name": "qcom,secure-sp-modem",
+      "region_path": "/reserved-memory/spu_secure_shared_memory_region@9b2c0000",
+      "physical": "0x9b2c0000",
+      "size": "0x40000",
+      "token": "0x10800000",
+      "no_map": true
+    }
+  ],
+  "exact_pure_instruction_emulation": [
+    {
+      "token": "0x1000000",
+      "vmids": [
+        "0x22"
+      ],
+      "permissions": [
+        6
+      ],
+      "RW": true,
+      "HLOS_in_declared_destination_list": false,
+      "module_hlos_accessibility_predicate": false
+    },
+    {
+      "token": "0x10800000",
+      "vmids": [
+        "0xf",
+        "0x1a"
+      ],
+      "permissions": [
+        6,
+        6
+      ],
+      "RW": true,
+      "HLOS_in_declared_destination_list": false,
+      "module_hlos_accessibility_predicate": false
+    }
+  ],
+  "source_owner_mask_in_assign": "0x8 = BIT(VMID_HLOS=3), local variable; not queried",
+  "driver_callbacks_initial_descriptor": {
+    "remove": null,
+    "remove_new": null,
+    "shutdown": null
+  },
+  "module_exit_or_cleanup": false,
+  "secure_private_layout": {
+    "size": "0x70",
+    "token_u32": "0x0",
+    "embedded_carveout": "0x8",
+    "heap": "0x8",
+    "mem_sem": "0x10",
+    "pool": "0x50",
+    "dev": "0x58",
+    "is_secure_bool": "0x60",
+    "base": "0x68",
+    "size_not_stored": "Use validated gen_pool size/chunks and live reserved_mem"
+  },
+  "private_metadata_entry": "GPL dma_heap_find(name) -> dma_heap_get_drvdata; find takes a reference, release with dma_heap_put.",
+  "verified_builtin_reader_exports": [
+    "dma_heap_find",
+    "dma_heap_put",
+    "dma_heap_get_drvdata",
+    "gen_pool_size",
+    "gen_pool_avail",
+    "gen_pool_for_each_chunk"
+  ],
+  "dma_module_exports": [
+    "dynamic_boost_pool_alloc_pack",
+    "dynamic_boost_pool_create_pack",
+    "qcom_dma_heap_pool",
+    "qcom_is_dma_buf_file",
+    "qcom_secure_system_heap_drain",
+    "qcom_secure_system_heap_prefetch",
+    "qcom_sg_attach",
+    "qcom_sg_buf_ops",
+    "qcom_sg_detach",
+    "qcom_sg_dma_buf_begin_cpu_access",
+    "qcom_sg_dma_buf_begin_cpu_access_partial",
+    "qcom_sg_dma_buf_end_cpu_access",
+    "qcom_sg_dma_buf_end_cpu_access_partial",
+    "qcom_sg_lookup_vmperm",
+    "qcom_sg_map_dma_buf",
+    "qcom_sg_mmap",
+    "qcom_sg_release",
+    "qcom_sg_unmap_dma_buf",
+    "qcom_sg_vmap",
+    "qcom_sg_vunmap",
+    "qcom_store_dma_buf_fops",
+    "qcom_system_heap_total",
+    "qti_smmu_proxy_register_callbacks"
+  ],
+  "secure_buffer_exports": [
+    "hyp_assign_table",
+    "msm_secure_get_vmid_perms",
+    "msm_secure_vmid_to_string"
+  ],
+  "qcom_scm_relevant_exports": [
+    "qcom_scm_assign_dump_table_region",
+    "qcom_scm_assign_mem",
+    "qcom_scm_assign_mem_regions",
+    "qcom_scm_camera_protect_all",
+    "qcom_scm_camera_protect_phy_lanes",
+    "qcom_scm_mem_protect_region_id",
+    "qcom_scm_mem_protect_sd_ctrl",
+    "qcom_scm_mem_protect_video_var"
+  ],
+  "secure_free_lifecycle": "sc_heap_free tests the token accessibility predicate, conditionally zeroes only HLOS-accessible buffers, then returns space to gen_pool; it does not undo whole-heap SCM assignment.",
+  "state_verification_limits": [
+    "Heap token/is_secure and successful creation show assignment succeeded earlier, not a live hypervisor owner query.",
+    "gen_pool_avail == size under the heap write semaphore proves no allocated pool ranges at that point; firmware/DMA quiescence needs separate evidence.",
+    "The semaphore protects allocation/free pool operations, not all external hardware or an allocation already between unlock and export.",
+    "Static heap ranges do not cover all dynamically assigned secure-system buffers; handling these two ranges alone is not a full handoff proof."
+  ],
+  "minimal_correct_direction": "Quiesce consumers and prevent new allocations; validate exact live heap identity, DT range, declared VMID token and empty pool; use the supported SCM/hyp assignment API with the complete verified previous VMID set to reclaim to HLOS before target CPU zeroing. Abort kexec on mismatch, in-use memory, unproven quiescence or SCM failure. Retain target zero and ordinary re-assignment. Any reuse alternative requires a defined ownership/data-lifetime handoff, not skipping memset.",
+  "device_operations": 0
+}

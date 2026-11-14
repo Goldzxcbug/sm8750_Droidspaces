@@ -1,0 +1,149 @@
+{
+  "round": 9,
+  "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+  "temporary_boot_request_count": 1,
+  "execute_request_count": 1,
+  "load_request_count": 1,
+  "partition_write_allowed": false,
+  "watchdog_state_change_allowed": false,
+  "authorization": "Human permits reversible diagnostic tests by default",
+  "planned_change": "Source console persistence only; frozen target and helper C logic unchanged",
+  "source_expected_build_id": "8dde72278b557d4fd2488c1cab40759e890397bc",
+  "target_build_id": "f93a5b41fb60172452d1ba9cc767d9014162da82",
+  "helper_module_sha256": "617c917c0416ecaecbd9e20069e8c3282505c86a265e2df90c5c10445944ea3a",
+  "repo_kernel_changes_are_patch_files_only": true,
+  "host_ready_epoch": 1794583694.558535,
+  "temporary_boot_requested_epoch": 1794583695.1131427,
+  "preflight_boot_id": "b39035bf-4592-419c-8299-9edff9a8d0ca",
+  "boot_sha256": "175f99b5cefd5b74313d26586e96cdb4bf89b65afe98fc8233cdf49d0634d657",
+  "fastboot_boot_exit": 0,
+  "temporary_boot_returned_epoch": 1794583709.9973004,
+  "source_boot_id": "c98d4c50-1f2d-47a9-a473-1ac89b4cbaec",
+  "source_observed_build_ids": [
+    "8dde72278b557d4fd2488c1cab40759e890397bc"
+  ],
+  "source_android_boot_completed": true,
+  "source_kernel": "6.6.89-Gold_Bug_kexec_heap_flush_diag",
+  "source_module_count": 695,
+  "source_vendor_build_ids": {
+    "qcom_dma_heaps": "d06a59aeae01fb44d0ba7088ec1b6f142127d51c",
+    "secure_buffer": "534c89ce5f5981e302729f9f46aaf8f6d1d9db40",
+    "qcom_scm": "45818a2df3a2eb3401fae24aa624f6c312d5d9f9",
+    "qcom_spss": "bf2f7f319450e7aa8f2cc422aa33024abd2b8f2c",
+    "spss_utils": "23892a3ff1b07fd71f1f264a21f5ff5fd7d90d37",
+    "gh_rm_drv": "2081487b8b1b5eee1f6bf25ee4e4bfcde7a9a198"
+  },
+  "source_console_flush_parameter": true,
+  "source_verified_epoch": 1794583729.877346,
+  "source_vmid_insmod_count": 1,
+  "source_vmid_query_requested_epoch": 1794583792.2568984,
+  "source_this_vmid": 3,
+  "source_vmid_getter_return": 0,
+  "source_vmid_rmmod_count": 1,
+  "source_vmid_readonly_query_complete": true,
+  "remote_directory": "/data/local/tmp/kexec-secure-sp-tz-round9",
+  "target_run_id": "d4b35dbfac8f843c",
+  "target_Image_sha256": "7e4f108e6ab0e2b34afe776fb22257c738061ae0adf3626a92ca3d528b7cfaba",
+  "target_Image_bytes": 37001728,
+  "probe_console_physical": "0x880000000",
+  "ramdisk_bytes": 18179200,
+  "ramdisk_sha256": "b9d50144482f916a157e548a3c79e20e1b3683bc982d6a8e01b0c8e8dd9eae02",
+  "ramdisk_compressed_payload_sha256": "a5f001b2020f167b4c9bdd51973ec70011d0fd33ea2618f9237f298162fa5bc5",
+  "ramdisk_uncompressed_cpio_sha256": "0569fae5dfcbfb26caebb22c954c23267a0a243a8aa780d269ac81c2889c1a11",
+  "source_console_flush_guard": {
+    "status": "SOURCE_CONSOLE_FLUSH_GUARD_CONSISTENT_SNAPSHOT_PASS",
+    "source_flag_value": true,
+    "context_memtype": 2,
+    "console_type": 2,
+    "physical": "0x880000000",
+    "vaddr": "0xffffffc083380000",
+    "size_with_header": 262144,
+    "data_capacity": 262132,
+    "all_driver_flush_gate_conditions": true,
+    "ECC_absent": true,
+    "all_console_pages_pfn_valid_snapshot": true,
+    "checked_page_count": 64,
+    "checked_pfn_interval": [
+      "0x880000",
+      "0x880040"
+    ],
+    "sparsemem_sections": [
+      {
+        "section_nr": 272,
+        "root_index": 2,
+        "section_pointer": "0xffffff8b7dc04bc0",
+        "section_mem_map": "0xfffffffdfe00000f",
+        "early": true,
+        "subsection_indices_checked": []
+      }
+    ],
+    "all_console_pages_PTE_MT_NORMAL0": true,
+    "linear_alias_absent": true,
+    "metadata_and_used_PTE_double_reads_unchanged": true,
+    "Normal_WB_basis": "Exact source MAIR initialization maps MT_NORMAL0 to0xff; live PTE index0 verified.",
+    "live_MAIR_register_read": false,
+    "source_basis_vmlinux_sha256": "56d84ba2a26846964c804e1d5db7305bef494bbb3b9d7c418bc4e5b143177305",
+    "source_basis_btf_sha256": "9bd914fe44478a2f4aa0e535f60a9ea1de721692588accb319a205d82c207bd1",
+    "caller_identity_checks_required": [
+      "exact source build ID/BTF/code bytes",
+      "same boot UUID before and after"
+    ],
+    "limits": [
+      "Host reads cannot hold one RCU critical section across calls; double-read stability is not a proof against concurrent hotremove or ABA.",
+      "pfn_valid establishes struct-page metadata only; no target RAM ownership, secure-memory accessibility or firmware state is inferred.",
+      "PTE index0 is observed; live MAIR_EL1 is not read by this API."
+    ]
+  },
+  "spss_recovery_path": "/sys/class/remoteproc/remoteproc0/recovery",
+  "spss_recovery_original": "enabled",
+  "spss_recovery_disable_requested_epoch": 1794584058.147189,
+  "helper_insmod_request_count": 1,
+  "helper_init_requested_epoch": 1794584058.3977804,
+  "helper_insmod_exit": 0,
+  "helper_init_metadata_only": true,
+  "helper_armed": true,
+  "freeze_userspace": true,
+  "target_staged_epoch": 1794584059.025908,
+  "load_requested_epoch": 1794584059.0964897,
+  "load_exit": 0,
+  "load_returned_epoch": 1794584059.3962302,
+  "segments": [
+    {
+      "start": 2189426688,
+      "end_exclusive": 2227109888,
+      "bufsz": 37001728
+    },
+    {
+      "start": 2227109888,
+      "end_exclusive": 2245292032,
+      "bufsz": 18179200
+    },
+    {
+      "start": 51189383168,
+      "end_exclusive": 51190984704,
+      "bufsz": 1601001
+    }
+  ],
+  "load_result": "1",
+  "loaded_metadata_checks": "PASS",
+  "gic_overlap_count": 0,
+  "gic_range_set_stable_across_audit": true,
+  "critical_image_pages_verified": 20,
+  "captured_target_dtb_sha256": "d70bc83d39f1c13073eae7debb8e6068f1f5b8c4b2e1cf8885b4bac32c2064df",
+  "audit_completed_epoch": 1794584208.7922263,
+  "execute_requested_epoch": 1794584238.1684277,
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "execute_adb_exit": 255,
+  "execute_command_returned_epoch": 1794584246.378971,
+  "observed_build_ids_after_exec": [
+    "931f89c6463a6af0eea9436b61f059f31e451f6a"
+  ],
+  "observed_boot_id_after_exec": "c4e14928-a066-4570-8e13-6ffd72a674dd",
+  "observed_kernel_after_exec": "6.6.89-Gold_bug",
+  "observed_android_boot_completed": true,
+  "post_exec_capture_epoch": 1794584280.4156876,
+  "android_target_success": false,
+  "pstore_sha256": "1c78613324740edbb8c9c73cbffd2087d69125053f30bafa864dbfd5519c2224",
+  "recovery_root_available": true
+}

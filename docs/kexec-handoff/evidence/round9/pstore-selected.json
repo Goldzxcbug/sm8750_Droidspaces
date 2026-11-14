@@ -1,0 +1,30 @@
+[
+  [
+    1664,
+    "[  348.055816][T19731] KT: post_load file=1 path=relocate head=0x96254d002 start=0x82800000 dtb=0x0000000beb200000"
+  ],
+  [
+    1665,
+    "[  348.055843][T19731] KT: segment[0] mem=0x82800000 memsz=0x23f0000 bufsz=0x2349a00"
+  ],
+  [
+    1666,
+    "[  348.055861][T19731] KT: segment[1] mem=0x84bf0000 memsz=0x1157000 bufsz=0x1156480"
+  ],
+  [
+    1667,
+    "[  348.055878][T19731] KT: segment[2] mem=0xbeb200000 memsz=0x187000 bufsz=0x186de9"
+  ],
+  [
+    2271,
+    "[  527.317324][T24360] kexec_core: KT: enter"
+  ],
+  [
+    2272,
+    "[  527.317425][T24360] SHRC: phase=sealed one_heap_only=1 source=8dde72278b557d4fd2488c1cab40759e890397bc"
+  ],
+  [
+    2273,
+    "[  527.317495][T24360] SHRC: phase=isolated heap=qcom,secure-sp-tz base=0x000000009b280000 size=0x40000 old_owners=0x400000000 dst=3 perms=7"
+  ]
+]

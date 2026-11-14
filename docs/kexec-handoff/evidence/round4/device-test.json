@@ -1,0 +1,111 @@
+{
+  "round": 4,
+  "authorization": "Human replied \u5141\u8bb8\u4f60\u6d4b\u8bd5 to the fourth temporary boot and exactly one enhanced post-MMU diagnostic jump request.",
+  "stage": "PRIMARY_PRE_START_KERNEL_BOUNDARIES_CONFIRMED_LATER_DIAGNOSTIC_HOOK_UNSAFE",
+  "partition_write_allowed": false,
+  "watchdog_state_change_allowed": false,
+  "automatic_jump_retry_allowed": false,
+  "execute_request_count": 1,
+  "source_expected_build_id": "6081c037cab4c9e169ee897e5d9ad65a98de5109",
+  "source_boot_sha256": "be7aa32a416c8c4fdbcca7a1fc77630271d6daff3bcf2bddfcf912fea70d997e",
+  "expected_template_sha256": "9a76077f6e64a5194f11c75d49ee2dbf3d8da66009d369313239157137543045",
+  "preflight_epoch": 1794567375.186962,
+  "scope": "Pre-SCTLR register snapshot, eleven post-MMU stages, temporary verified console identity mapping removed before start_kernel; existing fatal EL1 capture and verified PSCI smc reset",
+  "temporary_boot_requested_epoch": 1794567418.605835,
+  "source_observed_build_ids": [
+    "6081c037cab4c9e169ee897e5d9ad65a98de5109"
+  ],
+  "source_boot_id": "bcda5c37-0b62-45a8-b464-2839aecae259",
+  "source_android_boot_completed": true,
+  "ramdisk_sha256": "b9d50144482f916a157e548a3c79e20e1b3683bc982d6a8e01b0c8e8dd9eae02",
+  "ramdisk_cpio_body_sha256": "a5f001b2020f167b4c9bdd51973ec70011d0fd33ea2618f9237f298162fa5bc5",
+  "ramdisk_footer_refreshed": true,
+  "target_Image_sha256": "bc7b46f6e1e5f8fd2a11c642ec334b0f1324158087a70e9062ce89920d5e8ecb",
+  "target_Image_bytes": 37707776,
+  "remote_directory": "/data/local/tmp/kexec-post-mmu-round4",
+  "probe_console_physical": "0x880000000",
+  "probe_console_capacity": 262132,
+  "probe_template_sha256": "9a76077f6e64a5194f11c75d49ee2dbf3d8da66009d369313239157137543045",
+  "PSCI": {
+    "path": "/soc/psci",
+    "compatible": [
+      "arm,psci-1.0"
+    ],
+    "method": "smc"
+  },
+  "target_staged_epoch": 1794567522.306986,
+  "load_requested_epoch": 1794567559.6346915,
+  "load_exit": 0,
+  "load_result": "1\n",
+  "load_returned_epoch": 1794567559.880353,
+  "freeze_userspace": true,
+  "load_stage_log": [
+    "0,26271,138449739,-,caller=T17365;KT: post_load file=1 path=relocate head=0xc16d7002 start=0x82800000 dtb=0x0000000beb200000",
+    "0,26272,138449751,-,caller=T17365;KT: segment[0] mem=0x82800000 memsz=0x23f6000 bufsz=0x23f6000",
+    "0,26273,138449753,-,caller=T17365;KT: segment[1] mem=0x84bf6000 memsz=0x1157000 bufsz=0x1156480",
+    "0,26274,138449754,-,caller=T17365;KT: segment[2] mem=0xbeb200000 memsz=0x187000 bufsz=0x186bf2"
+  ],
+  "segments": [
+    {
+      "start": 2189426688,
+      "end_exclusive": 2227134464,
+      "bufsz": 37707776
+    },
+    {
+      "start": 2227134464,
+      "end_exclusive": 2245316608,
+      "bufsz": 18179200
+    },
+    {
+      "start": 51189383168,
+      "end_exclusive": 51190984704,
+      "bufsz": 1600498
+    }
+  ],
+  "loaded_metadata_checks": "PASS",
+  "gic_overlap_count": 0,
+  "gic_range_set_stable_across_audit": true,
+  "modified_image_pages_verified": 9,
+  "captured_target_dtb_sha256": "ae0e754c397a50c5b07384339b647e886db59d9d51086f8c118e7baa9b2d70f2",
+  "audit_completed_epoch": 1794567631.7646456,
+  "execute_requested_epoch": 1794567706.1308732,
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "execute_adb_exit": 0,
+  "execute_command_returned_epoch": 1794567737.6712134,
+  "recovery_build_ids": [
+    "931f89c6463a6af0eea9436b61f059f31e451f6a"
+  ],
+  "recovery_boot_id": "6e767b42-0df1-45e7-a73f-ad155b2c0d52",
+  "pstore_sha256": "5522f7a02f255d6c9b518b0e9df27704e3153104771adc308a1c33e483a0cb30",
+  "pstore_printable_ratio": 0.9985617932949812,
+  "captured_epoch": 1794567813.52552,
+  "recovery_kernel": "6.6.89-Gold_bug",
+  "recovery_android_boot_completed": true,
+  "positive_primary_stage_markers": [
+    "target-entry",
+    "mmu-state-recorded",
+    "boot-args-preserved",
+    "idmap-created",
+    "exception-level-ready",
+    "cpu-setup-returned",
+    "before-enable-mmu",
+    "mmu-enabled",
+    "before-kaslr-early-init",
+    "kaslr-initialized",
+    "kernel-tables-cleared",
+    "kernel-mapping-installed",
+    "before-primary-switched",
+    "primary-switched-task-ready",
+    "bss-cleared",
+    "early-fdt-mapped",
+    "feature-overrides-initialized",
+    "before-start-kernel"
+  ],
+  "config_capture_count": 6,
+  "fatal_capture_count": 0,
+  "MMU_primary_return_confirmed": true,
+  "before_start_kernel_call_confirmed": true,
+  "shared_hook_diagnostic_defect": "Permanent __enable_mmu RET branch targets _end-external appended code which the later permanent idmap does not map; shared snapshot persists beyond append lifetime. Later failure cannot establish original kernel cause.",
+  "root_cause_of_original_kexec_failure": "Still not established; failure interval now later than primary MMU/KASLR/virtual-task setup."
+}

@@ -1,0 +1,1027 @@
+{
+  "status": "INDEPENDENT_R40_ACTUAL_GPI_KO_NULL_GUARD_FIRST_EVENT_IRQ_TRACE_PARAMETER_AND_CRC_REVIEW_PASS",
+  "blockers": [],
+  "module_path": "out/kexec-boot-fix/gpi-event-timeout-trace-module/msm_gpi.ko",
+  "module_sha256": "94669c47c94ab1e0bc9391f9e124b35e1b00d4ed18b8381dbf5bd0be8b65e111",
+  "build_id": "44f9608d617294a503cf5c0ecebad2da5bccb9d6",
+  "bytes": 479976,
+  "producer_validation_sha256": "867acecb3a9308f19b1e6407384a6cccb2c0434a83c2565c21b4c842c1aa44b0",
+  "functions": {
+    "gpi_send_cmd": {
+      "offset": "0x275c",
+      "size": 1340,
+      "sha256": "279308a85f8c69873643bc80fafeff24eb1b58df74011adb0353c230f785618c",
+      "calls": [
+        [
+          "0x27e8",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x28ec",
+          [
+            "SYMBOL",
+            [
+              "writel_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x290c",
+          [
+            "UND",
+            "__msecs_to_jiffies",
+            0
+          ]
+        ],
+        [
+          "0x2918",
+          [
+            "UND",
+            "wait_for_completion_timeout",
+            0
+          ]
+        ],
+        [
+          "0x2988",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x29a0",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x29c0",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x29e0",
+          [
+            "SYMBOL",
+            [
+              "writel_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x2a70",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x2aa4",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x2ae0",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x2b14",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x2b6c",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x2bc8",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x2c0c",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x2c80",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ]
+      ],
+      "MMIO_static_sites": {
+        "readl_relaxed": {
+          "baseline": 3,
+          "new": 3
+        },
+        "writel_relaxed": {
+          "baseline": 2,
+          "new": 2
+        }
+      },
+      "disassembly_path": "out/kexec-boot-fix/gpi-event-r40-independent-review/actual-gpi_send_cmd.disassembly.txt",
+      "disassembly_sha256": "d6001722c115f4adc8e0bb3e149cc59233754e725c63c2c16dd600524fb7d4c7"
+    },
+    "gpi_handle_irq": {
+      "offset": "0x895c",
+      "size": 2860,
+      "sha256": "cd4c2f266b9a163b3e49c82b5467c5698f182d8188dc90ede3e597d70c4f3f19",
+      "calls": [
+        [
+          "0x89a4",
+          [
+            "UND",
+            "_raw_read_lock_irqsave",
+            0
+          ]
+        ],
+        [
+          "0x89d0",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8a64",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x8a80",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8ab0",
+          [
+            "SYMBOL",
+            [
+              "writel_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8ad0",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8ae4",
+          [
+            "SYMBOL",
+            [
+              "writel_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8b70",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x8bcc",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x8c70",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x8c84",
+          [
+            "SYMBOL",
+            [
+              "gpi_generate_cb_event"
+            ]
+          ]
+        ],
+        [
+          "0x8c94",
+          [
+            "SYMBOL",
+            [
+              "gpi_generate_cb_event"
+            ]
+          ]
+        ],
+        [
+          "0x8ca8",
+          [
+            "SYMBOL",
+            [
+              "writel_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8cc0",
+          [
+            "SYMBOL",
+            [
+              "gpi_config_interrupts"
+            ]
+          ]
+        ],
+        [
+          "0x8cd8",
+          [
+            "UND",
+            "__tasklet_schedule",
+            0
+          ]
+        ],
+        [
+          "0x8d20",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x8d30",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8d44",
+          [
+            "SYMBOL",
+            [
+              "writel_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8d4c",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8db8",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x8dc0",
+          [
+            "UND",
+            "complete_all",
+            0
+          ]
+        ],
+        [
+          "0x8e1c",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x8e34",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8e48",
+          [
+            "SYMBOL",
+            [
+              "writel_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8e58",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8e9c",
+          [
+            "UND",
+            "complete_all",
+            0
+          ]
+        ],
+        [
+          "0x8eb8",
+          [
+            "SYMBOL",
+            [
+              "gpi_generate_cb_event"
+            ]
+          ]
+        ],
+        [
+          "0x8ec4",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8f08",
+          [
+            "UND",
+            "complete_all",
+            0
+          ]
+        ],
+        [
+          "0x8f24",
+          [
+            "SYMBOL",
+            [
+              "gpi_generate_cb_event"
+            ]
+          ]
+        ],
+        [
+          "0x8f40",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x8f64",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x8f88",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x8fc8",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x8fec",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x9018",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x9050",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x9094",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x90a8",
+          [
+            "SYMBOL",
+            [
+              "gpi_process_events"
+            ]
+          ]
+        ],
+        [
+          "0x911c",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x9188",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x91fc",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x9244",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x92ac",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x92c8",
+          [
+            "SYMBOL",
+            [
+              "readl_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x9308",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x9324",
+          [
+            "SYMBOL",
+            [
+              "gpi_generate_cb_event"
+            ]
+          ]
+        ],
+        [
+          "0x933c",
+          [
+            "SYMBOL",
+            [
+              "gpi_generate_cb_event"
+            ]
+          ]
+        ],
+        [
+          "0x9354",
+          [
+            "SYMBOL",
+            [
+              "writel_relaxed"
+            ]
+          ]
+        ],
+        [
+          "0x9370",
+          [
+            "SYMBOL",
+            [
+              "gpi_dump_debug_reg"
+            ]
+          ]
+        ],
+        [
+          "0x93a0",
+          [
+            "UND",
+            "ipc_log_string",
+            0
+          ]
+        ],
+        [
+          "0x93a8",
+          [
+            "UND",
+            "_raw_read_unlock_irqrestore",
+            0
+          ]
+        ],
+        [
+          "0x9418",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x9444",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x9470",
+          [
+            "UND",
+            "_printk",
+            0
+          ]
+        ],
+        [
+          "0x9480",
+          [
+            "UND",
+            "__stack_chk_fail",
+            0
+          ]
+        ]
+      ],
+      "MMIO_static_sites": {
+        "readl_relaxed": {
+          "baseline": 10,
+          "new": 10
+        },
+        "writel_relaxed": {
+          "baseline": 6,
+          "new": 6
+        }
+      },
+      "disassembly_path": "out/kexec-boot-fix/gpi-event-r40-independent-review/actual-gpi_handle_irq.disassembly.txt",
+      "disassembly_sha256": "a1b2ed783daf977aca3eb2f0bb95a5f354ed35e4f5e0278d1890effa82225c78"
+    }
+  },
+  "instruction_assertions": {
+    "0x2868": "0xb50003f5",
+    "0x286c": "0x71002adf",
+    "0x2874": "0x34000388",
+    "0x2888": "0xf168011f",
+    "0x2894": "0x7100111f",
+    "0x28a0": "0x7100111f",
+    "0x28ac": "0x7100051f",
+    "0x28b8": "0x7100051f",
+    "0x28d4": "0x88e8fd49",
+    "0x2c34": "0x885f7d68",
+    "0x2c40": "0x880cfd6a",
+    "0x2c8c": "0xc89ffd13",
+    "0x2ac0": "0xc89ffd28",
+    "0x2af4": "0xc89ffd03",
+    "0x2994": "0x71002adf",
+    "0x2998": "0x54000c42",
+    "0x299c": "0xf94096a0",
+    "0x2b70": "0x12800080",
+    "0x8aa4": "0xc8dffd19",
+    "0x8ae8": "0xeb13033f",
+    "0x8cec": "0xc8dffd1b",
+    "0x8d6c": "0xb903aa79",
+    "0x8dc4": "0xeb13037f",
+    "0x8ddc": "0x88e8fd37",
+    "0x8b0c": "0x88e8fd36",
+    "0x8c30": "0x88e8fd37",
+    "0x8bf0": "0xb85fc150",
+    "0x8c04": "0xd4304540",
+    "0x8c08": "0xd63f0140"
+  },
+  "manual_actual_callflow": {
+    "send": "Default/command/channel/provider/twoSE4/twoSPI guards2864..28bc; claim LSE28d4 or LL/SC2c34..2c48. Submit printk2c80 then STLR owner2c8c then original writel28ec; wait2918. Success-close2ac0 then printk2ae0; timeout original read2988 then close2af4/print2b14. Event command cmp/branch2994/2998 or2b18/2b1c avoids channel dereference299c and reaches EIO2b70. No success manufactured.",
+    "globalIRQ": "Original read8a80, acquire owner8aa4, original clear8ab0; original error read8ad0/clear8ae4 retained, pointer compare8ae8 then one-shot. Invalid IRQ format has separate path8c18..9244 using the same once variable. Original callback remains KCFI checked8bf0..8c08.",
+    "EVIRQ": "Acquire eligibility8cec before original read8d30,clear8d44,contextread8d4c; raw context kept w21 at8d5c, masked/adjusted state w25 stored8d6c. Original complete_all8dc0 then captured-pointer compare8dc4, single-claim log911c. No reloading owner after completion, so allowed late output preserved.",
+    "atomic_alternatives": "Both compiled LSE CASAL and LL/SC retry alternatives inspected; retry loops are standard kernel atomic implementation, not bounded-time scheduling proof.",
+    "disabled": "BSS bool0 makes begin skip all metadata filters/claim/submit; owner staysNULL and IRQ one-shot/log blocks skipped. Extra software loads/branches remain; no claim of instruction-byte identity with baseline."
+  },
+  "parameter": {
+    "name": "kexec_first_event_diag",
+    "section": "__param",
+    "descriptor_bytes": 40,
+    "permission": "0400",
+    "default_false_BSS": true,
+    "operations": "actual param_ops_bool relocation",
+    "argument_BSS_offset": 0,
+    "relocations": [
+      [
+        0,
+        257,
+        [
+          "DEF",
+          ".rodata",
+          88
+        ]
+      ],
+      [
+        8,
+        257,
+        [
+          "DEF",
+          ".gnu.linkonce.this_module",
+          0
+        ]
+      ],
+      [
+        16,
+        257,
+        [
+          "UND",
+          "param_ops_bool",
+          0
+        ]
+      ],
+      [
+        32,
+        257,
+        [
+          "DEF",
+          ".bss",
+          0
+        ]
+      ]
+    ]
+  },
+  "natural_versions": {
+    "original80_same": true,
+    "new_unique_import": "param_ops_bool",
+    "new_import_CRC": "0x327f4ed5",
+    "actual_provider": [
+      "vmlinux",
+      "EXPORT_SYMBOL"
+    ],
+    "all81_actual_provider_CRC_match": true
+  },
+  "natural_exports": {
+    "count": 12,
+    "names": [
+      "geni_gsi_ch_start",
+      "geni_gsi_common_request_channel",
+      "geni_gsi_connect_doorbell",
+      "geni_gsi_disconnect_doorbell_stop_ch",
+      "gpi_dump_for_geni",
+      "gpi_q2spi_terminate_all",
+      "gpi_update_multi_desc_flag",
+      "gsi_common_clear_tre_indexes",
+      "gsi_common_fill_tre_buf",
+      "gsi_common_prep_desc_and_submit",
+      "gsi_common_tre_process",
+      "gsi_common_tx_tre_optimization"
+    ],
+    "CRC_bytes_equal_to_baseline": true
+  },
+  "CFI_callbacks": {
+    "all50_function_prefix_words_equal": true,
+    "function_type_words": [
+      {
+        "function": "gpi_dump_debug_reg",
+        "word": "c0035fd6"
+      },
+      {
+        "function": "readl_relaxed",
+        "word": "b4ffff17"
+      },
+      {
+        "function": "gsi_common_tx_cb",
+        "word": "fceb88a4"
+      },
+      {
+        "function": "gsi_common_rx_cb",
+        "word": "fceb88a4"
+      },
+      {
+        "function": "gsi_common_ev_cb",
+        "word": "a3fb7b43"
+      },
+      {
+        "function": "gpi_start_chan",
+        "word": "bcffff17"
+      },
+      {
+        "function": "gpi_send_cmd",
+        "word": "e3ffff17"
+      },
+      {
+        "function": "writel_relaxed",
+        "word": "e5ffff17"
+      },
+      {
+        "function": "gpi_free_chan_desc",
+        "word": "bbffff17"
+      },
+      {
+        "function": "gpi_reset_chan",
+        "word": "40a22ad4"
+      },
+      {
+        "function": "gpi_alloc_chan",
+        "word": "200020d4"
+      },
+      {
+        "function": "gpi_probe",
+        "word": "9116df63"
+      },
+      {
+        "function": "gpi_ev_tasklet",
+        "word": "4be4ceae"
+      },
+      {
+        "function": "gpi_alloc_chan_resources",
+        "word": "02ee8c0a"
+      },
+      {
+        "function": "gpi_free_chan_resources",
+        "word": "4315cfcc"
+      },
+      {
+        "function": "gpi_issue_pending",
+        "word": "4315cfcc"
+      },
+      {
+        "function": "dma_cookie_status",
+        "word": "263f7ba0"
+      },
+      {
+        "function": "gpi_config",
+        "word": "a76467af"
+      },
+      {
+        "function": "gpi_pause",
+        "word": "02ee8c0a"
+      },
+      {
+        "function": "gpi_resume",
+        "word": "02ee8c0a"
+      },
+      {
+        "function": "gpi_of_dma_xlate",
+        "word": "1a404b23"
+      },
+      {
+        "function": "gpi_setup_debug",
+        "word": "a1ffff17"
+      },
+      {
+        "function": "gpi_remove",
+        "word": "9116df63"
+      },
+      {
+        "function": "gpi_process_events",
+        "word": "00000094"
+      },
+      {
+        "function": "gpi_config_interrupts",
+        "word": "00000094"
+      },
+      {
+        "function": "gpi_alloc_ring",
+        "word": "200020d4"
+      },
+      {
+        "function": "gpi_disable_interrupts",
+        "word": "c0035fd6"
+      },
+      {
+        "function": "gpi_alloc_ev_chan",
+        "word": "00000094"
+      },
+      {
+        "function": "gpi_free_ring",
+        "word": "d1ffff17"
+      },
+      {
+        "function": "gpi_generate_cb_event",
+        "word": "00000094"
+      },
+      {
+        "function": "gpi_handle_irq",
+        "word": "f6050ff9"
+      },
+      {
+        "function": "gpi_dump_for_geni",
+        "word": "4315cfcc"
+      },
+      {
+        "function": "gpi_update_multi_desc_flag",
+        "word": "3f7915db"
+      },
+      {
+        "function": "gsi_common_tre_process",
+        "word": "4c923b6f"
+      },
+      {
+        "function": "gsi_common_tx_tre_optimization",
+        "word": "bbc9b163"
+      },
+      {
+        "function": "gsi_common_clear_tre_indexes",
+        "word": "e984f84b"
+      },
+      {
+        "function": "gsi_common_fill_tre_buf",
+        "word": "9ee4d6b7"
+      },
+      {
+        "function": "gsi_common_prep_desc_and_submit",
+        "word": "f64f8330"
+      },
+      {
+        "function": "geni_gsi_common_request_channel",
+        "word": "f9f1f292"
+      },
+      {
+        "function": "geni_gsi_ch_start",
+        "word": "02ee8c0a"
+      },
+      {
+        "function": "geni_gsi_connect_doorbell",
+        "word": "02ee8c0a"
+      },
+      {
+        "function": "geni_gsi_disconnect_doorbell_stop_ch",
+        "word": "9cfc00a9"
+      },
+      {
+        "function": "gpi_q2spi_terminate_all",
+        "word": "02ee8c0a"
+      },
+      {
+        "function": "gpi_terminate_channel",
+        "word": "a6f3eabc"
+      },
+      {
+        "function": "gpi_mark_stale_events",
+        "word": "37b4ce0d"
+      },
+      {
+        "function": "gpi_terminate_all",
+        "word": "02ee8c0a"
+      },
+      {
+        "function": "gpi_desc_free",
+        "word": "686f9e25"
+      },
+      {
+        "function": "gpi_prep_slave_sg",
+        "word": "01d0a80f"
+      },
+      {
+        "function": "init_module",
+        "word": "a6c5b136"
+      },
+      {
+        "function": "cleanup_module",
+        "word": "0c6740a5"
+      }
+    ],
+    "driver_data_bytes_and_symbol_resolved_relocations_same": true,
+    "driver_data_relocations": [
+      [
+        0,
+        257,
+        [
+          "SYMBOL",
+          [
+            "gpi_probe"
+          ]
+        ]
+      ],
+      [
+        8,
+        257,
+        [
+          "SYMBOL",
+          [
+            "gpi_remove"
+          ]
+        ]
+      ],
+      [
+        48,
+        257,
+        [
+          "STRING_BYTES_HEX",
+          "6770695f646d6100"
+        ]
+      ],
+      [
+        88,
+        257,
+        [
+          "SYMBOL",
+          [
+            "__mod_of__gpi_of_match_device_table"
+          ]
+        ]
+      ]
+    ],
+    "existing_irq_callback_typecheck_and_BLR_preserved": true
+  },
+  "source_review": "out/kexec-boot-fix/gpi-first-event-trace-independent-review/audit.json",
+  "source_review_sha256": "ad5c0ac6d83cc94ff98205388dbba17eb982d8ba7738f44a81a3b64b58f84110",
+  "limits": [
+    "Actual code and linkage checked, no device/module load or IRQ scheduling test.",
+    "A software association window may include a pending old IRQ and records may be out of timestamp/print order. Missing logs are not proof an IRQ never occurred.",
+    "Printk perturbs timing; scalar software metadata is not a coherent hardware transaction.",
+    "No repetition of producer48-function semantic projection,8shared-layout or baseline2338-relocation full suite."
+  ],
+  "audit_script_sha256": "2c3ed15c094ff74b35056efb1a3ecc7f8ebd62c804380ebf88fa72044ff163b1",
+  "device_operations": 0,
+  "producer_changes": 0,
+  "builds": 0
+}

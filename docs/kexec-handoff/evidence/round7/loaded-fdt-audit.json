@@ -1,0 +1,190 @@
+{
+  "status": "ACTUAL_LOADED_FDT_SOURCE_PAGES_INSPECTED_BEFORE_JUMP",
+  "sha256": "adc2b069cdd8b161e87a95d5967b4a3865bc7dca43b55f0db11f0aa25b4779d3",
+  "initrd_chosen_matches_actual_segment": true,
+  "bootargs_match_exact_prepared_append": true,
+  "cmdline_sha256_without_trailing_newline": "a894d6a679931389296bb12eb7c8cd69f315353dd9676fd4ce8615d6137e4854",
+  "actual_target_PSCI": {
+    "path": "/soc/psci",
+    "compatible": [
+      "arm,psci-1.0"
+    ],
+    "method": "smc"
+  },
+  "initrd_start": "0x84bf0000",
+  "initrd_end": "0x85d46480",
+  "reserve_map": [
+    {
+      "start": "0x84bf0000",
+      "end_exclusive": "0x85d46480"
+    }
+  ],
+  "static_reserved_memory_ranges": 54,
+  "dynamic_reserved_memory_nodes": [
+    "/reserved-memory/sp_region",
+    "/reserved-memory/qseecom_region",
+    "/reserved-memory/qseecom_ta_region",
+    "/reserved-memory/vm_comm_mem_region",
+    "/reserved-memory/linux,cma",
+    "/reserved-memory/cdsp_eva_region",
+    "/reserved-memory/adsp_heap_region",
+    "/reserved-memory/non_secure_display_region",
+    "/reserved-memory/debug_kinfo_region",
+    "/reserved-memory/va_md_mem_region",
+    "/reserved-memory/qmc_dma_region",
+    "/reserved-memory/secure_cdsp_region",
+    "/reserved-memory/dump_mem_region",
+    "/reserved-memory/cnss_wlan_region"
+  ],
+  "GIC_range_coverage": [
+    {
+      "start": "0x81ae5000",
+      "end_exclusive": "0x81ae6000",
+      "use": "its-baser",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0x81af0000",
+      "end_exclusive": "0x81b00000",
+      "use": "its-command-queue",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0x81b00000",
+      "end_exclusive": "0x81c00000",
+      "use": "its-baser",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xa3e80000",
+      "end_exclusive": "0xa3e90000",
+      "use": "lpi-properties",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xa3e90000",
+      "end_exclusive": "0xa3ea0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xa3ea0000",
+      "end_exclusive": "0xa3eb0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xa3eb0000",
+      "end_exclusive": "0xa3ec0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xa3ec0000",
+      "end_exclusive": "0xa3ed0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xa3ed0000",
+      "end_exclusive": "0xa3ee0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xa3ee0000",
+      "end_exclusive": "0xa3ef0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xa3ef0000",
+      "end_exclusive": "0xa3f00000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xaeb54000",
+      "end_exclusive": "0xaeb55000",
+      "use": "its-device-itt",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xaf2d5000",
+      "end_exclusive": "0xaf2d6000",
+      "use": "its-level2",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0xbe380000",
+      "end_exclusive": "0xbe390000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0x883aa9000",
+      "end_exclusive": "0x883aaa000",
+      "use": "its-level2",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    },
+    {
+      "start": "0x885355000",
+      "end_exclusive": "0x885356000",
+      "use": "its-device-itt",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": [
+        "/reserved-memory/kexec-gic-tables"
+      ]
+    }
+  ],
+  "limitations": [
+    "Dynamic size-only nodes are not proof of a fixed target reservation",
+    "No post-relocation checksum or evidence of target memory allocation",
+    "Missing table reservation is a risk, not proof of this boot failure"
+  ]
+}

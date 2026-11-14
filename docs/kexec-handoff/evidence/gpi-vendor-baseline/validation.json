@@ -1,0 +1,616 @@
+{
+  "status": "UNTOUCHED_OFFICIAL_GPI_BASELINE_ALL_RUNTIME_BYTES_RELOCS_80CRC_12EXPORTS_8LAYOUTS_PASS",
+  "module_path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/gpi-vendor-baseline/msm_gpi.ko",
+  "module_sha256": "74121b9cc5d4b3a6db0d97c64f2b629aa4d076bedbb1b77d6d093e71ad2c813e",
+  "module_build_id": "c9f61cf6259871c3c3a030b47ebedfa53f113eae",
+  "module_bytes": 470776,
+  "actual_vendor_module_sha256": "058a56c5a88bbbcf02a804e609b255c1b4dc38e5fe87daedd9c7ec918a9f855e",
+  "actual_vendor_module_build_id": "017204038f33bb4419f33057adedc2b0a2490c74",
+  "target_GKI_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+  "original80_CRC_records_preserved": true,
+  "all_version_records": [
+    {
+      "name": "ipc_log_string",
+      "crc": "0x8b83a1e8"
+    },
+    {
+      "name": "sched_clock",
+      "crc": "0xe94986d6"
+    },
+    {
+      "name": "kmalloc_caches",
+      "crc": "0x74661383"
+    },
+    {
+      "name": "kmalloc_trace",
+      "crc": "0xa8541c9b"
+    },
+    {
+      "name": "_printk",
+      "crc": "0x92997ed8"
+    },
+    {
+      "name": "memcpy",
+      "crc": "0x4829a47e"
+    },
+    {
+      "name": "__kmalloc",
+      "crc": "0xeb233a45"
+    },
+    {
+      "name": "dma_unmap_page_attrs",
+      "crc": "0x89b9e554"
+    },
+    {
+      "name": "wait_for_completion_timeout",
+      "crc": "0x4a3ad70e"
+    },
+    {
+      "name": "sg_init_table",
+      "crc": "0x2cf0c910"
+    },
+    {
+      "name": "_dev_err",
+      "crc": "0x3b00ee3e"
+    },
+    {
+      "name": "dma_request_chan",
+      "crc": "0x2d42c7f7"
+    },
+    {
+      "name": "dma_release_channel",
+      "crc": "0xf609a082"
+    },
+    {
+      "name": "mutex_lock",
+      "crc": "0xd5977bfb"
+    },
+    {
+      "name": "mutex_unlock",
+      "crc": "0xed55cabd"
+    },
+    {
+      "name": "_raw_write_lock_irq",
+      "crc": "0x3aca0190"
+    },
+    {
+      "name": "_raw_write_unlock_irq",
+      "crc": "0x9f76baf4"
+    },
+    {
+      "name": "__msecs_to_jiffies",
+      "crc": "0x7f02188f"
+    },
+    {
+      "name": "_raw_spin_lock_irqsave",
+      "crc": "0x34db050b"
+    },
+    {
+      "name": "_raw_spin_unlock_irqrestore",
+      "crc": "0xd35cce70"
+    },
+    {
+      "name": "kfree",
+      "crc": "0x037a0cba"
+    },
+    {
+      "name": "__list_del_entry_valid_or_report",
+      "crc": "0x9a835040"
+    },
+    {
+      "name": "vchan_dma_desc_free_list",
+      "crc": "0x42bbe399"
+    },
+    {
+      "name": "__stack_chk_fail",
+      "crc": "0xf0fdf6cb"
+    },
+    {
+      "name": "sg_next",
+      "crc": "0xfbe215e4"
+    },
+    {
+      "name": "kasan_flag_enabled",
+      "crc": "0xa6f6226c"
+    },
+    {
+      "name": "dma_async_tx_descriptor_init",
+      "crc": "0x7e78090b"
+    },
+    {
+      "name": "vchan_tx_desc_free",
+      "crc": "0xf69738d4"
+    },
+    {
+      "name": "vchan_tx_submit",
+      "crc": "0x0bb8c678"
+    },
+    {
+      "name": "__list_add_valid_or_report",
+      "crc": "0x7e19152a"
+    },
+    {
+      "name": "debugfs_create_dir",
+      "crc": "0x1f1faaa1"
+    },
+    {
+      "name": "__platform_driver_register",
+      "crc": "0x279498f1"
+    },
+    {
+      "name": "platform_driver_unregister",
+      "crc": "0xf5ab7c57"
+    },
+    {
+      "name": "__tracepoint_rwmmio_read",
+      "crc": "0xb8a6d228"
+    },
+    {
+      "name": "__tracepoint_rwmmio_post_read",
+      "crc": "0x84c83365"
+    },
+    {
+      "name": "log_read_mmio",
+      "crc": "0x6b722180"
+    },
+    {
+      "name": "log_post_read_mmio",
+      "crc": "0x0c1a5ee3"
+    },
+    {
+      "name": "__tracepoint_rwmmio_write",
+      "crc": "0x0af02b93"
+    },
+    {
+      "name": "__tracepoint_rwmmio_post_write",
+      "crc": "0x02a1785f"
+    },
+    {
+      "name": "log_write_mmio",
+      "crc": "0xc905402b"
+    },
+    {
+      "name": "log_post_write_mmio",
+      "crc": "0xfa4d3c24"
+    },
+    {
+      "name": "devm_kmalloc",
+      "crc": "0x9360f980"
+    },
+    {
+      "name": "platform_get_resource_byname",
+      "crc": "0x2045f949"
+    },
+    {
+      "name": "devm_ioremap",
+      "crc": "0xb66d8c55"
+    },
+    {
+      "name": "of_property_read_variable_u32_array",
+      "crc": "0x94c5c4a4"
+    },
+    {
+      "name": "dma_set_mask",
+      "crc": "0xa560fd9f"
+    },
+    {
+      "name": "__mutex_init",
+      "crc": "0xa571f6b0"
+    },
+    {
+      "name": "of_find_property",
+      "crc": "0x8a964733"
+    },
+    {
+      "name": "dmam_alloc_attrs",
+      "crc": "0x6f0dbd85"
+    },
+    {
+      "name": "platform_get_irq",
+      "crc": "0xf7821887"
+    },
+    {
+      "name": "vchan_init",
+      "crc": "0x33e7fde4"
+    },
+    {
+      "name": "tasklet_init",
+      "crc": "0x2364c85a"
+    },
+    {
+      "name": "__init_swait_queue_head",
+      "crc": "0x608741b5"
+    },
+    {
+      "name": "alt_cb_patch_nops",
+      "crc": "0xa65c6def"
+    },
+    {
+      "name": "dma_async_device_register",
+      "crc": "0x1418500b"
+    },
+    {
+      "name": "of_dma_controller_register",
+      "crc": "0xcb40e08b"
+    },
+    {
+      "name": "of_dma_controller_free",
+      "crc": "0xefc34cf7"
+    },
+    {
+      "name": "dma_async_device_unregister",
+      "crc": "0xd9f55a51"
+    },
+    {
+      "name": "ipc_log_context_destroy",
+      "crc": "0xf470e1fe"
+    },
+    {
+      "name": "debugfs_remove",
+      "crc": "0x3ef04b32"
+    },
+    {
+      "name": "_raw_read_lock_bh",
+      "crc": "0x8dee722d"
+    },
+    {
+      "name": "_raw_read_unlock_bh",
+      "crc": "0xaeb082ad"
+    },
+    {
+      "name": "dma_free_attrs",
+      "crc": "0x2ed993bc"
+    },
+    {
+      "name": "tasklet_kill",
+      "crc": "0x0ea3c74e"
+    },
+    {
+      "name": "_raw_read_lock_irqsave",
+      "crc": "0xb1342cdb"
+    },
+    {
+      "name": "_raw_read_unlock_irqrestore",
+      "crc": "0xdf2ebb87"
+    },
+    {
+      "name": "__const_udelay",
+      "crc": "0xeae3dfd6"
+    },
+    {
+      "name": "disable_irq",
+      "crc": "0x3ce4ca6f"
+    },
+    {
+      "name": "enable_irq",
+      "crc": "0xfcec0987"
+    },
+    {
+      "name": "dma_get_slave_channel",
+      "crc": "0xf0fc5c11"
+    },
+    {
+      "name": "snprintf",
+      "crc": "0x656e4a6e"
+    },
+    {
+      "name": "ipc_log_context_create",
+      "crc": "0x6fdbaa2a"
+    },
+    {
+      "name": "debugfs_create_u32",
+      "crc": "0xe7916bec"
+    },
+    {
+      "name": "request_threaded_irq",
+      "crc": "0x92d5838e"
+    },
+    {
+      "name": "__tasklet_schedule",
+      "crc": "0x9d2ab8ac"
+    },
+    {
+      "name": "complete_all",
+      "crc": "0x93d6dd8c"
+    },
+    {
+      "name": "dma_alloc_attrs",
+      "crc": "0x1688bf2b"
+    },
+    {
+      "name": "memset",
+      "crc": "0xdcb764ad"
+    },
+    {
+      "name": "free_irq",
+      "crc": "0xc1514a3b"
+    },
+    {
+      "name": "module_layout",
+      "crc": "0x4e276f37"
+    }
+  ],
+  "undefined_symbols_all_versioned": true,
+  "undefined_symbol_count": 79,
+  "original12_export_CRCs_preserved": true,
+  "all_export_records": [
+    {
+      "name": "geni_gsi_ch_start",
+      "crc": "0x1d6cbabb",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "geni_gsi_common_request_channel",
+      "crc": "0xcc8fb000",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "geni_gsi_connect_doorbell",
+      "crc": "0xe606ad4d",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "geni_gsi_disconnect_doorbell_stop_ch",
+      "crc": "0xc1516e87",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "gpi_dump_for_geni",
+      "crc": "0xb1243f85",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "gpi_q2spi_terminate_all",
+      "crc": "0x89308261",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "gpi_update_multi_desc_flag",
+      "crc": "0x25c53f2d",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "gsi_common_clear_tre_indexes",
+      "crc": "0x09efc3d6",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "gsi_common_fill_tre_buf",
+      "crc": "0x92985807",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "gsi_common_prep_desc_and_submit",
+      "crc": "0x1afc5820",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "gsi_common_tre_process",
+      "crc": "0xd9b5b7be",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    },
+    {
+      "name": "gsi_common_tx_tre_optimization",
+      "crc": "0x0ea27afa",
+      "export": "EXPORT_SYMBOL_GPL",
+      "namespace": ""
+    }
+  ],
+  "shared_layout_count": 8,
+  "shared_layouts": {
+    "dma_chan": {
+      "bytes": 112,
+      "all_field_offsets": {
+        "device": 0,
+        "slave": 8,
+        "cookie": 16,
+        "completed_cookie": 20,
+        "chan_id": 24,
+        "dev": 32,
+        "name": 40,
+        "dbg_client_name": 48,
+        "device_node": 56,
+        "local": 72,
+        "client_count": 80,
+        "table_count": 84,
+        "router": 88,
+        "route_data": 96,
+        "private": 104
+      },
+      "DWARF_dump_sha256": "b53728b3e41463ea00350adf6b397d7483effae30a4eac04f0e3d8693204c9bd",
+      "equals_actual_target_BTF": true
+    },
+    "dma_device": {
+      "bytes": 384,
+      "all_field_offsets": {
+        "ref": 0,
+        "chancnt": 4,
+        "privatecnt": 8,
+        "channels": 16,
+        "global_node": 32,
+        "filter": 48,
+        "cap_mask": 72,
+        "desc_metadata_modes": 80,
+        "max_xor": 84,
+        "max_pq": 86,
+        "copy_align": 88,
+        "xor_align": 92,
+        "pq_align": 96,
+        "fill_align": 100,
+        "dev_id": 104,
+        "dev": 112,
+        "owner": 120,
+        "chan_ida": 128,
+        "src_addr_widths": 144,
+        "dst_addr_widths": 148,
+        "directions": 152,
+        "min_burst": 156,
+        "max_burst": 160,
+        "max_sg_burst": 164,
+        "descriptor_reuse": 168,
+        "residue_granularity": 172,
+        "device_alloc_chan_resources": 176,
+        "device_router_config": 184,
+        "device_free_chan_resources": 192,
+        "device_prep_dma_memcpy": 200,
+        "device_prep_dma_xor": 208,
+        "device_prep_dma_xor_val": 216,
+        "device_prep_dma_pq": 224,
+        "device_prep_dma_pq_val": 232,
+        "device_prep_dma_memset": 240,
+        "device_prep_dma_memset_sg": 248,
+        "device_prep_dma_interrupt": 256,
+        "device_prep_slave_sg": 264,
+        "device_prep_dma_cyclic": 272,
+        "device_prep_interleaved_dma": 280,
+        "device_prep_dma_imm_data": 288,
+        "device_caps": 296,
+        "device_config": 304,
+        "device_pause": 312,
+        "device_resume": 320,
+        "device_terminate_all": 328,
+        "device_synchronize": 336,
+        "device_tx_status": 344,
+        "device_issue_pending": 352,
+        "device_release": 360,
+        "dbg_summary_show": 368,
+        "dbg_dev_root": 376
+      },
+      "DWARF_dump_sha256": "3d291fe24d13cb97133736a12a56842b6e403b7d53622641136097a5cbb4bcb7",
+      "equals_actual_target_BTF": true
+    },
+    "dma_async_tx_descriptor": {
+      "bytes": 144,
+      "all_field_offsets": {
+        "cookie": 0,
+        "flags": 4,
+        "phys": 8,
+        "chan": 16,
+        "tx_submit": 24,
+        "desc_free": 32,
+        "callback": 40,
+        "callback_result": 48,
+        "callback_param": 56,
+        "unmap": 64,
+        "desc_metadata_mode": 72,
+        "metadata_ops": 80,
+        "next": 88,
+        "parent": 96,
+        "lock": 104,
+        "android_kabi_reserved1": 112,
+        "android_kabi_reserved2": 120,
+        "android_kabi_reserved3": 128,
+        "android_kabi_reserved4": 136
+      },
+      "DWARF_dump_sha256": "076a8072a3109cd6ff6a53c2e1637df499fbbde5317c8f8f80ef6b92f841d40b",
+      "equals_actual_target_BTF": true
+    },
+    "dma_slave_config": {
+      "bytes": 72,
+      "all_field_offsets": {
+        "direction": 0,
+        "src_addr": 8,
+        "dst_addr": 16,
+        "src_addr_width": 24,
+        "dst_addr_width": 28,
+        "src_maxburst": 32,
+        "dst_maxburst": 36,
+        "src_port_window_size": 40,
+        "dst_port_window_size": 44,
+        "device_fc": 48,
+        "peripheral_config": 56,
+        "peripheral_size": 64
+      },
+      "DWARF_dump_sha256": "d54fac596c6089d5a9d6830d719e6bb85a2a92d3fef7fa0bb50eb8d1f464e575",
+      "equals_actual_target_BTF": true
+    },
+    "virt_dma_chan": {
+      "bytes": 256,
+      "all_field_offsets": {
+        "chan": 0,
+        "task": 112,
+        "desc_free": 152,
+        "lock": 160,
+        "desc_allocated": 168,
+        "desc_submitted": 184,
+        "desc_issued": 200,
+        "desc_completed": 216,
+        "desc_terminated": 232,
+        "cyclic": 248
+      },
+      "DWARF_dump_sha256": "747fe77f5b8ce29174faed03b650bf6bfa0b00425e448bbced55fcab565618c4",
+      "equals_actual_target_BTF": true
+    },
+    "virt_dma_desc": {
+      "bytes": 168,
+      "all_field_offsets": {
+        "tx": 0,
+        "tx_result": 144,
+        "node": 152
+      },
+      "DWARF_dump_sha256": "66303682ea6408db1488931b6bc7d0e0c305ae850dd5e668c276d1c94e1af24f",
+      "equals_actual_target_BTF": true
+    },
+    "platform_driver": {
+      "bytes": 248,
+      "all_field_offsets": {
+        "probe": 0,
+        "remove": 8,
+        "remove_new": 16,
+        "shutdown": 24,
+        "suspend": 32,
+        "resume": 40,
+        "driver": 48,
+        "id_table": 224,
+        "prevent_deferred_probe": 232,
+        "driver_managed_dma": 233,
+        "android_kabi_reserved1": 240
+      },
+      "DWARF_dump_sha256": "f21c1aa7b0d72a6d35d2f96618a597ba0b463b19d7bd5b0805e8c67d01ac206c",
+      "equals_actual_target_BTF": true
+    },
+    "completion": {
+      "bytes": 32,
+      "all_field_offsets": {
+        "done": 0,
+        "wait": 8
+      },
+      "DWARF_dump_sha256": "f0a4cefd049f4146a629d1b25b9cd76ebe214678f3c7227c53e1938bcdd0d7f6",
+      "equals_actual_target_BTF": true
+    }
+  },
+  "all_original_function_count": 50,
+  "all_original_functions_raw_equal": true,
+  "all_operational_allocated_sections_raw_equal": true,
+  "normalized_runtime_relocation_count": 2338,
+  "all_normalized_runtime_relocations_equal": true,
+  "all_callback_targets_and_CFI_executable_bytes_preserved": true,
+  "functional_differences_found": [],
+  "runtime_comparison_sha256": "4c727ae2a97c72d964b430c11869b7fb3082ae566cf5ba9135ae18a0ae9bef8e",
+  "build_result_sha256": "0f94fa5b06ad5e1003f09c93b25517163c5c2a2938526eda727118d083113ed7",
+  "input_provenance_sha256": "8acafeefebb37bd2a14eaa2ff995fdd77547f034caa15dddcf68576c65da4f2e",
+  "build_script_sha256": "67bf7a79c5009f8a2f1e3860bed493a4ba9e389d26186d30e7555c7785f498fa",
+  "verify_script_sha256": "305e84fd3139c7de42a4cd9218b670d2b6cb79f57338bfad11f25cdc863adcc9",
+  "C_or_header_changes": 0,
+  "build_attempts": 1,
+  "frozen_target_source_generated_and_repository_kernel_unchanged": true,
+  "device_operations": 0,
+  "patch_or_trace_applied": false,
+  "limits": [
+    "Host baseline only; no module load or deployment.",
+    "This equivalence does not repair the original event timeout or warm handoff.",
+    "Build ID, generated release and debug metadata differ normally; original operational bytes and relocation targets are identical.",
+    "Do not use the failed old split-BTF decode as an original private-layout proof."
+  ]
+}

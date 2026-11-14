@@ -1,0 +1,142 @@
+{
+  "status": "R43_ORDINARY_FULL_GRAPHICS_SOURCE_ANDROID_GPU_AND_SERVICES_SAVED_EVIDENCE_PASS",
+  "round": 43,
+  "actual_source_boot_id": "8212bfe6-d5ed-4c8b-be3f-dbecf7d93a1e",
+  "UUID_before_after_metadata_equal": true,
+  "preflight_stock_UUID": "d8c53019-2f45-4c1f-a999-d0667971464d",
+  "actual_kernel_GNU_build_ids": [
+    "72782e2196eb1c46c8c5205ccd93f2acf42de294"
+  ],
+  "actual_BTF_sha256": "4af0d389bc92615ac8982233f544f4653b67c6535ae869267f80da0fbf273550",
+  "Android_boot_completed": "1",
+  "root_UID": "0",
+  "WD_disable": "0",
+  "kexec_loaded": "0",
+  "exact_original_module_count": 695,
+  "module_names_equal_original_baseline": true,
+  "six_actual_module_GNU_build_ids": {
+    "gcc_sun": "fd0294bddc6fc79a28a1a6826e5328eee01567cb",
+    "ufs_qcom": "a0f190cdb34943457dc4f4642b720838e77acda3",
+    "phy_qcom_ufs": "da0d45e45f727c03861320cf4132255b22a0cf5c",
+    "msm_kgsl": "f95e145481d6423dffac1f0cb3e1236dfbb1b753",
+    "msm_gpi": "017204038f33bb4419f33057adedc2b0a2490c74",
+    "spi_msm_geni": "00ff969c6f4d78e2791618072577c2aa0b1a4b62"
+  },
+  "surfaceflinger_service": "running",
+  "surfaceflinger_PIDs": [
+    "2345"
+  ],
+  "system_server_PIDs": [
+    "3114"
+  ],
+  "blacklist_sysfs_raw_hex": "286e756c6c290a",
+  "GPU_blacklist_and_page_owner_and_kexec_diag_tokens_absent": true,
+  "KGSL_character_device_check": "Original runner capture asserted exit0 before terminal PASS; empty stdout and stderr retained.",
+  "request_counts": {
+    "temporary_boot_request_count": 1,
+    "fastboot_boot_request_count": 1,
+    "helper_insmod_request_count": 0,
+    "load_request_count": 0,
+    "execute_request_count": 0,
+    "surfaceflinger_stop_request_count": 0
+  },
+  "original_runner_sha256": "78eafc8d15ca7b6e0c7d4fd7896a64788302bd0f698f67b7b08caf959cc3fb41",
+  "package_sha256": "dc0526c2aab863e50dc623059c59c8d990af738b0eaae0a9390319c8870e0da5",
+  "physical_screen_or_touch_confirmed_by_this_auditor": false,
+  "user_physical_confirmation_pending_at_review": true,
+  "kexec_success_claimed": false,
+  "no_inference_about_warm_handoff_or_cause_of_prior_kexec_failures": true,
+  "inputs": {
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-UUID-before.stdout.bin": {
+      "bytes": 37,
+      "sha256": "b8975a69b18242749a716c86fd9bdfc3d13eb54834e80e8b4e8bad4dab351aae"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-UUID-after.stdout.bin": {
+      "bytes": 37,
+      "sha256": "b8975a69b18242749a716c86fd9bdfc3d13eb54834e80e8b4e8bad4dab351aae"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-notes.stdout.bin": {
+      "bytes": 84,
+      "sha256": "f1c77b2f060ea31e2f4b566043d037b36249d15ea7e6b5a3b588b04629aede51"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-BTF.stdout.bin": {
+      "bytes": 6054753,
+      "sha256": "4af0d389bc92615ac8982233f544f4653b67c6535ae869267f80da0fbf273550"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-Android.stdout.bin": {
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-root.stdout.bin": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-WD.stdout.bin": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-kexec.stdout.bin": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-SF.stdout.bin": {
+      "bytes": 8,
+      "sha256": "a4ecc5c87d811bbff7a118c17ef8cf83318cb623a103c15b8549089aa2a7f0ac"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/SFpid.stdout.bin": {
+      "bytes": 5,
+      "sha256": "fbf9ee7d0afe867b9e53ebb7735ab2349a73d0e952a47598b00390867ed060ee"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/SSpid.stdout.bin": {
+      "bytes": 5,
+      "sha256": "96a29ae5bc3a5e35537bcea1068c746ddba205d17fcc8e522a52402c7ed69927"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-cmdline.stdout.bin": {
+      "bytes": 1492,
+      "sha256": "1c04ae15e34026fadb0576508e82e9bf243283877c814d263d9f26aca426cc5a"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-blacklist.stdout.bin": {
+      "bytes": 7,
+      "sha256": "faa1eacca6a2c61c39f0564cf68d8e950a398fb697c8237c8265cc79d2ca118f"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-modules.stdout.bin": {
+      "bytes": 51252,
+      "sha256": "626e79fdf26c3df8ce51151a211609b8d12ef52437f4308266053e4d52dd7943"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/observed-KGSL.stdout.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/module-gcc_sun.stdout.bin": {
+      "bytes": 36,
+      "sha256": "595f4fc00adb9ccea5ac08169270026ef2eda6cfae15789347fb90ef95f0a059"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/module-ufs_qcom.stdout.bin": {
+      "bytes": 36,
+      "sha256": "713bdb4e38a8c227f851b98a23dc839ce30015fb6c6a69fd1e419682fa666d6f"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/module-phy_qcom_ufs.stdout.bin": {
+      "bytes": 36,
+      "sha256": "a336d766f9e192114004f8c0ed2ff56c3fb4d608077ddb9a401dd6e1e51d126d"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/module-msm_kgsl.stdout.bin": {
+      "bytes": 36,
+      "sha256": "32d3c199e1403b30a0aded5a0865823eef7cf4621b4e541153c24a6264ab0796"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/module-msm_gpi.stdout.bin": {
+      "bytes": 36,
+      "sha256": "0cc3e5a283a51e1ba60b5d9539cfb9e19318c2ed4f672059feca7cd2a00e547e"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round43/module-spi_msm_geni.stdout.bin": {
+      "bytes": 36,
+      "sha256": "4cce9dc40bbde8b4102e1f95490a2697ccfdd64c578935e01e23fc92cdf337b1"
+    }
+  },
+  "state_record_sha256": "916b64b55352d6a15e95a274d49f17bdaec0231f7e2c85be5caf90cdd0ee1b5f",
+  "review_actions": {
+    "device_operations": 0,
+    "runner_main_invocations": 0,
+    "actual_state_or_frozen_file_changes": 0,
+    "test_cases_or_old_ABI_suites_run": 0
+  }
+}

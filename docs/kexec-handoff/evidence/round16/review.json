@@ -1,0 +1,61 @@
+{
+  "status": "SINGLE_JUMP_REVIEWED_AH8_CONFIG_CLEAR_INSUFFICIENT_UFS_AUX_STILL_OFF_ANDROID_NOT_BOOTED",
+  "epoch": 1794600515.6638508,
+  "round": 16,
+  "device_state_sha256": "b304f186f0f5f532115cb2f35dd4d432c96c754753ee9c5297cc84dc581042a5",
+  "pstore_sha256": "f7613cf9ceb67a772cc2320bbc61e02a60828f84eed8251ed6802f4f9a2af1d8",
+  "pstore_bytes": 262132,
+  "pstore_LF_count": 2822,
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "source_boot_id": "5e3f9ca7-8559-4079-a091-14112373ca00",
+  "target_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+  "nonce": "ebbef56b71ae9afd",
+  "target_UFS_module_build_id": "dac4ecf95ba43474bc1de478988329668fd4d75c",
+  "independent_reports_sha256": {
+    "ufs-ah8-reset-review/round16-evidence.json": "f7cde5a451150708b1479b3fdb40bcde1be6387a7f30e5d217654306cc60cc1f",
+    "ufs-ah8-reset-independent-review/round16-evidence.json": "2b89be169343e06d88e5d8a151b4bcd7b80580250cbddb25fa01cfbe1f86f2e3",
+    "ufs-ah8-reset-runner-review/round16-evidence.json": "5020cd18926dcaf4a737e9ff490c8b872a90494510b36ce4c5ec0c24136072bf"
+  },
+  "recovery_readonly_sha256": "1714ab12892cdd06cfca55ba7c22f64fe5c69f090b2910b4bb79b7c31a38a2cf",
+  "intact_HBA_AH8_observation": {
+    "entry_LF": 1161,
+    "entry": "0x183c",
+    "pre_BCR_LF": 1163,
+    "pre_BCR": "0x1800",
+    "post_PHY_LF": 1239,
+    "post_PHY_ret": -16
+  },
+  "UFSKH2_entire_row_consistent": false,
+  "raw_UFSKH2_preserved_unrepaired": true,
+  "parent_SRC_actual_callback_return_zero_before_leaf_failure_LF": [
+    1168,
+    1230
+  ],
+  "first_clock_dump_CMD_CFG_CBCR": [
+    "0x80000000",
+    "0x00100001",
+    "0x88000001"
+  ],
+  "conclusion": "Clearing observed AH8 request configuration bits alone did not resolve UFS auxiliary-clock failure. Parent enable callback execution with ret0 does not establish that hardware root is running.",
+  "next_readonly_focus": [
+    "SRC hardware clock-control and actual force-enable/return semantics",
+    "PHY/GDSC and BCR dependency order"
+  ],
+  "host_caller_stops": [
+    {
+      "phase": "Before any device call",
+      "reason": "Caller first expected R15 final-binding status; original boot runner rejected HOST_PREPARATION state",
+      "additional_device_requests": 0
+    },
+    {
+      "phase": "Read-only state observation after the one load",
+      "reason": "Caller expected a different stage label; then original check-loaded was called without reloading",
+      "additional_loads": 0
+    }
+  ],
+  "partition_flashed": false,
+  "watchdog_changed": false,
+  "repository_kernel_modified": false,
+  "diagnostic_isolation_not_full_functional_fix": true,
+  "goal_complete": false
+}

@@ -1,0 +1,39 @@
+{
+  "status": "HOST_ONLY_EXTRACTED_FROM_ACTUAL_R38_LOADED_INITRD",
+  "actual_initrd_sha256": "5387d934444dd3d498be5ea1d72bb714c88ab6789a1c221f90be3bff3995ee31",
+  "compressed_payload_sha256": "e75c9b029252460b33dc8bfc45ccf2dd645fa77c5202ce47d197ffd547e711f7",
+  "cpio_sha256": "81af6eb446331c274a6159506dc329c5efe5ecb7a215b786e97285b654a51b9a",
+  "bootconfig_bytes": 1899,
+  "modules": [
+    {
+      "member": "lib/modules/msm_gpi.ko",
+      "path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/msm_gpi.ko",
+      "bytes": 150400,
+      "sha256": "058a56c5a88bbbcf02a804e609b255c1b4dc38e5fe87daedd9c7ec918a9f855e",
+      "notes": "\nDisplaying notes found in: .note.Linux\n  Owner                Data size \tDescription\n  Linux                0x00000001\tOPEN\t   description data: 00 \n  Linux                0x00000004\tfunc\t   description data: 00 00 00 00 \n\nDisplaying notes found in: .note.gnu.build-id\n  Owner                Data size \tDescription\n  GNU                  0x00000014\tNT_GNU_BUILD_ID (unique build ID bitstring)\t    Build ID: 017204038f33bb4419f33057adedc2b0a2490c74\n\nDisplaying notes found in: .note.gnu.property\n  Owner                Data size \tDescription\n  GNU                  0x00000010\tNT_GNU_PROPERTY_TYPE_0\t      Properties: AArch64 feature: PAC\n"
+    },
+    {
+      "member": "lib/modules/spi-msm-geni.ko",
+      "path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/spi-msm-geni.ko",
+      "bytes": 118752,
+      "sha256": "829cf4ea5c273ca62f78ff53f99fc06097fea08ed0ac1bdcccf558d2019dc291",
+      "notes": "\nDisplaying notes found in: .note.Linux\n  Owner                Data size \tDescription\n  Linux                0x00000001\tOPEN\t   description data: 00 \n  Linux                0x00000004\tfunc\t   description data: 00 00 00 00 \n\nDisplaying notes found in: .note.gnu.build-id\n  Owner                Data size \tDescription\n  GNU                  0x00000014\tNT_GNU_BUILD_ID (unique build ID bitstring)\t    Build ID: 00ff969c6f4d78e2791618072577c2aa0b1a4b62\n\nDisplaying notes found in: .note.gnu.property\n  Owner                Data size \tDescription\n  GNU                  0x00000010\tNT_GNU_PROPERTY_TYPE_0\t      Properties: AArch64 feature: PAC\n"
+    },
+    {
+      "member": "lib/modules/oplus_bsp_tp_common.ko",
+      "path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/oplus_bsp_tp_common.ko",
+      "bytes": 746360,
+      "sha256": "73b0209ae01552bffb6f75f2c8a2b781f72a3dfdc02a21e8440e926d537d43ff",
+      "notes": "\nDisplaying notes found in: .note.Linux\n  Owner                Data size \tDescription\n  Linux                0x00000001\tOPEN\t   description data: 00 \n  Linux                0x00000004\tfunc\t   description data: 00 00 00 00 \n\nDisplaying notes found in: .note.gnu.build-id\n  Owner                Data size \tDescription\n  GNU                  0x00000014\tNT_GNU_BUILD_ID (unique build ID bitstring)\t    Build ID: 010515ab3611d21606e9904cbfc94ff836f2ae4a\n\nDisplaying notes found in: .note.gnu.property\n  Owner                Data size \tDescription\n  GNU                  0x00000010\tNT_GNU_PROPERTY_TYPE_0\t      Properties: AArch64 feature: PAC\n"
+    },
+    {
+      "member": "lib/modules/oplus_bsp_tp_nt36536_noflash.ko",
+      "path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/oplus_bsp_tp_nt36536_noflash.ko",
+      "bytes": 237424,
+      "sha256": "fa392bb89d8ab0cf1e53b185d927dfdeb299333e725dfb31f624614c73e847fd",
+      "notes": "\nDisplaying notes found in: .note.Linux\n  Owner                Data size \tDescription\n  Linux                0x00000001\tOPEN\t   description data: 00 \n  Linux                0x00000004\tfunc\t   description data: 00 00 00 00 \n\nDisplaying notes found in: .note.gnu.build-id\n  Owner                Data size \tDescription\n  GNU                  0x00000014\tNT_GNU_BUILD_ID (unique build ID bitstring)\t    Build ID: 6a94b193822765febcc5e7054044d2a2cba7dfe8\n\nDisplaying notes found in: .note.gnu.property\n  Owner                Data size \tDescription\n  GNU                  0x00000010\tNT_GNU_PROPERTY_TYPE_0\t      Properties: AArch64 feature: PAC\n"
+    }
+  ],
+  "device_operations": 0,
+  "ELF_not_executed": true
+}

@@ -1,0 +1,33 @@
+{
+  "epoch": 1794660218.4872499,
+  "queries": [
+    {
+      "args": [
+        "adb",
+        "devices",
+        "-l"
+      ],
+      "exit": 0,
+      "stdout": "List of devices attached\n\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "fastboot",
+        "devices",
+        "-l"
+      ],
+      "exit": 0,
+      "stdout": "f84de51c               fastboot usb:1-2\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "lsusb"
+      ],
+      "exit": 0,
+      "stdout": "Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 001 Device 002: ID 373b:1216 ATK NK mouse NANO dongle\nBus 001 Device 003: ID 0e8d:223c MediaTek Inc. Wireless_Device\nBus 001 Device 064: ID 18d1:d00d Google Inc. Xiaomi Mi/Redmi 2 (fastboot)\nBus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 003 Device 002: ID 0408:5464 Quanta Computer, Inc. HP Wide Vision 5MP Camera\nBus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 005 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 006 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\nBus 007 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub\nBus 008 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+Page allocated via order 0, mask 0x100dc2(GFP_HIGHUSER|__GFP_ZERO), pid 2313, tgid 2313 (surfaceflinger), ts 7391625178 ns, free_ts 7389526532 ns
+PFN 0x884466 type Unmovable Block 8721 type Unmovable Flags 0x2000000000000000(zone=1|kasantag=0x0)
+ post_alloc_hook+0x23c/0x244
+ prep_new_page+0x30/0x16c
+ get_page_from_freelist+0x1fb4/0x201c
+ __alloc_pages+0xfc/0x2fc
+ kgsl_system_alloc_pages+0xc0/0x1dc [msm_kgsl]
+ kgsl_allocate_secure+0xb0/0x254 [msm_kgsl]
+ kgsl_allocate_global+0xac/0x364 [msm_kgsl]
+ send_start_msg+0x3ec/0x754 [msm_kgsl]
+ gen8_hwsched_hfi_start+0x3f8/0x5b8 [msm_kgsl]
+ gen8_hwsched_first_open+0x4d8/0x700 [msm_kgsl]
+ adreno_first_open+0x44/0x5c [msm_kgsl]
+ kgsl_open+0x1d8/0x270 [msm_kgsl]
+ chrdev_open+0x1b8/0x258
+ do_dentry_open+0x2c4/0x718
+ vfs_open+0x2c/0x3c
+ path_openat+0xaec/0xce4
+

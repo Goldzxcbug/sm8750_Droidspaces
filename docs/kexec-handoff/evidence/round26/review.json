@@ -1,0 +1,51 @@
+{
+  "status": "R26_TARGET_FILESYSTEMS_MOUNTED_SECOND_STAGE_INIT_APEXD_BOOTSTRAP_PID354_SIGNAL4_THEN_ORDERLY_REBOOT",
+  "inputs_sha256": {
+    "shutdown-log-quiet-independent-review/round26-evidence.json": "5608008dc68027cc6f3347d68f480567aea77f28bd6809c0309b54cb9903be12",
+    "shutdown-log-quiet-review/round26-path-and-next-plan.json": "136029d450cf7bed223aa0e0d56faa0c07bd990ef1793265c6e56cb32aacd008",
+    "round26/device-test.json": "08d109e419535217d250e6076dbdef6fe4c273d35bcac56b94c35ad7587aee9e",
+    "round26/recovery-readonly.json": "35a9b1cf63aa3b332345ac4877995dea7588bac1c77a43552bcd351c53b0e7e5",
+    "round26/pstore-after-exec.txt": "fa7d5e9351c57c7fac6e45557598eed215a04685474579c7bc4ff4c4a22ad591",
+    "round26/phy-local-read-loaded-resource-audit.json": "4c3172ce03bef18a8e0b13a2a71102d0b3b8b58ddb105e952755aedd676082ed",
+    "shutdown-log-quiet-root-review/final-binding-audit.json": "c1955577b75783bc899a6f6f2e27f5827340c0be7f569adbfe8f6caf6aeb4a92"
+  },
+  "count_each": {
+    "temporary_boot": 1,
+    "helper": 1,
+    "load": 1,
+    "execute": 1,
+    "extra_recovery_reboots": 0
+  },
+  "source_boot_id": "c05e083e-8db6-49d3-a3f7-a5fa2c1627c0",
+  "run_id": "65294cb39f7574d2",
+  "target_build_id": "87bae5a7d32c6d0a3103c2c067a52fc1b2d02138",
+  "actual_loaded_DTB_sha256": "b4c801675ece36bf94f48e0b112c4ac6bdd5dd0ecfd240846d4da28929cbb658",
+  "critical_pages_verified": 89,
+  "raw": {
+    "bytes": 262132,
+    "LF": 2506,
+    "early_head_overwritten": true,
+    "literal_KT_dev_rows": 0,
+    "literal_KSEA1_rows": 0
+  },
+  "positive_evidence": [
+    "SCSI registration and attached disks",
+    "F2FS/EROFS/EXT4 actual mount records",
+    "LF980 second-stage init",
+    "LF1694/1695 apexd-bootstrap started PID354",
+    "LF1724 signal4 after0.053s",
+    "LF1727 reboot_on_failure"
+  ],
+  "not_proven": [
+    "PID354 original fault PC/opcode/si_code/ESR",
+    "SIGILL was hardware generated",
+    "early SEA absent",
+    "full Android completion",
+    "SP/TZ production handoff fix"
+  ],
+  "recovered_stock_boot_id": "71c25a8c-d7d7-4158-b710-c9e72f6605f8",
+  "next": "R27 uses same Image/modules/payload and only appends existing print-fatal-signals=1 sysctl.debug.exception-trace=1; exact unique selectors and loaded DT checks required",
+  "repository_kernel_untouched": true,
+  "partition_flashed": false,
+  "watchdog_changed": false
+}

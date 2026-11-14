@@ -1,0 +1,73 @@
+{
+  "status": "NORMAL_INSTALLED_RECOVERY_REBOOT_RETURNED_NOT_BOOT_VERIFIED",
+  "normal_installed_reboot_request_count": 1,
+  "new_kexec_request_count": 0,
+  "partition_flashed": false,
+  "watchdog_modified": false,
+  "queries": [
+    {
+      "args": [
+        "fastboot",
+        "devices"
+      ],
+      "epoch": 1794660351.5290413,
+      "exit": 0,
+      "stdout": "f84de51c\t fastboot\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "fastboot",
+        "-s",
+        "f84de51c",
+        "getvar",
+        "product"
+      ],
+      "epoch": 1794660351.5409591,
+      "exit": 0,
+      "stdout": "",
+      "stderr": "product: sun\nFinished. Total time: 0.009s\n"
+    },
+    {
+      "args": [
+        "fastboot",
+        "-s",
+        "f84de51c",
+        "getvar",
+        "current-slot"
+      ],
+      "epoch": 1794660351.5529685,
+      "exit": 0,
+      "stdout": "",
+      "stderr": "current-slot: a\nFinished. Total time: 0.009s\n"
+    },
+    {
+      "args": [
+        "fastboot",
+        "-s",
+        "f84de51c",
+        "getvar",
+        "unlocked"
+      ],
+      "epoch": 1794660351.5636814,
+      "exit": 0,
+      "stdout": "",
+      "stderr": "unlocked: yes\nFinished. Total time: 0.007s\n"
+    },
+    {
+      "args": [
+        "fastboot",
+        "-s",
+        "f84de51c",
+        "reboot"
+      ],
+      "epoch": 1794660351.7676556,
+      "exit": 0,
+      "stdout": "",
+      "stderr": "Rebooting                                          OKAY [  0.000s]\nFinished. Total time: 0.201s\n"
+    }
+  ],
+  "created_epoch": 1794660351.4185793,
+  "reboot_requested_epoch": 1794660351.5639043,
+  "reboot_returned_epoch": 1794660351.7678587
+}

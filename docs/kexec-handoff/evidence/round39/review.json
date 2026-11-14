@@ -1,0 +1,69 @@
+{
+  "status": "R39_SAME_IMMUTABLE_TARGET68E8_NORMAL_TEMPORARY_BOOT_FULL_ANDROID_PASS_KEXEC_NOT_TESTED",
+  "boot_id": "55cf2d03-4429-4d36-8115-8d3dbe078e57",
+  "build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+  "kernel_release": "6.6.89-Gold_Bug_kexec_kgsl_fdt_nomap_diag",
+  "Image_sha256": "8824087346c58ea7ff57b31fdcee795c509f7cc58699c558b234f1417851130f",
+  "boot_sha256": "01d496ca7ba1404f6d0f42045cdf5f4ca17e9f5b76a7b73df2d0cf262eaabec5",
+  "counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 0,
+    "load_request_count": 0,
+    "execute_request_count": 0
+  },
+  "exact_original_module_name_count": 695,
+  "module_names_match_R35": true,
+  "six_actual_module_GNU_build_ids": {
+    "gcc_sun": [
+      "fd0294bddc6fc79a28a1a6826e5328eee01567cb"
+    ],
+    "ufs_qcom": [
+      "a0f190cdb34943457dc4f4642b720838e77acda3"
+    ],
+    "phy_qcom_ufs": [
+      "da0d45e45f727c03861320cf4132255b22a0cf5c"
+    ],
+    "msm_kgsl": [
+      "f95e145481d6423dffac1f0cb3e1236dfbb1b753"
+    ],
+    "msm_gpi": [
+      "017204038f33bb4419f33057adedc2b0a2490c74"
+    ],
+    "spi_msm_geni": [
+      "00ff969c6f4d78e2791618072577c2aa0b1a4b62"
+    ]
+  },
+  "Android_root_graphics_and_BTF_verified": true,
+  "kernel_chosen_kexec_marker_and_GPU_blob_absent": true,
+  "source_blacklist_and_kexec_diag_tokens_absent": true,
+  "watchdog_disable": 0,
+  "GPI_null_fix_module_built_or_deployed": false,
+  "no_kernel_source_or_Image_rebuild": true,
+  "partition_flashed": false,
+  "artifacts_sha256": {
+    "root-final-host-binding.json": "7b21ff93f13892cb280d335e8910abae5fbc8d0c236579b3a271e7d42e134943",
+    "post-normal-boot-readonly.json": "4e1afbd9ecc788716327c4cb5e9e714a956f15d4558c99f57156e52f54c26ae1",
+    "observed-notes.bin": "8953a9bbe212130abfede57f9b97aaea35308faf588d6566c5a7364f65f4d985",
+    "observed-cmdline.bin": "1c04ae15e34026fadb0576508e82e9bf243283877c814d263d9f26aca426cc5a",
+    "observed-btf.sha256.txt": "162da3a73118727aa7b14652d514c30085c9b1fc5d855f6f287c93388c78644d",
+    "observed-fdt.bin": "44c10df317cf2b6fe5bd600f618294e65ed5492213d4165b79245efe1d911948",
+    "observed-modules.txt": "726f4b37654a536aad21555df6a7bf22aa5f4b9f28c8c5bbd5ac55c6e2d91266",
+    "observed-final-modules.txt": "4c22717819fc3f6fa1ba5b14fdd1f341ee2b0a31be66e43c7ffc4964ec73845f",
+    "observed-graphics.json": "7a1721874142f653f11972849f3b9c1a1bf0baaa63f4ca3d9cf33136cae94f61",
+    "observed-final-dmesg.txt": "32c05925ce26792be5e1db1bf3c0a7106fbe250d4e7fa0817d509ed3139b7f6d",
+    "fastboot-boot.txt": "e2b69ce5985dbcee66359d0c98dec670bc2b8cee80591a90a4bbfd0ae0d1cae9",
+    "observed-gcc_sun-note.bin": "595f4fc00adb9ccea5ac08169270026ef2eda6cfae15789347fb90ef95f0a059",
+    "observed-ufs_qcom-note.bin": "713bdb4e38a8c227f851b98a23dc839ce30015fb6c6a69fd1e419682fa666d6f",
+    "observed-phy_qcom_ufs-note.bin": "a336d766f9e192114004f8c0ed2ff56c3fb4d608077ddb9a401dd6e1e51d126d",
+    "observed-msm_kgsl-note.bin": "32d3c199e1403b30a0aded5a0865823eef7cf4621b4e541153c24a6264ab0796",
+    "observed-msm_gpi-note.bin": "0cc3e5a283a51e1ba60b5d9539cfb9e19318c2ed4f672059feca7cd2a00e547e",
+    "observed-spi_msm_geni-note.bin": "4cce9dc40bbde8b4102e1f95490a2697ccfdd64c578935e01e23fc92cdf337b1"
+  },
+  "host_validation_sha256": "f0dbd0b6a64c83e8bdab2026356ebc2a2f4fd357b85603162d0b44d3c7b1bb46",
+  "limits": [
+    "Same Image normally boots Android with original vendor modules/default kexec options off. This excludes universal failure of this Image in that ordinary boot configuration.",
+    "It does not isolate kexec hardware state from the kexec-only parameters or the three modified GCC/UFS/PHY payload modules.",
+    "No kexec load or execute occurred in R39. R38 failure and the underlying GPI event completion timeout remain unresolved."
+  ],
+  "created_epoch": 1794650451.052298
+}

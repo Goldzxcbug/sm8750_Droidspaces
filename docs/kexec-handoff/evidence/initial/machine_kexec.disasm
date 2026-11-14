@@ -1,0 +1,746 @@
+
+out/kexec-boot-fix/build/arch/arm64/kernel/machine_kexec.o:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000000000 <.text>:
+       0: fa 34 5e 43  	.word	0x435e34fa
+
+0000000000000004 <machine_kexec_cleanup>:
+       4: d65f03c0     	ret
+       8: c1 37 96 3f  	.word	0x3f9637c1
+
+000000000000000c <machine_kexec_prepare>:
+       c: 3949e008     	ldrb	w8, [x0, #0x278]
+      10: 37000148     	tbnz	w8, #0x0, 0x38 <machine_kexec_prepare+0x2c>
+      14: d503233f     	paciasp
+      18: a9bf7bfd     	stp	x29, x30, [sp, #-0x10]!
+      1c: 910003fd     	mov	x29, sp
+      20: 94000000     	bl	0x20 <machine_kexec_prepare+0x14>
+		0000000000000020:  R_AARCH64_CALL26	cpus_are_stuck_in_kernel
+      24: 370000e0     	tbnz	w0, #0x0, 0x40 <machine_kexec_prepare+0x34>
+      28: 2a1f03e0     	mov	w0, wzr
+      2c: a8c17bfd     	ldp	x29, x30, [sp], #0x10
+      30: d50323bf     	autiasp
+      34: d65f03c0     	ret
+      38: 2a1f03e0     	mov	w0, wzr
+      3c: d65f03c0     	ret
+      40: 90000000     	adrp	x0, 0x0 <.text>
+		0000000000000040:  R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.1
+      44: 91000000     	add	x0, x0, #0x0
+		0000000000000044:  R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.1
+      48: 94000000     	bl	0x48 <machine_kexec_prepare+0x3c>
+		0000000000000048:  R_AARCH64_CALL26	_printk
+      4c: 128001e0     	mov	w0, #-0x10              // =-16
+      50: 17fffff7     	b	0x2c <machine_kexec_prepare+0x20>
+      54: c1 37 96 3f  	.word	0x3f9637c1
+
+0000000000000058 <machine_kexec_post_load>:
+      58: d503233f     	paciasp
+      5c: d10183ff     	sub	sp, sp, #0x60
+      60: a9027bfd     	stp	x29, x30, [sp, #0x20]
+      64: a9035ff8     	stp	x24, x23, [sp, #0x30]
+      68: a90457f6     	stp	x22, x21, [sp, #0x40]
+      6c: a9054ff4     	stp	x20, x19, [sp, #0x50]
+      70: 910083fd     	add	x29, sp, #0x20
+      74: d5384108     	mrs	x8, SP_EL0
+      78: aa0003f3     	mov	x19, x0
+      7c: d2ffe014     	mov	x20, #-0x100000000000000 // =-72057594037927936
+      80: f9431108     	ldr	x8, [x8, #0x620]
+      84: f81f83a8     	stur	x8, [x29, #-0x8]
+      88: f9401008     	ldr	x8, [x0, #0x20]
+      8c: d37ae515     	lsl	x21, x8, #6
+      90: 14000003     	b	0x9c <machine_kexec_post_load+0x44>
+      94: f9400108     	ldr	x8, [x8]
+      98: 8a280e94     	bic	x20, x20, x8, lsl #3
+      9c: 39400268     	ldrb	w8, [x19]
+      a0: 90000009     	adrp	x9, 0x0 <.text>
+		00000000000000a0:  R_AARCH64_ADR_PREL_PG_HI21	.text+0x2f8
+      a4: 91000129     	add	x9, x9, #0x0
+		00000000000000a4:  R_AARCH64_ADD_ABS_LO12_NC	.text+0x2f8
+      a8: a9004fe9     	stp	x9, x19, [sp]
+      ac: 37100c68     	tbnz	w8, #0x2, 0x238 <machine_kexec_post_load+0x1e0>
+      b0: f9014e7f     	str	xzr, [x19, #0x298]
+      b4: 14000087     	b	0x2d0 <machine_kexec_post_load+0x278>
+      b8: d5384248     	mrs	x8, CurrentEL
+      bc: f100211f     	cmp	x8, #0x8
+      c0: 540000a0     	b.eq	0xd4 <machine_kexec_post_load+0x7c>
+      c4: 910a6261     	add	x1, x19, #0x298
+      c8: 910003e0     	mov	x0, sp
+      cc: 94000000     	bl	0xcc <machine_kexec_post_load+0x74>
+		00000000000000cc:  R_AARCH64_CALL26	trans_pgd_copy_el2_vectors
+      d0: 35000de0     	cbnz	w0, 0x28c <machine_kexec_post_load+0x234>
+      d4: aa1303e0     	mov	x0, x19
+      d8: 2a1f03e1     	mov	w1, wzr
+      dc: 94000000     	bl	0xdc <machine_kexec_post_load+0x84>
+		00000000000000dc:  R_AARCH64_CALL26	kimage_alloc_control_pages
+      e0: b4000d40     	cbz	x0, 0x288 <machine_kexec_post_load+0x230>
+      e4: 9274aea9     	and	x9, x21, #0xfffffffffff000
+      e8: d37ae408     	lsl	x8, x0, #6
+      ec: aa090294     	orr	x20, x20, x9
+      f0: d2ffe009     	mov	x9, #-0x100000000000000 // =-72057594037927936
+      f4: 14000003     	b	0x100 <machine_kexec_post_load+0xa8>
+      f8: f940000a     	ldr	x10, [x0]
+      fc: 8a2a0d29     	bic	x9, x9, x10, lsl #3
+     100: 9274ad08     	and	x8, x8, #0xfffffffffff000
+     104: 2a1f03e1     	mov	w1, wzr
+     108: 52820002     	mov	w2, #0x1000             // =4096
+     10c: aa080135     	orr	x21, x9, x8
+     110: aa1503e0     	mov	x0, x21
+     114: 94000000     	bl	0x114 <machine_kexec_post_load+0xbc>
+		0000000000000114:  R_AARCH64_CALL26	memset
+     118: f9000bf5     	str	x21, [sp, #0x10]
+     11c: b4000b75     	cbz	x21, 0x288 <machine_kexec_post_load+0x230>
+     120: 910003e0     	mov	x0, sp
+     124: 910043e1     	add	x1, sp, #0x10
+     128: b25963e2     	mov	x2, #-0x8000000000      // =-549755813888
+     12c: b25a67e3     	mov	x3, #-0x4000000000      // =-274877906944
+     130: 94000000     	bl	0x130 <machine_kexec_post_load+0xd8>
+		0000000000000130:  R_AARCH64_CALL26	trans_pgd_create_copy
+     134: 35000ac0     	cbnz	w0, 0x28c <machine_kexec_post_load+0x234>
+     138: f9400be8     	ldr	x8, [sp, #0x10]
+     13c: d2c01018     	mov	x24, #0x8000000000      // =549755813888
+     140: 90000016     	adrp	x22, 0x0 <.text>
+		0000000000000140:  R_AARCH64_ADR_PREL_PG_HI21	memstart_addr
+     144: 90000017     	adrp	x23, 0x0 <.text>
+		0000000000000144:  R_AARCH64_ADR_PREL_PG_HI21	kimage_voffset
+     148: f94002ca     	ldr	x10, [x22]
+		0000000000000148:  R_AARCH64_LDST64_ABS_LO12_NC	memstart_addr
+     14c: 90000001     	adrp	x1, 0x0 <.text>
+		000000000000014c:  R_AARCH64_ADR_PREL_PG_HI21	__relocate_new_kernel_start
+     150: 91000021     	add	x1, x1, #0x0
+		0000000000000150:  R_AARCH64_ADD_ABS_LO12_NC	__relocate_new_kernel_start
+     154: 9340dd08     	sbfx	x8, x8, #0, #56
+     158: f94002eb     	ldr	x11, [x23]
+		0000000000000158:  R_AARCH64_LDST64_ABS_LO12_NC	kimage_voffset
+     15c: 9000000d     	adrp	x13, 0x0 <.text>
+		000000000000015c:  R_AARCH64_ADR_PREL_PG_HI21	empty_zero_page
+     160: 910001ad     	add	x13, x13, #0x0
+		0000000000000160:  R_AARCH64_ADD_ABS_LO12_NC	empty_zero_page
+     164: 8b180109     	add	x9, x8, x24
+     168: cb0b0108     	sub	x8, x8, x11
+     16c: d366fd2c     	lsr	x12, x9, #38
+     170: 8b0a0129     	add	x9, x9, x10
+     174: f100019f     	cmp	x12, #0x0
+     178: 9a880128     	csel	x8, x9, x8, eq
+     17c: 90000009     	adrp	x9, 0x0 <.text>
+		000000000000017c:  R_AARCH64_ADR_PREL_PG_HI21	__relocate_new_kernel_end
+     180: 91000129     	add	x9, x9, #0x0
+		0000000000000180:  R_AARCH64_ADD_ABS_LO12_NC	__relocate_new_kernel_end
+     184: cb010135     	sub	x21, x9, x1
+     188: cb0b01a9     	sub	x9, x13, x11
+     18c: f9015668     	str	x8, [x19, #0x2a8]
+     190: b10006bf     	cmn	x21, #0x1
+     194: f9015a69     	str	x9, [x19, #0x2b0]
+     198: 54000968     	b.hi	0x2c4 <machine_kexec_post_load+0x26c>
+     19c: aa1403e0     	mov	x0, x20
+     1a0: aa1503e2     	mov	x2, x21
+     1a4: 94000000     	bl	0x1a4 <machine_kexec_post_load+0x14c>
+		00000000000001a4:  R_AARCH64_CALL26	memcpy
+     1a8: 9340de88     	sbfx	x8, x20, #0, #56
+     1ac: f94002ca     	ldr	x10, [x22]
+		00000000000001ac:  R_AARCH64_LDST64_ABS_LO12_NC	memstart_addr
+     1b0: f94002eb     	ldr	x11, [x23]
+		00000000000001b0:  R_AARCH64_LDST64_ABS_LO12_NC	kimage_voffset
+     1b4: 910a8261     	add	x1, x19, #0x2a0
+     1b8: 910b0262     	add	x2, x19, #0x2c0
+     1bc: 910003e0     	mov	x0, sp
+     1c0: 8b180109     	add	x9, x8, x24
+     1c4: cb0b0108     	sub	x8, x8, x11
+     1c8: aa1403e3     	mov	x3, x20
+     1cc: d366fd2c     	lsr	x12, x9, #38
+     1d0: 8b090149     	add	x9, x10, x9
+     1d4: f100019f     	cmp	x12, #0x0
+     1d8: 9a880128     	csel	x8, x9, x8, eq
+     1dc: f9014a68     	str	x8, [x19, #0x290]
+     1e0: 94000000     	bl	0x1e0 <machine_kexec_post_load+0x188>
+		00000000000001e0:  R_AARCH64_CALL26	trans_pgd_idmap_page
+     1e4: 35000540     	cbnz	w0, 0x28c <machine_kexec_post_load+0x234>
+     1e8: 9340de68     	sbfx	x8, x19, #0, #56
+     1ec: d2c01009     	mov	x9, #0x8000000000       // =549755813888
+     1f0: f94002ca     	ldr	x10, [x22]
+		00000000000001f0:  R_AARCH64_LDST64_ABS_LO12_NC	memstart_addr
+     1f4: f94002eb     	ldr	x11, [x23]
+		00000000000001f4:  R_AARCH64_LDST64_ABS_LO12_NC	kimage_voffset
+     1f8: aa1403e0     	mov	x0, x20
+     1fc: 8b090109     	add	x9, x8, x9
+     200: d366fd2c     	lsr	x12, x9, #38
+     204: 8b090149     	add	x9, x10, x9
+     208: cb0b0108     	sub	x8, x8, x11
+     20c: f100019f     	cmp	x12, #0x0
+     210: 9a880128     	csel	x8, x9, x8, eq
+     214: cb130108     	sub	x8, x8, x19
+     218: f9015e68     	str	x8, [x19, #0x2b8]
+     21c: 8b150293     	add	x19, x20, x21
+     220: aa1303e1     	mov	x1, x19
+     224: 94000000     	bl	0x224 <machine_kexec_post_load+0x1cc>
+		0000000000000224:  R_AARCH64_CALL26	dcache_clean_inval_poc
+     228: aa1403e0     	mov	x0, x20
+     22c: aa1303e1     	mov	x1, x19
+     230: 94000000     	bl	0x230 <machine_kexec_post_load+0x1d8>
+		0000000000000230:  R_AARCH64_CALL26	icache_inval_pou
+     234: 14000013     	b	0x280 <machine_kexec_post_load+0x228>
+     238: f9401e68     	ldr	x8, [x19, #0x38]
+     23c: b4000228     	cbz	x8, 0x280 <machine_kexec_post_load+0x228>
+     240: aa1f03f4     	mov	x20, xzr
+     244: 91016275     	add	x21, x19, #0x58
+     248: 90000016     	adrp	x22, 0x0 <.text>
+		0000000000000248:  R_AARCH64_ADR_PREL_PG_HI21	memstart_addr
+     24c: f100429f     	cmp	x20, #0x10
+     250: 54000360     	b.eq	0x2bc <machine_kexec_post_load+0x264>
+     254: f85f82a8     	ldur	x8, [x21, #-0x8]
+     258: f94002c9     	ldr	x9, [x22]
+		0000000000000258:  R_AARCH64_LDST64_ABS_LO12_NC	memstart_addr
+     25c: cb090108     	sub	x8, x8, x9
+     260: f84206a9     	ldr	x9, [x21], #0x20
+     264: b2596100     	orr	x0, x8, #0xffffff8000000000
+     268: 8b090001     	add	x1, x0, x9
+     26c: 94000000     	bl	0x26c <machine_kexec_post_load+0x214>
+		000000000000026c:  R_AARCH64_CALL26	dcache_clean_inval_poc
+     270: f9401e68     	ldr	x8, [x19, #0x38]
+     274: 91000694     	add	x20, x20, #0x1
+     278: eb08029f     	cmp	x20, x8
+     27c: 54fffe83     	b.lo	0x24c <machine_kexec_post_load+0x1f4>
+     280: 2a1f03e0     	mov	w0, wzr
+     284: 14000002     	b	0x28c <machine_kexec_post_load+0x234>
+     288: 12800160     	mov	w0, #-0xc               // =-12
+     28c: d5384108     	mrs	x8, SP_EL0
+     290: f9431108     	ldr	x8, [x8, #0x620]
+     294: f85f83a9     	ldur	x9, [x29, #-0x8]
+     298: eb09011f     	cmp	x8, x9
+     29c: 54000121     	b.ne	0x2c0 <machine_kexec_post_load+0x268>
+     2a0: a9454ff4     	ldp	x20, x19, [sp, #0x50]
+     2a4: a94457f6     	ldp	x22, x21, [sp, #0x40]
+     2a8: a9435ff8     	ldp	x24, x23, [sp, #0x30]
+     2ac: a9427bfd     	ldp	x29, x30, [sp, #0x20]
+     2b0: 910183ff     	add	sp, sp, #0x60
+     2b4: d50323bf     	autiasp
+     2b8: d65f03c0     	ret
+     2bc: d42aa240     	brk	#0x5512
+     2c0: 94000000     	bl	0x2c0 <machine_kexec_post_load+0x268>
+		00000000000002c0:  R_AARCH64_CALL26	__stack_chk_fail
+     2c4: 90000000     	adrp	x0, 0x0 <.text>
+		00000000000002c4:  R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.1+0x2e
+     2c8: 91000000     	add	x0, x0, #0x0
+		00000000000002c8:  R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.1+0x2e
+     2cc: 94000000     	bl	0x2cc <machine_kexec_post_load+0x274>
+		00000000000002cc:  R_AARCH64_CALL26	fortify_panic
+     2d0: 90000008     	adrp	x8, 0x0 <.text>
+		00000000000002d0:  R_AARCH64_ADR_PREL_PG_HI21	__boot_cpu_mode
+     2d4: 91000108     	add	x8, x8, #0x0
+		00000000000002d4:  R_AARCH64_ADD_ABS_LO12_NC	__boot_cpu_mode
+     2d8: b9400109     	ldr	w9, [x8]
+     2dc: 7138493f     	cmp	w9, #0xe12
+     2e0: 54ffefa1     	b.ne	0xd4 <machine_kexec_post_load+0x7c>
+     2e4: b9400508     	ldr	w8, [x8, #0x4]
+     2e8: 7138491f     	cmp	w8, #0xe12
+     2ec: 54ffee60     	b.eq	0xb8 <machine_kexec_post_load+0x60>
+     2f0: 17ffff79     	b	0xd4 <machine_kexec_post_load+0x7c>
+     2f4: 87 c7 71 38  	.word	0x3871c787
+
+00000000000002f8 <kexec_page_alloc>:
+     2f8: d503233f     	paciasp
+     2fc: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+     300: f9000bf3     	str	x19, [sp, #0x10]
+     304: 910003fd     	mov	x29, sp
+     308: 2a1f03e1     	mov	w1, wzr
+     30c: 94000000     	bl	0x30c <kexec_page_alloc+0x14>
+		000000000000030c:  R_AARCH64_CALL26	kimage_alloc_control_pages
+     310: b40001a0     	cbz	x0, 0x344 <kexec_page_alloc+0x4c>
+     314: d37ae408     	lsl	x8, x0, #6
+     318: d2ffe009     	mov	x9, #-0x100000000000000 // =-72057594037927936
+     31c: 14000003     	b	0x328 <kexec_page_alloc+0x30>
+     320: f940000a     	ldr	x10, [x0]
+     324: 8a2a0d29     	bic	x9, x9, x10, lsl #3
+     328: 9274ad08     	and	x8, x8, #0xfffffffffff000
+     32c: 2a1f03e1     	mov	w1, wzr
+     330: 52820002     	mov	w2, #0x1000             // =4096
+     334: aa080133     	orr	x19, x9, x8
+     338: aa1303e0     	mov	x0, x19
+     33c: 94000000     	bl	0x33c <kexec_page_alloc+0x44>
+		000000000000033c:  R_AARCH64_CALL26	memset
+     340: 14000002     	b	0x348 <kexec_page_alloc+0x50>
+     344: aa1f03f3     	mov	x19, xzr
+     348: aa1303e0     	mov	x0, x19
+     34c: f9400bf3     	ldr	x19, [sp, #0x10]
+     350: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+     354: d50323bf     	autiasp
+     358: d65f03c0     	ret
+     35c: fa 34 5e 43  	.word	0x435e34fa
+
+0000000000000360 <machine_kexec>:
+     360: d503233f     	paciasp
+     364: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+     368: a90157f6     	stp	x22, x21, [sp, #0x10]
+     36c: a9024ff4     	stp	x20, x19, [sp, #0x20]
+     370: 910003fd     	mov	x29, sp
+     374: 90000008     	adrp	x8, 0x0 <.text>
+		0000000000000374:  R_AARCH64_ADR_PREL_PG_HI21	kexec_crash_image
+     378: aa0003f3     	mov	x19, x0
+     37c: f9400115     	ldr	x21, [x8]
+		000000000000037c:  R_AARCH64_LDST64_ABS_LO12_NC	kexec_crash_image
+     380: 94000000     	bl	0x380 <machine_kexec+0x20>
+		0000000000000380:  R_AARCH64_CALL26	cpus_are_stuck_in_kernel
+     384: 90000016     	adrp	x22, 0x0 <.text>
+		0000000000000384:  R_AARCH64_ADR_PREL_PG_HI21	__num_online_cpus
+     388: b94002c2     	ldr	w2, [x22]
+		0000000000000388:  R_AARCH64_LDST32_ABS_LO12_NC	__num_online_cpus
+     38c: 14000096     	b	0x5e4 <machine_kexec+0x284>
+     390: 12000014     	and	w20, w0, #0x1
+     394: d503201f     	nop
+     398: 2a1f03e3     	mov	w3, wzr
+     39c: 90000000     	adrp	x0, 0x0 <.text>
+		000000000000039c:  R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.1+0x35
+     3a0: 91000000     	add	x0, x0, #0x0
+		00000000000003a0:  R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.1+0x35
+     3a4: 2a1403e1     	mov	w1, w20
+     3a8: 94000000     	bl	0x3a8 <machine_kexec+0x48>
+		00000000000003a8:  R_AARCH64_CALL26	_printk
+     3ac: f9400262     	ldr	x2, [x19]
+     3b0: 90000008     	adrp	x8, 0x0 <.text>
+		00000000000003b0:  R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.1+0x9e
+     3b4: 91000108     	add	x8, x8, #0x0
+		00000000000003b4:  R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.1+0x9e
+     3b8: 90000009     	adrp	x9, 0x0 <.text>
+		00000000000003b8:  R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.1+0xa5
+     3bc: 91000129     	add	x9, x9, #0x0
+		00000000000003bc:  R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.1+0xa5
+     3c0: f9400e63     	ldr	x3, [x19, #0x18]
+     3c4: f27e005f     	tst	x2, #0x4
+     3c8: 910a2264     	add	x4, x19, #0x288
+     3cc: 90000000     	adrp	x0, 0x0 <.text>
+		00000000000003cc:  R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.1+0x64
+     3d0: 91000000     	add	x0, x0, #0x0
+		00000000000003d0:  R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.1+0x64
+     3d4: 9a880121     	csel	x1, x9, x8, eq
+     3d8: 94000000     	bl	0x3d8 <machine_kexec+0x78>
+		00000000000003d8:  R_AARCH64_CALL26	_printk
+     3dc: 14000085     	b	0x5f0 <machine_kexec+0x290>
+     3e0: d5384248     	mrs	x8, CurrentEL
+     3e4: f100211f     	cmp	x8, #0x8
+     3e8: 1a9f07e4     	cset	w4, ne
+     3ec: 910a4261     	add	x1, x19, #0x290
+     3f0: 910a8262     	add	x2, x19, #0x2a0
+     3f4: 910aa263     	add	x3, x19, #0x2a8
+     3f8: 90000000     	adrp	x0, 0x0 <.text>
+		00000000000003f8:  R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.1+0xae
+     3fc: 91000000     	add	x0, x0, #0x0
+		00000000000003fc:  R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.1+0xae
+     400: 94000000     	bl	0x400 <machine_kexec+0xa0>
+		0000000000000400:  R_AARCH64_CALL26	_printk
+     404: eb1302bf     	cmp	x21, x19
+     408: 54000120     	b.eq	0x42c <machine_kexec+0xcc>
+     40c: 37000114     	tbnz	w20, #0x0, 0x42c <machine_kexec+0xcc>
+     410: b94002c8     	ldr	w8, [x22]
+		0000000000000410:  R_AARCH64_LDST32_ABS_LO12_NC	__num_online_cpus
+     414: 7100051f     	cmp	w8, #0x1
+     418: 54001008     	b.hi	0x618 <machine_kexec+0x2b8>
+     41c: eb1302bf     	cmp	x21, x19
+     420: 540001a1     	b.ne	0x454 <machine_kexec+0xf4>
+     424: 36000154     	tbz	w20, #0x0, 0x44c <machine_kexec+0xec>
+     428: 1400000b     	b	0x454 <machine_kexec+0xf4>
+     42c: eb1302bf     	cmp	x21, x19
+     430: 54000f41     	b.ne	0x618 <machine_kexec+0x2b8>
+     434: 360000d4     	tbz	w20, #0x0, 0x44c <machine_kexec+0xec>
+     438: 90000000     	adrp	x0, 0x0 <.text>
+		0000000000000438:  R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.1+0xe8
+     43c: 91000000     	add	x0, x0, #0x0
+		000000000000043c:  R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.1+0xe8
+     440: 94000000     	bl	0x440 <machine_kexec+0xe0>
+		0000000000000440:  R_AARCH64_CALL26	__warn_printk
+     444: d4210000     	brk	#0x800
+     448: 14000003     	b	0x454 <machine_kexec+0xf4>
+     44c: 94000000     	bl	0x44c <machine_kexec+0xec>
+		000000000000044c:  R_AARCH64_CALL26	smp_crash_stop_failed
+     450: 3707ff40     	tbnz	w0, #0x0, 0x438 <machine_kexec+0xd8>
+     454: 90000000     	adrp	x0, 0x0 <.text>
+		0000000000000454:  R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.1+0x11b
+     458: 91000000     	add	x0, x0, #0x0
+		0000000000000458:  R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.1+0x11b
+     45c: 94000000     	bl	0x45c <machine_kexec+0xfc>
+		000000000000045c:  R_AARCH64_CALL26	_printk
+     460: d5034fdf     	msr	DAIFSet, #0xf
+     464: 39400268     	ldrb	w8, [x19]
+     468: 37100488     	tbnz	w8, #0x2, 0x4f8 <machine_kexec+0x198>
+     46c: 1400006c     	b	0x61c <machine_kexec+0x2bc>
+     470: d5384248     	mrs	x8, CurrentEL
+     474: f100211f     	cmp	x8, #0x8
+     478: 54000060     	b.eq	0x484 <machine_kexec+0x124>
+     47c: f9414e60     	ldr	x0, [x19, #0x298]
+     480: 94000000     	bl	0x480 <machine_kexec+0x120>
+		0000000000000480:  R_AARCH64_CALL26	__hyp_set_vectors
+     484: 90000008     	adrp	x8, 0x0 <.text>
+		0000000000000484:  R_AARCH64_ADR_PREL_PG_HI21	kimage_voffset
+     488: 9000000a     	adrp	x10, 0x0 <.text>
+		0000000000000488:  R_AARCH64_ADR_PREL_PG_HI21	reserved_pg_dir
+     48c: 9100014a     	add	x10, x10, #0x0
+		000000000000048c:  R_AARCH64_ADD_ABS_LO12_NC	reserved_pg_dir
+     490: f9400109     	ldr	x9, [x8]
+		0000000000000490:  R_AARCH64_LDST64_ABS_LO12_NC	kimage_voffset
+     494: f9415268     	ldr	x8, [x19, #0x2a0]
+     498: cb09014a     	sub	x10, x10, x9
+     49c: f9416269     	ldr	x9, [x19, #0x2c0]
+     4a0: d518200a     	msr	TTBR0_EL1, x10
+     4a4: d5033fdf     	isb
+     4a8: d503369f     	dsb	nshst
+     4ac: d508871f     	tlbi	vmalle1
+     4b0: d503201f     	nop
+     4b4: d503201f     	nop
+     4b8: d503379f     	dsb	nsh
+     4bc: d5033fdf     	isb
+     4c0: d538204a     	mrs	x10, TCR_EL1
+     4c4: 9240154b     	and	x11, x10, #0x3f
+     4c8: eb09017f     	cmp	x11, x9
+     4cc: 540000a0     	b.eq	0x4e0 <machine_kexec+0x180>
+     4d0: 927ae54a     	and	x10, x10, #0xffffffffffffffc0
+     4d4: aa090149     	orr	x9, x10, x9
+     4d8: d5182049     	msr	TCR_EL1, x9
+     4dc: d5033fdf     	isb
+     4e0: d5182008     	msr	TTBR0_EL1, x8
+     4e4: d5033fdf     	isb
+     4e8: aa1303e0     	mov	x0, x19
+     4ec: f9414a68     	ldr	x8, [x19, #0x290]
+     4f0: d63f0100     	blr	x8
+     4f4: d4210000     	brk	#0x800
+     4f8: 90000014     	adrp	x20, 0x0 <.text>
+		00000000000004f8:  R_AARCH64_ADR_PREL_PG_HI21	kimage_voffset
+     4fc: 90000009     	adrp	x9, 0x0 <.text>
+		00000000000004fc:  R_AARCH64_ADR_PREL_PG_HI21	reserved_pg_dir
+     500: 91000129     	add	x9, x9, #0x0
+		0000000000000500:  R_AARCH64_ADD_ABS_LO12_NC	reserved_pg_dir
+     504: f9400288     	ldr	x8, [x20]
+		0000000000000504:  R_AARCH64_LDST64_ABS_LO12_NC	kimage_voffset
+     508: cb080128     	sub	x8, x9, x8
+     50c: d5182008     	msr	TTBR0_EL1, x8
+     510: d5033fdf     	isb
+     514: d503369f     	dsb	nshst
+     518: d508871f     	tlbi	vmalle1
+     51c: d503201f     	nop
+     520: d503201f     	nop
+     524: d503379f     	dsb	nsh
+     528: d5033fdf     	isb
+     52c: 90000008     	adrp	x8, 0x0 <.text>
+		000000000000052c:  R_AARCH64_ADR_PREL_PG_HI21	idmap_t0sz
+     530: b9800108     	ldrsw	x8, [x8]
+		0000000000000530:  R_AARCH64_LDST32_ABS_LO12_NC	idmap_t0sz
+     534: d5382049     	mrs	x9, TCR_EL1
+     538: 9240152a     	and	x10, x9, #0x3f
+     53c: eb08015f     	cmp	x10, x8
+     540: 540000a0     	b.eq	0x554 <machine_kexec+0x1f4>
+     544: 927ae529     	and	x9, x9, #0xffffffffffffffc0
+     548: aa080128     	orr	x8, x9, x8
+     54c: d5182048     	msr	TCR_EL1, x8
+     550: d5033fdf     	isb
+     554: 90000009     	adrp	x9, 0x0 <.text>
+		0000000000000554:  R_AARCH64_ADR_PREL_PG_HI21	memstart_addr
+     558: f9400288     	ldr	x8, [x20]
+		0000000000000558:  R_AARCH64_LDST64_ABS_LO12_NC	kimage_voffset
+     55c: 9000000b     	adrp	x11, 0x0 <.text>
+		000000000000055c:  R_AARCH64_ADR_PREL_PG_HI21	idmap_pg_dir
+     560: 9100016b     	add	x11, x11, #0x0
+		0000000000000560:  R_AARCH64_ADD_ABS_LO12_NC	idmap_pg_dir
+     564: f9400129     	ldr	x9, [x9]
+		0000000000000564:  R_AARCH64_LDST64_ABS_LO12_NC	memstart_addr
+     568: 9000000c     	adrp	x12, 0x0 <.text>
+		0000000000000568:  R_AARCH64_ADR_PREL_PG_HI21	swapper_pg_dir
+     56c: 9100018c     	add	x12, x12, #0x0
+		000000000000056c:  R_AARCH64_ADD_ABS_LO12_NC	swapper_pg_dir
+     570: 8b09010a     	add	x10, x8, x9
+     574: cb0a016a     	sub	x10, x11, x10
+     578: b259614b     	orr	x11, x10, #0xffffff8000000000
+     57c: eb0c017f     	cmp	x11, x12
+     580: 54000041     	b.ne	0x588 <machine_kexec+0x228>
+     584: d4210000     	brk	#0x800
+     588: d366994c     	ubfx	x12, x10, #38, #1
+     58c: 9240994a     	and	x10, x10, #0x7fffffffff
+     590: cb080168     	sub	x8, x11, x8
+     594: 8b090149     	add	x9, x10, x9
+     598: 90000001     	adrp	x1, 0x0 <.text>
+		0000000000000598:  R_AARCH64_ADR_PREL_PG_HI21	init_mm
+     59c: 91000021     	add	x1, x1, #0x0
+		000000000000059c:  R_AARCH64_ADD_ABS_LO12_NC	init_mm
+     5a0: f100019f     	cmp	x12, #0x0
+     5a4: 9a880120     	csel	x0, x9, x8, eq
+     5a8: 94000000     	bl	0x5a8 <machine_kexec+0x248>
+		00000000000005a8:  R_AARCH64_CALL26	cpu_do_switch_mm
+     5ac: f9400288     	ldr	x8, [x20]
+		00000000000005ac:  R_AARCH64_LDST64_ABS_LO12_NC	kimage_voffset
+     5b0: 90000009     	adrp	x9, 0x0 <.text>
+		00000000000005b0:  R_AARCH64_ADR_PREL_PG_HI21	cpu_soft_restart
+     5b4: 91000129     	add	x9, x9, #0x0
+		00000000000005b4:  R_AARCH64_ADD_ABS_LO12_NC	cpu_soft_restart
+     5b8: cb080128     	sub	x8, x9, x8
+     5bc: 14000021     	b	0x640 <machine_kexec+0x2e0>
+     5c0: d5384249     	mrs	x9, CurrentEL
+     5c4: f100213f     	cmp	x9, #0x8
+     5c8: 1a9f07e0     	cset	w0, ne
+     5cc: f9400e61     	ldr	x1, [x19, #0x18]
+     5d0: f9414662     	ldr	x2, [x19, #0x288]
+     5d4: aa1f03e3     	mov	x3, xzr
+     5d8: aa1f03e4     	mov	x4, xzr
+     5dc: d63f0100     	blr	x8
+     5e0: d4210000     	brk	#0x800
+     5e4: d4210000     	brk	#0x800
+     5e8: 52800023     	mov	w3, #0x1                // =1
+     5ec: 17ffff6c     	b	0x39c <machine_kexec+0x3c>
+     5f0: 90000008     	adrp	x8, 0x0 <.text>
+		00000000000005f0:  R_AARCH64_ADR_PREL_PG_HI21	__boot_cpu_mode
+     5f4: 91000108     	add	x8, x8, #0x0
+		00000000000005f4:  R_AARCH64_ADD_ABS_LO12_NC	__boot_cpu_mode
+     5f8: 2a1f03e4     	mov	w4, wzr
+     5fc: b9400109     	ldr	w9, [x8]
+     600: 7138493f     	cmp	w9, #0xe12
+     604: 54ffef41     	b.ne	0x3ec <machine_kexec+0x8c>
+     608: b9400508     	ldr	w8, [x8, #0x4]
+     60c: 7138491f     	cmp	w8, #0xe12
+     610: 54ffee80     	b.eq	0x3e0 <machine_kexec+0x80>
+     614: 17ffff76     	b	0x3ec <machine_kexec+0x8c>
+     618: d4210000     	brk	#0x800
+     61c: 90000008     	adrp	x8, 0x0 <.text>
+		000000000000061c:  R_AARCH64_ADR_PREL_PG_HI21	__boot_cpu_mode
+     620: 91000108     	add	x8, x8, #0x0
+		0000000000000620:  R_AARCH64_ADD_ABS_LO12_NC	__boot_cpu_mode
+     624: b9400109     	ldr	w9, [x8]
+     628: 7138493f     	cmp	w9, #0xe12
+     62c: 54fff2c1     	b.ne	0x484 <machine_kexec+0x124>
+     630: b9400508     	ldr	w8, [x8, #0x4]
+     634: 7138491f     	cmp	w8, #0xe12
+     638: 54fff1c0     	b.eq	0x470 <machine_kexec+0x110>
+     63c: 17ffff92     	b	0x484 <machine_kexec+0x124>
+     640: 90000009     	adrp	x9, 0x0 <.text>
+		0000000000000640:  R_AARCH64_ADR_PREL_PG_HI21	__boot_cpu_mode
+     644: 91000129     	add	x9, x9, #0x0
+		0000000000000644:  R_AARCH64_ADD_ABS_LO12_NC	__boot_cpu_mode
+     648: aa1f03e0     	mov	x0, xzr
+     64c: b940012a     	ldr	w10, [x9]
+     650: 7138495f     	cmp	w10, #0xe12
+     654: 54fffbc1     	b.ne	0x5cc <machine_kexec+0x26c>
+     658: b9400529     	ldr	w9, [x9, #0x4]
+     65c: 7138493f     	cmp	w9, #0xe12
+     660: 54fffb00     	b.eq	0x5c0 <machine_kexec+0x260>
+     664: 17ffffda     	b	0x5cc <machine_kexec+0x26c>
+     668: 22 6a 57 f3  	.word	0xf3576a22
+
+000000000000066c <machine_crash_shutdown>:
+     66c: d503233f     	paciasp
+     670: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+     674: a90157f6     	stp	x22, x21, [sp, #0x10]
+     678: a9024ff4     	stp	x20, x19, [sp, #0x20]
+     67c: 910003fd     	mov	x29, sp
+     680: d50343df     	msr	DAIFSet, #0x3
+     684: aa0003f3     	mov	x19, x0
+     688: 94000000     	bl	0x688 <machine_crash_shutdown+0x1c>
+		0000000000000688:  R_AARCH64_CALL26	crash_smp_send_stop
+     68c: 90000009     	adrp	x9, 0x0 <.text>
+		000000000000068c:  R_AARCH64_ADR_PREL_PG_HI21	cpu_number
+     690: 91000129     	add	x9, x9, #0x0
+		0000000000000690:  R_AARCH64_ADD_ABS_LO12_NC	cpu_number
+     694: d538d088     	mrs	x8, TPIDR_EL1
+     698: b8696901     	ldr	w1, [x8, x9]
+     69c: aa1303e0     	mov	x0, x19
+     6a0: 94000000     	bl	0x6a0 <machine_crash_shutdown+0x34>
+		00000000000006a0:  R_AARCH64_CALL26	crash_save_cpu
+     6a4: 2a1f03e0     	mov	w0, wzr
+     6a8: 94000000     	bl	0x6a8 <machine_crash_shutdown+0x3c>
+		00000000000006a8:  R_AARCH64_CALL26	irq_to_desc
+     6ac: 90000015     	adrp	x21, 0x0 <.text>
+		00000000000006ac:  R_AARCH64_ADR_PREL_PG_HI21	nr_irqs
+     6b0: b94002a8     	ldr	w8, [x21]
+		00000000000006b0:  R_AARCH64_LDST32_ABS_LO12_NC	nr_irqs
+     6b4: 35000128     	cbnz	w8, 0x6d8 <machine_crash_shutdown+0x6c>
+     6b8: 90000000     	adrp	x0, 0x0 <.text>
+		00000000000006b8:  R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.1+0x123
+     6bc: 91000000     	add	x0, x0, #0x0
+		00000000000006bc:  R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.1+0x123
+     6c0: 94000000     	bl	0x6c0 <machine_crash_shutdown+0x54>
+		00000000000006c0:  R_AARCH64_CALL26	_printk
+     6c4: a9424ff4     	ldp	x20, x19, [sp, #0x20]
+     6c8: a94157f6     	ldp	x22, x21, [sp, #0x10]
+     6cc: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+     6d0: d50323bf     	autiasp
+     6d4: d65f03c0     	ret
+     6d8: aa0003f4     	mov	x20, x0
+     6dc: 2a1f03f3     	mov	w19, wzr
+     6e0: 14000008     	b	0x700 <machine_crash_shutdown+0x94>
+     6e4: 11000673     	add	w19, w19, #0x1
+     6e8: 2a1303e0     	mov	w0, w19
+     6ec: 94000000     	bl	0x6ec <machine_crash_shutdown+0x80>
+		00000000000006ec:  R_AARCH64_CALL26	irq_to_desc
+     6f0: b94002a8     	ldr	w8, [x21]
+		00000000000006f0:  R_AARCH64_LDST32_ABS_LO12_NC	nr_irqs
+     6f4: aa0003f4     	mov	x20, x0
+     6f8: 6b08027f     	cmp	w19, w8
+     6fc: 54fffde2     	b.hs	0x6b8 <machine_crash_shutdown+0x4c>
+     700: b4ffff34     	cbz	x20, 0x6e4 <machine_crash_shutdown+0x78>
+     704: f9402696     	ldr	x22, [x20, #0x48]
+     708: b4fffef6     	cbz	x22, 0x6e4 <machine_crash_shutdown+0x78>
+     70c: 2a1303e0     	mov	w0, w19
+     710: 52800021     	mov	w1, #0x1                // =1
+     714: 2a1f03e2     	mov	w2, wzr
+     718: 94000000     	bl	0x718 <machine_crash_shutdown+0xac>
+		0000000000000718:  R_AARCH64_CALL26	irq_set_irqchip_state
+     71c: 340001c0     	cbz	w0, 0x754 <machine_crash_shutdown+0xe8>
+     720: f9402288     	ldr	x8, [x20, #0x40]
+     724: 39400908     	ldrb	w8, [x8, #0x2]
+     728: 36100168     	tbz	w8, #0x2, 0x754 <machine_crash_shutdown+0xe8>
+     72c: f94026c8     	ldr	x8, [x22, #0x48]
+     730: b4000128     	cbz	x8, 0x754 <machine_crash_shutdown+0xe8>
+     734: 9100c280     	add	x0, x20, #0x30
+     738: b85fc110     	ldur	w16, [x8, #-0x4]
+     73c: 729e2d11     	movk	w17, #0xf168
+     740: 72a98951     	movk	w17, #0x4c4a, lsl #16
+     744: 6b11021f     	cmp	w16, w17
+     748: 54000040     	b.eq	0x750 <machine_crash_shutdown+0xe4>
+     74c: d4304500     	brk	#0x8228
+     750: d63f0100     	blr	x8
+     754: f9401ac8     	ldr	x8, [x22, #0x30]
+     758: b4000128     	cbz	x8, 0x77c <machine_crash_shutdown+0x110>
+     75c: 9100c280     	add	x0, x20, #0x30
+     760: b85fc110     	ldur	w16, [x8, #-0x4]
+     764: 729e2d11     	movk	w17, #0xf168
+     768: 72a98951     	movk	w17, #0x4c4a, lsl #16
+     76c: 6b11021f     	cmp	w16, w17
+     770: 54000040     	b.eq	0x778 <machine_crash_shutdown+0x10c>
+     774: d4304500     	brk	#0x8228
+     778: d63f0100     	blr	x8
+     77c: f94012c8     	ldr	x8, [x22, #0x20]
+     780: b4fffb28     	cbz	x8, 0x6e4 <machine_crash_shutdown+0x78>
+     784: f9402289     	ldr	x9, [x20, #0x40]
+     788: 39400929     	ldrb	w9, [x9, #0x2]
+     78c: 3707fac9     	tbnz	w9, #0x0, 0x6e4 <machine_crash_shutdown+0x78>
+     790: 9100c280     	add	x0, x20, #0x30
+     794: b85fc110     	ldur	w16, [x8, #-0x4]
+     798: 729e2d11     	movk	w17, #0xf168
+     79c: 72a98951     	movk	w17, #0x4c4a, lsl #16
+     7a0: 6b11021f     	cmp	w16, w17
+     7a4: 54000040     	b.eq	0x7ac <machine_crash_shutdown+0x140>
+     7a8: d4304500     	brk	#0x8228
+     7ac: d63f0100     	blr	x8
+     7b0: 17ffffcd     	b	0x6e4 <machine_crash_shutdown+0x78>
+     7b4: 0c 67 40 a5  	.word	0xa540670c
+
+00000000000007b8 <crash_prepare_suspend>:
+     7b8: d65f03c0     	ret
+     7bc: 0c 67 40 a5  	.word	0xa540670c
+
+00000000000007c0 <crash_post_resume>:
+     7c0: d65f03c0     	ret
+     7c4: d6 72 a0 fe  	.word	0xfea072d6
+
+00000000000007c8 <crash_is_nosave>:
+     7c8: 90000008     	adrp	x8, 0x0 <.text>
+		00000000000007c8:  R_AARCH64_ADR_PREL_PG_HI21	crashk_res+0x8
+     7cc: f9400109     	ldr	x9, [x8]
+		00000000000007cc:  R_AARCH64_LDST64_ABS_LO12_NC	crashk_res+0x8
+     7d0: b40004e9     	cbz	x9, 0x86c <crash_is_nosave+0xa4>
+     7d4: d374cc08     	lsl	x8, x0, #12
+     7d8: eb08013f     	cmp	x9, x8
+     7dc: 540000a3     	b.lo	0x7f0 <crash_is_nosave+0x28>
+     7e0: 90000009     	adrp	x9, 0x0 <.text>
+		00000000000007e0:  R_AARCH64_ADR_PREL_PG_HI21	crashk_res
+     7e4: f9400129     	ldr	x9, [x9]
+		00000000000007e4:  R_AARCH64_LDST64_ABS_LO12_NC	crashk_res
+     7e8: eb09011f     	cmp	x8, x9
+     7ec: 54000162     	b.hs	0x818 <crash_is_nosave+0x50>
+     7f0: 90000009     	adrp	x9, 0x0 <.text>
+		00000000000007f0:  R_AARCH64_ADR_PREL_PG_HI21	crashk_low_res+0x8
+     7f4: f9400129     	ldr	x9, [x9]
+		00000000000007f4:  R_AARCH64_LDST64_ABS_LO12_NC	crashk_low_res+0x8
+     7f8: b40003a9     	cbz	x9, 0x86c <crash_is_nosave+0xa4>
+     7fc: eb08013f     	cmp	x9, x8
+     800: 2a1f03e0     	mov	w0, wzr
+     804: 540003a3     	b.lo	0x878 <crash_is_nosave+0xb0>
+     808: 90000009     	adrp	x9, 0x0 <.text>
+		0000000000000808:  R_AARCH64_ADR_PREL_PG_HI21	crashk_low_res
+     80c: f9400129     	ldr	x9, [x9]
+		000000000000080c:  R_AARCH64_LDST64_ABS_LO12_NC	crashk_low_res
+     810: eb09011f     	cmp	x8, x9
+     814: 54000323     	b.lo	0x878 <crash_is_nosave+0xb0>
+     818: 90000009     	adrp	x9, 0x0 <.text>
+		0000000000000818:  R_AARCH64_ADR_PREL_PG_HI21	kexec_crash_image
+     81c: f940012b     	ldr	x11, [x9]
+		000000000000081c:  R_AARCH64_LDST64_ABS_LO12_NC	kexec_crash_image
+     820: b40002ab     	cbz	x11, 0x874 <crash_is_nosave+0xac>
+     824: f9401d69     	ldr	x9, [x11, #0x38]
+     828: b4000269     	cbz	x9, 0x874 <crash_is_nosave+0xac>
+     82c: aa1f03ea     	mov	x10, xzr
+     830: 9101616b     	add	x11, x11, #0x58
+     834: 14000005     	b	0x848 <crash_is_nosave+0x80>
+     838: 9100054a     	add	x10, x10, #0x1
+     83c: 9100816b     	add	x11, x11, #0x20
+     840: eb0a013f     	cmp	x9, x10
+     844: 54000180     	b.eq	0x874 <crash_is_nosave+0xac>
+     848: f100415f     	cmp	x10, #0x10
+     84c: 54000180     	b.eq	0x87c <crash_is_nosave+0xb4>
+     850: f85f816c     	ldur	x12, [x11, #-0x8]
+     854: eb0c011f     	cmp	x8, x12
+     858: 54ffff03     	b.lo	0x838 <crash_is_nosave+0x70>
+     85c: f940016d     	ldr	x13, [x11]
+     860: 8b0c01ac     	add	x12, x13, x12
+     864: eb0c011f     	cmp	x8, x12
+     868: 54fffe82     	b.hs	0x838 <crash_is_nosave+0x70>
+     86c: 2a1f03e0     	mov	w0, wzr
+     870: d65f03c0     	ret
+     874: 52800020     	mov	w0, #0x1                // =1
+     878: d65f03c0     	ret
+     87c: d42aa240     	brk	#0x5512
+     880: 7a 64 70 a2  	.word	0xa270647a
+
+0000000000000884 <crash_free_reserved_phys_range>:
+     884: d503233f     	paciasp
+     888: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+     88c: f9000bf9     	str	x25, [sp, #0x10]
+     890: a9025ff8     	stp	x24, x23, [sp, #0x20]
+     894: a90357f6     	stp	x22, x21, [sp, #0x30]
+     898: a9044ff4     	stp	x20, x19, [sp, #0x40]
+     89c: 910003fd     	mov	x29, sp
+     8a0: eb01001f     	cmp	x0, x1
+     8a4: 54000402     	b.hs	0x924 <crash_free_reserved_phys_range+0xa0>
+     8a8: aa0103f3     	mov	x19, x1
+     8ac: aa0003f4     	mov	x20, x0
+     8b0: 90000016     	adrp	x22, 0x0 <.text>
+		00000000000008b0:  R_AARCH64_ADR_PREL_PG_HI21	memstart_addr
+     8b4: b25f7bf7     	mov	x23, #-0x200000000      // =-8589934592
+     8b8: 52880018     	mov	w24, #0x4000            // =16384
+     8bc: 52800039     	mov	w25, #0x1               // =1
+     8c0: f94002c8     	ldr	x8, [x22]
+		00000000000008c0:  R_AARCH64_LDST64_ABS_LO12_NC	memstart_addr
+     8c4: d34cfe89     	lsr	x9, x20, #12
+     8c8: 934cfd08     	asr	x8, x8, #12
+     8cc: cb081ae8     	sub	x8, x23, x8, lsl #6
+     8d0: 8b091915     	add	x21, x8, x9, lsl #6
+     8d4: 1400000e     	b	0x90c <crash_free_reserved_phys_range+0x88>
+     8d8: f83812bf     	stclr	x24, [x21]
+     8dc: 8b091908     	add	x8, x8, x9, lsl #6
+     8e0: aa1503e0     	mov	x0, x21
+     8e4: 2a1f03e1     	mov	w1, wzr
+     8e8: b9003519     	str	w25, [x8, #0x34]
+     8ec: 94000000     	bl	0x8ec <crash_free_reserved_phys_range+0x68>
+		00000000000008ec:  R_AARCH64_CALL26	__free_pages
+     8f0: aa1503e0     	mov	x0, x21
+     8f4: 52800021     	mov	w1, #0x1                // =1
+     8f8: 94000000     	bl	0x8f8 <crash_free_reserved_phys_range+0x74>
+		00000000000008f8:  R_AARCH64_CALL26	adjust_managed_page_count
+     8fc: 91400694     	add	x20, x20, #0x1, lsl #12 // =0x1000
+     900: eb13029f     	cmp	x20, x19
+     904: 54fffde3     	b.lo	0x8c0 <crash_free_reserved_phys_range+0x3c>
+     908: 14000007     	b	0x924 <crash_free_reserved_phys_range+0xa0>
+     90c: f98002b1     	prfm	pstl1strm, [x21]
+     910: c85f7eaa     	ldxr	x10, [x21]
+     914: 8a38014a     	bic	x10, x10, x24
+     918: c80b7eaa     	stxr	w11, x10, [x21]
+     91c: 35ffffab     	cbnz	w11, 0x910 <crash_free_reserved_phys_range+0x8c>
+     920: 17ffffef     	b	0x8dc <crash_free_reserved_phys_range+0x58>
+     924: a9444ff4     	ldp	x20, x19, [sp, #0x40]
+     928: f9400bf9     	ldr	x25, [sp, #0x10]
+     92c: a94357f6     	ldp	x22, x21, [sp, #0x30]
+     930: a9425ff8     	ldp	x24, x23, [sp, #0x20]
+     934: a8c57bfd     	ldp	x29, x30, [sp], #0x50
+     938: d50323bf     	autiasp
+     93c: d65f03c0     	ret
+     940: 17ffff2a     	b	0x5e8 <machine_kexec+0x288>
+     944: d5033b9f     	dsb	ish
+     948: d508871f     	tlbi	vmalle1
+     94c: d5033b9f     	dsb	ish
+     950: d508871f     	tlbi	vmalle1
+     954: d53cd048     	mrs	x8, TPIDR_EL2

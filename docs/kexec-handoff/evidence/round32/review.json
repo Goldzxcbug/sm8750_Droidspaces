@@ -1,0 +1,50 @@
+{
+  "status": "R32_EXACT_R31_TARGET_Image_ORDINARY_ANDROID_CONTROL_PASS_NOT_WARM_HANDOFF_PROOF",
+  "epoch": 1794634341.2925231,
+  "build_id": "4646f9c53d37fb382dbd5c23aa773837dc427084",
+  "Image_sha256": "c86280df7acdeaec37fdfd125c30f2c422e35a40689282d49202a7116569aef4",
+  "boot_id": "52ac911d-1444-400b-bbe6-308c14dfe965",
+  "module_count": 695,
+  "original_module_names_match_source842": true,
+  "stock_modules_GNU_verified": {
+    "gcc_sun": [
+      "fd0294bddc6fc79a28a1a6826e5328eee01567cb"
+    ],
+    "ufs_qcom": [
+      "a0f190cdb34943457dc4f4642b720838e77acda3"
+    ],
+    "phy_qcom_ufs": [
+      "da0d45e45f727c03861320cf4132255b22a0cf5c"
+    ],
+    "msm_kgsl": [
+      "f95e145481d6423dffac1f0cb3e1236dfbb1b753"
+    ]
+  },
+  "source_target_same_Image_cold_boots_normally": true,
+  "actual_BTF_matches_target": true,
+  "chosen_kexec_marker_and_kexec_selectors_absent": true,
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 0,
+    "load_request_count": 0,
+    "execute_request_count": 0
+  },
+  "artifacts": {
+    "device-test.json": "a2a577a59d6d0c8458cf2d4defa0f1239ad3d3626019f7636c5b3a3a9b03ef94",
+    "observed-notes.bin": "8d5d937679d137fb0528305aca404f3e8026d868093349d303e243059819275f",
+    "observed-cmdline.bin": "1c04ae15e34026fadb0576508e82e9bf243283877c814d263d9f26aca426cc5a",
+    "observed-fdt.bin": "4cccd88deb95c5ca4b7d406883bd3d2ef65c6b8428c6530b5d9b42fdbd66d322",
+    "observed-modules.txt": "8f5332b12fc88229b6c0727e5f86fd216e6acf2982b7eacb43ce6f4fe1ad8dbf",
+    "observed-startup-dmesg.txt": "e36516cbf0d5f0b9d8c5dedc9d67233da92d2f92443edb29370eff7d731d885b",
+    "fastboot-identity.txt": "a5de0ad30716ad0e3cd77cfb019e9d4f64758b42b3afbdbe9c38d9a500f5137e",
+    "fastboot-boot.txt": "7aa4eed928ac79d92c0c130487ed667b0c3777cc7e1d11917ee9b47e3842862e"
+  },
+  "runner_sha256": "6adbadb94e436b2205dbd67d8b52edec9ddea23e39d0a0c4d31d7781320e9600",
+  "boot_package_verification_sha256": "9939768cb3c20e1224e3c232fe374d294d0cbda782d6ab64805bc4fc4323e755",
+  "limits": [
+    "Normal boot used original stock modules and diagnostic switches inactive. R31 warm boot used diagnostic UFS/GCC/PHY modules and active observer/quarantine selectors.",
+    "Cold success narrows the investigation but does not isolate hardware handoff from warm-only diagnostic settings, prove runtime source owners, or establish GPU cause for SIGSEGV."
+  ]
+}

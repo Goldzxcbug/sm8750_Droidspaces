@@ -1,0 +1,70 @@
+{
+  "status": "NORMAL_BOOT_VERIFIED_PRIMARY_MMU_AND_VIRTUAL_START_BOUNDARIES_CONFIRMED_ROUND4_DIAGNOSTIC_SHARED_HOOK_UNSAFE",
+  "root_cause_of_kexec_failure": "Not established. Round4 primary completes MMU return, KASLR, virtual startup through before-start-kernel. Shared MMU RET/snapshot hook in round4 can interfere with secondary/resume and cannot establish original root cause; absent in rounds1-3.",
+  "normal_boot_regression": "Previous patch writes 0x6814e000 at primary_entry; live DT IMEM is 0x14680000, size 0x1000; removed all such probes.",
+  "full_Image_build_exit": 0,
+  "compiler": "Android clang r510928, LLD 18",
+  "config_difference_from_previous_test_Image": "LOCALVERSION only",
+  "embedded_config_matches_build": true,
+  "patch_sha256": "2ff710c967cfdf8cf8247ac71d95d061fe93709730373f5d530cca42e55588b7",
+  "baseline_assembly_unchanged": true,
+  "handoff_after_local_daif_mask_unchanged": true,
+  "regression_test": "New patch passes; HEAD patch fails at changed head.S",
+  "physical_indirect_calls": 2,
+  "kcfi_type_word_loads_in_machine_kexec": 0,
+  "vendor_ramdisk_modules": 514,
+  "matching_builtin_dependencies": 22650,
+  "builtin_crc_mismatches": [],
+  "external_module_symbols_not_verified": 1348,
+  "midas_module": {
+    "matched": 59,
+    "missing": [],
+    "mismatches": []
+  },
+  "identical_structure_layouts": [
+    "task_struct",
+    "module",
+    "device",
+    "inode",
+    "file",
+    "super_block",
+    "mm_struct",
+    "vm_area_struct",
+    "css_set",
+    "cgroup"
+  ],
+  "artifacts": {
+    "status": "FASTBOOT_TEMPORARY_BOOT_PASS_KEXEC_EXECUTION_FAILED",
+    "Image": {
+      "path": "out/kexec-boot-fix/build/arch/arm64/boot/Image",
+      "bytes": 37001728,
+      "sha256": "21b56cfcd53b474326a8c431fc35e9571be86ffd75d011df1658d021477a0c8a"
+    },
+    "boot": {
+      "path": "out/kexec-boot-fix/kexec-diag-boot.img",
+      "bytes": 37007360,
+      "sha256": "be7aa32a416c8c4fdbcca7a1fc77630271d6daff3bcf2bddfcf912fea70d997e"
+    },
+    "header_matches_active_except_kernel_size": true,
+    "ramdisk_bytes": 0,
+    "signature_bytes": 0,
+    "device_changed": true
+  },
+  "dependency_notes": {
+    "bbg_commit": "a5b57f15d6b597a1bd157c42330fe80020b1d628",
+    "zstd_patch": "One portability_macros.h hunk does not match the supplied base; it is left unapplied as in the workflow, which ignores that patch exit. Other hunks applied; full Image build passed. No source change from this preparation is included in the kexec patch."
+  },
+  "not_performed": [
+    "Partition flash",
+    "Watchdog state change",
+    "Fifth temporary boot or kexec execution"
+  ],
+  "device_test_report": "out/kexec-boot-fix/device-test.json",
+  "device_test_round2_report": "out/kexec-boot-fix/round2/device-test.json",
+  "next_diagnostic": "Built-in late C tracer is compiled, packaged and offline reviewed; fifth temporary boot and one jump not performed",
+  "new_diagnostic_validation": "out/kexec-boot-fix/post-mmu-runner/validation.json",
+  "device_test_round3_report": "out/kexec-boot-fix/round3/device-test.json",
+  "device_test_round4_report": "out/kexec-boot-fix/round4/device-test.json",
+  "late_diagnostic_manifest": "out/kexec-boot-fix/late-boot/manifest.json",
+  "late_diagnostic_validation": "out/kexec-boot-fix/late-boot-runner/validation.json"
+}

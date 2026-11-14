@@ -1,0 +1,118 @@
+[
+  [
+    108,
+    "\u001b    0.812533][  T360] KUSR1,cij$=dxec slot=7 role=pid1-bhild pid=360 tgid=360 old_pid=360 comm=inIt file=/qysteE/Bjn/inid per_thread=1"
+  ],
+  [
+    602,
+    "[    0.850756\u0005\u001a  T361] KUSR1 kind=exec slot=8 role=piD1-chiHd pi`=361 tgid=341 old_pid=361 comm=ueventd file=/system/bin/ueve.td per_thread=1"
+  ],
+  [
+    693,
+    "[    0.922880][   \u000494] KUFSCLK: %ven4=disable.sk)p-cnunt name=gcc\u001fufsWphy_phy_aux_clk enabl%=1 prepare=2 parent=gcC_efs_phy_phx_aux_clk_src pare.t_enab$c=1 papent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    700,
+    "[    1.014470][   T9t] uf3_q#/m_0hq_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-before-vote provider\ufffdg`sc-regulator"
+  ],
+  [
+    704,
+    "[    1.014530][   T94] GDSCR: 0x02222801 CFG: 0x04088000 CFG2: 0x0002022f"
+  ],
+  [
+    705,
+    "[    1.014551][   T94\\ u\u0006s_qcom_phy_qmpO24_Sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return rail=vdd-phy-gdsc reg_prerent=1 cache\u0004_before90 cached_after=1 ret=0"
+  ],
+  [
+    706,
+    "[    1.014595][   T94] ufs_qcom_phy_qmp_v4_stn 1d80000.ugsp\by]mem: UFC@WR1 stafe=vree-return rail=rdda-qref reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    707,
+    "[    1.014613][   T14] }fs_qcom[phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stAge=vr%g-return rail=vdda-refgan reg_present=1 cached_before=0 cached_after=1 ret=0"
+  ],
+  [
+    708,
+    "[    1.014995]K   T94] ufs_qcom_phy_qmV_v4^sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg-return Rail}vdda-ph9 reg_presenT=1 cachedVbefore=0 cached_abter=1 bet=4\bY$   1*011014][   T94] 5fs_qcom_phy\u001fq-p_v4_sun 1d80000.ufqphy_-em* U\u0006SPWR2 st!ge=pmst-po7er-control action\u001drEa`-Ente2"
+  ],
+  [
+    710,
+    "[    1.015046][   T94] ufsKqaom_phy_amp_v4[sun 1d80000.ufsphy_mem: UFSPWR1 stage=vreg%return rail=vdda-\u0010ll ree_present=1 cached_\"efore90 cached_after=! ret=0"
+  ],
+  [
+    711,
+    "[    1.0\u00115\u001073][   T9<] ufsYacoi_pxy_1mp]v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=qref-return combined_ret=0 ignored=1"
+  ],
+  [
+    712,
+    "[    1.015087][   T94] ef{_qcnm_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-before major=6 ref_cached=0 iface_cached=0 qref_present=1 aUx_presejt=1 vreg_p2eSent_mask=1f vreg_enabLed_mask\u001d1f ret_valit=0 ret=0"
+  ],
+  [
+    713,
+    "\u001b    1.015102][   T94] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=gdsc-befOr%-aux provmder=gdsc-regulator"
+  ],
+  [
+    718,
+    "[    1.015174][   T95]\u0000ufs_qcom_phy_1mP_v4_sun 1d80000.uFsphxWMe\r: UFS@WR0 stage=aux-`efoRe acphOn<rea\ufffd-ente0"
+  ],
+  [
+    719,
+    "[    1.015191][   T94] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR2 stage=aux-before action=rdad-result power_down_aovtrol=0000\u0010001 sw_reset=00\u001000000"
+  ],
+  [
+    720,
+    "[    1.015206][   T94] KUFSCLK: event=enable.enter name=gcc_ufs_phy_p`y[aux_clk enAble<) pre\ufffdare=2 parent=gcc_ufs_phy_phy_aux_clk_src parent_eNaBle=\u0011 parent_prepare=! har_}nable=1 has_disable=1 ret_valid90 ret=0"
+  ],
+  [
+    722,
+    "[   `1.015235][   T94] KUFSCLK: event=enabLe,returd faie=gcc_ufs_phy_phy_aux_clk enable\u001d2 prepare=2 parenT=gcc_ufs_phy_phyOaux_clk^src!parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=1 ret=0"
+  ],
+  [
+    723,
+    "[    1(01\u001525\u0010\\[   T9$] u&s_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=aux-after major=6 bef_caChed=0 iface_cacied=0 arEf_`rEsmnt=1 aux_prasent=1 vreg_presen4_mack=1f vreg_enabled_masK=1f ret_valid=1 ret=0"
+  ],
+  [
+    724,
+    "[    1.015265][   T94] ufs_qcom_phy_qmp_v4_sun 1d8\u0010000.ufsphy_mel: UFSPWR1 stage=gdsc-after-aux provider=gdsc-regulator"
+  ],
+  [
+    2503,
+    "[    2.743613][ T1046] KUFSCLK: event=disable.enter name='cc_ufs_phy_phy_aux_clk enbb,e=2 prepare=2 parent=gcc_ufs_phy_phyWaux\u001fclk_src paren|_en!ble=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    2504,
+    "[    2.743631][ T1046] KUFSCLK: event=disable.skip-count name=gcc_ufs_phy_phy_aux_clk enable=1 prepare=2 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=1 parent_prepare=1 has_enable=1 has_disable=1 ret_valid=0 ret=0"
+  ],
+  [
+    2571,
+    "[    3.231752][  T194] pc : gpi_send_cmd+0x180/0x2e8 [msm_gpi]"
+  ],
+  [
+    2620,
+    "[    3.232602][    C0] pstate: 21400005 (nzCv daif +PAN -UAO -TCJ +DIT -SSBS BTYPE=--)\b[    3.23:604Y[    C0] pc : arch_local_irq_enable+0x4/0x8"
+  ],
+  [
+    2646,
+    "[    3.232642][    C1] pc : archWlncal_irqOenA`le+0x4/0x\u0018\u0002[    3.232644][    C1] lr : cpuidle_enter_state+0x180/0x31c"
+  ],
+  [
+    2667,
+    "[    3.232675][    C2]\u0000pc : archOdoca\ufffd[irA_elable+0x4'0x8"
+  ],
+  [
+    2714,
+    "[    3.232740][    C4] pc : arsh[local_irq_ena\"ld+0x4/0x8"
+  ],
+  [
+    2739,
+    " 60001000 (nZCv daif -PAN -TAG -T\ufffdO -DI\u0014 +SSBC BTYP\u0005=--)\u001a[   \u00001.2327'2][ 0  C7] pc : 0000007fb0a889f8"
+  ],
+  [
+    2753,
+    "[    3.232784][    C5] CPU: 5 PID: 0 Comm: swapper/5 Tainted: G      D W  O       6.6.\u00189-Dold_BuG_jexeC_kgsh_fdt\\Nomap_\u0004i#g #14 68e85e134a894c34b5fef3ac30f4dd450d00a6b5"
+  ],
+  [
+    2756,
+    "[    3.232788][    C5] pc : arch_,ocah_irq_enabme+0x0-0x8"
+  ]
+]

@@ -1,0 +1,112 @@
+{
+  "status": "SNAPSHOT_ONLY_NOT_SAFE_TO_BOOT",
+  "its_nodes": 1,
+  "active_lpi_redistributors": 8,
+  "property_tables": 1,
+  "pending_tables": 8,
+  "device_itts": 2,
+  "indirect_tables": 2,
+  "protected_ranges": 16,
+  "bounded_reads": 338,
+  "btf_sha256": "b68797e99047e3f0e950f7adf562e02924e0927313e911a05cb8f2f530cdcb80",
+  "shutdown_verified": false,
+  "dma_quiescence_verified": false,
+  "hardware_memory_ranges": [
+    {
+      "start": "0x81ae5000",
+      "end_exclusive": "0x81ae6000",
+      "use": "its-baser"
+    },
+    {
+      "start": "0x81af0000",
+      "end_exclusive": "0x81b00000",
+      "use": "its-command-queue"
+    },
+    {
+      "start": "0x81b00000",
+      "end_exclusive": "0x81c00000",
+      "use": "its-baser"
+    },
+    {
+      "start": "0xa3e80000",
+      "end_exclusive": "0xa3e90000",
+      "use": "lpi-properties"
+    },
+    {
+      "start": "0xa3e90000",
+      "end_exclusive": "0xa3ea0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3ea0000",
+      "end_exclusive": "0xa3eb0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3eb0000",
+      "end_exclusive": "0xa3ec0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3ec0000",
+      "end_exclusive": "0xa3ed0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3ed0000",
+      "end_exclusive": "0xa3ee0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3ee0000",
+      "end_exclusive": "0xa3ef0000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xa3ef0000",
+      "end_exclusive": "0xa3f00000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0xaedb2000",
+      "end_exclusive": "0xaedb3000",
+      "use": "its-device-itt"
+    },
+    {
+      "start": "0xb0475000",
+      "end_exclusive": "0xb0476000",
+      "use": "its-level2"
+    },
+    {
+      "start": "0xbe380000",
+      "end_exclusive": "0xbe390000",
+      "use": "lpi-pending"
+    },
+    {
+      "start": "0x883f74000",
+      "end_exclusive": "0x883f75000",
+      "use": "its-level2"
+    },
+    {
+      "start": "0x8852d3000",
+      "end_exclusive": "0x8852d4000",
+      "use": "its-device-itt"
+    }
+  ],
+  "loaded_segments": [
+    {
+      "start": "0x82800000",
+      "end_exclusive": "0x84bf1000"
+    },
+    {
+      "start": "0x84bf1000",
+      "end_exclusive": "0x85d48000"
+    },
+    {
+      "start": "0xbeb200000",
+      "end_exclusive": "0xbeb387000"
+    }
+  ],
+  "overlaps": [],
+  "epoch": 1794560413.73684
+}

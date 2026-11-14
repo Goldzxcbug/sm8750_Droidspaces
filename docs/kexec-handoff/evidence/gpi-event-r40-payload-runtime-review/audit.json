@@ -1,0 +1,360 @@
+{
+  "status": "R40_HOST_PAYLOAD_AND_LOADED_EXTENT_VERIFIED_GPI_RUNTIME_ADOPTION_UNPROVEN",
+  "round": 40,
+  "source_boot_id": "052b2ac3-d801-4563-820c-384c3ad16996",
+  "requested_target_nonce": "f5b8101627e20e75",
+  "prepared_target_kernel_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+  "payload": {
+    "ramdisk_bytes": 19083256,
+    "ramdisk_sha256": "20106d22892f70f7babb32674f598150c3018888cfe11e5858b5dae7f61326fa",
+    "gzip_bytes": 19081359,
+    "gzip_sha256": "0bc257e792e8985d19410dff425ee7582989ba5ab103403b2a16c2a1d21cb6eb",
+    "cpio_bytes": 70940520,
+    "cpio_sha256": "d2373b5dbb7ef3168dcac606d4dd4a9d20f8a121bcf98cf172290b1e0738f5e0",
+    "archive_entry_counts": [
+      525,
+      24
+    ],
+    "GPI_entries": [
+      {
+        "archive_index": 0,
+        "entry_index": 156,
+        "name": "lib/modules/msm_gpi.ko",
+        "normalized_name": "lib/modules/msm_gpi.ko",
+        "bytes": 479976,
+        "sha256": "94669c47c94ab1e0bc9391f9e124b35e1b00d4ed18b8381dbf5bd0be8b65e111",
+        "mode": "0o100644",
+        "nlink": 1,
+        "inode": 300156,
+        "cpio_data_offset": 22076792
+      }
+    ],
+    "options_entries": [
+      {
+        "archive_index": 0,
+        "entry_index": 523,
+        "name": "lib/modules/modules.options",
+        "normalized_name": "lib/modules/modules.options",
+        "bytes": 290,
+        "sha256": "61fc644c869b15c36ab93ad3d089d8effac2610a541142ef919fff8b2248417c",
+        "mode": "0o100644",
+        "nlink": 1,
+        "inode": 300524,
+        "cpio_data_offset": 65174220
+      }
+    ],
+    "module_build_ids": [
+      "44f9608d617294a503cf5c0ecebad2da5bccb9d6"
+    ],
+    "options_text": [
+      "options ufs_qcom kexec_handoff_diag=1 kexec_ah8_reset_diag=1\noptions gcc_sun kexec_ufs_aux_force_diag=1 kexec_ufs_aux_swctrl_diag=1 kexec_ufs_aux_halt_skip_diag=1\noptions phy_qcom_ufs kexec_ufs_phy_power_trace_diag=1 kexec_ufs_phy_local_read_diag=1\noptions msm_gpi kexec_first_event_diag=1\n"
+    ],
+    "modinfo": [
+      "parmtype=kexec_first_event_diag:bool",
+      "parm=kexec_first_event_diag:Observe the first a00000/SE4 SPI event allocation without changing it",
+      "description=QCOM GPI DMA engine driver",
+      "license=GPL",
+      "vermagic=6.6.89-Gold_Bug_kexec_kgsl_fdt_nomap_diag SMP preempt mod_unload modversions aarch64",
+      "name=msm_gpi",
+      "depends=qcom_ipc_logging",
+      "alias=of:N*T*Cqcom,gpi-dma",
+      "alias=of:N*T*Cqcom,gpi-dmaC*"
+    ],
+    "module_equals_validated_KO": true,
+    "module_signature_marker_present": false,
+    "tail_bytes": 1897
+  },
+  "normalized_path_matches": {
+    "lib/modules/msm_gpi.ko": [
+      [
+        0,
+        156,
+        "lib/modules/msm_gpi.ko"
+      ]
+    ],
+    "lib/modules/modules.options": [
+      [
+        0,
+        523,
+        "lib/modules/modules.options"
+      ]
+    ]
+  },
+  "refreshed_bootconfig": {
+    "tail_bytes": 1897,
+    "declared_bytes": 1877,
+    "sum_verified": true,
+    "source_bootconfig_prefix_verified": true,
+    "GPU_transport_footer_absent": true
+  },
+  "loaded_chain": {
+    "captured_DTB_sha256": "96dca8188388e5b93128c35ebe6ffcfee1775270bf987d411bd74bb1b4e6004d",
+    "chosen_initrd_start": "0x86800000",
+    "chosen_initrd_end_exclusive": "0x87a32ff8",
+    "chosen_exact_bytes": 19083256,
+    "actual_segment_bufsz": 19083256,
+    "actual_segment_memsz": 19083264,
+    "same_host_bytes_and_metadata_size": true,
+    "nonce_in_actual_loaded_DTB": true,
+    "actual_Source_and_destination_page_lists_traversed": true,
+    "actual_Image_critical_pages_byte_checked": 233,
+    "actual_DTB_bytes_captured_and_hashed": true,
+    "actual_initrd_relocation_source_pages_byte_hashed": false,
+    "post_relocation_initrd_bytes_checked": false,
+    "uploaded_file_sha_assertion_scope": "stage-load script successful exit0 follows remote sha256sum assertions; no independent post-load initrd byte capture was saved"
+  },
+  "normal_adoption_gap": {
+    "normal_module_list_root_count": 153,
+    "normal_dependency_closure_count": 155,
+    "GPI_in_normal_list": false,
+    "GPI_in_normal_dependency_closure": false,
+    "SPI_in_normal_dependency_closure": false,
+    "GPI_in_recovery_list": true,
+    "root_module_load_lists_are_not_interchangeable": true,
+    "plain_module_dep_edge_from_SPI_to_GPI": false,
+    "actual_init_real_metadata_path": "init-real-loader-inputs.json",
+    "actual_init_source_revision_known": false,
+    "finding": "The corrected KO is in the supplied initrd, but the normal explicit first-stage load roots and dependencies do not select it. Later vendor loading of a different copy remains a concrete candidate, not runtime proof."
+  },
+  "module_static_acceptance": {
+    "new_KO_unsigned": true,
+    "vermagic": "6.6.89-Gold_Bug_kexec_kgsl_fdt_nomap_diag SMP preempt mod_unload modversions aarch64",
+    "UTS_release_prefix_matches": true,
+    "GPL_license": true,
+    "actual_policy_predicates": {
+      "is_module_sig_enforced": {
+        "address": "0xffffffc08019332c",
+        "bytes_hex": "e0031f2ac0035fd6",
+        "return_constant": 0,
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "w0, wzr"
+          },
+          {
+            "offset": 4,
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      "gki_is_module_unprotected_symbol": {
+        "address": "0xffffffc080193584",
+        "bytes_hex": "20008052c0035fd6",
+        "return_constant": 1,
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "w0, #1"
+          },
+          {
+            "offset": 4,
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      },
+      "gki_is_module_protected_export": {
+        "address": "0xffffffc080193578",
+        "bytes_hex": "e0031f2ac0035fd6",
+        "return_constant": 0,
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "mov",
+            "operands": "w0, wzr"
+          },
+          {
+            "offset": 4,
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      }
+    },
+    "static_signature_or_GKI_protection_rejection_found": false,
+    "CRC_and_exports_evidence_reused_from_frozen_validation": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/gpi-event-timeout-trace-module/validation.json",
+      "bytes": 17511,
+      "sha256": "867acecb3a9308f19b1e6407384a6cccb2c0434a83c2565c21b4c842c1aa44b0"
+    },
+    "ABI_suite_rerun": false,
+    "limitations": "No live module-load return or LSM/firmware state was captured; static admissibility is not a successful load."
+  },
+  "raw_pstore_scan": {
+    "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round40/pstore-after-exec.txt",
+    "bytes": 262132,
+    "sha256": "71e22c265731434aecbb7efb61ec586e4a03b0b87223339d16cfd170a0a2806e",
+    "LF_count": 1894,
+    "LF_split_method": "raw.split(b'\\n')",
+    "exact_literal_hits": {
+      "KGPICMD1": [],
+      "44f9608d617294a503cf5c0ecebad2da5bccb9d6": [],
+      "f5b8101627e20e75": [],
+      "msm_gpi": [],
+      "gpi_send_cmd": [],
+      "Unknown symbol": [],
+      "disagrees about version": [],
+      "version magic": [],
+      "Failed to insmod": [],
+      "Failed to load": [],
+      "module verification failed": [],
+      "exports protected symbol": [],
+      "exports duplicate symbol": [],
+      "Key was rejected": [],
+      "Unknown parameter": []
+    },
+    "known_damaged_loader_rows": [
+      {
+        "LF": 214,
+        "bytes": 90,
+        "hex": "5b20202020302e3436343531335d5b2020543233355d20696e69743a204c6f6164696e67206d6f64756c65202f6c69622f6d6f64756c65732f63616d626973744d636c6b63632d73756eaf6b6f20776974682061726733202727",
+        "ASCII_backslashreplace": "[    0.464513][  T235] init: Loading module /lib/modules/cambistMclkcc-sun\\xafko with arg3 ''",
+        "ASCII_printability_only_not_integrity_proof": false
+      },
+      {
+        "LF": 217,
+        "bytes": 124,
+        "hex": "5b20002020302e303635303633531b2020543230355d20696e69743a204c6f6164696e67206d6d64356c65202f2c69622b457764756c65732f7566630f70636f6d2e696f2077697468206150677320276a655065631f48616e646f66665f606901673531204b657865635f6168285f52647365545764696165353127",
+        "ASCII_backslashreplace": "[ \u0000  0.065063S\u001b  T205] init: Loading mmd5le /,ib+Ewdules/ufc\u000fpcom.io with aPgs 'jePec\u001fHandoff_`i\u0001g51 Kexec_ah(_RdseTWdiae51'",
+        "ASCII_printability_only_not_integrity_proof": false
+      },
+      {
+        "LF": 218,
+        "bytes": 74,
+        "hex": "5b20202020302e3436353132385d5b2020543234315d20696e69743a204c6f61646564206b65726e656c006d6f64754c65202f6c6962376d2764756c65532f636c2b2d52706d682e636f",
+        "ASCII_backslashreplace": "[    0.465128][  T241] init: Loaded kernel\u0000moduLe /lib7m'duleS/cl+-Rpmh.co",
+        "ASCII_printability_only_not_integrity_proof": false
+      },
+      {
+        "LF": 270,
+        "bytes": 82,
+        "hex": "5b20202020302e3437330035375d432000543035315d20696e69743a204c6f6164696e67206d7f64756c6520296c69622f656f64756865612f716e6f232d74356e612f6b6e00776974682061726773202727",
+        "ASCII_backslashreplace": "[    0.473\u000057]C \u0000T051] init: Loading m\u007fdule )lib/eoduhea/qno#-t5na/kn\u0000with args ''",
+        "ASCII_printability_only_not_integrity_proof": false
+      }
+    ],
+    "literal_KUSR2_rows": [
+      1404
+    ],
+    "no_complete_literal_GPI_load_or_rejection_found": true,
+    "absence_not_proof": "Damaged/overwritten text cannot prove GPI was never loaded, that the old KO ran, or that NULL timeout handling worked."
+  },
+  "post_exec_scope": {
+    "actual_GPI_NOTE": [
+      "017204038f33bb4419f33057adedc2b0a2490c74"
+    ],
+    "scope": "observed_non_target_or_recovered_stock",
+    "kernel_build_ids": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "boot_id": "16b13af7-b3d4-48e7-a4e5-d9e09d87d4af",
+    "not_target_runtime_GPI_identity": true
+  },
+  "minimal_next_payload_design_only": {
+    "normal_modules_load_append_exact": "msm_gpi.ko\n",
+    "append_count": 1,
+    "options_keep_same_four_rows_and290bytes": true,
+    "new_dependency_closure_delta": [
+      "msm_gpi.ko"
+    ],
+    "all14GPI_dependencies_already_normal_firststage": true,
+    "expected_adoption_mechanism": "First-stage libmodprobe selects the appended name from /lib/modules and applies same-directory modules.options; after successful registration, ordinary later same-name finit_module cannot replace a LIVE module and returns EEXIST.",
+    "conditions_and_acceptance": [
+      "normal load list selected and no earlier first-stage load abort",
+      "new KO init succeeds; require actual early /lib/modules/msm_gpi.ko load/args or live GNU44f960 and parameterY evidence",
+      "same-name module not explicitly unloaded later",
+      "no source GPI blacklist or source-image change",
+      "existing source7278 KGSL-blacklist/SF-stability and target protection gates retained"
+    ],
+    "experiment_boundary": "GPI platform probe is moved earlier than the old vendor loader; a new outcome is not a proof that only the NULL-guard logic caused the difference.",
+    "implemented": false
+  },
+  "primary_loader_reference": {
+    "provenance_path": "official-reference/provenance.json",
+    "actual_OEM_binary_not_proven_identical": true,
+    "first_stage_init_lines": {
+      "mode_to_loadlist": [
+        185,
+        210
+      ],
+      "root_and_versioned_directories": [
+        213,
+        288
+      ],
+      "boot_mode": [
+        297,
+        304
+      ]
+    },
+    "libmodprobe_lines": {
+      "constructor_options_list_same_base": [
+        319,
+        344
+      ],
+      "listed_load_loop": [
+        549,
+        560
+      ]
+    },
+    "libmodprobe_ext_lines": {
+      "options_to_finit_module_and_EEXIST": [
+        34,
+        70
+      ]
+    },
+    "actual_target_module_main_live_EEXIST_line": 2740
+  },
+  "inputs": {
+    "ramdisk.img": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round40/ramdisk.img",
+      "bytes": 19083256,
+      "sha256": "20106d22892f70f7babb32674f598150c3018888cfe11e5858b5dae7f61326fa"
+    },
+    "device-test.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round40/device-test.json",
+      "bytes": 14687,
+      "sha256": "9a957b95044026d310d97901eb5386c73d0dd91c41c947fdebc408b088e7a638"
+    },
+    "target-ready.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round40/target-ready.json",
+      "bytes": 30539,
+      "sha256": "306c0750431bdca02861cdcbf7ad531463b8a9dbcbd0119638474349eb816383"
+    },
+    "loaded-target.dtb": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round40/loaded-target.dtb",
+      "bytes": 1601455,
+      "sha256": "96dca8188388e5b93128c35ebe6ffcfee1775270bf987d411bd74bb1b4e6004d"
+    },
+    "loaded-audit.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round40/loaded-audit.json",
+      "bytes": 1614,
+      "sha256": "97d24a64b9ab201d045d816e7a9f2e208afbfe6dc19db570f77e5b384aa6170d"
+    },
+    "loaded-fdt-audit.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round40/loaded-fdt-audit.json",
+      "bytes": 5698,
+      "sha256": "6e3c9c479da301f84829c49e5c9db529c41e7cfbd1bb50ead6a1ffa3bd696242"
+    },
+    "live-kmsg-after-load.txt": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round40/live-kmsg-after-load.txt",
+      "bytes": 2124929,
+      "sha256": "339ad17de054ce69471a40d04cf16d9c21d197444760e8687ce94cc0aa7055ee"
+    },
+    "post-exec-module-identity.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round40/post-exec-module-identity.json",
+      "bytes": 2516,
+      "sha256": "aa004d467e3751a24a18ad58b1ffc2ce6340fce150970edaba6988de9612d971"
+    },
+    "manifest.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/gpi-event-timeout-payload/manifest.json",
+      "bytes": 4637,
+      "sha256": "86cea07753b23547d733aa7b42f388a5fb7d21fdb100d79a69b0206cc67637e3"
+    }
+  },
+  "device_operations": 0,
+  "state_or_runner_changes": 0,
+  "payload_or_C_changes": 0
+}

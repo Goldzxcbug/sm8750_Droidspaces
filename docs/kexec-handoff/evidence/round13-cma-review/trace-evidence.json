@@ -1,0 +1,383 @@
+{
+  "status": "INDEPENDENT_R13_CMA_TRACE_STACK_RELEASE_HASH_BOUND_PASS",
+  "bindings": {
+    "round13/cma-trace-instance.txt": {
+      "sha256": "7680421e3cebfe5810a723610de7d6f0b4579bfd03eba5f72b3b1ca7b499864d",
+      "bytes": 158906
+    },
+    "round13/cma-trace-capture.json": {
+      "sha256": "2a196d92f154078e195a7f45b427a598121fc1eb314c83e97837307aa82e9218",
+      "bytes": 7915
+    },
+    "round13/cma-trace-global.txt": {
+      "sha256": "804f3810599ffcef6071562bdf803081c39b52266edd16f05ef6c50ce2a7f9e8",
+      "bytes": 17255
+    },
+    "round13/device-test.json": {
+      "sha256": "72b6909feee6179b8d46c8f9bd573b73479f4d64adb25ca025464ad670d8cab0",
+      "bytes": 1684
+    },
+    "round13/source-cmdline.bin": {
+      "sha256": "6a8a94848d909da3bee452cbdd2a01ef8639d3640bf8ed72f2914536dd1a9c5f",
+      "bytes": 1705
+    },
+    "round13-tz-log-review/tz_log_dlkm.ko": {
+      "sha256": "de91d8824d3d87c32c563868022f5dfdcbef1dcc7c86b02a52177dfd4bf3a6ac",
+      "bytes": 52232
+    },
+    "round13-cma-review/all-CMA-records.json": {
+      "sha256": "29d801ceb93e296bccc0aa83386f6474d27b52c39250f9a888be7c0459071f5e",
+      "bytes": 248445
+    }
+  },
+  "source_boot_id": "2d6c16b8-04a2-4896-8510-eac3b157c377",
+  "source_build_id": "218a41818e13202f577a7ef27eca92a55fb84f83",
+  "source_Image_changed": false,
+  "module_BID": "44d5bc6026c74b531ae05068a806c847a6b2592f",
+  "trace_header": {
+    "entries": 646,
+    "written": 646,
+    "CPUs": 8,
+    "stack_records": 323
+  },
+  "CMA_event_counts": {
+    "cma_alloc_start": 129,
+    "cma_alloc_finish": 129,
+    "cma_release": 65
+  },
+  "all_event_stack_pairs": 323,
+  "request_start_finish_pairs": 129,
+  "finish_error_codes": {
+    "0": 129
+  },
+  "event_counts_per_CMA_pool": {
+    "linux,cma": 45,
+    "va_md_mem_region": 3,
+    "qseecom_region": 170,
+    "cdsp_eva_region": 2,
+    "qseecom_ta_region": 39,
+    "adsp_heap_region": 2,
+    "cnss_wlan_region": 62
+  },
+  "per_cpu_capture_stats": {
+    "0": {
+      "entries": 56,
+      "overrun": 0,
+      "commit_overrun": 0,
+      "dropped_events": 0,
+      "read_events": 0
+    },
+    "1": {
+      "entries": 82,
+      "overrun": 0,
+      "commit_overrun": 0,
+      "dropped_events": 0,
+      "read_events": 0
+    },
+    "2": {
+      "entries": 88,
+      "overrun": 0,
+      "commit_overrun": 0,
+      "dropped_events": 0,
+      "read_events": 0
+    },
+    "3": {
+      "entries": 68,
+      "overrun": 0,
+      "commit_overrun": 0,
+      "dropped_events": 0,
+      "read_events": 0
+    },
+    "4": {
+      "entries": 76,
+      "overrun": 0,
+      "commit_overrun": 0,
+      "dropped_events": 0,
+      "read_events": 0
+    },
+    "5": {
+      "entries": 104,
+      "overrun": 0,
+      "commit_overrun": 0,
+      "dropped_events": 0,
+      "read_events": 0
+    },
+    "6": {
+      "entries": 126,
+      "overrun": 0,
+      "commit_overrun": 0,
+      "dropped_events": 0,
+      "read_events": 0
+    },
+    "7": {
+      "entries": 46,
+      "overrun": 0,
+      "commit_overrun": 0,
+      "dropped_events": 0,
+      "read_events": 0
+    }
+  },
+  "tz_log_buffers": [
+    {
+      "finish_line": 502,
+      "stack_line": 503,
+      "start_line": 453,
+      "timestamp_local": "1.859702",
+      "cpu": 2,
+      "pid": 75,
+      "stack": [
+        "__cma_alloc",
+        "cma_alloc",
+        "dma_alloc_contiguous",
+        "__dma_direct_alloc_pages",
+        "dma_direct_alloc",
+        "dma_alloc_attrs",
+        "tz_log_probe",
+        "platform_probe",
+        "really_probe",
+        "__driver_probe_device",
+        "driver_probe_device",
+        "__driver_attach_async_helper",
+        "async_run_entry_fn",
+        "process_scheduled_works",
+        "worker_thread",
+        "kthread",
+        "ret_from_fork"
+      ],
+      "pfn": "0xecca0",
+      "pages": 32,
+      "PA": "0xecca0000",
+      "end_exclusive": "0xeccc0000",
+      "bytes": 131072,
+      "align_order": 5,
+      "errorno": 0,
+      "covers_R11_fault_PA_same_numeric_value": true,
+      "overlapping_release_events_anywhere_in_capture": []
+    },
+    {
+      "finish_line": 540,
+      "stack_line": 541,
+      "start_line": 521,
+      "timestamp_local": "1.873056",
+      "cpu": 6,
+      "pid": 75,
+      "stack": [
+        "__cma_alloc",
+        "cma_alloc",
+        "dma_alloc_contiguous",
+        "__dma_direct_alloc_pages",
+        "dma_direct_alloc",
+        "dma_alloc_attrs",
+        "tz_log_probe",
+        "platform_probe",
+        "really_probe",
+        "__driver_probe_device",
+        "driver_probe_device",
+        "__driver_attach_async_helper",
+        "async_run_entry_fn",
+        "process_scheduled_works",
+        "worker_thread",
+        "kthread",
+        "ret_from_fork"
+      ],
+      "pfn": "0xeccc0",
+      "pages": 33,
+      "PA": "0xeccc0000",
+      "end_exclusive": "0xecce1000",
+      "bytes": 135168,
+      "align_order": 6,
+      "errorno": 0,
+      "covers_R11_fault_PA_same_numeric_value": false,
+      "overlapping_release_events_anywhere_in_capture": []
+    },
+    {
+      "finish_line": 578,
+      "stack_line": 579,
+      "start_line": 559,
+      "timestamp_local": "1.874556",
+      "cpu": 3,
+      "pid": 75,
+      "stack": [
+        "__cma_alloc",
+        "cma_alloc",
+        "dma_alloc_contiguous",
+        "__dma_direct_alloc_pages",
+        "dma_direct_alloc",
+        "dma_alloc_attrs",
+        "tz_log_probe",
+        "platform_probe",
+        "really_probe",
+        "__driver_probe_device",
+        "driver_probe_device",
+        "__driver_attach_async_helper",
+        "async_run_entry_fn",
+        "process_scheduled_works",
+        "worker_thread",
+        "kthread",
+        "ret_from_fork"
+      ],
+      "pfn": "0xecc8c",
+      "pages": 3,
+      "PA": "0xecc8c000",
+      "end_exclusive": "0xecc8f000",
+      "bytes": 12288,
+      "align_order": 2,
+      "errorno": 0,
+      "covers_R11_fault_PA_same_numeric_value": false,
+      "overlapping_release_events_anywhere_in_capture": []
+    },
+    {
+      "finish_line": 616,
+      "stack_line": 617,
+      "start_line": 597,
+      "timestamp_local": "1.877013",
+      "cpu": 1,
+      "pid": 75,
+      "stack": [
+        "__cma_alloc",
+        "cma_alloc",
+        "dma_alloc_contiguous",
+        "__dma_direct_alloc_pages",
+        "dma_direct_alloc",
+        "dma_alloc_attrs",
+        "tz_log_probe",
+        "platform_probe",
+        "really_probe",
+        "__driver_probe_device",
+        "driver_probe_device",
+        "__driver_attach_async_helper",
+        "async_run_entry_fn",
+        "process_scheduled_works",
+        "worker_thread",
+        "kthread",
+        "ret_from_fork"
+      ],
+      "pfn": "0xed100",
+      "pages": 128,
+      "PA": "0xed100000",
+      "end_exclusive": "0xed180000",
+      "bytes": 524288,
+      "align_order": 7,
+      "errorno": 0,
+      "covers_R11_fault_PA_same_numeric_value": false,
+      "overlapping_release_events_anywhere_in_capture": []
+    }
+  ],
+  "all_four_total_bytes": 802816,
+  "all_four_total_pages": 196,
+  "all_65_release_records_examined": true,
+  "no_release_overlaps_any_selected_buffer_in_the_saved_trace": true,
+  "global_trace": {
+    "header": {
+      "entries": 50,
+      "written": 50,
+      "CPUs": 8,
+      "stack_records": 25
+    },
+    "CMA_events_saved": 25,
+    "tracing_on_at_capture": false,
+    "clock": "global",
+    "extra_sde_camera_bpf_events_enabled_after_boot": true,
+    "conclusion": "Global array was changed/stopped during Android startup; precise actor/write time not captured. It is incomplete and not the release ledger."
+  },
+  "dedicated_trace": {
+    "name": "kexec_cma",
+    "tracing_on_at_capture": true,
+    "only_three_CMA_events_enabled": true,
+    "stacktrace": true,
+    "clock": "local",
+    "buffer_size_kb_per_CPU": 2051,
+    "entries_equal_written_no_overrun_drop": true,
+    "nonconsuming_export": true,
+    "clock_or_event_configuration_writes_by_collector": 0
+  },
+  "time_boundary": "Each CPU uses the local clock. Start/finish associations use PID/request shape and stack, permitting migration. Do not infer strict total ordering across CPUs or compare these local stamps numerically with the global array. The no-release-overlap result scans all releases regardless of timestamp, so does not depend on that ordering.",
+  "minimal_live_descriptor_alignment": {
+    "basis": "Matched actual tz_log_dlkm ELF symbols plus gic_handoff_review actual-code layout; this report has not collected live descriptors.",
+    "symbols": {
+      "coh_pmem": {
+        "section": ".bss",
+        "offset": "0xb8",
+        "bytes": 8
+      },
+      "qseelog_buf_size": {
+        "section": ".bss",
+        "offset": "0xa0",
+        "bytes": 4
+      },
+      "g_qsee_log": {
+        "section": ".bss",
+        "offset": "0x20",
+        "bytes": 8
+      },
+      "g_qsee_log_v2": {
+        "section": ".bss",
+        "offset": "0x28",
+        "bytes": 8
+      },
+      "enc_qseelog_info": {
+        "section": ".bss",
+        "offset": "0x60",
+        "bytes": 32
+      },
+      "enc_tzlog_info": {
+        "section": ".bss",
+        "offset": "0x80",
+        "bytes": 32
+      },
+      "disp_buf_paddr": {
+        "section": ".bss",
+        "offset": "0xa8",
+        "bytes": 8
+      },
+      "display_buf_size": {
+        "section": ".bss",
+        "offset": "0x44",
+        "bytes": 4
+      },
+      "debug_rw_buf_size": {
+        "section": ".bss",
+        "offset": "0x0",
+        "bytes": 4
+      },
+      "tzdbg": {
+        "section": ".data",
+        "offset": "0x60",
+        "bytes": 640
+      }
+    },
+    "expected_current_boot_matches": [
+      {
+        "descriptor": "coh_pmem and qseelog_buf_size; g_qsee_log or g_qsee_log_v2 pointer only",
+        "DMA_or_PA_expected_after_translation_check": "0xecca0000",
+        "bytes": "0x20000"
+      },
+      {
+        "descriptor": "enc_qseelog_info: paddr+0, vaddr+8, size+16, shmb_handle+24",
+        "DMA_or_PA_expected_after_translation_check": "0xeccc0000",
+        "bytes": "0x21000"
+      },
+      {
+        "descriptor": "enc_tzlog_info: paddr+0, vaddr+8, size+16, shmb_handle+24",
+        "DMA_or_PA_expected_after_translation_check": "0xecc8c000",
+        "bytes": "0x3000"
+      },
+      {
+        "descriptor": "disp_buf_paddr and display_buf_size; tzdbg.disp_buf pointer at+0x40",
+        "DMA_or_PA_expected_after_translation_check": "0xed100000",
+        "bytes": "0x80000"
+      }
+    ],
+    "procedure": "Bind the same live boot UUID/BID, actual module GNU note and .bss/.data section bases. Read only the listed ordinary scalar descriptors, plus tzdbg.encrypted+0x240/enlarged+0x241. Repeat descriptor reads and verify sizes/ranges against these exact trace events. DMA handles must be checked against device translation or kernel page-table metadata before equating them with physical addresses; never dereference the buffer vaddrs, log payloads or secure backing RAM.",
+    "limits": "A matching allocation descriptor identifies this boot buffer/consumer. It is not a firmware permission/VMID query, does not show whether a registration survived kexec, and is not evidence of round11 ownership."
+  },
+  "conclusion": "In R13 source boot, tz_log_probe successfully allocated a default-CMA buffer covering the same numeric PA that faulted in R11. Four such allocations and their stacks are retained; none is overlapped by a captured release. This is a concrete next consumer to inspect, not proof of who owned the PA in the earlier boot or why it external-aborted.",
+  "limits": [
+    "Trace coverage and no-drop findings apply to the saved dedicated instance; this does not independently prove it was never disabled/reset before capture.",
+    "Tracing changes memory layout and timing; the physical-number match across boots is not historical identity.",
+    "Linux allocation lifetime metadata is separate from EL2/TZ ownership, security registration and DMA liveness.",
+    "All findings are offline; no device, C, source or patch modification."
+  ],
+  "device_operations": 0,
+  "source_or_patch_changes": 0
+}

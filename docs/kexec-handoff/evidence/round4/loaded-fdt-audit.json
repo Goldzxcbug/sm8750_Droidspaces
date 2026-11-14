@@ -1,0 +1,159 @@
+{
+  "status": "ACTUAL_LOADED_FDT_SOURCE_PAGES_INSPECTED_BEFORE_JUMP",
+  "sha256": "ae0e754c397a50c5b07384339b647e886db59d9d51086f8c118e7baa9b2d70f2",
+  "initrd_chosen_matches_actual_segment": true,
+  "bootargs_match_this_source_cmdline": true,
+  "cmdline_sha256_without_trailing_newline": "b9d06c214f06e323052d1572b36f1a844f22697fc0d069286dbe2d30c843fc51",
+  "actual_target_PSCI": {
+    "path": "/soc/psci",
+    "compatible": [
+      "arm,psci-1.0"
+    ],
+    "method": "smc"
+  },
+  "initrd_start": "0x84bf6000",
+  "initrd_end": "0x85d4c480",
+  "reserve_map": [
+    {
+      "start": "0x84bf6000",
+      "end_exclusive": "0x85d4c480"
+    }
+  ],
+  "static_reserved_memory_ranges": 45,
+  "dynamic_reserved_memory_nodes": [
+    "/reserved-memory/sp_region",
+    "/reserved-memory/qseecom_region",
+    "/reserved-memory/qseecom_ta_region",
+    "/reserved-memory/vm_comm_mem_region",
+    "/reserved-memory/linux,cma",
+    "/reserved-memory/cdsp_eva_region",
+    "/reserved-memory/adsp_heap_region",
+    "/reserved-memory/non_secure_display_region",
+    "/reserved-memory/debug_kinfo_region",
+    "/reserved-memory/va_md_mem_region",
+    "/reserved-memory/ramoops-region",
+    "/reserved-memory/qmc_dma_region",
+    "/reserved-memory/secure_cdsp_region",
+    "/reserved-memory/dump_mem_region",
+    "/reserved-memory/cnss_wlan_region"
+  ],
+  "GIC_range_coverage": [
+    {
+      "start": "0x81ae5000",
+      "end_exclusive": "0x81ae6000",
+      "use": "its-baser",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0x81af0000",
+      "end_exclusive": "0x81b00000",
+      "use": "its-command-queue",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0x81b00000",
+      "end_exclusive": "0x81c00000",
+      "use": "its-baser",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xa3e80000",
+      "end_exclusive": "0xa3e90000",
+      "use": "lpi-properties",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xa3e90000",
+      "end_exclusive": "0xa3ea0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xa3ea0000",
+      "end_exclusive": "0xa3eb0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xa3eb0000",
+      "end_exclusive": "0xa3ec0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xa3ec0000",
+      "end_exclusive": "0xa3ed0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xa3ed0000",
+      "end_exclusive": "0xa3ee0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xa3ee0000",
+      "end_exclusive": "0xa3ef0000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xa3ef0000",
+      "end_exclusive": "0xa3f00000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xaf607000",
+      "end_exclusive": "0xaf608000",
+      "use": "its-level2",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xb31f3000",
+      "end_exclusive": "0xb31f4000",
+      "use": "its-device-itt",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0xbe380000",
+      "end_exclusive": "0xbe390000",
+      "use": "lpi-pending",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0x883b3e000",
+      "end_exclusive": "0x883b3f000",
+      "use": "its-level2",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    },
+    {
+      "start": "0x88539f000",
+      "end_exclusive": "0x8853a0000",
+      "use": "its-device-itt",
+      "covered_by_target_reserve_map": false,
+      "covered_by_target_static_reserved_memory": []
+    }
+  ],
+  "limitations": [
+    "Dynamic size-only nodes are not proof of a fixed target reservation",
+    "No post-relocation checksum or evidence of target memory allocation",
+    "Missing table reservation is a risk, not proof of this boot failure"
+  ]
+}

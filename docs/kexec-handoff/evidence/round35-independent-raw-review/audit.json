@@ -1,0 +1,296 @@
+{
+  "status": "INDEPENDENT_R35_RAW_BYTE_REVIEW_COMPLETE_WITH_DAMAGED_AND_ASSOCIATION_LIMITS",
+  "reviewer": "probe_review",
+  "reviewed_at_utc": "2026-11-14T07:37:41.482247+00:00",
+  "primary": {
+    "path": "out/kexec-boot-fix/round35/pstore-after-exec.txt",
+    "sha256": "85cadf1a801bb592a4335bf2c122ff65ee623aaa8ac955f298ec9c40ee7568a4",
+    "bytes": 262132,
+    "LF_count": 2176,
+    "delimiter": "Only byte 0x0a; no splitlines or character repair",
+    "starts_with_partial_line": true,
+    "first_payload_repr": "b'   T1] erofs: (device dm-29): mounted with root inode @ nid 38.'",
+    "last_complete_LF": 2176
+  },
+  "raw_records": {
+    "path": "out/kexec-boot-fix/round35-independent-raw-review/raw-records.json",
+    "sha256": "65ec025f8188f9592ce1cc4b2ecee46319543f71c955b457134c84df5a7439eb"
+  },
+  "identity": {
+    "expected_nonce": "93037c1caf16fd7a",
+    "exact_nonce_occurrences": 0,
+    "complete_expected_target_BID": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+    "complete_BID_occurrences": 3,
+    "complete_BID_LFs": [
+      1072,
+      1089,
+      1137
+    ],
+    "interpretation": "Complete target Build-ID bytes survive in three CPU headers, including intact target header LF1137 apart from its timestamp. Expected nonce does not survive anywhere in this raw buffer. Raw-only same-round nonce association is unproved, although the filename/archive provenance and separately audited loaded blob remain external evidence."
+  },
+  "gpu_historical_evidence": {
+    "expected_host_blob_path": "out/kexec-boot-fix/round35/gpu-ranges.bin",
+    "expected_host_blob_sha256": "c788b09cdb4a0306498132033e08b52c5f1a12497fefde771ca6e47a58a5bd58",
+    "bytes": 176,
+    "count": 9,
+    "total_bytes": 42860544,
+    "body_crc32": "c681bb41",
+    "blob_crc32": "56e28f43",
+    "summary_LF1057": {
+      "integrity": "PARTIAL_ONLY",
+      "complete_prefix_fields": {
+        "mode": "fdt-v1",
+        "ranges": 9,
+        "applied": 9,
+        "checked": 1,
+        "total": 42860544,
+        "blob_crc32": "56e28f43",
+        "body_crc32": "c681bb41"
+      },
+      "matching_CRC_and_total_fields": true,
+      "damaged_suffix": "Body-CRC field is followed by literal @, and memory/reserved/historical keys or values are corrupted; raw hisTorical=0 is preserved and not changed to historical=1. No complete summary is certified."
+    },
+    "nomap_mask_LF1058": {
+      "integrity": "INTACT",
+      "bits": 512,
+      "meaningful": 9,
+      "fixed_width_word_count": 16,
+      "integer_hex": "0x1ff",
+      "unused_high_bits_zero": true,
+      "matches_all_nine_requested_indices": true,
+      "historical": 1
+    },
+    "reserved_mask_LF1059": {
+      "integrity": "DAMAGED",
+      "low_word_literal": "000001ff",
+      "corruption": "High-to-low word index 7 contains literal 0x10 control bytes; the complete 512-bit value and unused high bits cannot be certified. No byte or word is repaired."
+    },
+    "range_records_2_through_7": [
+      {
+        "LF": 1062,
+        "index": 2,
+        "pfn_hex": "8f127e",
+        "pages_hex": "2b6",
+        "both_historical_coverage_fields": 1,
+        "matches_encoded_tuple": true,
+        "whole_line_intact": false
+      },
+      {
+        "LF": 1063,
+        "index": 3,
+        "pfn_hex": "8f1572",
+        "pages_hex": "a16",
+        "both_historical_coverage_fields": 1,
+        "matches_encoded_tuple": true,
+        "whole_line_intact": true
+      },
+      {
+        "LF": 1064,
+        "index": 4,
+        "pfn_hex": "8f1fc6",
+        "pages_hex": "372",
+        "both_historical_coverage_fields": 1,
+        "matches_encoded_tuple": true,
+        "whole_line_intact": true
+      },
+      {
+        "LF": 1065,
+        "index": 5,
+        "pfn_hex": "8f2376",
+        "pages_hex": "333",
+        "both_historical_coverage_fields": 1,
+        "matches_encoded_tuple": true,
+        "whole_line_intact": true
+      },
+      {
+        "LF": 1066,
+        "index": 6,
+        "pfn_hex": "8f26e8",
+        "pages_hex": "918",
+        "both_historical_coverage_fields": 1,
+        "matches_encoded_tuple": true,
+        "whole_line_intact": true
+      },
+      {
+        "LF": 1067,
+        "index": 7,
+        "pfn_hex": "8f3400",
+        "pages_hex": "474",
+        "both_historical_coverage_fields": 1,
+        "matches_encoded_tuple": true,
+        "whole_line_intact": true
+      }
+    ],
+    "range_record_0_LF1060": {
+      "integrity": "DAMAGED",
+      "literal_pfn": "8f0c29",
+      "literal_pages": "51b",
+      "expected_pages": "55b",
+      "interpretation": "The surviving pages text differs from the requested tuple and the marker/keys are damaged. No repair and no inference of a real different kernel allocation."
+    },
+    "range_record_1_LF1061": {
+      "integrity": "DAMAGED",
+      "literal_pfn_fragment": "8f10c2",
+      "expected_pfn": "8f11c2",
+      "interpretation": "Corrupt marker/keys/page digits; not promoted to a matching tuple."
+    },
+    "all_dual_masks_or_complete_replay_phase_proved": false,
+    "early_input_apply_snapshot_records": "No exact surviving records; the full buffer begins during first-stage mounts, consistent with early history having been overwritten, not with non-execution.",
+    "limits": "The intact nomap mask and tuple fields describe a cached historical software memblock sample. They do not prove current ACL, lifetime, ownership, all firmware-referenced memory coverage, or cure of previous SEA."
+  },
+  "user_DABT": {
+    "first_surviving_observer_like_line_LF": 1056,
+    "whole_record_integrity": "DAMAGED_NOT_STRICT_PROTOCOL_VALID",
+    "LF1056_intact_local_fields": {
+      "esr_hex": "92000005",
+      "far_hex": "28",
+      "far_valid": 1,
+      "fatal_verdict": 0,
+      "sp_hex": "7fc00d9910",
+      "pstate_hex": "1000"
+    },
+    "LF1056_limits": "Marker, first/role/comm keys and original PC/LR digits are corrupted. No reconstruction of those fields; this record is not proof of the first fault in the whole boot.",
+    "independent_normal_fault_context": {
+      "LF": 1071,
+      "integrity": "PARTIAL",
+      "intact_fragments": [
+        "DABT (lower EL)",
+        "ESR 0x0000000092000005"
+      ],
+      "LF1072_PID": 452,
+      "LF1072_comm": "linkerconfig",
+      "other_process_DABT_LF": 1119,
+      "other_process": "modprobe"
+    },
+    "PC_VMA_LF1068": {
+      "integrity": "PARTIAL_VALID_LOCAL_FIELDS",
+      "valid": 1,
+      "raw_hex": "7faa1138e4",
+      "start_hex": "7faa0b5000",
+      "end_hex": "7faa1e2000",
+      "pgoff_hex": "51",
+      "flags_hex": "75",
+      "dev_hex": "200010",
+      "ino_decimal": 84303,
+      "generation_hex": "0",
+      "sync": 1,
+      "damaged_area": "file=1$ragulap=1; separator and regular key are not intact. File-backed/regular eligibility is not independently certified from this complete line.",
+      "PC_within_range": true,
+      "PC_aligned_4": true,
+      "observed_flag_bits": "VM_READ and VM_EXEC are set in 0x75; it is not an observed execute-only VMA."
+    },
+    "LR_VMA_LF1069": {
+      "integrity": "DAMAGED_NOT_STRICT_PROTOCOL_VALID",
+      "interpretation": "valyd/reg keys and raw address are damaged. Do not report a trustworthy LR-VMA failure or strip high address bits to repair it."
+    },
+    "PC_code_LF1070": {
+      "integrity": "DAMAGED_NOT_STRICT_PROTOCOL_VALID",
+      "intact_local_fields": [
+        "bytes=4",
+        "valid=1",
+        "mmap_trylocked=1",
+        "context_ok=1",
+        "vma_readable=1",
+        "vma_executable=1"
+      ],
+      "damaged_fields": [
+        "kind=pc-cEda",
+        "at[0xf5]empped=1",
+        "Value=f?4[0x10]1661",
+        "reSult=0",
+        "no_f`ultIn=1"
+      ],
+      "interpretation": "No complete pc-code result or instruction word is recoverable. A skipped instruction read is not proved; an exact successful instruction value is also not proved. The live word is not repaired using a file."
+    },
+    "surviving_show_regs": {
+      "PC_hex": "0000007faa1138e4",
+      "PC_LF": 1092,
+      "PC_line_timestamp_damaged": true,
+      "LR_hex": "0041ff7faa1dd010",
+      "LR_LFs": [
+        1076,
+        1093
+      ],
+      "SP_hex": "0000007fc00d9910",
+      "SP_LF": 1094
+    },
+    "conditional_file_analysis": {
+      "path": "out/kexec-boot-fix/round35-independent-raw-review/conditional-linker-file-analysis.json",
+      "sha256": "a594d6c125f643e9de9d312e6171440db1bf3c9d6ce85b26372c904439fb82f5"
+    },
+    "limits": "This is the first surviving selected KUSR2-like DABT sequence; no global earliest-fault, fatal-verdict, TLS-zero, or instruction corruption conclusion is asserted."
+  },
+  "observed_boot_and_terminal_chain": [
+    {
+      "LF": 110,
+      "fact": "init first stage completed",
+      "integrity": "INTACT"
+    },
+    {
+      "LF": 184,
+      "time": "1.556320",
+      "fact": "init second stage started",
+      "integrity": "INTACT"
+    },
+    {
+      "LF": 1048,
+      "time": "1.826083",
+      "fact": "apexd-bootstrap OnBootstrap done duration177",
+      "integrity": "INTACT"
+    },
+    {
+      "LF": 1049,
+      "fact": "apexd-bootstrap exit-status0-like line",
+      "integrity": "DAMAGED_NOT_CERTIFIED_AS_COMPLETE_EXIT_RECORD"
+    },
+    {
+      "LFs": [
+        1056,
+        1071,
+        1072
+      ],
+      "fact": "selected linkerconfig user DABT context near1.848s; some raw/format fields damaged"
+    },
+    {
+      "LFs": [
+        1119,
+        1137,
+        1140
+      ],
+      "fact": "later modprobe user DABT context near1.864s; target Build-ID survives"
+    },
+    {
+      "LF": 2147,
+      "time": "2.417110",
+      "fact": "boringssl_self_test64 has reboot_on_failure and failed; init requests shutdown",
+      "integrity": "INTACT",
+      "limit": "No intact self-test exit code, signal, or failure cause is inferred."
+    },
+    {
+      "LF": 2162,
+      "time": "2.426865",
+      "fact": "reboot: Restarting system with command 'boringssl-self-check-failed'",
+      "integrity": "INTACT"
+    },
+    {
+      "LF": 2176,
+      "time": "2.427394",
+      "fact": "CPU1 idle/stopping tail",
+      "integrity": "INTACT"
+    }
+  ],
+  "panic_and_SEA_boundary": {
+    "literal_Kernel_panic_count": 0,
+    "literal_Attempted_to_kill_init_count": 0,
+    "literal_KSEA_count": 0,
+    "interpretation": "No complete kernel-panic or KSEA record is present. The positive terminal evidence is an init-requested self-check-failure restart; absence of other records is not a proof that earlier SEA or other failures are fixed."
+  },
+  "existing_parser_independent_comparison": {
+    "path": "out/kexec-boot-fix/round35/kgsl-nomap-target-log-review.json",
+    "sha256": "56060a4ccffac82b5499ccfa60f9b3f75ae0e44cbadb1596673d1afd96f0becf",
+    "referenced_raw_record_count_independently_verified": 11,
+    "all_referenced_payload_hashes_and_hex_match": true,
+    "conclusion": "Its conservative false/unproved coverage flags agree with the raw evidence, not an observed mapping failure. Exactly one full mask and six intact range payloads survive. Its KUSR2-literal list excludes damaged-marker LF1056 and LF1069, which this independent report preserves. No hidden repair or false full-replay PASS found."
+  },
+  "actions": "Host reads and new independent report files only; no device, runner, state, C, ASM, build or prior-report modification."
+}

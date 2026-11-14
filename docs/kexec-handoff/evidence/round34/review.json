@@ -1,0 +1,33 @@
+{
+  "status": "ABORTED_BEFORE_LOAD_METADATA_READ_BUDGET",
+  "round": 34,
+  "source_boot_id": "d33443dc-8ee9-4956-929c-4c686a0c8a85",
+  "temporary_boot_request_count": 1,
+  "helper_insmod_request_count": 0,
+  "load_request_count": 0,
+  "execute_request_count": 0,
+  "page_owner_runtime_verification_sha256": "5940e441ab49e65c30cb06729693db021bff28d0d6c2e2e9f25bc75ffb832ffa",
+  "aborted_observation_sha256": "09c2585b8c34c82885ad253f5c1ab46f62142e8730322ee61e5848ad97c0be10",
+  "aborted_observation_read_count": 1800,
+  "aborted_observation_bytes_read": 43764,
+  "partial_metadata_ranges": 347,
+  "metadata_snapshot_accepted": false,
+  "partial_ranges_used_for_load_or_execute": false,
+  "next_step": "Design and validate bounded exact binary chosen-range transport and observer budget; no further layout-hunting reboots",
+  "readonly_verification": {
+    "boot_id_before": "d33443dc-8ee9-4956-929c-4c686a0c8a85",
+    "root_uid": "0",
+    "boot_completed": "1",
+    "watchdog": "0",
+    "kptr_restrict": "2",
+    "kexec_loaded": "0",
+    "debugfs_unmounted": true,
+    "helper_absent": true,
+    "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+    "boot_id_after": "d33443dc-8ee9-4956-929c-4c686a0c8a85"
+  },
+  "device_test_sha256": "315307e7ecade52f4db5319c6e6b25c24847dab0703410bb88cea0a4b72e084a",
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "kernel_repository_sources_changed": false
+}

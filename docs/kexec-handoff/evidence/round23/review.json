@@ -1,0 +1,316 @@
+{
+  "status": "NORMAL_BOOT_EARLY_AUX_ENABLE_WINDOW_OBSERVED_KEXEC_CAUSAL_FIX_UNTESTED",
+  "immutable_inputs_sha256": {
+    "round23/device-test.json": "660ff7d9c2922c435f00ce309e239917e8c509a63a85cc0e8eee4116a2dacccc",
+    "round23/recovery-readonly.json": "337084d885264af20b9abd6492927bb7720dc91206a7925155b493be745c4803",
+    "round23/observed-dmesg.txt": "91f2fdce86b4d709bd169629c34c5428dd2305d776083dbaac9c659320188aec",
+    "round23/trace-trace.txt": "f2f10dfecd1bf09a46c4065b7a665e99fcb0b1dcacbe69bf0e6bf8b5741fa0f2",
+    "round23/trace-global-trace.txt": "9bcc55c43f214559e2ceebe35d91d992dcca534a19cbe20c33c68df007958c05",
+    "ufs-cold-clock-reference/final-binding-audit.json": "e551c26626414e2a3c5709cd05ea95757ca6d94187537e58685e5139bc095bbd",
+    "ufs-cold-clock-reference/boot-once.py": "a92c0b091d8279adf81f928fc82dc0ed0027ac69884d3a17d5ae2b453192eb55",
+    "ufs-cold-clock-reference/kexec-ufs-cold-clock-reference-boot.img": "01335cad2f1d2d6a936013621a879c9ed7830409279745b5e266fab9f479ad94",
+    "ufs-cold-clock-reference-independent-review/audit.json": "895179f2262ea6326cdb4f61253205efb3e9c97bedc344c56464ef2a1c07a638",
+    "ufs-cold-clock-reference-independent-review/round23-evidence.json": "ef655e3bd497f952ca113d46a9c75dc8feac1d501a21c6367483f22e5ffa5c72",
+    "ufs-shutdown-count-review/evidence.json": "3e0f4de0c0d876b7c20f028a4a35818eee02d639310460621ef0d1ac1e40d3ab",
+    "ufs-qref-clock-review/next-plan.json": "ddd89ee85d62a9b540a71aa51ae7dcbd5072ec5b26aaf837da40fcf38a7a19ad",
+    "round22/review.json": "938ef517f906e5694d2b2313786ee0559246727375f15e4975a07185a2aa5914",
+    "round23/trace-tracing-on-before.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "round23/trace-tracing-on-after.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "round23/trace-trace_clock.txt": "925ca315bd3de6ef99e08c002e320406936ae2da2f2c0afd8da1e87f7980a253",
+    "round23/trace-buffer_size_kb.txt": "dba4ed9a9905ad118e34ffb5d5dedcdba00cfe293551f569872da45cb51c4e29",
+    "round23/trace-current_tracer.txt": "64aec5a7fa151222572a241383c857738318e63cca7ee771952c95a31d92a19d",
+    "round23/trace-cpu0-stats.txt": "2d70135f61e6de280010267d9d32fc62070941c03f3b37d24295c8d04d306f3c",
+    "round23/trace-cpu1-stats.txt": "bbf0f51f868341ae424e447cc5bf4944d3a0fceae94206c78298c6422502e9ab",
+    "round23/trace-cpu2-stats.txt": "32e3d9a58dd9cdf7cb5a69422575a95ddf8c74f0b034ac6c75edf89f99cb63da",
+    "round23/trace-cpu3-stats.txt": "abe5a215aa4a9ec507113d9ce1d84644eba70ff5dd780af33bad95123b1e1fd9",
+    "round23/trace-cpu4-stats.txt": "11e2e1fddba0923371c5e159bed4b1a424e5e879acf2f12b3de496d10d723245",
+    "round23/trace-cpu5-stats.txt": "188104fc7ec48ae962283b355ccc33a072edea09fbba816a6a45cae35bae7397",
+    "round23/trace-cpu6-stats.txt": "2f3a0b7a4352c369061270edaf1f2920cf1e8ed88a8ef1129e200c47f4f5ccaf",
+    "round23/trace-cpu7-stats.txt": "154e8ea87b29ec488dcc8e0d0ae38ae5554b3415270662014584af3120403014",
+    "round23/trace-clk_enable-enable.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "round23/trace-clk_enable-format.txt": "dbd6681edf2c4046e12e6d3fdf9799a134b4d9cd5d32ec92c8453c2a0c7fff59",
+    "round23/trace-clk_enable_complete-enable.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "round23/trace-clk_enable_complete-format.txt": "3c03c3964293d36d1225b012a3fcd0d1012f93f09f501c8698b7d64579b69d7d",
+    "round23/trace-clk_disable-enable.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "round23/trace-clk_disable-format.txt": "15d484e7eca56aa6f9eb88e55f588eeee242c6f7d514c1b9885b5de54b978f68",
+    "round23/trace-clk_disable_complete-enable.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "round23/trace-clk_disable_complete-format.txt": "7c26df97d0f699df83255af5a0fcd920aac5af05a1a071fa09bc2d638a8ad4aa",
+    "round23/trace-global-tracing-on-before.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "round23/trace-global-tracing_on.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "round23/trace-global-trace_clock.txt": "b21e3b8fcb175197cfbda952dab37a9fa870eb7795f14fa3f7e82fcd37ec69f3",
+    "round23/trace-global-buffer_size_kb.txt": "dba4ed9a9905ad118e34ffb5d5dedcdba00cfe293551f569872da45cb51c4e29",
+    "round23/trace-global-current_tracer.txt": "64aec5a7fa151222572a241383c857738318e63cca7ee771952c95a31d92a19d",
+    "round23/trace-global-cpu0-stats.txt": "baaa027e5c2d03ce6f25d351c3782f09db96778040b019c237b06267bfdcad5d",
+    "round23/trace-global-cpu1-stats.txt": "af54fcc2fc88da3f26b51800de1176d56ae8ab674fc9ead60d4ad25ff94bd67c",
+    "round23/trace-global-cpu2-stats.txt": "edb617e80c0f90598c7fb29b4222b61a61211e48461cdc7f31ffc4ce2b832b75",
+    "round23/trace-global-cpu3-stats.txt": "c617508ade3c6650875979f5014c249cb8be5d916b51c9e2cf6e68e6886d4437",
+    "round23/trace-global-cpu4-stats.txt": "76a06025492753b64f303f0720a714deba8f039e2b2f3c261eaee0472a2a78fd",
+    "round23/trace-global-cpu5-stats.txt": "a08272b12436c49ee879d854a1d9ac3b9de912e79df282994154ab70823e1398",
+    "round23/trace-global-cpu6-stats.txt": "b3b911b6f5bdf41a0458bd9c2009d55b75a7d8e57a5dc8114070f5ded8a985a8",
+    "round23/trace-global-cpu7-stats.txt": "631f0296aad74bbd8470d5de0cd4290ad0c5afb6a019485815164f2b606022b9",
+    "round23/trace-global-clk_enable-enable.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "round23/trace-global-clk_enable_complete-enable.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "round23/trace-global-clk_disable-enable.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "round23/trace-global-clk_disable_complete-enable.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "round23/observed-fdt.bin": "f9ed0cdc7aa9ccad1db509d61aebfbf0a73bcda5b6e02c00e81679e6b5c5c537",
+    "round23/observed-cmdline.bin": "517ca1cd1daa9b2e210f21cd0bca7b470d0083012406e1627f8f74d1ec5dbbfe",
+    "round23/observed-notes.bin": "0130be4a4c25e759bc4a9d052902d273bed74d579681125b26acc7c1febdb15e",
+    "round23/phy_qcom_ufs-note.bin": "a336d766f9e192114004f8c0ed2ff56c3fb4d608077ddb9a401dd6e1e51d126d",
+    "round23/ufs_qcom-note.bin": "713bdb4e38a8c227f851b98a23dc839ce30015fb6c6a69fd1e419682fa666d6f",
+    "round23/gcc_sun-note.bin": "595f4fc00adb9ccea5ac08169270026ef2eda6cfae15789347fb90ef95f0a059"
+  },
+  "counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 0,
+    "load_request_count": 0,
+    "execute_request_count": 0,
+    "recovery_reboot_request_count": 1
+  },
+  "same_kernel_Image_and_stock_modules_as_R22": true,
+  "new_C_or_assembly_changes": false,
+  "normal_reference_boot_id": "653bf0ad-4b4f-46e8-9b6f-4a612da02732",
+  "observer_records": [
+    {
+      "LF": 304,
+      "raw": "[    0.077814] KUFSCOLD1 action=notifier-ready ret=0"
+    },
+    {
+      "LF": 1316,
+      "raw": "[    0.631587] KUFSCOLD1 action=installed module=phy_qcom_ufs build_id=da0d45e45f727c03861320cf4132255b22a0cf5c sites=4 phy_mem=01d80000 size=2000"
+    },
+    {
+      "LF": 2263,
+      "raw": "[    0.832982] KUFSCOLD1 stage=post-power-control action=read-enter sample=1 generation=1"
+    },
+    {
+      "LF": 2264,
+      "raw": "[    0.832984] KUFSCOLD1 stage=post-power-control action=read-result sample=1 generation=1 power_down_control=00000000 sw_reset=00000000"
+    },
+    {
+      "LF": 2265,
+      "raw": "[    0.833000] KUFSCOLD1 stage=aux-before action=read-enter sample=1 generation=1"
+    },
+    {
+      "LF": 2266,
+      "raw": "[    0.833002] KUFSCOLD1 stage=aux-before action=read-result sample=1 generation=1 power_down_control=00000000 sw_reset=00000000"
+    },
+    {
+      "LF": 2267,
+      "raw": "[    0.833003] KUFSCOLD1 stage=aux-after action=return sample=1 ret=0 result_path=success-w0"
+    }
+  ],
+  "rings": {
+    "dedicated": {
+      "actual_clock": "local",
+      "entries": 3082,
+      "per_cpu_stats": [
+        {
+          "entries": 456,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 400,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 382,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 308,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 236,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 274,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 636,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 390,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        }
+      ],
+      "positive_events": [
+        {
+          "LF": 13,
+          "raw": "            init-234     [001] d..1.     0.796335: clk_enable: tcsr_ufs_clkref_en"
+        },
+        {
+          "LF": 14,
+          "raw": "            init-234     [001] d..1.     0.796349: clk_enable_complete: tcsr_ufs_clkref_en"
+        },
+        {
+          "LF": 91,
+          "raw": "   kworker/u17:2-135     [006] d..1.     0.800277: clk_enable: gcc_ufs_phy_phy_aux_clk_src"
+        },
+        {
+          "LF": 92,
+          "raw": "   kworker/u17:2-135     [006] d..1.     0.800285: clk_enable_complete: gcc_ufs_phy_phy_aux_clk_src"
+        },
+        {
+          "LF": 93,
+          "raw": "   kworker/u17:2-135     [006] d..1.     0.800286: clk_enable: gcc_ufs_phy_phy_aux_clk"
+        },
+        {
+          "LF": 94,
+          "raw": "   kworker/u17:2-135     [006] d..1.     0.800289: clk_enable_complete: gcc_ufs_phy_phy_aux_clk"
+        }
+      ],
+      "tracing_on_before_capture_stop": "1"
+    },
+    "global-": {
+      "actual_clock": "mono",
+      "entries": 460,
+      "per_cpu_stats": [
+        {
+          "entries": 40,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 20,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 40,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 48,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 28,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 18,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 220,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        },
+        {
+          "entries": 46,
+          "overrun": 0,
+          "commit overrun": 0,
+          "dropped events": 0,
+          "read events": 0
+        }
+      ],
+      "positive_events": [
+        {
+          "LF": 13,
+          "raw": "            init-234     [001] d..1.     0.790175: clk_enable: tcsr_ufs_clkref_en"
+        },
+        {
+          "LF": 14,
+          "raw": "            init-234     [001] d..1.     0.790187: clk_enable_complete: tcsr_ufs_clkref_en"
+        },
+        {
+          "LF": 91,
+          "raw": "   kworker/u17:2-135     [006] d..1.     0.794115: clk_enable: gcc_ufs_phy_phy_aux_clk_src"
+        },
+        {
+          "LF": 92,
+          "raw": "   kworker/u17:2-135     [006] d..1.     0.794124: clk_enable_complete: gcc_ufs_phy_phy_aux_clk_src"
+        },
+        {
+          "LF": 93,
+          "raw": "   kworker/u17:2-135     [006] d..1.     0.794124: clk_enable: gcc_ufs_phy_phy_aux_clk"
+        },
+        {
+          "LF": 94,
+          "raw": "   kworker/u17:2-135     [006] d..1.     0.794127: clk_enable_complete: gcc_ufs_phy_phy_aux_clk"
+        }
+      ],
+      "tracing_on_before_capture_stop": "0"
+    }
+  },
+  "positive_findings": [
+    "A zero-count CCF enable window for the AUX SRC and leaf was recorded on CPU6/PID135 before the GCC Registered marker and first generic PHY sampling window.",
+    "The associated first PHY AUX request returns zero; normal Android completes.",
+    "This supports a retained early reference as the explanation of normal AUX success, but no current count, boot_enabled, need_sync or caller stack was sampled."
+  ],
+  "causal_hypothesis": "The kexec failure may arise because the AUX leaf first reaches its hardware halt wait while BCR is asserted, whereas the normal path established its clock reference earlier. A controlled causal experiment is still required.",
+  "limits": [
+    "clk_enable_complete records completion of the callback window even on error; no callback return value or physical ON state is encoded.",
+    "Missing events alone do not prove a CCF skip or exact reference count.",
+    "The dedicated local and global mono clocks are distinct; no precise cross-domain interval is claimed.",
+    "The global ring was already stopped before capture and contains only events through 2.116049 seconds; it is not a full-boot trace.",
+    "No unique early caller or directly observed BCR state is established.",
+    "R23 performs no kexec load or execute and does not establish a repaired Android handoff."
+  ],
+  "recovery": {
+    "status": "STOCK_ANDROID_ROOT_WATCHDOG_REVALIDATED_AFTER_CLOCK_REFERENCE",
+    "epoch": 1794612287.170495,
+    "boot_id": "3a0677ca-2320-4c61-ad45-917a945a90d8",
+    "kernel": "6.6.89-Gold_bug",
+    "build_ids": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "android_boot_completed": true,
+    "root_available": true,
+    "watchdog_disable": "0",
+    "same_boot_id_before_after": true,
+    "only_mutation": "one adb reboot returning from temporary Image to installed system",
+    "partition_flashed": false,
+    "watchdog_changed": false
+  },
+  "partition_flashed": false,
+  "watchdog_changed": false,
+  "repository_kernel_status_empty": true,
+  "goal_achieved": false
+}

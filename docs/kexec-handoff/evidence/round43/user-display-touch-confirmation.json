@@ -1,0 +1,7 @@
+{
+  "question": "恢复 GPU 后，这次平板是否已正常显示桌面，并能触摸操作？",
+  "answer": "桌面和触摸都正常",
+  "confirmed_by_user": true,
+  "recorded_epoch": 1794661632.529017,
+  "scope": "R43 ordinary full-GPU source boot; no kexec executed"
+}

@@ -1,0 +1,14 @@
+One exact68e8 ordinary temporary boot sent; observing Android.
+{
+  "stage": "EXACT68E8_ORDINARY_ANDROID_BOOT_VERIFIED_DEFAULT_OFF",
+  "temporary_boot_request_count": 1,
+  "helper_insmod_request_count": 0,
+  "load_request_count": 0,
+  "execute_request_count": 0,
+  "observed_build_ids": [
+    "68e85e134a894c34b5fef3ac30f4dd450d00a6b5"
+  ],
+  "observed_boot_id": "55cf2d03-4429-4d36-8115-8d3dbe078e57",
+  "module_count": 695,
+  "same_kernel_Image_normally_boots_Android": true
+}

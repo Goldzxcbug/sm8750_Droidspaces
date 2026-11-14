@@ -1,0 +1,22 @@
+{
+  "status": "LOADED_METADATA_CHECKS_PASS",
+  "relocation_code_sha256": "c8298ca16bf0e349826719887983aac4f8124eb79da61ccd93459e769062c11c",
+  "relocation_code_bytes": 288,
+  "list_pages": 28,
+  "destination_pages": 14032,
+  "sampled_linear_mappings": 97,
+  "memory_attribute_indices": [
+    1
+  ],
+  "linear_offset_untagged": true,
+  "entry_identity_mapping_executable": true,
+  "copied_page_tables_outside_destinations": true,
+  "target_image_header_matches_source": true,
+  "el2_vector_present": false,
+  "probe_payload_verified": true,
+  "modified_image_pages_verified": 4,
+  "actual_segments_match_planner": true,
+  "bounded_reads": 106,
+  "jump_executed": false,
+  "epoch": 1794564616.1386924
+}

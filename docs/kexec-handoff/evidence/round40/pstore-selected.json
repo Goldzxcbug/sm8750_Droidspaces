@@ -1,0 +1,50 @@
+[
+  [
+    231,
+    "[     \u000e467500][  \\135] gcc%sun 100000.clock-controller: KUFSAUX3 stage=before-clock-registration cloci<GccWubq_`Hy_p(yWA\u0011x_\u0001l+\u0000oldYhal0Zcheck= 28 &%\u0017Vha`t_chcCc=3\b[ \b  \u0010.44\t106U[  \u00140\"5Y CAFSCLC: avent%%h!`h\u0004.dntEr naie\u0019gc\u0003\u001feds_phyOp`y_au\u0018\u000ealK_src`ena\u0000le80!p\u0010\u0004parE17 Pap%nt5\u0002\t_t\u0001p/ 0araFP\u001fe.A\",e!  p!`\u0004n@^pr%parE510 Has_enable\u0015! hAC_diSa`|e<\u0001 retMradi$- \u0000VDt=0"
+  ],
+  [
+    235,
+    "[    0&46936!][  T131] KUFSCLK: event=enable.\u0005n4er name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufsOp(y_phy_auh_clK_src parent_enabl}=1$pa2eNd\u001fprEpaRe=0 his_Dnabla=1 h1s_disAbl`=\u0011\u0000r!t_vALid=0 2Et=0"
+  ],
+  [
+    324,
+    "[    0.500948Q[  T135] ufSh\u0003d-acoi 1d84000.ubshc: UFSKH1 stage=pre-bcr-assert mabor=6 ret=p is_phy_pwr]oN=0 Ah`t=0\u0010000000 Hc%=00000000 cfg1=d\u00185c052c (w_vdrsion=60010\u001000 ah8_aff=00001800\bS   `0(500953]S  T1\u00131] ufsHcd\rqcom\u00001d84000.ufSHc* \u0015\u0006CK\b1 stage5post-bar,`ssert\u0000ma\ufffdgr%6 pet\u001d0 is_phq_pWrUon=0 ahi4=0 000000 hcE=00\u00100\u0000000 cfg1=0000000  h7GvErsaon=03 00\u0010\ufffd0 ah8_cfG=0 0 0000"
+  ],
+  [
+    325,
+    "[   \u00000.5\u001029\u0018\u0002][ \u0000T134\\ tfs_!C@m_p(y_Amp_v4_sqN 1d8 000\u000eufsphy_mem: UFSPWR1 stage=power-on-enter ma*or=\u0006 ref_Cached=0 iface_caCHdd=0 qbEf^prgsent=1 au\b_ppesent9\u0011 vre'_pbasent_masc=1f vreg_enabled_mask=0 ret_valid=0 ret=0"
+  ],
+  [
+    332,
+    "[    0.50\u0011539]Z 0T13\u0015] ufsWqcgm_phy[q%p_v4_sun 1d8\u0010\u001000.u&sphy\u001elem: UFSPWR2 staGe=posD-powep-cGntrol A`th/Z8r@a$-%L4%\u0000\u0000\u0003    0"
+  ],
+  [
+    347,
+    "[  \u0000 0.501816\\[  U13%] GDSCR: 0xfa22\u0002820 CFG: 0x04070000 CFC2: 0x0002022f"
+  ],
+  [
+    651,
+    "[   \u00000.\u0005$684 ]J   T9\u0014]\u00005fs]qclM\u001f0hi[qMp_v0Msu\ufffd 1D\b000\u0010.ufSphy[mam: UFSPWR1 stage=vrug-return bail=v`da-0ll reg_\ufffdresent=1 caah%d_befmre=0 aabhed_Avter<1 ~%t- "
+  ],
+  [
+    653,
+    "[    0.7\u00146976][   T98\\\u0000ufs_qcom_p(9_\u0010lp_v4^sUj \u0011l8000 .uFsphyo-em: UFS\u0010\u0017R1 qtaEe!aux,B%fnre eaJor%6 reb\u000f#!chad=0 iface]aac(Ed\ufffd\u0010 qb%f_present=1 a1X_p2ese\"t\u001d0 rrea_present_eask=!d\u0000vpec_ana@`dd_mabi<1f reT]vAli`-0 Ret=0"
+  ],
+  [
+    1074,
+    "[\u0000 \u0000 \u0010.(21208]Z,\u0000 \u0000T1] iN)4* /ten$mb+eta\u000fifit/andr_iD,Xar`s\u00012a.bkLtEXth\u0014b\ufffdPepvi`e.qai&p\u00032 18 AfFadid section keq'cbd fOufd\bS\u0000   0(:2562\u0011][    T\u0010] Hn)t\u0012 \b&\ufffdbdkp-eTb/(n\u00014)AndpfiD. ApDuasd,ckntexd`Db\brdrvhad.q\u0005i\u0002pc: \u0004\u0018\u0000I(F@l\u0001d \u0003%bp gn  eqwlp$ blqhD"
+  ],
+  [
+    1299,
+    " /sxq/ lIne3 d5sp(h`ve 5 or 6 \u0005&`rieP\b[    0\u000e\b4800 \u001dK  T164] ueventd:\u0000/2eFdor.dp{/uevdnt$.pc: \ufffd4\u0010: \u000esys/ lije3\u0000lest h!ve\u00005 gR 6 entriEs\u000e[    0.04901\u0012\u001d\u001a  \u0010#6 U\u0000uErdn\u0004d: /0en@/2&at\u0003,uE2%ft \fr`\u001a \u00100\u0011:\u0000+3yc/ ,i(\u00041 \fvRt ha6\u0004 5\u0000Ob F eN\u0004ries"
+  ],
+  [
+    1377,
+    "00\u0017%91]\u001b   D94] eds_qc\u000em_ph8_1e`_v4_ruh\u00000d80000.u&3ph9Omem\u0012$UFSPWR1 CtA'a=`q\u0018-beforg m!(or!6 2eF_\"ached50 IBac%_c`ched\u001c  qre&_pre#a.t=1 Au8_present=1 >re'_\u0010re2end_)ask=1f@rbd'\u001fdna\"ld Wmark<\u0011f r\u0001tQvalid<0 Rdt=0"
+  ],
+  [
+    1404,
+    "[ (  !. 99091\u001c\u000b\u0000 \u001046!\u001d K\u0011@R\"\u0000kA&d,d\u0001`4  )r3$=  PAde<liJ)e`c+.zIg p\td\f46 \u0001deH$\u001d\u0014\u00161\u0000c/ia5L`hK$ragnfig \u0010b='f9e\u0001814b\u0004 lr-2$fdFb9E\u000297\ufffd00!sp=7ff5e4c600\u0000pc\ufffd`T%=\u0006000100\u0000 esb=!  0000\u0004 bar\u00190\u0017 f`2\u001bfa,i`=! f`t`D]verDacp=8\bR\u0000 ` 1.099120][ !D461\u0019 KUSR2 K(Nd\u001dD!B@-vma ref\fpc v!L)`<1 rI6=7$9e3194@4\u0000star496f9a2\u0006\u001700\b dnd=7b9e3`000\u0010 pgGfF=4` Fda\ufffd3=71 file=1 baguhar<! da68#00008 ano=1\u00126230 FEheRatio\u000e40 qy.c=\u0010"
+  ]
+]

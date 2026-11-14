@@ -1,0 +1,138 @@
+{
+  "round": 5,
+  "stage": "ITS_CPU_EBUSY_CONFIRMED_EIGHT_CPUS_ONLINE_LATER_RESET",
+  "execute_request_count": 1,
+  "temporary_boot_requested": true,
+  "partition_write_allowed": false,
+  "watchdog_state_change_allowed": false,
+  "automatic_jump_retry_allowed": false,
+  "source_expected_build_id": "f04d5f44f8eeaf7586a6da926defa4d252a9c6d8",
+  "source_boot_sha256": "9e7954459ef6273a906611df81a7ce43bd43e533e1ae488b0767d5e4cb3ce81d",
+  "target_Image_sha256": "30aeb86ee56111477958b3b75afedf3c791315e91cf2542cf2fabc0b9ed32d0a",
+  "scope": "One temporary fastboot boot of late diagnostic kernel; normal Android/module verification; one same-image kexec with fresh runtime-bound trace fields",
+  "authorization": "Human: \u5141\u8bb8,\u4ee5\u540e\u9ed8\u8ba4\u786e\u8ba4,\u56e0\u4e3a\u90fd\u662f\u53ef\u9006\u7684; fifth round approved; subsequent reversible diagnostic tests pre-authorized",
+  "authorization_epoch": 1794571283.4576132,
+  "preflight_boot_id": "6e767b42-0df1-45e7-a73f-ad155b2c0d52",
+  "preflight_android_boot_completed": true,
+  "temporary_boot_requested_epoch": 1794571304.653896,
+  "source_observed_build_ids": [
+    "f04d5f44f8eeaf7586a6da926defa4d252a9c6d8"
+  ],
+  "source_boot_id": "3542daef-dcc8-44b2-8fee-17113c89156c",
+  "source_android_boot_completed": true,
+  "source_kernel": "6.6.89-Gold_Bug_kexec_late_diag",
+  "source_module_count": 695,
+  "module_version_or_unknown_symbol_errors": [],
+  "midas_loaded": true,
+  "qcom_dynamic_ramoops_loaded": true,
+  "ramdisk_sha256": "b9d50144482f916a157e548a3c79e20e1b3683bc982d6a8e01b0c8e8dd9eae02",
+  "ramdisk_compressed_payload_sha256": "a5f001b2020f167b4c9bdd51973ec70011d0fd33ea2618f9237f298162fa5bc5",
+  "ramdisk_uncompressed_cpio_sha256": "0569fae5dfcbfb26caebb22c954c23267a0a243a8aa780d269ac81c2889c1a11",
+  "ramdisk_footer_refreshed": true,
+  "ramdisk_bytes": 18179200,
+  "previous_archive_hash_label_correction": "Round4 ramdisk_cpio_body_sha256 actually hashes gzip-compressed payload, not decompressed CPIO. Bytes were preserved.",
+  "remote_directory": "/data/local/tmp/kexec-late-round5",
+  "target_Image_bytes": 37001728,
+  "target_trace_run_id": "e2ee8e7f043e9cb8",
+  "probe_console_physical": "0x880000000",
+  "probe_console_capacity": 262132,
+  "target_staged_epoch": 1794571592.7670712,
+  "load_requested_epoch": 1794571656.1092052,
+  "freeze_userspace": true,
+  "load_exit": 0,
+  "load_returned_epoch": 1794571656.313557,
+  "load_stage_log": [
+    "<0>[  326.573655] KT: post_load file=1 path=relocate head=0x8d4d5c002 start=0x82800000 dtb=0x0000000beb200000",
+    "<0>[  326.573664] KT: segment[0] mem=0x82800000 memsz=0x23f0000 bufsz=0x2349a00",
+    "<0>[  326.573666] KT: segment[1] mem=0x84bf0000 memsz=0x1157000 bufsz=0x1156480",
+    "<0>[  326.573667] KT: segment[2] mem=0xbeb200000 memsz=0x187000 bufsz=0x186c3e"
+  ],
+  "segments": [
+    {
+      "start": 2189426688,
+      "end_exclusive": 2227109888,
+      "bufsz": 37001728
+    },
+    {
+      "start": 2227109888,
+      "end_exclusive": 2245292032,
+      "bufsz": 18179200
+    },
+    {
+      "start": 51189383168,
+      "end_exclusive": 51190984704,
+      "bufsz": 1600574
+    }
+  ],
+  "load_result": "1",
+  "load_log_capture_note": "Toybox ANSI presentation stripped on host; no new load or altered kernel messages.",
+  "loaded_metadata_checks": "PASS",
+  "gic_overlap_count": 0,
+  "gic_range_set_stable_across_audit": true,
+  "critical_image_pages_verified": 32,
+  "captured_target_dtb_sha256": "c0f90c2ee99d662b6da72032b7dc066fb5a69d906b447250e10e7e80189461c8",
+  "audit_completed_epoch": 1794571804.8444173,
+  "execute_requested_epoch": 1794571900.0218287,
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "execute_adb_exit": 0,
+  "execute_command_returned_epoch": 1794571903.1870894,
+  "observed_kernel_after_exec": "6.6.89-Gold_bug",
+  "observed_boot_id_after_exec": "4b013c62-07ff-480b-8536-6210061e6b6f",
+  "observed_build_ids_after_exec": [
+    "931f89c6463a6af0eea9436b61f059f31e451f6a"
+  ],
+  "observed_android_boot_completed": true,
+  "source_boot_id_unchanged_after_exec": false,
+  "target_trace_argument_present_after_exec": false,
+  "pstore_capture_exit": 0,
+  "pstore_sha256": "9512ec0bac611ac29a567f3f056b71f713a9f3c4cfae6b0ed9905525c36731d4",
+  "post_execute_capture_epoch": 1794572005.3787127,
+  "valid_trace_records": 37,
+  "trace_sequence_contiguous": true,
+  "its_init_return": 0,
+  "its_cpu_init_return": -16,
+  "cpu_up_returns": [
+    {
+      "cpu": 0,
+      "result": 0
+    },
+    {
+      "cpu": 1,
+      "result": 0
+    },
+    {
+      "cpu": 2,
+      "result": 0
+    },
+    {
+      "cpu": 3,
+      "result": 0
+    },
+    {
+      "cpu": 4,
+      "result": 0
+    },
+    {
+      "cpu": 5,
+      "result": 0
+    },
+    {
+      "cpu": 6,
+      "result": 0
+    },
+    {
+      "cpu": 7,
+      "result": 0
+    }
+  ],
+  "smp_online_cpus": 8,
+  "trace_closed_after_smp": true,
+  "source_shared_MMU_hook_absent": true,
+  "android_target_success": false,
+  "root_cause_of_complete_android_failure": "ITS LPI disable failure confirmed; sole cause of later reset not yet established",
+  "recovery_android_boot_completed": true,
+  "recovery_root_available": true,
+  "reset_reason_capture_epoch": 1794573536.1839619,
+  "reset_reason": "PS_HOLD/HARD_RESET; initiating cause not established"
+}

@@ -1,0 +1,107 @@
+{
+  "status": "R30_ACTUAL_KSEAM_PA_SINGLE_HOST_ARCHIVE_INTERVAL_LOOKUP_COMPLETE",
+  "source_boot_id": "ca907ddf-d59e-48e7-a9d9-64c45327e7eb",
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "target_pstore_sha256": "bdd8369d15e253c656e7c1e6c456d2a6cf34df5f111a3363ba4d1a94187c281e",
+  "target_raw_lines": [
+    {
+      "LF": 1217,
+      "byte_offset": 111043,
+      "line_sha256": "a31afc3abdb46377591a541aeafbcf8298de41d8f229892612df3d39b7306461",
+      "raw_latin1": "[    0.712073][   T82] KSEA1 action=context esr=0000000096000010 far=ffffff8804466000 far_valid=1 fnv=0 pc=ffffffda2286ac4c lr=ffffffda21b73f80 sp=ffffffc08079b440 pstate=0000000081000005",
+      "raw_hex": "5b20202020302e3731323037335d5b2020205438325d204b5345413120616374696f6e3d636f6e74657874206573723d30303030303030303936303030303130206661723d66666666666638383034343636303030206661725f76616c69643d3120666e763d302070633d66666666666664613232383661633463206c723d666666666666646132316237336638302073703d66666666666663303830373962343430207073746174653d30303030303030303831303030303035"
+    },
+    {
+      "LF": 1224,
+      "byte_offset": 111865,
+      "line_sha256": "92805142c7ef45a6e87bdad932a1b4f22a5c10d0b04ff5be9c064a601d48b646",
+      "raw_latin1": "[    0.712437][   T82] KSEAM1 action=layout memstart=0000000080000000 phys_offset=0000000080000000 phys_valid=1 page_offset=ffffff8000000000 page_end=ffffffc000000000 kimage_voffset=ffffffd99d400000",
+      "raw_hex": "5b20202020302e3731323433375d5b2020205438325d204b5345414d3120616374696f6e3d6c61796f7574206d656d73746172743d3030303030303030383030303030303020706879735f6f66667365743d3030303030303030383030303030303020706879735f76616c69643d3120706167655f6f66667365743d6666666666663830303030303030303020706167655f656e643d66666666666663303030303030303030206b696d6167655f766f66667365743d66666666666664393964343030303030"
+    },
+    {
+      "LF": 1225,
+      "byte_offset": 112064,
+      "line_sha256": "e5de3b3494fb07c3c00bc6532c7f30ab46a5a648eb40696ce4d6aaeb86963bcc",
+      "raw_latin1": "[    0.712487][   T82] KSEAM1 action=arithmetic far_valid=1 linear=1 phys_valid=1 pa_valid=1 pa=0000000884466000 pfn=0000000000884466 arithmetic_only=1",
+      "raw_hex": "5b20202020302e3731323438375d5b2020205438325d204b5345414d3120616374696f6e3d61726974686d65746963206661725f76616c69643d31206c696e6561723d3120706879735f76616c69643d312070615f76616c69643d312070613d303030303030303838343436363030302070666e3d303030303030303030303838343436362061726974686d657469635f6f6e6c793d31"
+    }
+  ],
+  "queried_PA": "0x884466000",
+  "queried_PFN": "0x884466",
+  "queried_byte_offset_in_page": 0,
+  "formula_checked": "FAR - PAGE_OFFSET + memstart == PA; actual KSEAM arithmetic_only=1 is not a hardware ACL query.",
+  "selection": {
+    "bytes": 11889196,
+    "sha256": "f250d2acb39a3527d3677f29a8407fdd6c4da5d9145762ba0c8fa4bcaaf6bfe0",
+    "complete_records": 15560,
+    "malformed_or_out_of_bound_records": 0,
+    "oversized_complete_records": 0,
+    "orders_above_source_buddy_MAX_ORDER_10": 0,
+    "trailing_fragment_bytes": 0,
+    "trailing_fragment_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "matches": [
+      {
+        "raw_file": "secure-pool-readonly-review/r30-pfn-884466/selected-match-1.txt",
+        "raw_sha256": "30922500a4d921b0ac021fb7c18cf8f6d12cb12361695920a9c9e09d946f4ce2",
+        "uncompressed_record_byte_offset": 1468836,
+        "record_bytes": 807,
+        "head_PFN": "0x884466",
+        "order": 0,
+        "end_PFN_exclusive": "0x884467",
+        "PA_start": "0x884466000",
+        "PA_end_exclusive": "0x884467000",
+        "queried_page_offset_from_head": 0,
+        "query_byte_offset_from_head": 0,
+        "raw_record_latin1": "Page allocated via order 0, mask 0x100dc2(GFP_HIGHUSER|__GFP_ZERO), pid 2313, tgid 2313 (surfaceflinger), ts 7391625178 ns, free_ts 7389526532 ns\nPFN 0x884466 type Unmovable Block 8721 type Unmovable Flags 0x2000000000000000(zone=1|kasantag=0x0)\n post_alloc_hook+0x23c/0x244\n prep_new_page+0x30/0x16c\n get_page_from_freelist+0x1fb4/0x201c\n __alloc_pages+0xfc/0x2fc\n kgsl_system_alloc_pages+0xc0/0x1dc [msm_kgsl]\n kgsl_allocate_secure+0xb0/0x254 [msm_kgsl]\n kgsl_allocate_global+0xac/0x364 [msm_kgsl]\n send_start_msg+0x3ec/0x754 [msm_kgsl]\n gen8_hwsched_hfi_start+0x3f8/0x5b8 [msm_kgsl]\n gen8_hwsched_first_open+0x4d8/0x700 [msm_kgsl]\n adreno_first_open+0x44/0x5c [msm_kgsl]\n kgsl_open+0x1d8/0x270 [msm_kgsl]\n chrdev_open+0x1b8/0x258\n do_dentry_open+0x2c4/0x718\n vfs_open+0x2c/0x3c\n path_openat+0xaec/0xce4\n\n"
+      }
+    ]
+  },
+  "archive": {
+    "bytes": 1015504944,
+    "sha256": "d3a21dcf5fb9d4a58f602e6cb65f442feaa788f4cf7ccec628a7dde5de150706",
+    "complete_records": 1338453,
+    "malformed_or_out_of_bound_records": 0,
+    "oversized_complete_records": 0,
+    "orders_above_source_buddy_MAX_ORDER_10": 0,
+    "trailing_fragment_bytes": 0,
+    "trailing_fragment_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "matches": [
+      {
+        "raw_file": "secure-pool-readonly-review/r30-pfn-884466/archive-match-1.txt",
+        "raw_sha256": "30922500a4d921b0ac021fb7c18cf8f6d12cb12361695920a9c9e09d946f4ce2",
+        "uncompressed_record_byte_offset": 141741691,
+        "record_bytes": 807,
+        "head_PFN": "0x884466",
+        "order": 0,
+        "end_PFN_exclusive": "0x884467",
+        "PA_start": "0x884466000",
+        "PA_end_exclusive": "0x884467000",
+        "queried_page_offset_from_head": 0,
+        "query_byte_offset_from_head": 0,
+        "raw_record_latin1": "Page allocated via order 0, mask 0x100dc2(GFP_HIGHUSER|__GFP_ZERO), pid 2313, tgid 2313 (surfaceflinger), ts 7391625178 ns, free_ts 7389526532 ns\nPFN 0x884466 type Unmovable Block 8721 type Unmovable Flags 0x2000000000000000(zone=1|kasantag=0x0)\n post_alloc_hook+0x23c/0x244\n prep_new_page+0x30/0x16c\n get_page_from_freelist+0x1fb4/0x201c\n __alloc_pages+0xfc/0x2fc\n kgsl_system_alloc_pages+0xc0/0x1dc [msm_kgsl]\n kgsl_allocate_secure+0xb0/0x254 [msm_kgsl]\n kgsl_allocate_global+0xac/0x364 [msm_kgsl]\n send_start_msg+0x3ec/0x754 [msm_kgsl]\n gen8_hwsched_hfi_start+0x3f8/0x5b8 [msm_kgsl]\n gen8_hwsched_first_open+0x4d8/0x700 [msm_kgsl]\n adreno_first_open+0x44/0x5c [msm_kgsl]\n kgsl_open+0x1d8/0x270 [msm_kgsl]\n chrdev_open+0x1b8/0x258\n do_dentry_open+0x2c4/0x718\n vfs_open+0x2c/0x3c\n path_openat+0xaec/0xce4\n\n"
+      }
+    ]
+  },
+  "compressed": {
+    "bytes": 44098949,
+    "sha256": "2a3c6335db36cc891a53ec37484c376a5101c49580f42b06bf87f3fa9f95c719"
+  },
+  "full_compressed_and_uncompressed_hashes_and_counts_match": true,
+  "gzip_integrity_valid": true,
+  "source_archive_capture_exit": 124,
+  "source_archive_read_reached_EOF": false,
+  "archive_metadata_sha256": "3a65c28069bfca3ffef131aec5a4f698e56aaa019d2c8cf450e2c467ea0c1e94",
+  "archive_index_sha256": "09fb71e692d3f8b3a6fe1f8b4885c10ed6f5d1ee648d80196d70e92678b2ae45",
+  "host_stream_passes": 1,
+  "host_elapsed_seconds": 4.151841872022487,
+  "limits": [
+    "Same-R30-source allocation metadata sampled before collector and before handoff; it is a historical sample, not immediate ownership at the target fault.",
+    "A matched stack identifies sampled Linux allocation origin, not continued allocation, firmware ACL, VMID, DMA quiescence or the cause of the target abort.",
+    "Security-named is only an existing stack text filter and includes ordinary dm_bufio/verity records. Its misses prove nothing.",
+    "Original source capture exited124 before source EOF despite a complete valid gzip file. Freed/missing/concurrently changed owner records and unsupported paths can be absent.",
+    "High-order head interval match includes tail PFNs; every positive overlapping record is retained, no character repair."
+  ],
+  "protected_payload_reads": 0,
+  "device_operations": 0,
+  "C_patch_module_runner_or_existing_report_changes": 0
+}

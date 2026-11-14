@@ -1,0 +1,9 @@
+{
+  "user_question": "现在是什么情况,卡住后直接重启到fastfetch了",
+  "user_clarification": "没有操作，是自动重启",
+  "USB_confirmed_fastboot": true,
+  "manual_reboot_this_round": false,
+  "kernel_reset_cause_not_known": true,
+  "old_USB_filename_uses_user_reboot_to_mean_user_observed_reboot_not_manual_action": true,
+  "created_epoch": 1794660452.0992084
+}

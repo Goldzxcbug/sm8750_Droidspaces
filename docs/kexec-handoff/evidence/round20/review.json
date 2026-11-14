@@ -1,0 +1,47 @@
+{
+  "status": "SINGLE_JUMP_REVIEWED_PHY_WRITE_ONE_READ_ZERO_AUX_OFF_ANDROID_NOT_BOOTED",
+  "epoch": 1794608093.8341343,
+  "source_boot_id": "0edb7818-b0dc-4aea-a7f0-83fb684793c9",
+  "target_run_id": "1d32bf8cdb0f8491",
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "target_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+  "source_target_Images_unchanged": true,
+  "all_four_request_counts_one": true,
+  "android_target_success": false,
+  "PHY_module_sha256": "1061487cf69090ec2fdd2ca91950d61030a230360b891b14d886ed5d23c5d96b",
+  "PHY_module_build_id": "e29ae60436e8e2bd860d89a6ec6693fcaf3f08f3",
+  "host_final_binding_sha256": "101725ceadf860c638326f120e6518976346ccbeac16c930e69f2ceaf34d273e",
+  "reports_sha256": {
+    "device-test.json": "672248e6b53028d973b1fea5e02c0dc6b4a97889272395c00a52b05f24839443",
+    "pstore-after-exec.txt": "2ec5a2362b57f3fa0fc79f1c09bde30c82938b7a51d46ab4c5d36a18602bdd60",
+    "loaded-target.dtb": "db943911e385dae4cc6385b5d42b5e4ff56c398e648bffe328247e480224e319",
+    "gic-audit.json": "adccbbf18e6e358189ce6227755cbafd78398abce88a39635d99710cb08466d3",
+    "loaded-audit.json": "dc83c31ccc1046493649117b607ec47876af6d7d856cee6f3586649f5fb13e0a",
+    "retained-kimage-page-lists-audit.json": "f344438f6656e6db3786db8d8dcf4d00e448ebb9b9e52cad78f840f81f1e4831",
+    "secure-heap-skip-loaded-dtb-audit.json": "7dc7f83cca5305ce9dd0a4ece69e08503c160e2cfb09bca48a40cb284b5b2db7",
+    "tzlog-preservation-loaded-dtb-audit.json": "27667f4e443031e829e7baad06325278c0a4eb9f4281609ade9ee71aebdbbef9",
+    "phy-local-read-loaded-resource-audit.json": "9345df192506a26bc44c1f1320d15b96255eb59551c20cd5bb2a7999f5d7a54d",
+    "phy-local-read-evidence.json": "f6270573a787bd9bdd9a0d84b535508c5d6b4c8ef9cd6118f4ec2f47f7fa519e",
+    "../ufs-phy-local-read-independent-review/round20-evidence.json": "2f410714056edd4bd1605498fb0b72548d7d74c78918afc21b74a5d6a3f48337",
+    "recovery-readonly.json": "bbd15a4e2e47e93d400525aa26945b0f8d20c8d51282f88a056eda3b599d2013"
+  },
+  "positive_observations": [
+    "Five complete post-power-control rows and two complete aux-before rows read local404=0/local408=0.",
+    "Existing Sun callback writes404=1 with DSB before those samples; cold-reference comparability is still unproven.",
+    "First GDSC hardware words transition OFF/DOWN to ON/UP; AUX root reports on/software mode but leaf remains off and returns -16.",
+    "Four complete new PHY build-ID execution rows bind actual observer code.",
+    "Target reaches first-stage partition failure and init-exit panic; damaged terminal exitcode/watchdog text was not reconstructed."
+  ],
+  "limits": [
+    "Write-one/read-zero does not establish which reset or clock condition applies, or whether this normal BCR-assert window reads the same under regular boot.",
+    "Original major6 BCR assert -> PHY power_on -> successful deassert ordering remains unchanged.",
+    "Raw console has damaged bytes; no repair or cross-round completion of fields.",
+    "Two SP heaps and four TZ buffers remain diagnostic isolation, not the complete functional repair."
+  ],
+  "recovered_kernel": "6.6.89-Gold_bug",
+  "recovered_boot_id": "f954f6df-97e0-43e9-a484-e73c6bfc1ea2",
+  "Android_root_watchdog_revalidated": true,
+  "partition_flashed": false,
+  "watchdog_changed": false,
+  "next_action": "Compare exact same original PHY observer boundaries through normal bootloader boot with stock UFS/GCC and a separately guarded observer."
+}

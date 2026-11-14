@@ -1,0 +1,68 @@
+{
+  "status": "SINGLE_JUMP_REVIEWED_PARENT_RCG_ON_LEAF_AUX_OFF_UFS_FAILURE_ANDROID_NOT_BOOTED",
+  "epoch": 1794602677.6628711,
+  "round": 17,
+  "device_state_sha256": "e00ecf9141678b8a4e2d5cd9708c3ee79c4d65363a77be2ca1359322a8b40391",
+  "pstore_sha256": "4a1bc99eb11adab2a804b6430bac381a922bd06690da675cad855cd825dad5f5",
+  "pstore_bytes": 262132,
+  "pstore_LF_count": 2804,
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "source_boot_id": "7d09f53b-304e-41f2-bba3-f128bf8c3668",
+  "target_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+  "target_run_id": "0cc41bd073f1722e",
+  "GCC_module_file_SHA256": "3c14c06d7cc70e83d83c7e1b8d5dc31e6e73a444df688f08dad7d63d1942b6dc",
+  "GCC_module_file_BuildID": "31f9f5ffc5fa115726b0d42dbf87d94ae5188c2f",
+  "GCC_full_runtime_BuildID_observed_in_pstore": false,
+  "GCC_actual_runtime_marker_LF": 1031,
+  "GCC_runtime_marker_flags": {
+    "old": 2,
+    "new": 3,
+    "force_mask": 1,
+    "HW_CTL_kept": 1
+  },
+  "AH8_complete_matching_row_LF": 1143,
+  "AH8_pre_BCR_complete_row_LF": 1144,
+  "clock_dump_CMD_LFs": [
+    1155,
+    1229,
+    1305,
+    1378,
+    1450
+  ],
+  "all_five_CMD_CFG_CBCR": [
+    "0x00000002",
+    "0x00100001",
+    "0x88000001"
+  ],
+  "root_status_interpretation": {
+    "ROOT_EN_bit1": true,
+    "ROOT_OFF_bit31": false,
+    "electrical_clock_frequency_measured": false
+  },
+  "leaf_status_interpretation": {
+    "SW_enable_bit0": true,
+    "CLK_OFF_bit31": true,
+    "driver_status_stuck_off": true,
+    "callback_failure": -16
+  },
+  "UFS_probe_error": -5,
+  "PID1_exitcode_fragment": "0x00007f00",
+  "terminal_panic_prefix_damaged_not_repaired": true,
+  "subsequent_panic_notifier_Oops_not_first_UFS_cause": true,
+  "independent_reports_sha256": {
+    "ufs-aux-force-review/round17-evidence.json": "c7ed62ef6ce607e705dc075590160fa9fd8f447576b07f6ac65604f4972b620c",
+    "ufs-aux-force-independent-review/round17-evidence.json": "6ef54e5b4626182dded3e868679aa0e53acd70a8ad3f0055fb6f0836fc1e047c",
+    "ufs-aux-force-runner-review/round17-evidence.json": "bd117bbd008bd7fcc521fcb90fd3ffbc231cd5907f8e72ab66341a82a172bbc6"
+  },
+  "recovery_readonly_sha256": "300f404f022dbe313d973f6fdc0c127bbd02c4fb1e13aa7d38e49f51af7583ec",
+  "conclusion": "Existing FORCE_ENABLE_RCG changed the parent RCG sampled status to on, but auxiliary leaf remained off and failed. Clearing AH8 and parent root-off alone do not explain the remaining UFS failure.",
+  "next_focus": [
+    "Actual downstream clock-gate/reset and PHY power-domain status",
+    "Ignored qref errors and regulator cached state versus hardware status"
+  ],
+  "partition_flashed": false,
+  "watchdog_changed": false,
+  "repository_kernel_modified": false,
+  "diagnostic_isolation_not_final_fix": true,
+  "goal_complete": false
+}

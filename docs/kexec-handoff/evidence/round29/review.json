@@ -1,0 +1,120 @@
+{
+  "status": "R29_REPEATED_IDENTICAL_B04_TARGET_REACHED_SECOND_STAGE_APEXD_KERNEL_CLEAR_PAGE_SEA_UNRESOLVED",
+  "epoch": 1794624623.9055986,
+  "round": 29,
+  "source_boot_id": "03cf38fd-4c8f-486c-8af7-2df1df955e60",
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "target_build_id": "b04f54de1c3320828089eea032cc23bb774d6631",
+  "run_id": "be34b99a4daad460",
+  "request_counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "same_frozen_Image_modules_payload_and_non_nonce_append_as_R28": true,
+  "source_android_root_695_modules_watchdog_zero_verified": true,
+  "loaded_critical_Image_pages": 119,
+  "loaded_metadata_checks": "PASS",
+  "raw_console": {
+    "bytes": 262132,
+    "LF_bytes": 2635,
+    "sha256": "b7c83600eed24fd0e216fbe88958f49bf232dcc4131041ce2ab16c04d9938a29",
+    "full_target_build_id_LFs": [
+      507,
+      665,
+      725,
+      785,
+      844,
+      977
+    ],
+    "scope": "Saved target console; running post-exec live dmesg is recovered stock, not target."
+  },
+  "accepted_observations": [
+    {
+      "LF": 1699,
+      "fact": "init second stage started"
+    },
+    {
+      "LF": 2444,
+      "fact": "T347 apexd subcommand=--bootstrap"
+    },
+    {
+      "LF": 2513,
+      "fact": "T347 apexd-bootstrap wait /dev/loop-control 82ms"
+    },
+    {
+      "LF": 2515,
+      "fact": "PC symbol token clear_page+0x18/0x4c and LR post_alloc_hook+0x164; LR size token damaged, not repaired"
+    },
+    {
+      "LF": 2521,
+      "fact": "synchronous external abort ESR token 0000000096000010; suffix damaged"
+    },
+    {
+      "LFs": [
+        2514,
+        2516
+      ],
+      "fact": "Matching intact FAR/x0 field tokens ffffff802f32a000; neither complete line is promoted to fully intact"
+    },
+    {
+      "fact": "Actual b04 ELF clear_page+0x18 is DC ZVA x0, called by post_alloc_hook initialization loop"
+    },
+    {
+      "fact": "5-second PID1 state S field and epoll frame0 are visible; apexd R fields occur in damaged snapshot records, without a trustworthy current apexd PC"
+    }
+  ],
+  "conditional_address": {
+    "memstart_assumption": "0x80000000",
+    "candidate_PA": "0xaf32a000",
+    "candidate_64KiB_block": [
+      "0xaf320000",
+      "0xaf330000"
+    ],
+    "target_runtime_memstart_not_captured": true,
+    "not_sufficient_for_new_reservation_or_firmware_operation": true
+  },
+  "unresolved": [
+    "Concrete allocator caller and actual target physical address were not captured.",
+    "No page/firmware owner established; source inactive secure pools and active buffers are candidates to inspect.",
+    "Target dynamic reserved-memory bases have not been measured; static ranges alone do not exclude them.",
+    "No literal SIGILL/origin/signal-deliver records obtained; absence is not proof the R26 fault was fixed or unrelated.",
+    "No evidence establishing watchdog as reset cause.",
+    "R28 lack of target console does not establish an observer-caused early failure.",
+    "Diagnostic HALT_SKIP and SP/TZ isolation remain, so complete Android and formal handoff are not repaired."
+  ],
+  "post_exec_running_target_identity_verified": false,
+  "android_target_success": false,
+  "recovery": {
+    "kernel_build_id": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "boot_id": "045e09e7-bc66-4929-be9c-fa3f64c3bf88",
+    "android_root_watchdog_zero_and_same_UUID_readonly_check": true,
+    "extra_recovery_reboots": 0
+  },
+  "frozen_main_patch_sha256": "2ff710c967cfdf8cf8247ac71d95d061fe93709730373f5d530cca42e55588b7",
+  "runtime_artifacts_sha256": {
+    "device-test.json": "b50311d2d19530ca97c2fa4c118f381bfadeb078f3b856a9ba3b37e3e3c6e32a",
+    "root-preboot-binding.json": "dfd3704a15d3bdbce33c8e48dfdd90a2aaa699738f503f0157ae913576043339",
+    "append-repeat-comparison.json": "d72ab77437cd4cb0deda740c842018ed49527227310c174b2712050078fa793c",
+    "fastboot-ioctl-review.json": "8f90880efb1fd320c8173c20abb1085bcd1b7a37bb8a3ff112431361d230c13a",
+    "target-ready.json": "627aa273a74dfe96019fca4bbf274c1db1004c388b68e5880191117071f27533",
+    "loaded-audit.json": "d8c771fd56829e65028d5e0c98d99719deb184b6a7bdbf57e5a3e90e5e37eb8a",
+    "loaded-fdt-audit.json": "3743ba1a5e5d9bf6973126be5d02d0a7b0a3197999f3ad9f1151bd172fffbe8f",
+    "phy-local-read-loaded-resource-audit.json": "4d9f11d9294976d614c00a8e1f1f4c0d814347eab5a37bac7f400d06ddc5156a",
+    "secure-heap-skip-loaded-dtb-audit.json": "34841517f1dcd20b7998a6e69c1bfc97ef6dacb169f09bef2d15fdcc71739a54",
+    "tzlog-preservation-loaded-dtb-audit.json": "ba293f4a58fefd1c641409a3716b4518d210b618e1e3fa93d64065a558dea562",
+    "recovery-readonly.json": "8c8c021590e605129ca38e985823583c60d4f1cebfc2c2cef13a7451c23e6fd3",
+    "pstore-after-exec.txt": "b7c83600eed24fd0e216fbe88958f49bf232dcc4131041ce2ab16c04d9938a29",
+    "post-exec-module-identity.json": "a4da3e71d322d01eb15b4cf833cacc1daad9f85c6811561bf2a90b9caf76254b"
+  },
+  "independent_reports_sha256": {
+    "user-state-independent-review/round29-evidence.json": "a73d21094ac93c01e97e3730e883f802900f96e6380c6e5f13dddec660699d8a",
+    "user-state-repeat-runner-review/round29-allocation-evidence.json": "858310b03958bc4b3d8e096ea7e679b271e54230bea7c541f3ef7ba1ece7f447",
+    "user-state-memory-review/round29-clear-page-address.json": "727a3ec7db5c0d4156046df47c4e49c61ffe50e8904b3289b7302313322cd3f9",
+    "user-state-independent-review/cache-path-review.json": "a0f3021a28f2c634d38f26e83a3400df93950b49ada3c8e57cbab411e605e6ee"
+  },
+  "next_step": "Keep current entry probe inactive. Add opt-in target SEA actual linear offset/arithmetic PA and original interrupted kernel stack; use supported source page_owner and bounded secure-pool/active-SG ordinary metadata snapshots to correlate source allocations, without protected backing reads or SCM ownership writes."
+}

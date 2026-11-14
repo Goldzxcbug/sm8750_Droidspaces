@@ -1,0 +1,14 @@
+{
+  "status": "ACTUAL_GPU_TRANSPORT_DISABLED_AND_INITRD_PREFIX_EXTENT_PASS",
+  "source_boot_id": "052b2ac3-d801-4563-820c-384c3ad16996",
+  "run_id": "f5b8101627e20e75",
+  "actual_loaded_DTB_sha256": "96dca8188388e5b93128c35ebe6ffcfee1775270bf987d411bd74bb1b4e6004d",
+  "chosen_GPU_range_property_absent": true,
+  "arch_kgsl_NULL": true,
+  "target_GPU_selectors_and_module_blacklist_absent": true,
+  "target_initrd_bytes": 19083256,
+  "target_initrd_extent_and_bufsz_match": true,
+  "GPU_cache_capture_sha256": "0923fd36444c93ca8c21b618162c55f64be557fae5ad7a022552aa9cad0b309b",
+  "source_KGSL_blocked_causal_control": true,
+  "all_GIC_TZ_ramoops_transition_page_guards_preserved": true
+}

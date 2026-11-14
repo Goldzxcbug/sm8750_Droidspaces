@@ -1,0 +1,46 @@
+[
+  [
+    1555,
+    "[ 1251.579918][T23612] KT: post_load file=1 path=relocate head=0x89ca3d002 start=0x82800000 dtb=0x0000000beb200000"
+  ],
+  [
+    1556,
+    "[ 1251.579944][T23612] KT: segment[0] mem=0x82800000 memsz=0x23f0000 bufsz=0x2349a00"
+  ],
+  [
+    1557,
+    "[ 1251.579962][T23612] KT: segment[1] mem=0x84bf0000 memsz=0x1157000 bufsz=0x1156480"
+  ],
+  [
+    1558,
+    "[ 1251.579979][T23612] KT: segment[2] mem=0xbeb200000 memsz=0x187000 bufsz=0x186de9"
+  ],
+  [
+    2191,
+    "[ 1483.619135][T28134] kexec_core: KT: enter"
+  ],
+  [
+    2192,
+    "[ 1483.619212][T28134] SHRC: phase=sealed one_heap_only=1 source=8dde72278b557d4fd2488c1cab40759e890397bc"
+  ],
+  [
+    2193,
+    "[ 1483.619265][T28134] SHRC: phase=isolated heap=qcom,secure-sp-tz base=0x000000009b280000 size=0x40000 old_owners=0x400000000 dst=3 perms=7"
+  ],
+  [
+    2194,
+    "[ 1483.619321][T28134] SHRC: trace=call-begin base=0x000000009b280000 size=0x40000 old_owners=0x400000000 dst=3 perms=7"
+  ],
+  [
+    2195,
+    "[ 1483.619376][T28134] SHRC: trace=assign-enter valid=1 base=0x9b280000 size=0x40000 nr=1"
+  ],
+  [
+    2196,
+    "[ 1483.619457][T28134] SHRC: trace=lower-enter valid=1 convention=3 mode=0 frame_match=1"
+  ],
+  [
+    2197,
+    "[ 1483.619514][T28134] SHRC: trace=smc-before fid=0x42000c16 info=0x1117 mem=0x9deac2040 memsz=0x10 src=0x9deac2000 ext=0xb6c09000"
+  ]
+]

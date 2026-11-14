@@ -1,0 +1,32 @@
+{
+  "command": [
+    "make",
+    "-C",
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/kgsl-blocked-quiet-source/source",
+    "O=/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/kgsl-blocked-quiet-source/build",
+    "ARCH=arm64",
+    "LLVM=1",
+    "LLVM_IAS=1",
+    "HOSTCC=gcc",
+    "HOSTCXX=g++",
+    "HOSTCFLAGS=-Wno-error=discarded-qualifiers",
+    "PAHOLE=/home/gold/\u6587\u6863/\u4ed3\u5e93/onepluspad-2pro-mainline-kexec/cache/android-pahole125/root/usr/bin/pahole",
+    "LOCALVERSION=",
+    "-j16",
+    "Image"
+  ],
+  "env": {
+    "PATH": "/home/gold/\u6587\u6863/\u4ed3\u5e93/onepluspad-2pro-mainline-kexec/cache/android-clang18/unpacked/bin:/home/gold/.codex/tmp/arg0/codex-arg002Gmy1:/home/gold/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/home/gold/.nvm/versions/node/v22.23.0/bin:/home/gold/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/opt/android-sdk/tools/bin:/var/lib/flatpak/exports/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/opt/android-sdk/tools/bin:/home/gold/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/usr/lib/chatgpt/resources:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/opt/android-sdk/tools/bin",
+    "KBUILD_BUILD_USER": "builder",
+    "KBUILD_BUILD_HOST": "local"
+  },
+  "baseline_build_id": "4424630e5e18a578666635e066a255bdf42c3428",
+  "patch_sha256": "2cacafea0871231d02fd096968e7af68eabb1416d331fa5e999c1d64ec1cb6c8",
+  "source_before_sha256": {
+    "drivers/base/core.c": "11e7697ba90863932c70c94f5afd1bd38ccbd9941880b92eff6a37aa53353374"
+  },
+  "requested_config_delta": [],
+  "config_and_localversion_unchanged": true,
+  "build_cache_reuse": "Independent reflink source/build; only generated Kbuild paths rebased, original timestamps retained. No object/ELF byte edits.",
+  "device_operations": 0
+}

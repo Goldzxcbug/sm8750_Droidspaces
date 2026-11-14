@@ -1,0 +1,40 @@
+{
+  "status": "LOADED_METADATA_CHECKS_PASS",
+  "retained_kimage_page_list_nodes": {
+    "control_pages": 7927,
+    "dest_pages": 0,
+    "unusable_pages": 0
+  },
+  "retained_kimage_allocation_pages_checked": 7927,
+  "retained_struct_page_metadata_blocks": 126,
+  "retained_page_list_backend_reads": 258,
+  "kimage_bookkeeping_pages_checked": 5,
+  "all_source_list_destination_control_and_bookkeeping_pages_avoid_protected": true,
+  "relocation_code_sha256": "c8298ca16bf0e349826719887983aac4f8124eb79da61ccd93459e769062c11c",
+  "relocation_code_bytes": 288,
+  "list_pages": 28,
+  "destination_pages": 14175,
+  "sampled_linear_mappings": 97,
+  "memory_attribute_indices": [
+    1
+  ],
+  "linear_offset_untagged": true,
+  "entry_identity_mapping_executable": true,
+  "copied_page_tables_outside_destinations": true,
+  "target_image_header_matches_source": true,
+  "el2_vector_present": false,
+  "probe_payload_verified": false,
+  "modified_image_pages_verified": 76,
+  "actual_jump_entry_matches_Image_start": true,
+  "actual_x0_DTB_argument_matches_captured_segment": true,
+  "actual_segment_buffer_sizes_match_load_log": true,
+  "actual_segments_match_planner": true,
+  "bounded_reads": 827,
+  "jump_executed": false,
+  "captured_target_dtb": {
+    "bytes": 1601295,
+    "sha256": "8609e5197821d9d78f32c8438c5400f6df5b7b2cd1bdc520eafe3013d0bef6bb",
+    "source": "Actual loaded relocation source pages, before execution",
+    "not_a_post_relocation_integrity_check": true
+  }
+}

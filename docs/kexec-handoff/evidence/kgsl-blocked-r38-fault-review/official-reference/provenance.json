@@ -1,0 +1,20 @@
+{
+  "status": "PRIMARY_OFFICIAL_SOURCE_REFERENCE_NOT_FULL_REBUILD_EQUIVALENCE",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/4553152f62a3bd9f39bb6d068a4d94a15a8c07fd/drivers/dma/qcom/msm_gpi.c",
+      "path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/msm_gpi-4553152f.c.txt",
+      "sha256": "9db24bafdecc50586f30177a0f7817314084fdeabe935c3a68bb78c9896db442",
+      "bytes": 126556,
+      "commit": "4553152f62a3bd9f39bb6d068a4d94a15a8c07fd"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/0671d4da634e8898e9d6a1f1c0a55978736b9567/drivers/dma/qcom/msm_gpi.c",
+      "path": "out/kexec-boot-fix/kgsl-blocked-r38-fault-review/official-reference/msm_gpi-0671d4da.c.txt",
+      "sha256": "2983685a24be0ec096f45a3e3140f32247ca5ce2547215c79cd32caecb7e6995",
+      "bytes": 123431,
+      "commit": "0671d4da634e8898e9d6a1f1c0a55978736b9567"
+    }
+  ],
+  "device_operations": 0
+}

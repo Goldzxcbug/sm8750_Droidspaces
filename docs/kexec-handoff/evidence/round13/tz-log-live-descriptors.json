@@ -1,0 +1,51 @@
+{
+  "status": "EXACT_LIVE_TZ_LOG_DESCRIPTORS_ONLY_CAPTURED",
+  "source_boot_id": "2d6c16b8-04a2-4896-8510-eac3b157c377",
+  "source_build_id": "218a41818e13202f577a7ef27eca92a55fb84f83",
+  "module_build_id": "44d5bc6026c74b531ae05068a806c847a6b2592f",
+  "module_sha256": "de91d8824d3d87c32c563868022f5dfdcbef1dcc7c86b02a52177dfd4bf3a6ac",
+  "module_sections": {
+    ".text": "0xffffffef236ce1c8",
+    ".data": "0xffffffef236d2000",
+    ".bss": "0xffffffef236d23e0"
+  },
+  "module_lookup": {
+    "ordinary_module_list_nodes_seen": 330,
+    "sysfs_values_hidden": true,
+    "kptr_policy_changed": false,
+    "limitations": "Host metadata snapshots hold no common RCU/reference across calls; source and TZ module identity plus code and repeated descriptor checks are separate guards."
+  },
+  "epoch": 1794590477.9353282,
+  "encrypted_log_feature": true,
+  "enlarged_feature": true,
+  "qsee": {
+    "physical": "0xecca0000",
+    "virtual": "0xffffffc083eb5000",
+    "virtual_v2": "0xffffffc083eb5000",
+    "size": 131072
+  },
+  "encrypted_qsee": {
+    "physical": "0xeccc0000",
+    "virtual": "0xffffffc08671d000",
+    "size": 135168,
+    "shmbridge_handle": "0x5c6863cb"
+  },
+  "encrypted_tz": {
+    "physical": "0xecc8c000",
+    "virtual": "0xffffffc08151c000",
+    "size": 12288,
+    "shmbridge_handle": "0xafe83414"
+  },
+  "display": {
+    "physical": "0xed100000",
+    "virtual": "0xffffffc0880c3000",
+    "size": 524288
+  },
+  "debug_rw_buf_size": 12288,
+  "bounded_reads": 709,
+  "DMA_payload_reads": 0,
+  "limits": [
+    "Live module ordinary metadata only, not a firmware ownership/accessibility query.",
+    "This is round13 metadata; cannot reconstruct round11 source boot."
+  ]
+}

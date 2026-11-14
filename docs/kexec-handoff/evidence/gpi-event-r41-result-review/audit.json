@@ -1,0 +1,276 @@
+{
+  "status": "R41_SOURCE_AND_PREJUMP_BOUNDARIES_VERIFIED_TARGET_OUTCOME_INCONCLUSIVE_WITH_MANUAL_INTERVENTION",
+  "round": 41,
+  "source": {
+    "actual_UUID": "f632eed3-0bd9-44d3-9a6e-649cbd833c4d",
+    "actual_GNU_build_ids": [
+      "72782e2196eb1c46c8c5205ccd93f2acf42de294"
+    ],
+    "source_runtime_proved": true,
+    "root_and_vendor_ready": true,
+    "exact_module_count_before_helper": 693,
+    "exact_module_count_immediately_pre_exec": 694,
+    "original_GPI_SPI_and_target_param_absent": true,
+    "KGSL_module_driver_device_absence_verified": true,
+    "GPU_or_firmware_quiescence_not_proved": true,
+    "source_boot_completed_raw": "",
+    "complete_Android_or_GUI_not_claimed": true,
+    "SF_stop_count": 1,
+    "SF_same_UUID_samples": 13,
+    "SF_stable_seconds": 60.475019115023315,
+    "verified_epoch": 1794657801.7980733,
+    "verified_local": "2026-11-14T20:03:21.798073+08:00",
+    "preexec_same_UUID_and_original_GPI_SPI_metadata_verified": true,
+    "bounded_raw_witnesses": [
+      {
+        "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/source-startup-dmesg.txt",
+        "source_sha256": "0e0b105080266dfaa1207d43b07ec06b87dd0109752d00c5a2453b5530632043",
+        "LF": 2,
+        "hex": "5b20202020302e3030303030305d204c696e75782076657273696f6e20362e362e38392d476f6c645f4275675f6b657865635f6b67736c5f62696e6172795f736f757263655f6469616720286275696c646572406c6f63616c292028416e64726f6964202831313336383330382c202b70676f2c202b626f6c742c202b6c746f2c202b6d6c676f2c206261736564206f6e20723531303932382920636c616e672076657273696f6e2031382e302e30202868747470733a2f2f616e64726f69642e676f6f676c65736f757263652e636f6d2f746f6f6c636861696e2f6c6c766d2d70726f6a6563742034373736313064346430643938386536396462633366616534666538366266663366303766326235292c204c4c442031382e302e30292023313220534d5020505245454d505420536174204e6f762031342031363a34313a3130204353542032303236",
+        "ASCII_backslashreplace": "[    0.000000] Linux version 6.6.89-Gold_Bug_kexec_kgsl_binary_source_diag (builder@local) (Android (11368308, +pgo, +bolt, +lto, +mlgo, based on r510928) clang version 18.0.0 (https://android.googlesource.com/toolchain/llvm-project 477610d4d0d988e69dbc3fae4fe86bff3f07f2b5), LLD 18.0.0) #12 SMP PREEMPT Sat Nov 14 16:41:10 CST 2026"
+      },
+      {
+        "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/source-startup-dmesg.txt",
+        "source_sha256": "0e0b105080266dfaa1207d43b07ec06b87dd0109752d00c5a2453b5530632043",
+        "LF": 7672,
+        "hex": "5b20202020332e3036323136365d204d6f64756c65206d736d5f6b67736c20697320626c61636b6c6973746564",
+        "ASCII_backslashreplace": "[    3.062166] Module msm_kgsl is blacklisted"
+      }
+    ]
+  },
+  "requested_and_loaded": {
+    "counter_values": {
+      "temporary_boot_request_count": 1,
+      "helper_insmod_request_count": 1,
+      "load_request_count": 1,
+      "execute_request_count": 1,
+      "source_surfaceflinger_stop_request_count": 1
+    },
+    "target_build_requested": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+    "nonce_in_actual_loaded_DTB": "9992c1bb1822e215",
+    "actual_Image_critical_pages_verified": 233,
+    "actual_DTB_source_pages_captured": true,
+    "target_initrd_begin": "0x86800000",
+    "target_initrd_end_exclusive": "0x87a33004",
+    "target_initrd_bytes_and_actual_bufsz": 19083268,
+    "host_ramdisk_sha256": "c19bf0b15f96786b079353f3b5fb28ce28f925ed3a9e83001ac5fc74d038075b",
+    "host_GPI_KO_sha256": "94669c47c94ab1e0bc9391f9e124b35e1b00d4ed18b8381dbf5bd0be8b65e111",
+    "GPI_build_requested": "44f9608d617294a503cf5c0ecebad2da5bccb9d6",
+    "normal_modules_load_sha256": "ff5116fb9eb9a12dfdaead42fbda2efc74779c7b89f636019e9d0922d0a79753",
+    "normal_explicit_roots": 154,
+    "GPI_normal_list_count": 1,
+    "options_bytes": 290,
+    "all549_CPIO_entries_parsed": true,
+    "new_GPI_runtime_adoption_not_proved": true,
+    "initrd_relocation_source_pages_all_byte_hashed": false,
+    "post_relocation_integrity_not_proved": true
+  },
+  "execution_and_wait": {
+    "root_chain_step_exit_codes": [
+      [
+        "source-boot-and-single-SF-stop",
+        0
+      ],
+      [
+        "real-page-owner-sample",
+        0
+      ],
+      [
+        "bind-actual-source-runtime",
+        0
+      ],
+      [
+        "root-final-binding",
+        0
+      ],
+      [
+        "prepare-target",
+        0
+      ],
+      [
+        "stage-helper-load-once",
+        0
+      ],
+      [
+        "audit-actual-loaded-image",
+        0
+      ],
+      [
+        "audit-actual-PHY-extent",
+        0
+      ],
+      [
+        "execute-once-and-observe",
+        1
+      ]
+    ],
+    "single_execute_requested_epoch": 1794657915.380942,
+    "single_execute_requested_local": "2026-11-14T20:05:15.380942+08:00",
+    "execute_adb_exit": 255,
+    "execute_adb_timeout": false,
+    "final_state_label": "SINGLE_EXECUTED_ANDROID_NOT_OBSERVED_WITHIN_BOUND",
+    "observed_complete_Android_in_loop": false,
+    "natural_target_terminal_failure_not_proved": true,
+    "target_entry_and_target_GPI_adoption_not_observed": true
+  },
+  "first_post_exec_actual_capture": {
+    "capture_iteration": 13,
+    "started_epoch": 1794657932.1456096,
+    "started_local": "2026-11-14T20:05:32.145610+08:00",
+    "same_UUID_before_after": "73f15c91-ae79-4aab-b80f-f0d2f011ea46",
+    "kernel_GNU_build_ids": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "GPI_GNU_build_ids": [
+      "017204038f33bb4419f33057adedc2b0a2490c74"
+    ],
+    "GPI_trace_parameter_read_exit": 1,
+    "GPI_trace_parameter_stderr_hex": "6361743a202f7379732f6d6f64756c652f6d736d5f6770692f706172616d65746572732f6b657865635f66697273745f6576656e745f646961673a204e6f20737563682066696c65206f72206469726563746f72790a",
+    "scope": "actual stock runtime, not the source or requested target",
+    "complete_stock_Android_not_verified_by_this_capture": true,
+    "no_boot_completed_query_in_7_record_first_capture": true,
+    "pstore_not_in_first_capture": true,
+    "bounded_stock_startup_witness": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/first-post-exec-dmesg.stdout.bin",
+      "source_sha256": "4ca4ea2fb58b631f449b059d34803e6e8388a3f86acbd886883fd4abcb2f44e5",
+      "LF": 2,
+      "hex": "5b20202020302e3030303030305d204c696e75782076657273696f6e20362e362e38392d476f6c645f627567202872756e6e65724072756e6e6572766d6d70727a35292028416e64726f6964202831313336383330382c202b70676f2c202b626f6c742c202b6c746f2c202b6d6c676f2c206261736564206f6e20723531303932382920636c616e672076657273696f6e2031382e302e30202868747470733a2f2f616e64726f69642e676f6f676c65736f757263652e636f6d2f746f6f6c636861696e2f6c6c766d2d70726f6a6563742034373736313064346430643938386536396462633366616534666538366266663366303766326235292c204c4c442031382e302e302920233120534d5020505245454d5054204d6f6e204f63742031322031353a30373a3337204353542032303236",
+      "ASCII_backslashreplace": "[    0.000000] Linux version 6.6.89-Gold_bug (runner@runnervmmprz5) (Android (11368308, +pgo, +bolt, +lto, +mlgo, based on r510928) clang version 18.0.0 (https://android.googlesource.com/toolchain/llvm-project 477610d4d0d988e69dbc3fae4fe86bff3f07f2b5), LLD 18.0.0) #1 SMP PREEMPT Mon Oct 12 15:07:37 CST 2026"
+    }
+  },
+  "observability_and_user_intervention": {
+    "user_manual_fastboot_confirmed": true,
+    "exact_manual_intervention_time_known": false,
+    "screen_state_directly_observed_by_auditor": false,
+    "source_runtime_identity_does_not_prove_screen_or_GUI_success": true,
+    "retained_bootloader_framebuffer_is_only_an_unverified_possibility": true,
+    "first_post_stock_transition_automatic_or_manual_not_resolved": true,
+    "100_iteration_wait_result_censored_by_manual_intervention": true,
+    "later_USB_fastboot_is_not_natural_target_outcome": true,
+    "later_failed_read_query_count": 24,
+    "all_later_reads_failed_with_empty_stdout": true,
+    "empty_failed_UUID_results_not_same_boot_evidence": true,
+    "initial_pstore_capture_lost_window": "First new-UUID capture saved stock dmesg but no pstore. Later reads failed after ADB disappeared; after manual fastboot and normal reboot, preserved console could have changed. No original target failure record is inferred."
+  },
+  "separate_installed_recovery": {
+    "ordinary_fastboot_reboot_count": 1,
+    "new_kexec_count": 0,
+    "actual_UUID": "5719bd82-5a19-4cb0-a3d3-2d036f861682",
+    "actual_kernel_GNU_build_ids": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "Android1_observed": true,
+    "read_record_sha256": "9eee1f494e1e7568fc873557bf484665b010e986f557752c349ba273082fee0f",
+    "scope": "separate installed-system recovery after acknowledged manual fastboot entry",
+    "not_target_Android_success": true
+  },
+  "raw_post_capture_marker_scan": {
+    "first-post-exec-dmesg.stdout.bin": {
+      "bytes": 1778996,
+      "sha256": "4ca4ea2fb58b631f449b059d34803e6e8388a3f86acbd886883fd4abcb2f44e5",
+      "LF_count": 19520,
+      "literal_marker_LFs": {
+        "KGPICMD1": [],
+        "68e85e134a894c34b5fef3ac30f4dd450d00a6b5": [],
+        "44f9608d617294a503cf5c0ecebad2da5bccb9d6": [],
+        "9992c1bb1822e215": []
+      }
+    },
+    "installed-recovery-capture/pstore-console.stdout.bin": {
+      "bytes": 262132,
+      "sha256": "f5154810597ece16f61ba872203c77b6d93538632e2b199ede3ec3837c179aa4",
+      "LF_count": 1790,
+      "literal_marker_LFs": {
+        "KGPICMD1": [],
+        "68e85e134a894c34b5fef3ac30f4dd450d00a6b5": [],
+        "44f9608d617294a503cf5c0ecebad2da5bccb9d6": [],
+        "9992c1bb1822e215": []
+      }
+    }
+  },
+  "LF_method": "raw.split(b'\\n')",
+  "no_damaged_byte_repair": true,
+  "inputs": {
+    "device-test.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/device-test.json",
+      "bytes": 11226,
+      "sha256": "321acc728acba0227186774f1cb860e369ea805149b059991e18a08211938b6d"
+    },
+    "source-notes.bin": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/source-notes.bin",
+      "bytes": 84,
+      "sha256": "f1c77b2f060ea31e2f4b566043d037b36249d15ea7e6b5a3b588b04629aede51"
+    },
+    "source-kgsl-blocked-boot-verification.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/source-kgsl-blocked-boot-verification.json",
+      "bytes": 18856,
+      "sha256": "1860ea1b62a6975dc5c3607a4c86992eb76f332c37392f161757517536034397"
+    },
+    "source-surfaceflinger-stop-stability.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/source-surfaceflinger-stop-stability.json",
+      "bytes": 240274,
+      "sha256": "eed4700568071c37636e0413f51361fcec5e33edeb6a7f6d7020624cbdb2e26e"
+    },
+    "source-kgsl-blocked-pre-exec-recheck.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/source-kgsl-blocked-pre-exec-recheck.json",
+      "bytes": 19971,
+      "sha256": "3a521af4e6703a158755189fffe21f3b5359b01c99e5ecf4b52a08ea5cdee6e5"
+    },
+    "target-ready.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/target-ready.json",
+      "bytes": 30701,
+      "sha256": "ff07419b3e84cd92ea1065e141e197005147a638188fa304d851c810468fa43c"
+    },
+    "ramdisk.img": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/ramdisk.img",
+      "bytes": 19083268,
+      "sha256": "c19bf0b15f96786b079353f3b5fb28ce28f925ed3a9e83001ac5fc74d038075b"
+    },
+    "loaded-audit.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/loaded-audit.json",
+      "bytes": 1614,
+      "sha256": "f40495d796842d1e85f5c3186ff33160cc932b5bfc11ca3631799d11dc91676c"
+    },
+    "loaded-target.dtb": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/loaded-target.dtb",
+      "bytes": 1601455,
+      "sha256": "1e0431cd11961087162989300bbfe20c3c25355a9f5888ca922de932e206da14"
+    },
+    "root-chain-events.jsonl": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/root-chain-events.jsonl",
+      "bytes": 1099,
+      "sha256": "fe5e3f37630cc8be63668fcf8f58bf6302c1c821e39ae15861c920bcb3f1dc13"
+    },
+    "first-post-exec-capture.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/first-post-exec-capture.json",
+      "bytes": 4430,
+      "sha256": "e301c458d3e47364ba48c3b759e61b508d386f6c9da9ab85629601ef94203949"
+    },
+    "post-exec-readonly.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/post-exec-readonly.json",
+      "bytes": 14854,
+      "sha256": "2f24d657badbfe00c4b05a08115f4ce31fc56afd96453a8246e6f5ffd071a72e"
+    },
+    "screen-state-discrepancy-review.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/screen-state-discrepancy-review.json",
+      "bytes": 2443,
+      "sha256": "14601ac21760e2f633bcc1b15df2e5cefb20eaa0e06d870dcb771992d1776c7c"
+    },
+    "user-recovery-normal-reboot.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/user-recovery-normal-reboot.json",
+      "bytes": 1717,
+      "sha256": "eb0deefe9f8c55e177749ad413bb31a40c729e277f443c1e37bb006b6e61b10e"
+    },
+    "installed-recovery-readonly.json": {
+      "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round41/installed-recovery-readonly.json",
+      "bytes": 21284,
+      "sha256": "9eee1f494e1e7568fc873557bf484665b010e986f557752c349ba273082fee0f"
+    }
+  },
+  "review_actions": {
+    "device_operations": 0,
+    "runner_main_invocations": 0,
+    "state_or_frozen_file_changes": 0,
+    "ABI_or_old_suite_reruns": 0
+  }
+}

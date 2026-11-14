@@ -1,0 +1,69 @@
+{
+  "status": "R31_SINGLE_KEXEC_TARGET_PID1_SIGSEGV_PANIC_STOCK_RECOVERY_VERIFIED_ISOLATION_RUNTIME_UNPROVEN",
+  "epoch": 1794633610.9995973,
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "source_boot_id": "aa6fa070-cc0e-4643-8d03-96a0f148b8fa",
+  "target_build_id_requested": "4646f9c53d37fb382dbd5c23aa773837dc427084",
+  "target_build_id_literal_observed_in_saved_console": true,
+  "target_nonce": "f81560387ff99e55",
+  "request_counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "android_target_success": false,
+  "observed_live_post_exec_kernel_was_recovered_stock": true,
+  "stock_recovery_boot_id": "62826719-1cea-40ef-932c-8d88896b4212",
+  "KGPUM_runtime_application_verified": false,
+  "KGPUM_runtime_application_unknown_due_missing_early_log": true,
+  "raw_bytes": 262132,
+  "raw_LF_count": 2917,
+  "known_failure": {
+    "scope": "target userspace PID1",
+    "EL": "lower",
+    "ESR": "0x92000005",
+    "PC": "0x7fa0116d04",
+    "LR": "0x7fa01ac050",
+    "reported_VMA_basename": "libcrypto.so",
+    "reported_VMA_start": "0x7fa00d1000",
+    "reported_VMA_length": "0xfc000",
+    "signal": 11,
+    "signal_code": 1,
+    "fault_address": "0x2",
+    "panic_LF": 2683,
+    "panic_time_seconds": 1.617645,
+    "panic_exitcode": "0x0b"
+  },
+  "bound_runtime_artifacts": {
+    "device-test.json": "af323f9f2b426a0c4ff633730b9600485ee9ee959aaaa9c6bd9c951b26640996",
+    "root-host-binding-before-prepare.json": "eec8d14259d2b056a1f29ca81a06a13c0630c1169bd3916cbdae07b4a9fa6eae",
+    "target-ready.json": "90e5ed8251795976239cc2058bd781b6d3609bebaa0dc291d7d086cf1aeaa59c",
+    "gpu-nomap-encoded.json": "a8919992886c89203d4c61b546d0ad78ba1172504b3b8fa8bc329d321ae8d41c",
+    "loaded-audit.json": "11105877a44db6ff9d7e98e7237fb349be863d5a73d3bef5e6c50d772893658c",
+    "kgsl-nomap-loaded-audit.json": "8d01fd9ec18801da434c46f31e28c1def36bb21785cbe787977ad948bbff13d1",
+    "phy-local-read-loaded-resource-audit.json": "dd25ff738d150da01cc9f9cefecc314bd1badb5cd0623a7ab489e5860e08d6e8",
+    "kgsl-source-observation/observation.json": "ff282e02b79527dc7b1bad49cdde9a8f1130b55e0ace8a3c8a9b931ebc35d615",
+    "kgsl-late-source-observation/observation.json": "0209fce0ecb28c06c40f20bbe5201c2c67c9fa82882c911a22a03d1532c9007a",
+    "kgsl-late-repeat-root-review.json": "cc43358099a3b7cdef6e0b753f9b646d3ee06c22ac45540bb091862eeabc9c09",
+    "pstore-after-exec.txt": "7731f0d46fa4276f3f1b1025d5b3759163bb635b11438e1a63ea59a0bb5735b0",
+    "kgsl-nomap-target-log-review.json": "dc07ac84ec87c4cbfad4be46696ab37f39a280f64db35e6a086ff96aaa1c220b",
+    "recovery-readonly.json": "9b0bfd45a7f2a092af236eab5b0118fbf95d7beafd5bed80d09503e78e9ab6fb",
+    "userspace-readonly/binding.json": "65c42ba89a0eff35b3e6f5e170a605bfa97f17407bd51b8a61af4a5c8954a066"
+  },
+  "independent_reviews": {
+    "kgsl-nomap-runner-review/round31/round31-evidence.json": "5409c023e0763a07a709be8a3488ca69c6e7501791566d6c2385e1ac7ce55357",
+    "kgsl-nomap-runner-review/round31-loaded-geometry.json": "35c72d794bf82523255ee45f63f3feb4325f522f5166fcd30bd163c14efd91d2",
+    "kgsl-nomap-runner-review/round31-target-dynamic-pools.json": "00ca652f80e402529bac0b9eee83859e3762c93b091dfa9f1b46abe4d3813451"
+  },
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "extra_recovery_reboot_requests": 0,
+  "limits": [
+    "No KGPUM1 literal record remains; loaded token and early memory split boundaries are not actual per-range NOMAP state proof.",
+    "Full saved ring has damaged records. Raw bytes and LF boundaries were preserved without repair.",
+    "No KSEA fault record remains; this does not prove that earlier SEA is fixed or that all abnormalities have one GPU cause.",
+    "Fresh source metadata equality is not an atomic lifetime/firmware ACL/GPU quiescence/complete coverage proof.",
+    "The next same-Image ordinary temporary-boot control will test default-off kernel behavior and stock modules, not kexec handoff."
+  ]
+}

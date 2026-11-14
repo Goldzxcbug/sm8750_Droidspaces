@@ -1,0 +1,95 @@
+{
+  "definition": "LF uses byte0x0a only. Payload hex is exact and excludes LF; record hashes include an existing delimiter. No bytes repaired or reconstructed.",
+  "records": [
+    {
+      "label": "unattributed_damaged_console_fragment",
+      "source": "round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+      "LF": 1,
+      "byte_offset": 0,
+      "end_exclusive_including_existing_LF": 5,
+      "record_sha256": "964013246f5d1f990fed0534fb6337c41ddeccf03d374ba8e98387ecda010d90",
+      "payload_hex": "6f6f740e",
+      "ascii_escaped_display": "oot\u000e"
+    },
+    {
+      "label": "unattributed_damaged_console_fragment",
+      "source": "round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+      "LF": 2,
+      "byte_offset": 5,
+      "end_exclusive_including_existing_LF": 86,
+      "record_sha256": "6e5d2e0133210dd859df7aee5ff9c88dd6ac2e3cbf4429cb5019009fdbb968e6",
+      "payload_hex": "5920202020302e1811353332364d5b2020202054315d20696e69743a20506d7273696e672066696845202f76656e646f722f6574432f696e61742f68772f696e61742e7154692e7566732e76432e2e2e",
+      "ascii_escaped_display": "Y    0.\u0018\u00115326M[    T1] init: Pmrsing fihE /vendor/etC/inat/hw/inat.qTi.ufs.vC..."
+    },
+    {
+      "label": "unattributed_damaged_console_fragment",
+      "source": "round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+      "LF": 1097,
+      "byte_offset": 108121,
+      "end_exclusive_including_existing_LF": 108262,
+      "record_sha256": "d033e81cc646bfe47f0271522b0b2fe3af15c4fe2668e554b769e5366a743594",
+      "payload_hex": "5b20202020312e3832353936325d5b2020543732395d205b4553524f521d3a204f504c55535e4348475b43484757434f4d4d5d285b6f706c75735f636f6d6d5f70617273655f64745d5b393339375d293a20676574206f706c75735f737065632c776c732d2666632d26762d6375746f66662d6d762070726f7065727479206572726f722c2072633d2d3232",
+      "ascii_escaped_display": "[    1.825962][  T729] [ESROR\u001d: OPLUS^CHG[CHGWCOMM]([oplus_comm_parse_dt][9397]): get oplus_spec,wls-&fc-&v-cutoff-mv property error, rc=-22"
+    },
+    {
+      "label": "unattributed_damaged_console_fragment",
+      "source": "round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+      "LF": 1413,
+      "byte_offset": 144839,
+      "end_exclusive_including_existing_LF": 144997,
+      "record_sha256": "7e1d646a8f669b92d9365da1953e92b5078d62c06f40cf9f17aca2dce705dce8",
+      "payload_hex": "1b20202020342e3039383139355d5b2020202054315d00694e69743a20430f756c64406e6f742072657374617274202772757357696669426f6f70436865636b253a0043616e6e6f742060696e6420252c7379537445695f6558742f62696e2f690e69742e7379732e6f706c75732e776926692c527573557067706764656e7368273a204a6f20737563682066696c65206f72206469726563744d7279",
+      "ascii_escaped_display": "\u001b    4.098195][    T1]\u0000iNit: C\u000fuld@not restart 'rusWifiBoopCheck%:\u0000Cannot `ind %,syStEi_eXt/bin/i\u000eit.sys.oplus.wi&i,RusUpgpgdensh': Jo such file or directMry"
+    },
+    {
+      "label": "unattributed_damaged_console_fragment",
+      "source": "round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+      "LF": 1423,
+      "byte_offset": 146001,
+      "end_exclusive_including_existing_LF": 146295,
+      "record_sha256": "f81d0254686be944c67e2b862a2d8a8aff7988ff6e665e53f605df0f4841d96e",
+      "payload_hex": "5b20202020342e3232333439325d5b2020202054315d20696e69743a20436f756c64206e6f742072657374617274202776656e646f722e63327061273a2043616e6e6f742066696e6420272f76656e646f722f62696e2f68772f76656e646f722e7174692e68617264776172652e633270612d6169646c2d736572766963652d717469273a204e6f20737563682066696c65206f72206469726563746f3279025b20206020342e3031393030354d5b2020501213355d205b4552524f525c32204b500455531f4348475b4d4d535f474155474559285a4f706c75735f6d6d335f6761756765574b6e087457774f626b415b322925385d09382067613567454f69615b6f706875732c6669721475616c1f67617567655d203020494c4974006c496d654f7574",
+      "ascii_escaped_display": "[    4.223492][    T1] init: Could not restart 'vendor.c2pa': Cannot find '/vendor/bin/hw/vendor.qti.hardware.c2pa-aidl-service-qti': No such file or directo2y\u0002[  ` 4.019005M[  P\u0012\u00135] [ERROR\\2 KP\u0004US\u001fCHG[MMS_GAUGEY(ZOplus_mm3_gaugeWKn\btWwObkA[2)%8]\t8 ga5gEOia[ophus,fir\u0014ual\u001fgauge] 0 ILIt\u0000lImeOut"
+    },
+    {
+      "label": "unattributed_damaged_console_fragment",
+      "source": "round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+      "LF": 2246,
+      "byte_offset": 261860,
+      "end_exclusive_including_existing_LF": 262000,
+      "record_sha256": "bdf98d87638b759d9f6788abbbf55171e8b1f255de8839e82a89d191085c3f56",
+      "payload_hex": "5320202011322a3132303636345d5b2020202043375c20435059203720435572726566782028636f6d653d656676656e54642c207069443d35373129207370202810786666646664666330383030336230103029206e6f7420696e2072616e676520283078666666666466e13018324136303030302c202b307834303030292c2072657435726e696e672e",
+      "ascii_escaped_display": "S   \u00112*120664][    C7\\ CPY 7 CUrrefx (come=efvenTd, piD=571) sp (\u0010xffdfdfc08003b0\u00100) not in range (0xffffdf\\xe10\u00182A60000, +0x4000), ret5rning."
+    },
+    {
+      "label": "unattributed_damaged_console_fragment",
+      "source": "round42/recovery-after-fastboot/first-post-exec-pstore.stdout.bin",
+      "LF": 2247,
+      "byte_offset": 262000,
+      "end_exclusive_including_existing_LF": 262132,
+      "record_sha256": "8e011c8e2d064d19a21904d06b632657c62ade922b3b4da1d9354b3cf8d5805a",
+      "payload_hex": "5b20202031322e3132303633315d5b2020202043165d0043505520362043757272654e742028735469636b5f766d5f617265413d666666e66666383033653331303930200c20737461636b3d666666666666633038303136383030302c00735461636b5f724566636f756e743d31292069732069686c652c2072657475706e296e272e02",
+      "ascii_escaped_display": "[   12.120631][    C\u0016]\u0000CPU 6 CurreNt (sTick_vm_areA=fff\\xe6ff803e31090 \f stack=ffffffc080168000,\u0000sTack_rEfcount=1) is ihle, retupn)n'.\u0002"
+    },
+    {
+      "label": "preexecute_stock_history_not_target",
+      "source": "round42/pstore-before-exec.txt",
+      "LF": 59,
+      "byte_offset": 14943,
+      "end_exclusive_including_existing_LF": 15080,
+      "record_sha256": "090f488e279d81511448a436f60a9e3c87157e87e0a235ec1e651d8304b13d2c",
+      "payload_hex": "5b20313738372e3239323438375d5b2020202054315d204350553a2035205049443a203120436f6d6d3a20696e6974205461696e7465643a204720202020202020205720204f20202020202020362e362e38392d476f6c645f6275672023312039333166383963363436336136616630656561393433366236316630353966333165343531663661",
+      "ascii_escaped_display": "[ 1787.292487][    T1] CPU: 5 PID: 1 Comm: init Tainted: G        W  O       6.6.89-Gold_bug #1 931f89c6463a6af0eea9436b61f059f31e451f6a"
+    },
+    {
+      "label": "preexecute_stock_history_not_target",
+      "source": "round42/pstore-before-exec.txt",
+      "LF": 258,
+      "byte_offset": 50572,
+      "end_exclusive_including_existing_LF": 50709,
+      "record_sha256": "3fd3e71b0747041b2c6706da62308083b025d3cd8d10164dcb1d009f9d4a4499",
+      "payload_hex": "5b20313738372e3239393230395d5b2020202054315d204350553a2035205049443a203120436f6d6d3a20696e6974205461696e7465643a204720202020202020205720204f20202020202020362e362e38392d476f6c645f6275672023312039333166383963363436336136616630656561393433366236316630353966333165343531663661",
+      "ascii_escaped_display": "[ 1787.299209][    T1] CPU: 5 PID: 1 Comm: init Tainted: G        W  O       6.6.89-Gold_bug #1 931f89c6463a6af0eea9436b61f059f31e451f6a"
+    }
+  ]
+}

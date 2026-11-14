@@ -1,0 +1,108 @@
+{
+  "status": "NORMAL_BOOT_REFERENCE_ZERO_PHY_WORDS_AUX_SUCCESS_KEXEC_CAUSE_UNRESOLVED",
+  "test_kind": "normal_bootloader_boot_builtin_observer_reference",
+  "immutable_inputs_sha256": {
+    "round22/device-test.json": "ce90b8c61f905909dce7ab00a428841d15bd23fdc9b4527c645f1aa279089ae6",
+    "round22/recovery-readonly.json": "5874c89d7f83dd1fe3c82e7c00a5025c6fa4991aac8bc2221982e3adcbc709c3",
+    "round22/observed-dmesg.txt": "f6f3fd7e9fad59f3e12a1010d098f6990a59797fcc0703909594dd9d6ed594b7",
+    "round22/observed-fdt.bin": "14c0a04bdc2714969f1722883ffe50e9cd7f9cdd9bfa865d41b3ce538f3672c4",
+    "ufs-cold-builtin/manifest.json": "f94f11464a17af5c2706320b7ee881a0ba92f0331235f72aaf3f5e6376677a9c",
+    "ufs-cold-builtin/kexec-ufs-cold-builtin-diag-boot.img": "40bf9f9505699894a2220c08815fc746eae85dabebebd9a4d42d3ecfca42c32d",
+    "ufs-cold-builtin-root-review/image-and-boot-audit.json": "2286c0fb9f53df8de97830b92ba63a15a3aa29310d1c2fe9917552baab392244",
+    "ufs-cold-builtin-root-review/final-binding-audit.json": "0128f460af0cb9af0acf319d1e124d1750e1425125baf31ce870e5b2fe11400d",
+    "ufs-phy-builtin-observer-independent-review/audit.json": "eded8a807af88d9af69cdbbd1b50ce36e8a29244518b793e19e6852a30919d57",
+    "ufs-phy-builtin-observer-independent-review/round22-evidence.json": "a31dd9c17e19ac831084aeb23d3fa0524d13a9b92029c9357ae7f4b591625dbe",
+    "ufs-cold-builtin-runtime-review/round22-runtime-binding.json": "28f1fa501aa02e7599080941cda713617646a0e5a347cae7790e535ab72910d6",
+    "round20/review.json": "b634dd8504f8bcda027557d53790db8a933e92a600c43744c7f0b34c2c1d36c1",
+    "round20/pstore-after-exec.txt": "2ec5a2362b57f3fa0fc79f1c09bde30c82938b7a51d46ab4c5d36a18602bdd60"
+  },
+  "authoritative_patch": {
+    "path": "other_patch/kexec_ufs_phy_cold_builtin_diag_6.6.89.patch",
+    "sha256": "a2b60282c247d3962add71e2b6b2ab8a4b5813f85eb72553d84133e4546f51e3"
+  },
+  "main_kabi_patch_sha256": "2ff710c967cfdf8cf8247ac71d95d061fe93709730373f5d530cca42e55588b7",
+  "repository_kernel_status_empty": true,
+  "counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 0,
+    "load_request_count": 0,
+    "execute_request_count": 0,
+    "recovery_reboot_request_count": 1
+  },
+  "normal_reference": {
+    "boot_id": "d4a82171-28f6-4fb3-812d-6bfb3ea3388e",
+    "kernel": "6.6.89-Gold_Bug_kexec_ufs_cold_builtin_diag",
+    "build_ids": [
+      "f29c7de230e4cb44d0192b4fc0d9eaa0a427ceef"
+    ],
+    "module_build_ids": {
+      "phy_qcom_ufs": [
+        "da0d45e45f727c03861320cf4132255b22a0cf5c"
+      ],
+      "ufs_qcom": [
+        "a0f190cdb34943457dc4f4642b720838e77acda3"
+      ],
+      "gcc_sun": [
+        "fd0294bddc6fc79a28a1a6826e5328eee01567cb"
+      ]
+    },
+    "observer_records": [
+      {
+        "LF": 304,
+        "raw_ascii_excluding_LF": "[    0.045283] KUFSCOLD1 action=notifier-ready ret=0"
+      },
+      {
+        "LF": 1321,
+        "raw_ascii_excluding_LF": "[    0.598204] KUFSCOLD1 action=installed module=phy_qcom_ufs build_id=da0d45e45f727c03861320cf4132255b22a0cf5c sites=4 phy_mem=01d80000 size=2000"
+      },
+      {
+        "LF": 2278,
+        "raw_ascii_excluding_LF": "[    0.809677] KUFSCOLD1 stage=post-power-control action=read-enter sample=1 generation=1"
+      },
+      {
+        "LF": 2279,
+        "raw_ascii_excluding_LF": "[    0.809679] KUFSCOLD1 stage=post-power-control action=read-result sample=1 generation=1 power_down_control=00000000 sw_reset=00000000"
+      },
+      {
+        "LF": 2280,
+        "raw_ascii_excluding_LF": "[    0.809698] KUFSCOLD1 stage=aux-before action=read-enter sample=1 generation=1"
+      },
+      {
+        "LF": 2281,
+        "raw_ascii_excluding_LF": "[    0.809700] KUFSCOLD1 stage=aux-before action=read-result sample=1 generation=1 power_down_control=00000000 sw_reset=00000000"
+      },
+      {
+        "LF": 2282,
+        "raw_ascii_excluding_LF": "[    0.809701] KUFSCOLD1 stage=aux-after action=return sample=1 ret=0 result_path=success-w0"
+      }
+    ],
+    "android_completed": true
+  },
+  "comparison": {
+    "R20": "After kexec the same semantic PHY sampling points expose PDC/SWR zero; AUX leaf enable returns -16 and target Android fails.",
+    "R22": "On a bootloader normal boot both exposed words are zero; associated AUX returns 0, followed by UFS storage enumeration and Android completion.",
+    "inference": "The zero PHY words alone are insufficient to diagnose the kexec failure. The unexplained operational difference is successful versus failed AUX enable.",
+    "not_single_variable_control": true
+  },
+  "next_question": "Does the successful normal AUX request actually execute leaf enable at count zero, or skip because a prior reference/bootloader state already holds it on? Compare the actual CCF path and existing leaf/qref status before further reset changes.",
+  "limits": [
+    "No kexec load or jump occurred in R22; this is not a kexec Android repair.",
+    "No electrical power cycle was performed.",
+    "BCR assertion result/state and the original caller were not sampled in R22; complete reset-sequence equivalence is not proven.",
+    "Root clock enable/off status and callback success do not measure physical oscillation frequency.",
+    "SP heap and TZ buffer isolations remain diagnostic; full handoff repair is unfinished."
+  ],
+  "recovery": {
+    "boot_id": "fad50338-5d3c-4aa7-9214-c2fb58ee47cb",
+    "kernel": "6.6.89-Gold_bug",
+    "build_ids": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "android_completed": true,
+    "root_available": true,
+    "watchdog_disable": "0"
+  },
+  "partition_flashed": false,
+  "watchdog_changed": false,
+  "goal_achieved": false
+}

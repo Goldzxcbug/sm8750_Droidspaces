@@ -1,0 +1,856 @@
+{
+  "status": "HISTORICAL_EVIDENCE_SELECTION_ONLY_NO_LOG_COPY_OR_REWRITE",
+  "created_epoch": 1794662929.694392,
+  "scope": "Existing R1-R35 evidence and handoff document only; no device/build/test/source/log/git mutations.",
+  "max_single_file_bytes": 8388608,
+  "selection_file_count": 37,
+  "selection_total_bytes": 1943358,
+  "copy_contract": [
+    "Copy selected files byte-for-byte; verify stored bytes/SHA256 before and after copy.",
+    "Do not normalize encoding, LF, CR, NUL/control bytes or damaged pstore strings. Raw LF numbering means split on 0x0a only.",
+    "device-test.json is a historical request/identity ledger, not independent proof of hardware quiescence.",
+    "No Image/vmlinux/full source tree/large owner archive is included. References to omitted artifacts remain references, not claimed independently reproduced evidence.",
+    "Git branch/commit/copying is ROOT-owned; this output is only the selection index."
+  ],
+  "groups": [
+    {
+      "key": "01-kcfi-imem",
+      "title": "最初 KCFI 与错误 IMEM／入口插桩",
+      "files": [
+        {
+          "source_path": "out/kexec-boot-fix/previous.patch",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/previous.patch",
+          "bytes": 8633,
+          "sha256": "67647dc02c7ff1ef5fe89e44e5eaac1908a9cceb3f5d68eed126a7c8972ef61a",
+          "role": "保存的旧补丁原文：包含固定 IMEM 与 head.S/cpu-reset.S 插桩；作为错误实现历史，不作为运行指令。",
+          "suggested_export_relative_path": "history/01-kcfi-imem/previous.patch",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/validation.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/validation.json",
+          "bytes": 3280,
+          "sha256": "c0b33fc679645d60be8512f12134beefb29cbf708d2a546d57a88e629657921b",
+          "role": "初期修正总结、物理间接调用/KCFI检查及正常启动回归边界；其中后续更新也须按原文区分。",
+          "suggested_export_relative_path": "history/01-kcfi-imem/validation.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/machine_kexec.disasm",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/machine_kexec.disasm",
+          "bytes": 35476,
+          "sha256": "f5c994f6b313343e5c748a7debf688245000b41dc123908455c804e9dd067b85",
+          "role": "保存的机器码反汇编，与原始validation配读；不独立认定为旧版现场或唯一根因。",
+          "suggested_export_relative_path": "history/01-kcfi-imem/machine_kexec.disasm",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/machine_kexec-linked.asm",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/machine_kexec-linked.asm",
+          "bytes": 9786,
+          "sha256": "887f665c8d0d0ca450b85814b2fba3bf027a7ee83172489e67a0228706628ac1",
+          "role": "最终链接交接函数的反汇编证据，配合validation的两处物理调用结论。",
+          "suggested_export_relative_path": "history/01-kcfi-imem/machine_kexec-linked.asm",
+          "copy_verbatim_no_text_normalization": true
+        }
+      ],
+      "can_prove": [
+        "旧补丁曾向0x6814e000假定IMEM位置写标记，并修改正常primary_entry；初期validation记录实际DT窗口不同及这些插桩被删除。",
+        "局部__nocfi修正针对物理地址间接调用/拷贝搬运代码前没有KCFI类型字的问题；修正后的正常临时启动通过。"
+      ],
+      "cannot_prove": [
+        "不能把正常启动或ABI/KCFI局部检查当作完整kexec成功或所有后续诊断无回归的证明。",
+        "这些文件不是授权重新运行旧插桩；旧假定IMEM地址不可复用，保存的反汇编也不能替代当前镜像身份。"
+      ]
+    },
+    {
+      "key": "02-target-entry",
+      "title": "目标入口、原primary路径与MMU前边界",
+      "files": [
+        {
+          "source_path": "out/kexec-boot-fix/round2/pstore-after-exec.txt",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round2/pstore-after-exec.txt",
+          "bytes": 262132,
+          "sha256": "c5e8a4656030408fbdef44348a198761541deff4fc6af1d09ef4c927c0c9a6d5",
+          "role": "原始pstore，尾部KEXEC_FILE_PROBE stage=target-entry。",
+          "suggested_export_relative_path": "history/02-target-entry/round2__pstore-after-exec.txt",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round2/device-test.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round2/device-test.json",
+          "bytes": 4766,
+          "sha256": "7143af6dbf4c4397e6497b2f6fec36089db300515be6ee44abe7fb2749bb07df",
+          "role": "该次源/目标身份、探针、唯一execute和恢复状态归属。",
+          "suggested_export_relative_path": "history/02-target-entry/round2__device-test.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round3/pstore-after-exec.txt",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round3/pstore-after-exec.txt",
+          "bytes": 262132,
+          "sha256": "120ab81e817ca17ade01a15c897c9983adc1147044ed64122d84cda9549538c2",
+          "role": "原始pstore，保存KEXEC_EARLY_V2七个入口至before-enable-mmu标记。",
+          "suggested_export_relative_path": "history/02-target-entry/round3__pstore-after-exec.txt",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round3/device-test.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round3/device-test.json",
+          "bytes": 3904,
+          "sha256": "ac5a95b65406f100f6a26afba4cc697dd4e2053ebbe00fd27c71de08ff010c7f",
+          "role": "R3实际镜像/启动会话/执行次数和探针范围。",
+          "suggested_export_relative_path": "history/02-target-entry/round3__device-test.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round3/target-ready.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round3/target-ready.json",
+          "bytes": 1479,
+          "sha256": "e0c2ba36c857144a474f0113e2f50cd1508aaa62c49d76dfad790720d0d93437",
+          "role": "R3主机准备输入/地址/探针身份，不把标记当未修改镜像的普遍行为。",
+          "suggested_export_relative_path": "history/02-target-entry/round3__target-ready.json",
+          "copy_verbatim_no_text_normalization": true
+        }
+      ],
+      "can_prove": [
+        "R2搬运后确曾进入专用目标入口见证。",
+        "R3保存target-entry、mmu-state-recorded、boot-args-preserved、idmap-created、exception-level-ready、cpu-setup-returned和before-enable-mmu。"
+      ],
+      "cannot_prove": [
+        "最后标记位于转入原enable_mmu之前，不能证明该函数返回、虚拟start_kernel或完整Android成功。",
+        "这是当时带专用见证的镜像组合，不能泛化到后来的全部Image；未纳入R4共享MMU钩子结果作为无干扰证明。"
+      ]
+    },
+    {
+      "key": "03-r7-secure-sp",
+      "title": "R7 安全 SP carveout 首次清页异常",
+      "files": [
+        {
+          "source_path": "out/kexec-boot-fix/round7/pstore-after-exec.txt",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round7/pstore-after-exec.txt",
+          "bytes": 30894,
+          "sha256": "835679c7aef72d4b3e1252630836fac9e39c8c08322625dd099f709a5517b1f5",
+          "role": "完整保留的原始目标异常console。",
+          "suggested_export_relative_path": "history/03-r7-secure-sp/round7__pstore-after-exec.txt",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round7/device-test.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round7/device-test.json",
+          "bytes": 4738,
+          "sha256": "8653053367f7bf79d2c41be1920dd80346e10a0a2d9ccedc4e1f000c1302f43d",
+          "role": "F93目标身份、单次执行和恢复归属。",
+          "suggested_export_relative_path": "history/03-r7-secure-sp/round7__device-test.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round7-dma-review/audit.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round7-dma-review/audit.json",
+          "bytes": 7054,
+          "sha256": "b290b215cca405d964fe9325220afc989733631900ea4062e4eaa17c9aa4d175",
+          "role": "实际厂商DMA堆代码/调用与DT的离线关联审阅。",
+          "suggested_export_relative_path": "history/03-r7-secure-sp/round7-dma-review__audit.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round7-dma-review/module-provenance.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round7-dma-review/module-provenance.json",
+          "bytes": 1018,
+          "sha256": "7bb57e0552d02e11d3f379011ef4522be99b502664a478cabcf530915d0a2b7b",
+          "role": "上述实际模块的来源/SHA/GNU身份。",
+          "suggested_export_relative_path": "history/03-r7-secure-sp/round7-dma-review__module-provenance.json",
+          "copy_verbatim_no_text_normalization": true
+        }
+      ],
+      "can_prove": [
+        "F93目标约1.175秒创建qcom,secure-sp-tz时发生同步外部访问异常；审阅把原清零路径与0x9b280000/256KiB carveout关联。"
+      ],
+      "cannot_prove": [
+        "没有当时EL2/TZ实时ACL或owner查询，不能把安全归属假设写成整个kexec唯一根因。",
+        "坏字按原样保留，不能修补寄存器/指令后再宣称完整现场。"
+      ]
+    },
+    {
+      "key": "04-r11-tz-cma",
+      "title": "R11 CMA清页与后续R13 TZ分配正记录",
+      "files": [
+        {
+          "source_path": "out/kexec-boot-fix/round11/pstore-after-exec.txt",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round11/pstore-after-exec.txt",
+          "bytes": 31250,
+          "sha256": "9dc9115f81e88fe7383a668827379cb9bc3f1c2bda77a0a0c56ff4ab7a2f4b1a",
+          "role": "原始clear_page/minidump/CMA异常console。",
+          "suggested_export_relative_path": "history/04-r11-tz-cma/round11__pstore-after-exec.txt",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round11/device-test.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round11/device-test.json",
+          "bytes": 6442,
+          "sha256": "18b623df6bc69ff82d3f4396bdba271d9b024819a033d2115b3f236f925a6344",
+          "role": "单次SP隔离实验身份/请求/恢复归属。",
+          "suggested_export_relative_path": "history/04-r11-tz-cma/round11__device-test.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/secure-heap-skip-review/round11-evidence.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/secure-heap-skip-review/round11-evidence.json",
+          "bytes": 15361,
+          "sha256": "eff6f896a8ff1ecfa645b904a60575083168965877df0302bd30f52b08f423e1",
+          "role": "两SP堆隔离后仍失败、CMA范围/故障PA及边界的窄审。",
+          "suggested_export_relative_path": "history/04-r11-tz-cma/secure-heap-skip-review__round11-evidence.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round13/cma-trace-instance.txt",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round13/cma-trace-instance.txt",
+          "bytes": 158906,
+          "sha256": "7680421e3cebfe5810a723610de7d6f0b4579bfd03eba5f72b3b1ca7b499864d",
+          "role": "后续新源启动的原始专用CMA trace，含tz_log_probe栈和分配PFN。",
+          "suggested_export_relative_path": "history/04-r11-tz-cma/round13__cma-trace-instance.txt",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round13-cma-review/trace-evidence.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round13-cma-review/trace-evidence.json",
+          "bytes": 11955,
+          "sha256": "844ae4cefc7a82f6ce9c43068c7a970c1cc2eb59f20b6e68950c11405d40109e",
+          "role": "trace完整计数、stack/release配对与无overrun/dropped的独立审阅。",
+          "suggested_export_relative_path": "history/04-r11-tz-cma/round13-cma-review__trace-evidence.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round13/tz-log-live-descriptors.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round13/tz-log-live-descriptors.json",
+          "bytes": 1687,
+          "sha256": "6ae4624ece0e1a2b6592e41a18cc3ef3f954ef8ea11050e50189b3fe2e4ffac1",
+          "role": "该R13启动中四个普通TZ descriptor PA/size与trace的核对。",
+          "suggested_export_relative_path": "history/04-r11-tz-cma/round13__tz-log-live-descriptors.json",
+          "copy_verbatim_no_text_normalization": true
+        }
+      ],
+      "can_prove": [
+        "R11仅禁用两个SP heap后，qcom_dma_heaps已过，随后minidump经默认CMA分配清页，在PA0xecca0000发生SEA。",
+        "R13新源的完整trace在该PA记录tz_log_probe分配，并有四个同驱动buffer/descriptor相符的正证。"
+      ],
+      "cannot_prove": [
+        "R13是另一源启动；同PA不能追认为R11实时owner硬证明。",
+        "Linux分配记录和普通descriptor不查询固件ACL，不证明unregister/交接完成，也不证明所有CMA范围均安全。"
+      ]
+    },
+    {
+      "key": "05-r14-ufs",
+      "title": "R14 四TZ保留后越过旧CMA故障，转到UFS",
+      "files": [
+        {
+          "source_path": "out/kexec-boot-fix/round14/pstore-after-exec.txt",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round14/pstore-after-exec.txt",
+          "bytes": 262132,
+          "sha256": "63767893c8db2249b2b41e16604ade568eb16f165513616b5047962baeb303f3",
+          "role": "原始目标console，含minidump加载成功、UFS辅助时钟失败及init退出。",
+          "suggested_export_relative_path": "history/05-r14-ufs/round14__pstore-after-exec.txt",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round14/device-test.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round14/device-test.json",
+          "bytes": 6635,
+          "sha256": "db2adaa4629c8dbb0e287f014cc4ac8dee29e22eac9ffa36243806d0caaf6da1",
+          "role": "源842/目标F93与单次请求、恢复归属。",
+          "suggested_export_relative_path": "history/05-r14-ufs/round14__device-test.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/tz-log-preserve-review/round14-evidence.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/tz-log-preserve-review/round14-evidence.json",
+          "bytes": 31675,
+          "sha256": "bc0b45ec12b50dbcb48478807b017e57f141364495b7f94059bdb3fade9e06c6",
+          "role": "该次实际阶段、UFS失败和坏行边界的窄审。",
+          "suggested_export_relative_path": "history/05-r14-ufs/tz-log-preserve-review__round14-evidence.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round14/tzlog-preservation-loaded-dtb-audit.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round14/tzlog-preservation-loaded-dtb-audit.json",
+          "bytes": 3807,
+          "sha256": "09c607bdf5f9a5471c1b327b844a246acb941c233df895896d31248be8662623",
+          "role": "四个当前源TZ范围在实际装载目标DT中no-map的外部检查。",
+          "suggested_export_relative_path": "history/05-r14-ufs/round14__tzlog-preservation-loaded-dtb-audit.json",
+          "copy_verbatim_no_text_normalization": true
+        }
+      ],
+      "can_prove": [
+        "本次装载DT保留四个源TZ缓冲后，F93的minidump在1.054秒明确加载成功，随后UFS aux失败−16/UFS−5、first-stage mount失败及PID1 panic。"
+      ],
+      "cannot_prove": [
+        "不能将变化的时间线直接认作完整TZ功能修复或唯一因果；这仍是保留隔离实验。",
+        "装载前DT审计不是搬运后全量hash或目标固件ACL证明。"
+      ]
+    },
+    {
+      "key": "06-r24-clock-bypass",
+      "title": "R24 越过AUX软件等待和原BCR释放",
+      "files": [
+        {
+          "source_path": "out/kexec-boot-fix/round24/pstore-after-exec.txt",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round24/pstore-after-exec.txt",
+          "bytes": 211045,
+          "sha256": "3fd849fec08f76c95b780c109d8976d5603985e133e001379109054eb2ca7faf",
+          "role": "原始目标console，包含HALT_SKIP后进展及随后SEA截尾。",
+          "suggested_export_relative_path": "history/06-r24-clock-bypass/round24__pstore-after-exec.txt",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round24/device-test.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round24/device-test.json",
+          "bytes": 8858,
+          "sha256": "233e0ee85866f83262d0a40be1ab068c6c065e14b84e7d903d3a2dc902e52312",
+          "role": "该次诊断模块/镜像/唯一执行及恢复归属。",
+          "suggested_export_relative_path": "history/06-r24-clock-bypass/round24__device-test.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round24/review.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round24/review.json",
+          "bytes": 6462,
+          "sha256": "5cd853af309937fb007adaee47ecf7d9b91056a14cf61891d6662e1774ebbfd9",
+          "role": "ROOT当次汇总和输入哈希。",
+          "suggested_export_relative_path": "history/06-r24-clock-bypass/round24__review.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/ufs-aux-halt-skip-review/round24-evidence.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/ufs-aux-halt-skip-review/round24-evidence.json",
+          "bytes": 24228,
+          "sha256": "e8fbc2aeafd30982da472d44b46fd4383b7bca17af9c08b675d42c3a0197dbf7",
+          "role": "关键LF/完整与受损行界限、对照R20的窄证据。",
+          "suggested_export_relative_path": "history/06-r24-clock-bypass/ufs-aux-halt-skip-review__round24-evidence.json",
+          "copy_verbatim_no_text_normalization": true
+        }
+      ],
+      "can_prove": [
+        "单叶HALT_SKIP后保存leaf callback0、PHY power-on0、原BCR deassert成功和HW_VERSION60010000，已越过旧−16软件阻断。",
+        "其后1.828530秒保存SEA标题，console在后续上下文前截尾。"
+      ],
+      "cannot_prove": [
+        "SKIP返回0不是物理时钟已on证明；它改变错误等待行为而非仅打印。",
+        "该SEA没有PC/FAR/栈，不能认定其与R7/R11/R30同根或为独立PCS故障。"
+      ]
+    },
+    {
+      "key": "07-r30-gpu-secure-page",
+      "title": "R30 实际SEA物理页与同源GPU安全分配历史",
+      "files": [
+        {
+          "source_path": "out/kexec-boot-fix/round30/pstore-after-exec.txt",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round30/pstore-after-exec.txt",
+          "bytes": 117725,
+          "sha256": "bdd8369d15e253c656e7c1e6c456d2a6cf34df5f111a3363ba4d1a94187c281e",
+          "role": "117725B未满环原始目标console，自boot开始，含KSEA/KSEAM完整地址与原Oops栈。",
+          "suggested_export_relative_path": "history/07-r30-gpu-secure-page/round30__pstore-after-exec.txt",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round30/device-test.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round30/device-test.json",
+          "bytes": 10542,
+          "sha256": "2da951e504dfa21fe865c17836345f025a3d638d671e5ae40ed5e104a4542169",
+          "role": "source842 ca9 UUID/target337与单次请求、恢复归属。",
+          "suggested_export_relative_path": "history/07-r30-gpu-secure-page/round30__device-test.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round30/review.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round30/review.json",
+          "bytes": 4347,
+          "sha256": "caa2f44b912b98d9b69f2be93f7e688876954b21f16fb4e0a9f3bd71de9e4c09",
+          "role": "ROOT汇总、故障和原始输入SHA。",
+          "suggested_export_relative_path": "history/07-r30-gpu-secure-page/round30__review.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/sea-memory-runner-review/round30-physical-range-review.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/sea-memory-runner-review/round30-physical-range-review.json",
+          "bytes": 93054,
+          "sha256": "0b64ee85581f41e33f67a43251d7759dede57c6ccfca7e94784ded21371ff4e2",
+          "role": "实际线性映射前提、14个源/目标dynamic pool与全部已知保留区几何边界。",
+          "suggested_export_relative_path": "history/07-r30-gpu-secure-page/sea-memory-runner-review__round30-physical-range-review.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/secure-pool-readonly-review/r30-pfn-884466/lookup.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/secure-pool-readonly-review/r30-pfn-884466/lookup.json",
+          "bytes": 7871,
+          "sha256": "3ff0a846afb503fa2c13f002660af55142cf4385fe0d80627268de21f1f1aab7",
+          "role": "同源部分page_owner归档的唯一PFN匹配、字节偏移、全归档hash与覆盖限制。",
+          "suggested_export_relative_path": "history/07-r30-gpu-secure-page/secure-pool-readonly-review__r30-pfn-884466__lookup.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/secure-pool-readonly-review/r30-pfn-884466/archive-match-1.txt",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/secure-pool-readonly-review/r30-pfn-884466/archive-match-1.txt",
+          "bytes": 807,
+          "sha256": "30922500a4d921b0ac021fb7c18cf8f6d12cb12361695920a9c9e09d946f4ce2",
+          "role": "从原归档抽出的807B完整正匹配记录，保留原分配栈。",
+          "suggested_export_relative_path": "history/07-r30-gpu-secure-page/secure-pool-readonly-review__r30-pfn-884466__archive-match-1.txt",
+          "copy_verbatim_no_text_normalization": true
+        }
+      ],
+      "can_prove": [
+        "目标在0.712秒initramfs unpack/shmem分配路径的clear_page+0x18 DC ZVA发生SEA；实际KSEAM memstart80000000/FAR对应PA0x884466000。",
+        "同源历史page_owner唯一完整记录该PFN由surfaceflinger经过kgsl_system_alloc_pages→kgsl_allocate_secure→kgsl_allocate_global→send_start_msg分配。"
+      ],
+      "cannot_prove": [
+        "page_owner是handoff前非原子历史，不是故障时实时SG/owner/固件ACL；不证明该页一直未释放或GPU是所有后续异常唯因。",
+        "源dump_mem范围的几何重叠不能压过真实分配正记录而断言仍归固件池；target dynamic范围须用本轮完整日志。",
+        "原44MB gzip/约1GB解压归档及11.8MB筛选文本不在≤8MiB导出清单；lookup记录它们的hash/偏移，完整档案仍留本机且源采集exit124非EOF。"
+      ]
+    },
+    {
+      "key": "08-r35-userspace",
+      "title": "R35 用户态异常、部分NOMAP见证与有序重启",
+      "files": [
+        {
+          "source_path": "out/kexec-boot-fix/round35/pstore-after-exec.txt",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round35/pstore-after-exec.txt",
+          "bytes": 262132,
+          "sha256": "85cadf1a801bb592a4335bf2c122ff65ee623aaa8ac955f298ec9c40ee7568a4",
+          "role": "满环原始目标console，含first/second-stage、APEX、KUSR2和boringssl失败重启。",
+          "suggested_export_relative_path": "history/08-r35-userspace/round35__pstore-after-exec.txt",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round35/device-test.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round35/device-test.json",
+          "bytes": 14384,
+          "sha256": "32a70b9b229892094094c7936a7bdebee9d7851e22a6821c85be748640cdb687",
+          "role": "source4424/target68e8、请求/恢复及外部归属。",
+          "suggested_export_relative_path": "history/08-r35-userspace/round35__device-test.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round35/review.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round35/review.json",
+          "bytes": 5517,
+          "sha256": "a5a5cf72f70e52aba3bffd385167126408826b1050d78e8b7178f2ac75799fa8",
+          "role": "ROOT该轮输入、GPU transport/loaded审计与partial后验边界汇总。",
+          "suggested_export_relative_path": "history/08-r35-userspace/round35__review.json",
+          "copy_verbatim_no_text_normalization": true
+        },
+        {
+          "source_path": "out/kexec-boot-fix/round35-independent-raw-review/audit.json",
+          "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round35-independent-raw-review/audit.json",
+          "bytes": 11244,
+          "sha256": "51ebc5253f03b378b49830f8c37667a4c0a1319fa59833a414cdf63976f9eb28",
+          "role": "独立raw LF/hex/hash、损坏KUSR2及nonce缺席的严格复核。",
+          "suggested_export_relative_path": "history/08-r35-userspace/round35-independent-raw-review__audit.json",
+          "copy_verbatim_no_text_normalization": true
+        }
+      ],
+      "can_prove": [
+        "目标保存first-stage完成、SELinux/second-stage和APEX bootstrap进展，随后用户DABT/linkerconfig或modprobe异常正记录，并明确boringssl-self-check-failed有序重启。",
+        "装载前缓存/chosen/主机9段blob一致的外部记录存在；raw中只有NOMAP位图完整，部分reserved/摘要字段和取指行损坏。"
+      ],
+      "cannot_prove": [
+        "nonce未留存，不能以raw本身声称完整本轮隔离PASS；不得把坏reserved位图或取指字修成完整。",
+        "恢复后普通linker文件的条件offset映射不是target live指令或TLS根因证明；不能宣布GPU/TLS/全部SEA已修复。"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "source_path": "out/kexec-boot-fix/previous.patch",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/previous.patch",
+      "bytes": 8633,
+      "sha256": "67647dc02c7ff1ef5fe89e44e5eaac1908a9cceb3f5d68eed126a7c8972ef61a",
+      "role": "保存的旧补丁原文：包含固定 IMEM 与 head.S/cpu-reset.S 插桩；作为错误实现历史，不作为运行指令。",
+      "suggested_export_relative_path": "history/01-kcfi-imem/previous.patch",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "01-kcfi-imem"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/validation.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/validation.json",
+      "bytes": 3280,
+      "sha256": "c0b33fc679645d60be8512f12134beefb29cbf708d2a546d57a88e629657921b",
+      "role": "初期修正总结、物理间接调用/KCFI检查及正常启动回归边界；其中后续更新也须按原文区分。",
+      "suggested_export_relative_path": "history/01-kcfi-imem/validation.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "01-kcfi-imem"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/machine_kexec.disasm",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/machine_kexec.disasm",
+      "bytes": 35476,
+      "sha256": "f5c994f6b313343e5c748a7debf688245000b41dc123908455c804e9dd067b85",
+      "role": "保存的机器码反汇编，与原始validation配读；不独立认定为旧版现场或唯一根因。",
+      "suggested_export_relative_path": "history/01-kcfi-imem/machine_kexec.disasm",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "01-kcfi-imem"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/machine_kexec-linked.asm",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/machine_kexec-linked.asm",
+      "bytes": 9786,
+      "sha256": "887f665c8d0d0ca450b85814b2fba3bf027a7ee83172489e67a0228706628ac1",
+      "role": "最终链接交接函数的反汇编证据，配合validation的两处物理调用结论。",
+      "suggested_export_relative_path": "history/01-kcfi-imem/machine_kexec-linked.asm",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "01-kcfi-imem"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round2/pstore-after-exec.txt",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round2/pstore-after-exec.txt",
+      "bytes": 262132,
+      "sha256": "c5e8a4656030408fbdef44348a198761541deff4fc6af1d09ef4c927c0c9a6d5",
+      "role": "原始pstore，尾部KEXEC_FILE_PROBE stage=target-entry。",
+      "suggested_export_relative_path": "history/02-target-entry/round2__pstore-after-exec.txt",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "02-target-entry"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round2/device-test.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round2/device-test.json",
+      "bytes": 4766,
+      "sha256": "7143af6dbf4c4397e6497b2f6fec36089db300515be6ee44abe7fb2749bb07df",
+      "role": "该次源/目标身份、探针、唯一execute和恢复状态归属。",
+      "suggested_export_relative_path": "history/02-target-entry/round2__device-test.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "02-target-entry"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round3/pstore-after-exec.txt",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round3/pstore-after-exec.txt",
+      "bytes": 262132,
+      "sha256": "120ab81e817ca17ade01a15c897c9983adc1147044ed64122d84cda9549538c2",
+      "role": "原始pstore，保存KEXEC_EARLY_V2七个入口至before-enable-mmu标记。",
+      "suggested_export_relative_path": "history/02-target-entry/round3__pstore-after-exec.txt",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "02-target-entry"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round3/device-test.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round3/device-test.json",
+      "bytes": 3904,
+      "sha256": "ac5a95b65406f100f6a26afba4cc697dd4e2053ebbe00fd27c71de08ff010c7f",
+      "role": "R3实际镜像/启动会话/执行次数和探针范围。",
+      "suggested_export_relative_path": "history/02-target-entry/round3__device-test.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "02-target-entry"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round3/target-ready.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round3/target-ready.json",
+      "bytes": 1479,
+      "sha256": "e0c2ba36c857144a474f0113e2f50cd1508aaa62c49d76dfad790720d0d93437",
+      "role": "R3主机准备输入/地址/探针身份，不把标记当未修改镜像的普遍行为。",
+      "suggested_export_relative_path": "history/02-target-entry/round3__target-ready.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "02-target-entry"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round7/pstore-after-exec.txt",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round7/pstore-after-exec.txt",
+      "bytes": 30894,
+      "sha256": "835679c7aef72d4b3e1252630836fac9e39c8c08322625dd099f709a5517b1f5",
+      "role": "完整保留的原始目标异常console。",
+      "suggested_export_relative_path": "history/03-r7-secure-sp/round7__pstore-after-exec.txt",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "03-r7-secure-sp"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round7/device-test.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round7/device-test.json",
+      "bytes": 4738,
+      "sha256": "8653053367f7bf79d2c41be1920dd80346e10a0a2d9ccedc4e1f000c1302f43d",
+      "role": "F93目标身份、单次执行和恢复归属。",
+      "suggested_export_relative_path": "history/03-r7-secure-sp/round7__device-test.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "03-r7-secure-sp"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round7-dma-review/audit.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round7-dma-review/audit.json",
+      "bytes": 7054,
+      "sha256": "b290b215cca405d964fe9325220afc989733631900ea4062e4eaa17c9aa4d175",
+      "role": "实际厂商DMA堆代码/调用与DT的离线关联审阅。",
+      "suggested_export_relative_path": "history/03-r7-secure-sp/round7-dma-review__audit.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "03-r7-secure-sp"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round7-dma-review/module-provenance.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round7-dma-review/module-provenance.json",
+      "bytes": 1018,
+      "sha256": "7bb57e0552d02e11d3f379011ef4522be99b502664a478cabcf530915d0a2b7b",
+      "role": "上述实际模块的来源/SHA/GNU身份。",
+      "suggested_export_relative_path": "history/03-r7-secure-sp/round7-dma-review__module-provenance.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "03-r7-secure-sp"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round11/pstore-after-exec.txt",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round11/pstore-after-exec.txt",
+      "bytes": 31250,
+      "sha256": "9dc9115f81e88fe7383a668827379cb9bc3f1c2bda77a0a0c56ff4ab7a2f4b1a",
+      "role": "原始clear_page/minidump/CMA异常console。",
+      "suggested_export_relative_path": "history/04-r11-tz-cma/round11__pstore-after-exec.txt",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "04-r11-tz-cma"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round11/device-test.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round11/device-test.json",
+      "bytes": 6442,
+      "sha256": "18b623df6bc69ff82d3f4396bdba271d9b024819a033d2115b3f236f925a6344",
+      "role": "单次SP隔离实验身份/请求/恢复归属。",
+      "suggested_export_relative_path": "history/04-r11-tz-cma/round11__device-test.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "04-r11-tz-cma"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/secure-heap-skip-review/round11-evidence.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/secure-heap-skip-review/round11-evidence.json",
+      "bytes": 15361,
+      "sha256": "eff6f896a8ff1ecfa645b904a60575083168965877df0302bd30f52b08f423e1",
+      "role": "两SP堆隔离后仍失败、CMA范围/故障PA及边界的窄审。",
+      "suggested_export_relative_path": "history/04-r11-tz-cma/secure-heap-skip-review__round11-evidence.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "04-r11-tz-cma"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round13/cma-trace-instance.txt",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round13/cma-trace-instance.txt",
+      "bytes": 158906,
+      "sha256": "7680421e3cebfe5810a723610de7d6f0b4579bfd03eba5f72b3b1ca7b499864d",
+      "role": "后续新源启动的原始专用CMA trace，含tz_log_probe栈和分配PFN。",
+      "suggested_export_relative_path": "history/04-r11-tz-cma/round13__cma-trace-instance.txt",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "04-r11-tz-cma"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round13-cma-review/trace-evidence.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round13-cma-review/trace-evidence.json",
+      "bytes": 11955,
+      "sha256": "844ae4cefc7a82f6ce9c43068c7a970c1cc2eb59f20b6e68950c11405d40109e",
+      "role": "trace完整计数、stack/release配对与无overrun/dropped的独立审阅。",
+      "suggested_export_relative_path": "history/04-r11-tz-cma/round13-cma-review__trace-evidence.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "04-r11-tz-cma"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round13/tz-log-live-descriptors.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round13/tz-log-live-descriptors.json",
+      "bytes": 1687,
+      "sha256": "6ae4624ece0e1a2b6592e41a18cc3ef3f954ef8ea11050e50189b3fe2e4ffac1",
+      "role": "该R13启动中四个普通TZ descriptor PA/size与trace的核对。",
+      "suggested_export_relative_path": "history/04-r11-tz-cma/round13__tz-log-live-descriptors.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "04-r11-tz-cma"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round14/pstore-after-exec.txt",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round14/pstore-after-exec.txt",
+      "bytes": 262132,
+      "sha256": "63767893c8db2249b2b41e16604ade568eb16f165513616b5047962baeb303f3",
+      "role": "原始目标console，含minidump加载成功、UFS辅助时钟失败及init退出。",
+      "suggested_export_relative_path": "history/05-r14-ufs/round14__pstore-after-exec.txt",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "05-r14-ufs"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round14/device-test.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round14/device-test.json",
+      "bytes": 6635,
+      "sha256": "db2adaa4629c8dbb0e287f014cc4ac8dee29e22eac9ffa36243806d0caaf6da1",
+      "role": "源842/目标F93与单次请求、恢复归属。",
+      "suggested_export_relative_path": "history/05-r14-ufs/round14__device-test.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "05-r14-ufs"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/tz-log-preserve-review/round14-evidence.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/tz-log-preserve-review/round14-evidence.json",
+      "bytes": 31675,
+      "sha256": "bc0b45ec12b50dbcb48478807b017e57f141364495b7f94059bdb3fade9e06c6",
+      "role": "该次实际阶段、UFS失败和坏行边界的窄审。",
+      "suggested_export_relative_path": "history/05-r14-ufs/tz-log-preserve-review__round14-evidence.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "05-r14-ufs"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round14/tzlog-preservation-loaded-dtb-audit.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round14/tzlog-preservation-loaded-dtb-audit.json",
+      "bytes": 3807,
+      "sha256": "09c607bdf5f9a5471c1b327b844a246acb941c233df895896d31248be8662623",
+      "role": "四个当前源TZ范围在实际装载目标DT中no-map的外部检查。",
+      "suggested_export_relative_path": "history/05-r14-ufs/round14__tzlog-preservation-loaded-dtb-audit.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "05-r14-ufs"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round24/pstore-after-exec.txt",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round24/pstore-after-exec.txt",
+      "bytes": 211045,
+      "sha256": "3fd849fec08f76c95b780c109d8976d5603985e133e001379109054eb2ca7faf",
+      "role": "原始目标console，包含HALT_SKIP后进展及随后SEA截尾。",
+      "suggested_export_relative_path": "history/06-r24-clock-bypass/round24__pstore-after-exec.txt",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "06-r24-clock-bypass"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round24/device-test.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round24/device-test.json",
+      "bytes": 8858,
+      "sha256": "233e0ee85866f83262d0a40be1ab068c6c065e14b84e7d903d3a2dc902e52312",
+      "role": "该次诊断模块/镜像/唯一执行及恢复归属。",
+      "suggested_export_relative_path": "history/06-r24-clock-bypass/round24__device-test.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "06-r24-clock-bypass"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round24/review.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round24/review.json",
+      "bytes": 6462,
+      "sha256": "5cd853af309937fb007adaee47ecf7d9b91056a14cf61891d6662e1774ebbfd9",
+      "role": "ROOT当次汇总和输入哈希。",
+      "suggested_export_relative_path": "history/06-r24-clock-bypass/round24__review.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "06-r24-clock-bypass"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/ufs-aux-halt-skip-review/round24-evidence.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/ufs-aux-halt-skip-review/round24-evidence.json",
+      "bytes": 24228,
+      "sha256": "e8fbc2aeafd30982da472d44b46fd4383b7bca17af9c08b675d42c3a0197dbf7",
+      "role": "关键LF/完整与受损行界限、对照R20的窄证据。",
+      "suggested_export_relative_path": "history/06-r24-clock-bypass/ufs-aux-halt-skip-review__round24-evidence.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "06-r24-clock-bypass"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round30/pstore-after-exec.txt",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round30/pstore-after-exec.txt",
+      "bytes": 117725,
+      "sha256": "bdd8369d15e253c656e7c1e6c456d2a6cf34df5f111a3363ba4d1a94187c281e",
+      "role": "117725B未满环原始目标console，自boot开始，含KSEA/KSEAM完整地址与原Oops栈。",
+      "suggested_export_relative_path": "history/07-r30-gpu-secure-page/round30__pstore-after-exec.txt",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "07-r30-gpu-secure-page"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round30/device-test.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round30/device-test.json",
+      "bytes": 10542,
+      "sha256": "2da951e504dfa21fe865c17836345f025a3d638d671e5ae40ed5e104a4542169",
+      "role": "source842 ca9 UUID/target337与单次请求、恢复归属。",
+      "suggested_export_relative_path": "history/07-r30-gpu-secure-page/round30__device-test.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "07-r30-gpu-secure-page"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round30/review.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round30/review.json",
+      "bytes": 4347,
+      "sha256": "caa2f44b912b98d9b69f2be93f7e688876954b21f16fb4e0a9f3bd71de9e4c09",
+      "role": "ROOT汇总、故障和原始输入SHA。",
+      "suggested_export_relative_path": "history/07-r30-gpu-secure-page/round30__review.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "07-r30-gpu-secure-page"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/sea-memory-runner-review/round30-physical-range-review.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/sea-memory-runner-review/round30-physical-range-review.json",
+      "bytes": 93054,
+      "sha256": "0b64ee85581f41e33f67a43251d7759dede57c6ccfca7e94784ded21371ff4e2",
+      "role": "实际线性映射前提、14个源/目标dynamic pool与全部已知保留区几何边界。",
+      "suggested_export_relative_path": "history/07-r30-gpu-secure-page/sea-memory-runner-review__round30-physical-range-review.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "07-r30-gpu-secure-page"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/secure-pool-readonly-review/r30-pfn-884466/lookup.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/secure-pool-readonly-review/r30-pfn-884466/lookup.json",
+      "bytes": 7871,
+      "sha256": "3ff0a846afb503fa2c13f002660af55142cf4385fe0d80627268de21f1f1aab7",
+      "role": "同源部分page_owner归档的唯一PFN匹配、字节偏移、全归档hash与覆盖限制。",
+      "suggested_export_relative_path": "history/07-r30-gpu-secure-page/secure-pool-readonly-review__r30-pfn-884466__lookup.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "07-r30-gpu-secure-page"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/secure-pool-readonly-review/r30-pfn-884466/archive-match-1.txt",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/secure-pool-readonly-review/r30-pfn-884466/archive-match-1.txt",
+      "bytes": 807,
+      "sha256": "30922500a4d921b0ac021fb7c18cf8f6d12cb12361695920a9c9e09d946f4ce2",
+      "role": "从原归档抽出的807B完整正匹配记录，保留原分配栈。",
+      "suggested_export_relative_path": "history/07-r30-gpu-secure-page/secure-pool-readonly-review__r30-pfn-884466__archive-match-1.txt",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "07-r30-gpu-secure-page"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round35/pstore-after-exec.txt",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round35/pstore-after-exec.txt",
+      "bytes": 262132,
+      "sha256": "85cadf1a801bb592a4335bf2c122ff65ee623aaa8ac955f298ec9c40ee7568a4",
+      "role": "满环原始目标console，含first/second-stage、APEX、KUSR2和boringssl失败重启。",
+      "suggested_export_relative_path": "history/08-r35-userspace/round35__pstore-after-exec.txt",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "08-r35-userspace"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round35/device-test.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round35/device-test.json",
+      "bytes": 14384,
+      "sha256": "32a70b9b229892094094c7936a7bdebee9d7851e22a6821c85be748640cdb687",
+      "role": "source4424/target68e8、请求/恢复及外部归属。",
+      "suggested_export_relative_path": "history/08-r35-userspace/round35__device-test.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "08-r35-userspace"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round35/review.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round35/review.json",
+      "bytes": 5517,
+      "sha256": "a5a5cf72f70e52aba3bffd385167126408826b1050d78e8b7178f2ac75799fa8",
+      "role": "ROOT该轮输入、GPU transport/loaded审计与partial后验边界汇总。",
+      "suggested_export_relative_path": "history/08-r35-userspace/round35__review.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "08-r35-userspace"
+    },
+    {
+      "source_path": "out/kexec-boot-fix/round35-independent-raw-review/audit.json",
+      "source_path_absolute": "/home/gold/文档/仓库/sm8750_Droidspaces/out/kexec-boot-fix/round35-independent-raw-review/audit.json",
+      "bytes": 11244,
+      "sha256": "51ebc5253f03b378b49830f8c37667a4c0a1319fa59833a414cdf63976f9eb28",
+      "role": "独立raw LF/hex/hash、损坏KUSR2及nonce缺席的严格复核。",
+      "suggested_export_relative_path": "history/08-r35-userspace/round35-independent-raw-review__audit.json",
+      "copy_verbatim_no_text_normalization": true,
+      "group": "08-r35-userspace"
+    }
+  ],
+  "document_read": {
+    "path": "docs/kexec-handoff-status.md",
+    "role": "Narrative context and section mapping; ROOT is editing handoff docs, so this is not treated as an immutable runtime log."
+  },
+  "excluded_large_artifacts": [
+    {
+      "path": "out/kexec-boot-fix/round30/source-page-owner-archive-before-pool.gz",
+      "reason": "44,098,949B >8MiB; retain original locally, export exact807B positive record+lookup hashes and offsets instead."
+    },
+    {
+      "path": "out/kexec-boot-fix/round30/source-page-owner-security-named-records.txt",
+      "reason": "11,889,196B selected text >8MiB; do not use it as complete source coverage."
+    }
+  ],
+  "actions": {
+    "device_operations": 0,
+    "builds": 0,
+    "tests": 0,
+    "source_or_log_changes": 0,
+    "git_commands_or_mutations": 0,
+    "copied_log_files": 0,
+    "new_file": "out/kexec-handoff-export/history-selection.json"
+  }
+}

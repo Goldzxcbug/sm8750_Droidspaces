@@ -1,0 +1,344 @@
+{
+  "status": "ROUND11_NEW_TARGET_PANIC_EXACT_INSTRUCTION_AND_LINEAR_MAP_PA_VERIFIED",
+  "pstore": {
+    "sha256": "9dc9115f81e88fe7383a668827379cb9bc3f1c2bda77a0a0c56ff4ab7a2f4b1a",
+    "bytes": 31250,
+    "LF_records": 364,
+    "NUL_bytes": 7,
+    "non_TAB_LF_CR_controls": 15,
+    "UTF8_replacements": 2,
+    "corrupt_LF_in_fault_block": [
+      138,
+      148,
+      154
+    ],
+    "limit": "Some bytes/secondary-stop dumps are corrupted. Exact PC/code/clean x8/x21/x23/PHYS_OFFSET records checked; no repair or invented missing panic."
+  },
+  "source_and_requests": {
+    "source_build_id": "218a41818e13202f577a7ef27eca92a55fb84f83",
+    "source_boot_id": "5470e8b2-be0e-4308-bf73-39a03eb0f839",
+    "source_android_boot_completed": true,
+    "source_modules": 695,
+    "temporary_boot": 1,
+    "helper_load": 1,
+    "kexec_load": 1,
+    "execute": 1,
+    "helper_sha256": "e5b99e096424ee14e9a48cf9a47d787e9b98d3f20a2ae66f5fe6d628e42d4d01",
+    "helper_preserve": true,
+    "reverse_SCM_reclaim_by_helper_not_requested": true,
+    "limits": "Target ordinary SCM activity is visible; this does not assert absence of all firmware calls. No source live VMID/owner query in round11."
+  },
+  "target_positive": {
+    "build_id": "f93a5b41fb60172452d1ba9cc767d9014162da82",
+    "run_id": "c1b3e952cbf046ea",
+    "Image_sha256": "7e4f108e6ab0e2b34afe776fb22257c738061ae0adf3626a92ca3d528b7cfaba",
+    "vmlinux_sha256": "d5a86f15aeb41159446ea0363af7d94a9780882d4c7ed3708cf7c3ffd58996a9",
+    "BTF_sha256": "a078618b8e1dc0c2d1c29907e0ff3b929dc47457871e0833d5c990f779fd960c",
+    "config_sha256": "5ca43e0a5fb5817f4fbae59a3a23a5f9d65e6f2c731165a12fee26c91b7232fc",
+    "target_entry_and_userspace_module_loading_established": true,
+    "qcom_dma_heaps_present_without_COMING_plus": {
+      "LF": 137,
+      "record": "[    1.211169][  T186] Modules linked in: minidump(+) qcom_dma_heaps mem_buf_dev oplus_bsp_fpga_monitor(O) qcom_ice secure_buffer qcom_iommu_util mdt_loader ufs_oplus_dbg qcom_scm oplus_bsp_fpga_notify device_info oplus_nfc ua_cpu_ioctl oplus_bsp_boot_projectinfo gh_rm_drv oplus_mdmfeature(O) qcom_cpufreq_hw qcom_spmi_pmic oplus_btuart_ux oplus_bsp_dfr_reboot_speed(O) oplus_bsp_close_loop oplus_bsp_task_sched oplus_f2fslog_storage oplus_bsp_task_cpustats oplus_uprobe thermal_pause phy_qcom_ufs_qrbtc_sdm845 oplus_wq_dynamic_priority gdsc_regulator phy_qcom_ufs_qmp_v4_niobe phy_qcom_ufs_qmp_v4_sun oplus_bsp_qos_sched stub_regulator boot_mode cpucp_fast oplus_bsp_schedinfo msm_performance qcom_pmu_lib qcom_llcc_pmu sched_walt oplus_bsp_task_overload icc_debug qnoc_qos oplusboot nvmem_qcom_spmi_sdam oplus_bsp_frame_boost cpu_phys_log_map gh_arm_drv gh_msgq gh_dbl debug_regulator oplus_bsp_omrg cqhci qti_thermal_vendor_hooks spmi_pmic_arb oplus_bsp_mm_osvelte qti_regmap_debugfs sg msm_dma_iommu_mapping iommu_logger qcom_scmi_client"
+    },
+    "minidump_COMING_plus_and_module_finit_chain": true,
+    "limits": "Two secure heaps were intentionally absent; passing DMA heap module initialization is not restored secure heap service or Android success."
+  },
+  "panic": {
+    "ESR_EL1": "0x96000010",
+    "EC": "0x25 current-EL data abort",
+    "DFSC": "0x10 synchronous external abort",
+    "CPU": 6,
+    "PID": 186,
+    "comm": "init",
+    "timestamp": "1.211136",
+    "site": "clear_page+0x18",
+    "instruction_word": "0xd50b7420",
+    "instruction": "DC ZVA x0",
+    "clear_page_BTI_prefix": true,
+    "logged_five_word_window_matches_F93_ELF": true,
+    "post_alloc_hook_call_offset": "0x160",
+    "logged_return_offset": "0x164",
+    "call_chain": [
+      "clear_page",
+      "split_map_pages",
+      "isolate_freepages_range",
+      "alloc_contig_range",
+      "__cma_alloc",
+      "cma_alloc",
+      "md_register_memory_dump",
+      "md_minidump_memory_init",
+      "msm_minidump_log_init",
+      "msm_minidump_driver_probe",
+      "init_module [minidump]",
+      "finit_module"
+    ],
+    "observed_records": {
+      "kexec_diag.run_id=c1b3e952cbf046ea": [
+        {
+          "LF": 9,
+          "record": "[    0.000000][    T0] Kdrnel Command Line: console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.stacktrace=off kvm-arm.mode=protected bootconfig ioremap_guard kexec_diag.run_id=c1b3e952cbf046ea kexec_diag.early_ramoops=1 kexec_diag.skip_secure_sp_heaps=1 console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.stacktrace=off kvm-arm.mode=protected bootconfig ioremap_guard log_buf_len=512K loglevel=6 cpufreq.default_governor=performance sysctl.kernel.sched_pelt_multiplier=4 no-steal-acc kpti=0 swiotlb=0 loop.max_part=7 irqaffinity=0-1 pcie_ports=compat printk.console_no_auto_verbose=0 kasan=off rcupdate.rcu_expedited=1 rcu_nocbs=0-7 kernel.panic_on_rcu_stall=1 disable_dma32=on cgroup_disable=pressure fw_devlink.strict=1 can.stats_timer=0 pci-msm-drv.pcie_sm_regs=0x1D07000,0x1040,0x1048,0x3000,0x1 ftrace_dump_on_oops slub_debug=- minidump.stack_dump=true video=vfb:640x400,bpp=32,memsize=3072000 log_buf_len=2M nosoftlockup console=ttynull qcom_geni_serial.con_enabled=0 nohugevmalloc bootconfig buildvari"
+        }
+      ],
+      "Internal error: synchronous external abort: 0000000096000010 [#1]": [
+        {
+          "LF": 135,
+          "record": "[    1.211136][  T186] Internal error: synchronous external abort: 0000000096000010 [#1] PREEMPT SMP"
+        }
+      ],
+      "pc : clear_page+0x18/0x50": [
+        {
+          "LF": 142,
+          "record": "[    1.211270][  T186] pc : clear_page+0x18/0x50"
+        }
+      ],
+      "lr : post_alloc_hook+0x164/0x244": [
+        {
+          "LF": 143,
+          "record": "[    1.211286][  T186] lr : post_alloc_hook+0x164/0x244"
+        }
+      ],
+      "clear_page+0x18/0x50": [
+        {
+          "LF": 142,
+          "record": "[    1.211270][  T186] pc : clear_page+0x18/0x50"
+        },
+        {
+          "LF": 156,
+          "record": "[    1.211462][  T186]  clear_page+0x18/0x50"
+        }
+      ],
+      "split_map_pages+0xa0/0x168": [
+        {
+          "LF": 157,
+          "record": "[    1.211475][  T186]  split_map_pages+0xa0/0x168"
+        }
+      ],
+      "isolate_freepages_range+0xf0/0x1a4": [
+        {
+          "LF": 158,
+          "record": "[    1.211490][  T186]  isolate_freepages_range+0xf0/0x1a4"
+        }
+      ],
+      "alloc_contig_range+0x300/0x3d0": [
+        {
+          "LF": 159,
+          "record": "[    1.211504][  T186]  alloc_contig_range+0x300/0x3d0"
+        }
+      ],
+      "__cma_alloc+0x1a8/0x958": [
+        {
+          "LF": 160,
+          "record": "[    1.211517][  T186]  __cma_alloc+0x1a8/0x958"
+        }
+      ],
+      "cma_alloc+0x20/0x30": [
+        {
+          "LF": 161,
+          "record": "[    1.211532][  T186]  cma_alloc+0x20/0x30"
+        }
+      ],
+      "md_register_memory_dump+0x60/0x20c": [
+        {
+          "LF": 162,
+          "record": "[    1.211545][  T186]  md_register_memory_dump+0x60/0x20c [minidump 51c03293594cc8a94c5d4998cf33a952e349bd83]"
+        }
+      ],
+      "md_minidump_memory_init+0x248/0x2b8": [
+        {
+          "LF": 163,
+          "record": "[    1.211568][  T186]  md_minidump_memory_init+0x248/0x2b8 [minidump 51c03293594cc8a94c5d4998cf33a952e349bd83]"
+        }
+      ],
+      "Code: 37200121 12000c21 d2800082 9ac12041 (d50b7420)": [
+        {
+          "LF": 187,
+          "record": "[    1.211910][  T186] Code: 37200121 12000c21 d2800082 9ac12041 (d50b7420) "
+        }
+      ],
+      "Kernel panic - not syncing: synchronous external abort: Fatal exception": [
+        {
+          "LF": 189,
+          "record": "[    1.211937][  T186] Kernel panic - not syncing: synchronous external abort: Fatal exception"
+        }
+      ],
+      "PHYS_OFFSET: 0x80000000": [
+        {
+          "LF": 362,
+          "record": "[    1.214320][  T186] PHYS_OFFSET: 0x80000000"
+        }
+      ]
+    }
+  },
+  "physical_derivation": {
+    "target_PHYS_OFFSET_logged": "0x80000000",
+    "PHYS_OFFSET_is_runtime_memstart_addr": true,
+    "VA_BITS": 39,
+    "PAGE_SHIFT": 12,
+    "PAGE_OFFSET": "0xffffff8000000000",
+    "fault_VA_x0_and_clean_x8": "0xffffff806cca0000",
+    "formula": "VA - PAGE_OFFSET + target PHYS_OFFSET",
+    "expected_PA": "0xecca0000",
+    "VMEMMAP_SHIFT": 6,
+    "VMEMMAP_START": "0xfffffffe00000000",
+    "BTF_struct_page_bytes": 64,
+    "head_struct_page_x21": "0xfffffffe01b30000",
+    "head_relative_page_index": "0x6cc00",
+    "head_expected_PA": "0xecc00000",
+    "fault_offset_pages_from_head": "0xa0",
+    "x23_ASR8_crosscheck": "0xffff806cca000000",
+    "remaining_pages_x22": "0x360",
+    "remaining_plus_observed_offset": "0x400 pages, consistent with order10 isolated free block",
+    "limits": [
+      "Uses target panic runtime PHYS_OFFSET, not source memstart or image KASLR slide.",
+      "No target live PTE/page-table walk was captured; this is expected linear-map PA derivation.",
+      "x20 register line is corrupted; no clean order10 register value is claimed.",
+      "Isolated free-block size is not proof of exact minidump requested allocation size."
+    ]
+  },
+  "CMA_and_regions": {
+    "linux_cma_source_target_properties_equal": true,
+    "CMA_nodes_all_properties_equal_source": [
+      "/reserved-memory/sp_region",
+      "/reserved-memory/qseecom_region",
+      "/reserved-memory/qseecom_ta_region",
+      "/reserved-memory/qdss_apps_region@82800000",
+      "/reserved-memory/trust_ui_vm_region@f3800000",
+      "/reserved-memory/oem_vm_region@f7c00000",
+      "/reserved-memory/vm_comm_mem_region",
+      "/reserved-memory/linux,cma",
+      "/reserved-memory/cdsp_eva_region",
+      "/reserved-memory/adsp_heap_region",
+      "/reserved-memory/non_secure_display_region",
+      "/reserved-memory/va_md_mem_region",
+      "/reserved-memory/qmc_dma_region",
+      "/reserved-memory/secure_cdsp_region",
+      "/reserved-memory/cnss_wlan_region"
+    ],
+    "linux_cma_DT": {
+      "compatible": "7368617265642d646d612d706f6f6c00",
+      "alloc-ranges": "000000000000000000000000ffffffff",
+      "reusable": "",
+      "alignment": "0000000000400000",
+      "size": "0000000002400000",
+      "linux,cma-default": "",
+      "phandle": "00000097"
+    },
+    "linux_cma_size": "0x2400000 (36MiB)",
+    "linux_cma_dynamic_base": true,
+    "source_runtime_reservation": {
+      "base": "0xec800000",
+      "end_exclusive": "0xeec00000",
+      "record": [
+        27,
+        "[    0.000000] OF: reserved mem: 0x00000000ec800000..0x00000000eebfffff (36864 KiB) map reusable linux,cma"
+      ]
+    },
+    "fault_within_source_linux_cma_interval": true,
+    "target_CMA_full_runtime_bounds_observed": false,
+    "actual_minidump_module_sha256": "c3dfd9c9539d74fbd30a0b23936910959561ff31bc41bba172606acb314940fd",
+    "actual_minidump_module_build_id": "51c03293594cc8a94c5d4998cf33a952e349bd83",
+    "module_relocation_evidence": {
+      "md_register_memory_dump+0x28,+0x4c": "load dma_contiguous_default_area",
+      "+0x5c": "BL cma_alloc",
+      "+0x60": "logged return point"
+    },
+    "module_directly_uses_default_CMA_not_dump_mem_region": true,
+    "static_target_reserved_nodes_covering_fault_PA": [],
+    "both_old_secure_carveout_regions_still_reserved_no_map": [
+      {
+        "heap": "/soc/qcom,dma-heaps/qcom,secure_sp_tz",
+        "status": "disabled",
+        "only_status_changed": true,
+        "region": "/reserved-memory/spu_secure_shared_memory_region@9b280000",
+        "base": "0x9b280000",
+        "size": "0x40000",
+        "all_secure_region_attributes_equal_source": true,
+        "region_property_names": [
+          "no-map",
+          "phandle",
+          "reg"
+        ],
+        "region_property_dict_sha256": "c5a2c57494e512be2ea131c9f4c45af0b2dfe66157001c597eba162df402bffe"
+      },
+      {
+        "heap": "/soc/qcom,dma-heaps/qcom,secure_sp_modem",
+        "status": "disabled",
+        "only_status_changed": true,
+        "region": "/reserved-memory/spu_secure_shared_memory_region@9b2c0000",
+        "base": "0x9b2c0000",
+        "size": "0x40000",
+        "all_secure_region_attributes_equal_source": true,
+        "region_property_names": [
+          "no-map",
+          "phandle",
+          "reg"
+        ],
+        "region_property_dict_sha256": "71b92511c0e4e67ea330c2810cecc299300717696d6885527a3fe7530846a442"
+      }
+    ],
+    "dump_mem_region_unchanged_source_target": true,
+    "minidump_DT_nodes_unchanged_source_target": [
+      "/soc/mini_dump_mode",
+      "/soc/va_mini_dump"
+    ],
+    "limits": [
+      "Default CMA is size-only in target DT. Same input properties/source interval do not independently prove identical target dynamic total bounds.",
+      "The high dump_mem_region is unrelated to this observed low default-CMA allocation call.",
+      "Normal allocation/access abort does not identify current owner, VMID or rejecting TZ/EL2/interconnect authority."
+    ]
+  },
+  "ordinary_warning_not_root_cause": {
+    "target_duplicate_proc_at_LF": 85,
+    "same_source_normal_boot_warning": [
+      1535,
+      "[    0.608166] proc_dir_entry '/proc/task_info' already registered"
+    ],
+    "source_minidump_module_success": [
+      1692,
+      "[    0.648006] init: Loaded kernel module /lib/modules/minidump.ko"
+    ],
+    "meaning": "Repeated proc warning is followed by continued initialization; actual fatal is later SEA#1 in clear_page."
+  },
+  "loaded_audit_binding": {
+    "target_DTB_sha256": "030b0642846455f63a2ebcf937b73f9768502e01c30e96061706f66f8a689a2c",
+    "source_FDT_sha256": "951aabdac9155aadffa2f1ad587e3710d4a736e252517ef6bc796bad015951d6",
+    "skip_audit_sha256": "8d008d12a2b2b4dc41b943a435b9f4046849ae19d570641e9599ad97c07695ef",
+    "two_disabled_and_all_secure_properties_rechecked": true,
+    "critical_pages": 20,
+    "GIC_capture_equal": true,
+    "limit": "Pre-relocation source-page audit, not full final target memory checksum."
+  },
+  "outcome": {
+    "stock_boot_id": "255ea9fe-e0b5-4f5f-a6ef-4f8f46e4639c",
+    "stock_build_ids": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "stock_android_boot_completed": true,
+    "target_android_success": false,
+    "ADB_return_after_execute_seconds": 4.527738809585571,
+    "capture_after_execute_seconds": 27.017701625823975,
+    "exact_reset_time_measured": false
+  },
+  "not_proven": [
+    "A live memory-ownership assignment of PAecca0000 to a named VMID.",
+    "DC ZVA implementation defect, normal-NC problem, S1 permission fault or MTE tag-check fault.",
+    "Disabling minidump is a final fix, or all subsequent Android memory accesses are safe.",
+    "The two-heap isolation repaired secure ownership; it only advanced diagnosis beyond the previous carveout initializer."
+  ],
+  "source_references": [
+    "native-log/source/arch/arm64/lib/clear_page.S:17",
+    "native-log/source/arch/arm64/include/asm/memory.h:44",
+    "native-log/source/arch/arm64/include/asm/memory.h:204",
+    "native-log/source/arch/arm64/include/asm/memory.h:302",
+    "native-log/source/arch/arm64/include/asm/memory.h:380",
+    "native-log/source/arch/arm64/kernel/setup.c:430",
+    "native-log/source/include/linux/mm_types.h:536",
+    "native-log/source/mm/compaction.c:92",
+    "native-log/source/mm/page_alloc.c:1694",
+    "native-log/source/kernel/dma/contiguous.c:477",
+    "round11/source-startup-dmesg.txt:27",
+    "round11-minidump-review/minidump.ko:.text+0x5b24"
+  ],
+  "source_C_or_assembly_writes": 0,
+  "device_operations": 0
+}

@@ -1,0 +1,72 @@
+{
+  "status": "R40_SINGLE_EXECUTED_TARGET_ANDROID_FAILED_NEW_GPI_RUNTIME_ADOPTION_UNVERIFIED",
+  "created_epoch": 1794656858.7526438,
+  "state_before_root_summary_sha256": "9a957b95044026d310d97901eb5386c73d0dd91c41c947fdebc408b088e7a638",
+  "source_build_id": "72782e2196eb1c46c8c5205ccd93f2acf42de294",
+  "source_boot_id": "052b2ac3-d801-4563-820c-384c3ad16996",
+  "source_module_count": 693,
+  "source_surfaceflinger_stability_seconds": 60.472436054988066,
+  "target_requested_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+  "target_requested_nonce": "f5b8101627e20e75",
+  "requested_new_GPI_module_SHA256": "94669c47c94ab1e0bc9391f9e124b35e1b00d4ed18b8381dbf5bd0be8b65e111",
+  "requested_new_GPI_build_id": "44f9608d617294a503cf5c0ecebad2da5bccb9d6",
+  "counts": {
+    "temporary_boot_request_count": 1,
+    "source_surfaceflinger_stop_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "initial_readonly_preflight_failure_preserved": "preflight-attempt1/",
+  "initial_debugfs_unmount_preparation_sha256": "984decb365b8d690f1d8313b133429470a247f753e8dc07971954464c674b0f8",
+  "raw_console": {
+    "sha256": "71e22c265731434aecbb7efb61ec586e4a03b0b87223339d16cfd170a0a2806e",
+    "bytes": 262132,
+    "LF_count": 1894,
+    "full_requested_nonce_BID_and_new_GPI_markers_found": false,
+    "first_fault_reliably_reconstructed": false
+  },
+  "host_payload": {
+    "sha256": "20106d22892f70f7babb32674f598150c3018888cfe11e5858b5dae7f61326fa",
+    "bytes": 19083256,
+    "single_patched_GPI_and_four_options_present_in_host_image": true,
+    "full_actual_loaded_initrd_bytes_hashed": false
+  },
+  "normal_load_selection_gap": {
+    "normal_explicit_count": 153,
+    "hard_closure_count": 155,
+    "GPI_or_SPI_in_normal_closure": false,
+    "GPI_in_recovery_list_only": true,
+    "new_GPI_runtime_verified": false,
+    "this_round_validates_new_GPI_effectiveness": false
+  },
+  "recovery": {
+    "boot_id": "16b13af7-b3d4-48e7-a4e5-d9e09d87d4af",
+    "kernel_build_ids": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "read_only_report_sha256": "6665879faed1bf498db77171a0fe26cd17a361c9e236a4f5ce7df9f9d4d02a7d",
+    "Android_root_graphics_WD0_KPTR2_no_helper_verified": true,
+    "kexec_loaded_interface_absent": true,
+    "foreign_debugfs_mount_recorded_not_removed_after_recovery": true
+  },
+  "reviewed_reports_sha256": {
+    "gpi-event-r40-independent-review/module-audit.json": "b3fbe1a1996854fe2eea1b24ee3fc7a02f0fe961dba1d63c15f0c4901a4a8889",
+    "gpi-event-r40-independent-review/payload-audit.json": "8b656c219172126f3ccb3e892c21d0a3931d5618741eaf9ba1b0310f09bee35a",
+    "gpi-event-r40-independent-review/runtime-audit.json": "01009d976925d0934ca1ec56287baad0c2c7aef55d582f1ca3d11fcab9318a5b",
+    "gpi-event-r40-independent-review/target-raw-audit.json": "6a1eb3e588f0b0da705666923d8c727d380e20bc166352132dd26ce556bb03a7",
+    "gpi-event-r40-payload-runtime-review/audit.json": "83a422d6fb47897c4a5cecb1d42294eb2bd06b1c043e3a57f156b096f47e20ea",
+    "gpi-event-r40-boot-scope-review/boot-scope-review.json": "48f5e934f8e3824d21ae73a56a2672814c3d5929f391f49a4a3ae03ce8c022b4",
+    "gpi-normal-load-adoption-independent-review/audit.json": "c1d044772d8b2899a21d240d227659d138897ca625cc6b2a00d4f6bba52d11a1"
+  },
+  "main_patch_sha256": "2ff710c967cfdf8cf8247ac71d95d061fe93709730373f5d530cca42e55588b7",
+  "repository_kernel_diff_empty": true,
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "limits": [
+    "No full nonce/BID in damaged post console; requested identity is pre-load evidence, not raw-only authentication.",
+    "KUSR2 literal fragment does not establish a valid userspace exception or successful GPI repair.",
+    "Normal module list did not select packaged GPI; later vendor path may have selected original.",
+    "No reset, source GPI blacklist, new code or second execute was added to this round."
+  ]
+}

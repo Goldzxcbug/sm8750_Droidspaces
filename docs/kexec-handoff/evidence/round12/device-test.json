@@ -1,0 +1,36 @@
+{
+  "round": 12,
+  "stage": "SOURCE_NORMAL_ANDROID_BOOT_VERIFIED",
+  "temporary_boot_request_count": 1,
+  "helper_insmod_request_count": 0,
+  "load_request_count": 0,
+  "execute_request_count": 0,
+  "authorization": "Human permits reversible diagnostic tests by default",
+  "planned_change": "Reuse verified source218a for ordinary live CMA/dmabuf/page metadata capture; no next kexec jump prepared yet",
+  "partition_write_allowed": false,
+  "watchdog_state_change_allowed": false,
+  "host_ready_epoch": 1794589219.8416054,
+  "temporary_boot_requested_epoch": 1794589220.34173,
+  "source_expected_build_id": "218a41818e13202f577a7ef27eca92a55fb84f83",
+  "preflight_boot_id": "255ea9fe-e0b5-4f5f-a6ef-4f8f46e4639c",
+  "boot_sha256": "dc52b023f4fa71eb1c8ed30d558b24dc688e241595082a2f8f0aa31cd5998c39",
+  "fastboot_boot_exit": 0,
+  "temporary_boot_returned_epoch": 1794589235.0859919,
+  "source_boot_id": "de477f49-259c-4895-9fce-a8fded3166c7",
+  "source_observed_build_ids": [
+    "218a41818e13202f577a7ef27eca92a55fb84f83"
+  ],
+  "source_android_boot_completed": true,
+  "source_kernel": "6.6.89-Gold_Bug_kexec_heap_skip_diag",
+  "source_module_count": 695,
+  "source_vendor_build_ids": {
+    "qcom_dma_heaps": "d06a59aeae01fb44d0ba7088ec1b6f142127d51c",
+    "secure_buffer": "534c89ce5f5981e302729f9f46aaf8f6d1d9db40",
+    "qcom_scm": "45818a2df3a2eb3401fae24aa624f6c312d5d9f9",
+    "qcom_spss": "bf2f7f319450e7aa8f2cc422aa33024abd2b8f2c",
+    "spss_utils": "23892a3ff1b07fd71f1f264a21f5ff5fd7d90d37",
+    "gh_rm_drv": "2081487b8b1b5eee1f6bf25ee4e4bfcde7a9a198"
+  },
+  "source_console_flush_parameter": true,
+  "source_verified_epoch": 1794589254.9433818
+}

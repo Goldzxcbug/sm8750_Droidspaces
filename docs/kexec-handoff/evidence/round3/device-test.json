@@ -1,0 +1,98 @@
+{
+  "round": 3,
+  "authorization": "User explicitly said \u6388\u6743\u4f60\u6d4b\u8bd5 after enhanced seven-stage/fatal-capture diagnostic scope was presented. One temporary boot and one kexec jump.",
+  "stage": "ALL_SEVEN_PRE_MMU_STAGES_CONFIRMED_ANDROID_BOOT_STILL_FAILS",
+  "partition_write_allowed": false,
+  "watchdog_state_change_allowed": false,
+  "automatic_jump_retry_allowed": false,
+  "execute_request_count": 1,
+  "source_expected_build_id": "6081c037cab4c9e169ee897e5d9ad65a98de5109",
+  "source_boot_sha256": "be7aa32a416c8c4fdbcca7a1fc77630271d6daff3bcf2bddfcf912fea70d997e",
+  "preflight_epoch": 1794564430.2665007,
+  "fatal_exception_reset": "PSCI SYSTEM_RESET via runtime-verified smc only after fatal register capture",
+  "temporary_boot_requested_epoch": 1794564456.6148026,
+  "source_observed_build_ids": [
+    "6081c037cab4c9e169ee897e5d9ad65a98de5109"
+  ],
+  "source_boot_id": "a302531d-2b41-4dc6-97a6-6c1ccda15f63",
+  "source_android_boot_completed": true,
+  "ramdisk_sha256": "b9d50144482f916a157e548a3c79e20e1b3683bc982d6a8e01b0c8e8dd9eae02",
+  "ramdisk_cpio_body_sha256": "a5f001b2020f167b4c9bdd51973ec70011d0fd33ea2618f9237f298162fa5bc5",
+  "ramdisk_footer_refreshed": true,
+  "target_Image_sha256": "03e280133667aac94daf4f6fe283137c5f8f0b88990fa40e08db55204a235b86",
+  "target_Image_bytes": 37691392,
+  "remote_directory": "/data/local/tmp/kexec-early-fault-round3",
+  "probe_console_physical": "0x880000000",
+  "probe_console_capacity": 262132,
+  "probe_template_sha256": "8577cade8644dda048b2cb5653893782e9267c3a356745ce9ac5b31939783e82",
+  "PSCI": {
+    "path": "/soc/psci",
+    "compatible": [
+      "arm,psci-1.0"
+    ],
+    "method": "smc"
+  },
+  "target_staged_epoch": 1794564571.985934,
+  "load_requested_epoch": 1794564583.3998106,
+  "load_exit": 0,
+  "load_result": "1\n",
+  "load_returned_epoch": 1794564583.6179676,
+  "freeze_userspace": true,
+  "load_stage_log": [
+    "0,24614,124221249,-,caller=T10006;KT: post_load file=1 path=relocate head=0xab6f5b002 start=0x82800000 dtb=0x0000000beb200000",
+    "0,24615,124221259,-,caller=T10006;KT: segment[0] mem=0x82800000 memsz=0x23f2000 bufsz=0x23f2000",
+    "0,24616,124221261,-,caller=T10006;KT: segment[1] mem=0x84bf2000 memsz=0x1157000 bufsz=0x1156480",
+    "0,24617,124221261,-,caller=T10006;KT: segment[2] mem=0xbeb200000 memsz=0x187000 bufsz=0x186bf2"
+  ],
+  "segments": [
+    {
+      "start": 2189426688,
+      "end_exclusive": 2227118080,
+      "bufsz": 37691392
+    },
+    {
+      "start": 2227118080,
+      "end_exclusive": 2245300224,
+      "bufsz": 18179200
+    },
+    {
+      "start": 51189383168,
+      "end_exclusive": 51190984704,
+      "bufsz": 1600498
+    }
+  ],
+  "loaded_metadata_checks": "PASS",
+  "gic_overlap_count": 0,
+  "probe_staged_page_verified": true,
+  "execute_requested_epoch": 1794564647.2318933,
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "execute_adb_exit": 0,
+  "execute_command_returned_epoch": 1794564650.8041968,
+  "recovery_build_ids": [
+    "931f89c6463a6af0eea9436b61f059f31e451f6a"
+  ],
+  "recovery_boot_id": "557fa859-e431-499a-b357-2bfc760d0624",
+  "pstore_sha256": "120ab81e817ca17ade01a15c897c9983adc1147044ed64122d84cda9549538c2",
+  "pstore_printable_ratio": 0.9997901820456869,
+  "captured_epoch": 1794564699.1970959,
+  "recovery_kernel": "6.6.89-Gold_bug",
+  "recovery_android_boot_completed": true,
+  "pre_MMU_stages": [
+    "target-entry",
+    "mmu-state-recorded",
+    "boot-args-preserved",
+    "idmap-created",
+    "exception-level-ready",
+    "cpu-setup-returned",
+    "before-enable-mmu"
+  ],
+  "all_expected_stages_exactly_once": true,
+  "markers_absent_before": true,
+  "fatal_capture_count": 0,
+  "missing_capture_does_not_rule_out_an_exception": true,
+  "original_primary_entry_executed": true,
+  "MMU_enable_return_not_yet_proven": true,
+  "target_start_kernel_not_yet_proven": true,
+  "__enable_mmu_body_not_yet_proven": true
+}

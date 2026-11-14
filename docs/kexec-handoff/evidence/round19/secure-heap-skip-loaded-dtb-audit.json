@@ -1,0 +1,57 @@
+{
+  "status": "ACTUAL_LOADED_DTB_TWO_HEAPS_DISABLED_SECURE_RESERVATIONS_EQUAL_SOURCE_PASS",
+  "sha256": "60edf88bd300c32b5e7536e12258d049976f229c1512129a6013776bdddcdc1d",
+  "source_fdt_sha256": "41cfc5533911272b0960bcc05a7386e3463da1961bfd4608b65813f41bd6261d",
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "source_boot_id": "c60882e9-d8cf-496d-9f92-5b13e4fa8e9a",
+  "target_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+  "target_run_id": "b33ca89166fc34ef",
+  "both_exact_target_tokens_present_once": true,
+  "heap_parent_unchanged": true,
+  "all_other_heap_nodes_unchanged": true,
+  "heap_subtree_nodes_checked": 8,
+  "secure_heaps": [
+    {
+      "heap": "/soc/qcom,dma-heaps/qcom,secure_sp_tz",
+      "status": "disabled",
+      "only_status_changed": true,
+      "region": "/reserved-memory/spu_secure_shared_memory_region@9b280000",
+      "base": "0x9b280000",
+      "size": "0x40000",
+      "all_secure_region_attributes_equal_source": true,
+      "region_property_names": [
+        "no-map",
+        "phandle",
+        "reg"
+      ],
+      "region_property_dict_sha256": "c5a2c57494e512be2ea131c9f4c45af0b2dfe66157001c597eba162df402bffe"
+    },
+    {
+      "heap": "/soc/qcom,dma-heaps/qcom,secure_sp_modem",
+      "status": "disabled",
+      "only_status_changed": true,
+      "region": "/reserved-memory/spu_secure_shared_memory_region@9b2c0000",
+      "base": "0x9b2c0000",
+      "size": "0x40000",
+      "all_secure_region_attributes_equal_source": true,
+      "region_property_names": [
+        "no-map",
+        "phandle",
+        "reg"
+      ],
+      "region_property_dict_sha256": "71b92511c0e4e67ea330c2810cecc299300717696d6885527a3fe7530846a442"
+    }
+  ],
+  "secure_reserved_root_unchanged": true,
+  "native_ramoops_conversion_not_counted_as_unexpected_change": true,
+  "separate_checks_required": [
+    "GIC snapshot/reservations equality",
+    "native ramoops fixed region/consumer disabled",
+    "Image critical pages and relocation source metadata"
+  ],
+  "limits": [
+    "Captured actual loaded source pages before relocation, not post-relocation DT integrity.",
+    "Heap initialization bypass only; no secure ownership query or final handoff fix.",
+    "Parent/other heap and both secure reserved nodes compared exactly; unrelated native ramoops and GIC transformations intentionally checked separately."
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "status": "SINGLE_JUMP_REVIEWED_GDSC_POWERUP_QREF_ZERO_PARENT_ON_LEAF_OFF_ANDROID_NOT_BOOTED",
+  "epoch": 1794605109.355292,
+  "device_request_counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "source_boot_id": "360c681a-a89d-4195-809a-f200ef1c24c1",
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "target_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+  "run_id": "975b4ca7d46f50a5",
+  "android_target_success": false,
+  "recovery_build_id": "931f89c6463a6af0eea9436b61f059f31e451f6a",
+  "recovery_boot_id": "dbb19b70-6b99-414f-8ca2-e36ed86e4630",
+  "pstore_bytes": 262132,
+  "pstore_LFs": 2736,
+  "pstore_sha256": "2f042153bca6b1bd143c6aa7c4db3b454e8b2d7ae58e6a1fe08d4f42413793cf",
+  "ramdisk_sha256": "acf83401b351ef71a76620abf0c5a0f4df38e45dce3dfb15ce703fe26db24620",
+  "actual_loaded_DTB_sha256": "a7c50ddca50303f425f2056e940a0cdbb39c6904b5c607c1d42b77ed7535e7ca",
+  "loaded_metadata_summary": {
+    "status": "LOADED_METADATA_CHECKS_PASS",
+    "retained_kimage_page_list_nodes": {
+      "control_pages": 7927,
+      "dest_pages": 0,
+      "unusable_pages": 0
+    },
+    "retained_kimage_allocation_pages_checked": 7927,
+    "retained_struct_page_metadata_blocks": 126,
+    "retained_page_list_backend_reads": 258,
+    "kimage_bookkeeping_pages_checked": 5,
+    "all_source_list_destination_control_and_bookkeeping_pages_avoid_protected": true,
+    "relocation_code_sha256": "c8298ca16bf0e349826719887983aac4f8124eb79da61ccd93459e769062c11c",
+    "relocation_code_bytes": 288,
+    "list_pages": 28,
+    "destination_pages": 14207,
+    "sampled_linear_mappings": 97,
+    "memory_attribute_indices": [
+      1
+    ],
+    "linear_offset_untagged": true,
+    "entry_identity_mapping_executable": true,
+    "copied_page_tables_outside_destinations": true,
+    "target_image_header_matches_source": true,
+    "el2_vector_present": false,
+    "probe_payload_verified": false,
+    "modified_image_pages_verified": 76,
+    "actual_jump_entry_matches_Image_start": true,
+    "actual_x0_DTB_argument_matches_captured_segment": true,
+    "actual_segment_buffer_sizes_match_load_log": true,
+    "actual_segments_match_planner": true,
+    "bounded_reads": 827,
+    "jump_executed": false,
+    "captured_target_dtb": {
+      "bytes": 1601295,
+      "sha256": "a7c50ddca50303f425f2056e940a0cdbb39c6904b5c607c1d42b77ed7535e7ca",
+      "source": "Actual loaded relocation source pages, before execution",
+      "not_a_post_relocation_integrity_check": true
+    }
+  },
+  "evidence_report_sha256": {
+    "ufs-phy-power-trace-review/round18-evidence.json": "416a04ab267cf415b1c1a88afbc75c2e95adeed9998bfdddc27159a44a50e4e4",
+    "ufs-phy-power-review/round18-gdsc-evidence.json": "ef4b5e5c013df57feb0a2e2b1359d9683cf2cf5613471e6132bbdaf15e325bf8",
+    "ufs-phy-power-trace-independent-review/round18-evidence.json": "93e09ab44d05bd411d869381d48d862fc89264cdb5e512616ecbe97612258c47"
+  },
+  "round_file_sha256": {
+    "device-test.json": "ea4626af63952483a64be9ef2c9dd08b94f0965cdc0379adc4017d3cf67def8f",
+    "target-ready.json": "47f15cd597b93418a7389c00792b44d288e41c496460450da42c96f247813fe7",
+    "pstore-after-exec.txt": "2f042153bca6b1bd143c6aa7c4db3b454e8b2d7ae58e6a1fe08d4f42413793cf",
+    "loaded-audit.json": "38e26ccb98f01bd2a0c9b371b051ecc4d09765fa83cce312575258b02c36882d",
+    "kernel-gic-capture.json": "31479a72546eee73459ab2b11ea6333c869c3c79033f8de9c48d80e770d34d3f",
+    "tz-log-kernel-capture.json": "bfdf6d1622f989615ebee111e87dd64adcc41c3d8acb69b6a06328ca3343cb2d",
+    "tzlog-preservation-loaded-dtb-audit.json": "e27946f2eb426ff5234e5a96788506e5ee414ac31402400d180160c302ac094d",
+    "secure-heap-skip-loaded-dtb-audit.json": "89267dac5266b136ccaeb5927887e9828ce70ac48332ea1a1498a366f0bebf82",
+    "recovery-readonly.json": "d7e2e84e50a5b8d9015de804dc4ab98e2af0b1d60eaf988f3b0995dbaa63f851",
+    "ramdisk.img": "acf83401b351ef71a76620abf0c5a0f4df38e45dce3dfb15ce703fe26db24620",
+    "loaded-target.dtb": "a7c50ddca50303f425f2056e940a0cdbb39c6904b5c607c1d42b77ed7535e7ca",
+    "observed-dmesg-after-exec.txt": "c93fa8f1c47980f7bd798eeb40ee6665920ee6bb91b0d529bd693e231e6e9ec0"
+  },
+  "host_final_binding_sha256": "8fe6857cbe00adc6fbebd924cf858e9417dcd99210b16ab9669223f758a17aea",
+  "conclusions": [
+    "First GDSC sample OFF/DOWN transitions to ON/UP before aux and remains ON/UP after the first aux failure.",
+    "Four intact qref-return rows are zero; fifth has intact zero payload with damaged prefix. Five intact aux-after rows are -16.",
+    "All five root CMD=2/CFG=00100001 and leaf CBCR=88000001 dumps preserve root-on/leaf-off; parent callbacks actually execute on each retry in this round.",
+    "Init cannot create boot devices, panics with 0x7f00, then requests watchdog bite; watchdog is not the initiating failure."
+  ],
+  "limits": [
+    "Hardware status/completion bits and successful regulator/qref returns do not establish analog voltage or clock waveform.",
+    "The new legitimate GDSC module dependency moves provider availability earlier even though modules.load bytes are unchanged; R17 early CCF counts are not assumed identical.",
+    "Damaged/merged raw records remain unchanged; LF1460 GDSC values are not reconstructed.",
+    "PHY POWER_DOWN_CONTROL/local reset and leaf clamp/reset remain unsampled. No causal repair has yet booted target Android.",
+    "Two SP heap isolation and four TZ reserved buffers remain diagnostic, not a complete functional warm handoff."
+  ],
+  "kernel_repository_source_changes": false,
+  "partition_flashed": false,
+  "watchdog_setting_changed": false
+}

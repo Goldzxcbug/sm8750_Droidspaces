@@ -1,0 +1,107 @@
+{
+  "PSCI": {
+    "path": "/soc/psci",
+    "compatible": [
+      "arm,psci-1.0"
+    ],
+    "method": "smc"
+  },
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "source_boot_id": "98887e59-b9df-4d55-afd5-2a4852beaab9",
+  "epoch": 1794591966.2728925,
+  "ring_physical": "0x880000000",
+  "capacity": 262132,
+  "region_size": 2359296,
+  "console_size": 262144,
+  "ramoops_memtype": 2,
+  "record_size": 0,
+  "ftrace_size": 0,
+  "console_PTE_attr_index_zero_verified": true,
+  "Normal_WB_basis": "Matched source kernel MAIR[0] initialization; no direct source MAIR read",
+  "linear_alias_absent": true,
+  "ECC_absent": true,
+  "source_console_flush_guard": {
+    "status": "SOURCE_CONSOLE_FLUSH_GUARD_CONSISTENT_SNAPSHOT_PASS",
+    "source_flag_value": true,
+    "context_memtype": 2,
+    "console_type": 2,
+    "physical": "0x880000000",
+    "vaddr": "0xffffffc083980000",
+    "size_with_header": 262144,
+    "data_capacity": 262132,
+    "all_driver_flush_gate_conditions": true,
+    "ECC_absent": true,
+    "all_console_pages_pfn_valid_snapshot": true,
+    "checked_page_count": 64,
+    "checked_pfn_interval": [
+      "0x880000",
+      "0x880040"
+    ],
+    "sparsemem_sections": [
+      {
+        "section_nr": 272,
+        "root_index": 2,
+        "section_pointer": "0xffffff8b7dc04bc0",
+        "section_mem_map": "0xfffffffdfe00000f",
+        "early": true,
+        "subsection_indices_checked": []
+      }
+    ],
+    "all_console_pages_PTE_MT_NORMAL0": true,
+    "linear_alias_absent": true,
+    "metadata_and_used_PTE_double_reads_unchanged": true,
+    "Normal_WB_basis": "Exact source MAIR initialization maps MT_NORMAL0 to0xff; live PTE index0 verified.",
+    "live_MAIR_register_read": false,
+    "source_basis_vmlinux_sha256": "dac00ce85323713277de0ea29fa7440e5150219e7d402d0ce550cfe588ad2d45",
+    "source_basis_btf_sha256": "1771cabfe73cf91129f0d3a7c479381292d2129124f200bb1c84f87b12842874",
+    "caller_identity_checks_required": [
+      "exact source build ID/BTF/code bytes",
+      "same boot UUID before and after"
+    ],
+    "limits": [
+      "Host reads cannot hold one RCU critical section across calls; double-read stability is not a proof against concurrent hotremove or ABA.",
+      "pfn_valid establishes struct-page metadata only; no target RAM ownership, secure-memory accessibility or firmware state is inferred.",
+      "PTE index0 is observed; live MAIR_EL1 is not read by this API."
+    ]
+  },
+  "bounded_reads": 31,
+  "status": "HOST_TARGET_READY_NOT_STAGED_OR_LOADED",
+  "target_sha256": "7e4f108e6ab0e2b34afe776fb22257c738061ae0adf3626a92ca3d528b7cfaba",
+  "target_bytes": 37001728,
+  "target_build_id": "f93a5b41fb60172452d1ba9cc767d9014162da82",
+  "target_Image_unmodified": true,
+  "run_id": "07d066c804098959",
+  "native_ramoops_mode": true,
+  "console_flush_diag": true,
+  "KTT_deliberately_inactive": true,
+  "source_manifest_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "secure_heap_skip_diag": true,
+  "source_fdt_sha256": "c9ccbec8d47639d3cf0bfae0640f9655650030909d3e8da6a01084b3605e9cd8",
+  "tzlog_preservation_diag": true,
+  "target_unique_final_loglevel": 7,
+  "TZ_snapshot_and_live_globals_match_actual_loaded_DTB_required": true,
+  "source_fdt_bytes": 1600202,
+  "expected_append_sha256": "21f42125158af7b525b984b31b60c031b317bcc43d75600e99489b228abb8533",
+  "critical_image_page_offsets": [
+    0,
+    221184,
+    237568,
+    6443008,
+    6447104,
+    6451200,
+    8339456,
+    8343552,
+    8359936,
+    8364032,
+    18825216,
+    24354816,
+    30539776,
+    30543872,
+    30740480,
+    30773248,
+    30777344,
+    30863360,
+    30961664,
+    35954688
+  ]
+}

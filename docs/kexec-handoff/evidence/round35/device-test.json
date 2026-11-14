@@ -1,0 +1,328 @@
+{
+  "round": 35,
+  "stage": "SINGLE_EXECUTED_EVIDENCE_REVIEWED_TARGET_ANDROID_FAILED",
+  "temporary_boot_request_count": 1,
+  "helper_insmod_request_count": 1,
+  "load_request_count": 1,
+  "execute_request_count": 1,
+  "preflight_expected_boot_id": "d33443dc-8ee9-4956-929c-4c686a0c8a85",
+  "preflight_expected_kernel_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "preflight_readonly_path": "../round34/review.json",
+  "preflight_readonly_sha256": "a052dfc88380e8b85cb6f66f68bbf77617096d8d04753cb1b170691abfd91c16",
+  "source_expected_build_id": "4424630e5e18a578666635e066a255bdf42c3428",
+  "target_expected_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+  "source_boot_only_validation_sha256": "dc3015ed37082fe204c58cd4b0f560d4088fda57a8d3e7ee0b15faae005b1eeb",
+  "full_target_runner_validation_pending": false,
+  "source_page_owner_real_stack_required_before_any_load": true,
+  "source_fresh_KGSL_SG_observation_required_before_any_load": true,
+  "source_late_KGSL_repeat_required_before_any_execute": true,
+  "new_source_binary_transport_not_layout_hunting": true,
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "temporary_boot_requested_epoch": 1794639456.8754122,
+  "preflight_boot_id": "d33443dc-8ee9-4956-929c-4c686a0c8a85",
+  "boot_sha256": "d7ce9eee4e4b5eff7b90d36134a6585d3fa82027dc1db16b38fb53815bb1ff17",
+  "fastboot_upload_observer_sha256": "6af672b3b8b50e347fc52b171f02161f916699d64656880985a26e1bc70b1f28",
+  "fastboot_upload_observer_trace": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round35/fastboot-boot-ioctl.txt",
+  "fastboot_boot_exit": 0,
+  "temporary_boot_returned_epoch": 1794639471.6293442,
+  "source_boot_id": "985424e2-23f9-49f9-8137-5ce33ca95ef4",
+  "source_observed_build_ids": [
+    "4424630e5e18a578666635e066a255bdf42c3428"
+  ],
+  "source_android_boot_completed": true,
+  "source_kernel": "6.6.89-Gold_Bug_kexec_kgsl_binary_source_diag",
+  "source_module_count": 695,
+  "source_vendor_build_ids": {
+    "qcom_dma_heaps": "d06a59aeae01fb44d0ba7088ec1b6f142127d51c",
+    "secure_buffer": "534c89ce5f5981e302729f9f46aaf8f6d1d9db40",
+    "qcom_scm": "45818a2df3a2eb3401fae24aa624f6c312d5d9f9",
+    "qcom_spss": "bf2f7f319450e7aa8f2cc422aa33024abd2b8f2c",
+    "spss_utils": "23892a3ff1b07fd71f1f264a21f5ff5fd7d90d37",
+    "gh_rm_drv": "2081487b8b1b5eee1f6bf25ee4e4bfcde7a9a198",
+    "msm_kgsl": "f95e145481d6423dffac1f0cb3e1236dfbb1b753"
+  },
+  "source_console_flush_parameter": true,
+  "source_page_owner_cmdline_verified": true,
+  "source_page_owner_real_stack_verified": true,
+  "source_verified_epoch": 1794639491.8268478,
+  "source_page_owner_runtime_verification_path": "source-page-owner-runtime-verification-accepted.json",
+  "source_page_owner_runtime_verification_sha256": "3c46312c675d7874dce81d5ccd266533e74ebd874109c7500acb01d4d18a9fdb",
+  "source_kgsl_observation_started_epoch": 1794639648.8504,
+  "source_kgsl_observation_path": "kgsl-source-observation/observation.json",
+  "source_kgsl_observation_sha256": "62eb951697d98ff8c504d14edee7e79da67e3f501a2e69a0ad278232ff099051",
+  "source_kgsl_observation_completed_epoch": 1794639657.5860221,
+  "target_manifest_sha256": "3ef281065bac2dea83f3a7aa13e5514e6abd8cdd0131fca76d6e531768d38f92",
+  "target_actual_ELF_independent_review_sha256": "52137a0775c9454dee7912316eb5e06d001bdab1a374bdc30aa95ea7a4625b98",
+  "source_binary_transport_manifest_sha256": "e0224418a4d5821f32b62f93398f4b746166ee81ce4b89a33be925356245ae48",
+  "source_boot_delivery_manifest_sha256": "e958f8b6a2f167d2fc14da7271bfdc02581fee17b01aa2905f3c026f53c1ea67",
+  "target_manifest_root_bound_epoch": 1794639964.6706183,
+  "full_target_runner_validation_sha256": "a54e8848e1b0a090d7bb441705d41bc0938d6188ec85f16e6521b5c1104d01a4",
+  "root_final_host_binding_sha256": "11f0b9eb79946ff39809ae3ca1d21498b875ce75b70eca2092f76267a9fff9ae",
+  "gpu_initrd_transport_bytes": 18906600,
+  "gpu_initrd_transport_sha256": "4a48624ceb7e83542e07ae22797afa8649df6519d0b8252619a41a7973e58d83",
+  "gpu_transport_binding_sha256": "4db3696e12eb17fa4ad0612d48e5964294fd4acb92b5907d55f4a2838af6d45d",
+  "target_gpu_blob_sha256": "c788b09cdb4a0306498132033e08b52c5f1a12497fefde771ca6e47a58a5bd58",
+  "target_kgsl_binary_fdt_requested": true,
+  "remote_directory": "/data/local/tmp/kexec-kgsl-fdt-round35",
+  "target_run_id": "93037c1caf16fd7a",
+  "target_Image_sha256": "8824087346c58ea7ff57b31fdcee795c509f7cc58699c558b234f1417851130f",
+  "target_Image_bytes": 37001728,
+  "probe_console_physical": "0x880000000",
+  "ramdisk_bytes": 18906392,
+  "ramdisk_sha256": "5387d934444dd3d498be5ea1d72bb714c88ab6789a1c221f90be3bff3995ee31",
+  "ramdisk_compressed_payload_sha256": "e75c9b029252460b33dc8bfc45ccf2dd645fa77c5202ce47d197ffd547e711f7",
+  "ramdisk_uncompressed_cpio_sha256": "81af6eb446331c274a6159506dc329c5efe5ecb7a215b786e97285b654a51b9a",
+  "source_console_flush_guard": {
+    "status": "SOURCE_CONSOLE_FLUSH_GUARD_CONSISTENT_SNAPSHOT_PASS",
+    "source_flag_value": true,
+    "context_memtype": 2,
+    "console_type": 2,
+    "physical": "0x880000000",
+    "vaddr": "0xffffffc088900000",
+    "size_with_header": 262144,
+    "data_capacity": 262132,
+    "all_driver_flush_gate_conditions": true,
+    "ECC_absent": true,
+    "all_console_pages_pfn_valid_snapshot": true,
+    "checked_page_count": 64,
+    "checked_pfn_interval": [
+      "0x880000",
+      "0x880040"
+    ],
+    "sparsemem_sections": [
+      {
+        "section_nr": 272,
+        "root_index": 2,
+        "section_pointer": "0xffffff8b7dc04bc0",
+        "section_mem_map": "0xfffffffdfe00000f",
+        "early": true,
+        "subsection_indices_checked": []
+      }
+    ],
+    "all_console_pages_PTE_MT_NORMAL0": true,
+    "linear_alias_absent": true,
+    "metadata_and_used_PTE_double_reads_unchanged": true,
+    "Normal_WB_basis": "Exact source MAIR initialization maps MT_NORMAL0 to0xff; live PTE index0 verified.",
+    "live_MAIR_register_read": false,
+    "source_basis_vmlinux_sha256": "2774d576ed6f8a436565ae6f2e5ba9f6eac899722efb5b61b59be0eb6d68a338",
+    "source_basis_btf_sha256": "4af0d389bc92615ac8982233f544f4653b67c6535ae869267f80da0fbf273550",
+    "caller_identity_checks_required": [
+      "exact source build ID/BTF/code bytes",
+      "same boot UUID before and after"
+    ],
+    "limits": [
+      "Host reads cannot hold one RCU critical section across calls; double-read stability is not a proof against concurrent hotremove or ABA.",
+      "pfn_valid establishes struct-page metadata only; no target RAM ownership, secure-memory accessibility or firmware state is inferred.",
+      "PTE index0 is observed; live MAIR_EL1 is not read by this API."
+    ]
+  },
+  "target_initrd_payload_manifest_sha256": "51c3465c05e3e744f34d072670f8d85a7a84b794722d4197c9422ab24d626f98",
+  "target_ufs_module_sha256": "9a9d01348cdd893843a5c799bf056f19e9ec26ec050c43aba207f0c3b07500a9",
+  "target_ufs_diagnostic_module_option_verified": true,
+  "target_ufs_ah8_reset_diag_requested": true,
+  "target_sea_context_diag_requested": true,
+  "target_fatal_signal_context_diag_requested": true,
+  "target_user_state_diag_requested": true,
+  "target_sea_memory_diag_requested": true,
+  "target_kgsl_nomap_requested": true,
+  "target_kgsl_nomap_token": "kexec_diag.kgsl_nomap_fdt=1",
+  "target_kgsl_nomap_ranges": [
+    {
+      "start": "0x8f0c29000",
+      "end": "0x8f1184000",
+      "pfn": "0x8f0c29",
+      "pages": "0x55b",
+      "bytes": 5615616
+    },
+    {
+      "start": "0x8f11c2000",
+      "end": "0x8f1240000",
+      "pfn": "0x8f11c2",
+      "pages": "0x7e",
+      "bytes": 516096
+    },
+    {
+      "start": "0x8f127e000",
+      "end": "0x8f1534000",
+      "pfn": "0x8f127e",
+      "pages": "0x2b6",
+      "bytes": 2842624
+    },
+    {
+      "start": "0x8f1572000",
+      "end": "0x8f1f88000",
+      "pfn": "0x8f1572",
+      "pages": "0xa16",
+      "bytes": 10575872
+    },
+    {
+      "start": "0x8f1fc6000",
+      "end": "0x8f2338000",
+      "pfn": "0x8f1fc6",
+      "pages": "0x372",
+      "bytes": 3612672
+    },
+    {
+      "start": "0x8f2376000",
+      "end": "0x8f26a9000",
+      "pfn": "0x8f2376",
+      "pages": "0x333",
+      "bytes": 3354624
+    },
+    {
+      "start": "0x8f26e8000",
+      "end": "0x8f3000000",
+      "pfn": "0x8f26e8",
+      "pages": "0x918",
+      "bytes": 9535488
+    },
+    {
+      "start": "0x8f3400000",
+      "end": "0x8f3874000",
+      "pfn": "0x8f3400",
+      "pages": "0x474",
+      "bytes": 4669440
+    },
+    {
+      "start": "0x8f38b0000",
+      "end": "0x8f3aba000",
+      "pfn": "0x8f38b0",
+      "pages": "0x20a",
+      "bytes": 2138112
+    }
+  ],
+  "source_kgsl_encoded_sha256": "d1fe4195a192cb8e3931101d0924e244b4af38b804b189c405b5b5a20676cc4b",
+  "target_page_owner_keys_absent": true,
+  "target_signal_diagnostic_tokens": [
+    "print-fatal-signals=1",
+    "sysctl.debug.exception-trace=1"
+  ],
+  "target_ufs_aux_force_diag_requested": true,
+  "target_ufs_aux_swctrl_diag_requested": true,
+  "target_ufs_aux_halt_skip_diag_requested": true,
+  "target_gcc_module_parameters": [
+    "kexec_ufs_aux_force_diag=1",
+    "kexec_ufs_aux_swctrl_diag=1",
+    "kexec_ufs_aux_halt_skip_diag=1"
+  ],
+  "target_gcc_diagnostic_module_option_verified": true,
+  "target_gcc_module_sha256": "4fe792af469facc52b3d4e63041fbe72b10fcfb1def85e5355b792db887dcd0b",
+  "target_gcc_module_build_id": "c3e465dfcaa69f6e05441aa1409c10e3ea20a9b7",
+  "target_ufs_phy_power_trace_diag_requested": true,
+  "target_ufs_phy_local_read_diag_requested": true,
+  "target_phy_diagnostic_module_option_verified": true,
+  "target_phy_gdsc_dependency_verified": true,
+  "target_phy_module_sha256": "1061487cf69090ec2fdd2ca91950d61030a230360b891b14d886ed5d23c5d96b",
+  "target_phy_module_build_id": "e29ae60436e8e2bd860d89a6ec6693fcaf3f08f3",
+  "spss_recovery_path": "/sys/class/remoteproc/remoteproc0/recovery",
+  "spss_recovery_original": "enabled",
+  "spss_recovery_disable_requested_epoch": 1794641095.4794896,
+  "helper_init_requested_epoch": 1794641095.712498,
+  "helper_insmod_exit": 0,
+  "helper_init_metadata_only": true,
+  "helper_armed": true,
+  "helper_preserve_for_skip_diag": true,
+  "freeze_userspace": true,
+  "target_staged_epoch": 1794641096.3846729,
+  "load_requested_epoch": 1794641096.527543,
+  "load_exit": 0,
+  "load_returned_epoch": 1794641096.838919,
+  "segments": [
+    {
+      "start": 2218786816,
+      "end_exclusive": 2256535552,
+      "bufsz": 37001728
+    },
+    {
+      "start": 2256535552,
+      "end_exclusive": 2275442688,
+      "bufsz": 18906392
+    },
+    {
+      "start": 51189383168,
+      "end_exclusive": 51190988800,
+      "bufsz": 1601695
+    }
+  ],
+  "load_result": "1",
+  "loaded_metadata_checks": "PASS",
+  "gic_overlap_count": 0,
+  "gic_range_set_stable_across_audit": true,
+  "critical_image_pages_verified": 233,
+  "captured_target_dtb_sha256": "c1c02b3018f8c6097ee30262957dd63d640a63499560c4ba5fd53056182def71",
+  "audit_completed_epoch": 1794641371.1923594,
+  "target_kgsl_nomap_loaded_guard": "PASS",
+  "target_kgsl_binary_fdt_loaded_guard": "PASS",
+  "target_gpu_loaded_blob_sha256": "c788b09cdb4a0306498132033e08b52c5f1a12497fefde771ca6e47a58a5bd58",
+  "target_gpu_kernel_capture_sha256": "869c5732fdc82355e1b31281731745d9a018d2d533673b73b33ae70df7b1621e",
+  "target_kgsl_nomap_loaded_audit_sha256": "e152fffc252a14661e186091b1607303a0792b5262938bfb5df043f8898170f3",
+  "secure_heap_skip_loaded_DTB_checks": "PASS",
+  "secure_heap_skip_loaded_DTB_audit_sha256": "a393f18766a8ab42f29ed7f3dc1e0b75dcb2b69efed26e757129233ec796553e",
+  "tzlog_preservation_loaded_DTB_checks": "PASS",
+  "tzlog_preservation_loaded_DTB_audit_sha256": "c81c123b72e93f4d915a7fa5999976164aad72e504a7bd00c4d1238be8c5cec7",
+  "tzlog_preservation_all_kimage_pages_disjoint": true,
+  "tzlog_preservation_four_ranges_checked": 4,
+  "source_kgsl_late_observation_attempt_count": 1,
+  "source_kgsl_late_observation_started_epoch": 1794641396.698098,
+  "source_kgsl_late_observer_exit": 0,
+  "source_kgsl_late_observation_completed_epoch": 1794641407.5753407,
+  "source_kgsl_late_observation_path": "kgsl-source-late-observation/observation.json",
+  "source_kgsl_late_observation_sha256": "62eb951697d98ff8c504d14edee7e79da67e3f501a2e69a0ad278232ff099051",
+  "execute_requested_epoch": 1794641424.652366,
+  "execute_adb_exit": 255,
+  "execute_command_returned_epoch": 1794641429.7133634,
+  "post_exec_pstore_exit": 0,
+  "post_exec_pstore_bytes": 262132,
+  "post_exec_kgsl_nomap_parameter_verified": false,
+  "post_exec_sea_memory_parameter_verified": false,
+  "post_exec_target_page_owner_absent": true,
+  "post_exec_user_state_parameter_verified": false,
+  "post_exec_signal_parameters_verified": false,
+  "post_exec_sea_context_parameter_verified": false,
+  "post_exec_module_scope": "observed_non_target_or_recovered_stock",
+  "observed_module_build_ids_after_exec": {
+    "gcc_sun": [
+      "fd0294bddc6fc79a28a1a6826e5328eee01567cb"
+    ],
+    "ufs_qcom": [
+      "a0f190cdb34943457dc4f4642b720838e77acda3"
+    ],
+    "phy_qcom_ufs": [
+      "da0d45e45f727c03861320cf4132255b22a0cf5c"
+    ]
+  },
+  "observed_gcc_parameters_after_exec": {
+    "kexec_ufs_aux_force_diag": {
+      "exit": 1,
+      "value": ""
+    },
+    "kexec_ufs_aux_swctrl_diag": {
+      "exit": 1,
+      "value": ""
+    },
+    "kexec_ufs_aux_halt_skip_diag": {
+      "exit": 1,
+      "value": ""
+    }
+  },
+  "target_diagnostic_runtime_verified": false,
+  "post_exec_module_identity_sha256": "79c12603db129660d7c6ccd1ce47bcf8a75441878f045842ca52a068698d3c57",
+  "observed_build_ids_after_exec": [
+    "931f89c6463a6af0eea9436b61f059f31e451f6a"
+  ],
+  "observed_boot_id_after_exec": "e601cc28-9c73-4f43-99d7-24fadaba842b",
+  "observed_kernel_after_exec": "6.6.89-Gold_bug",
+  "observed_android_boot_completed": true,
+  "post_exec_capture_epoch": 1794641452.3886151,
+  "target_kernel_identity_verified": false,
+  "android_target_success": false,
+  "pstore_sha256": "85cadf1a801bb592a4335bf2c122ff65ee623aaa8ac955f298ec9c40ee7568a4",
+  "recovery_root_available": true,
+  "primary_console_after_exec": "pstore-after-exec.txt",
+  "observed_dmesg_sha256": "7280ad547d0aa9b0667b6e365d2c1b3f59210fd79075bcc2c48d234aff43667b",
+  "root_review_path": "review.json",
+  "root_review_sha256": "a5a5cf72f70e52aba3bffd385167126408826b1050d78e8b7178f2ac75799fa8",
+  "recovery_readonly_path": "recovery-readonly.json",
+  "recovery_readonly_sha256": "01bb2c814af36634a0411863cd4f666a68fb43e4ab14784bce6026ff114d4012"
+}

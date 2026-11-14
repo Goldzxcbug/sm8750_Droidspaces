@@ -1,0 +1,2550 @@
+{
+  "status": "R30_ACTUAL_KSEAM_ARITHMETIC_PA_SOURCE_TARGET_RANGE_AND_SAMPLED_OWNER_REVIEW_COMPLETE",
+  "scope": "Host-only saved artifacts; no device access, payload reads, archive rescan, C/patch/build/runtime-script/state edits.",
+  "source_boot_id_historical": "ca907ddf-d59e-48e7-a9d9-64c45327e7eb",
+  "source_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "target_build_id": "337beb1178af6295c7072e8f0b5011eced5a3552",
+  "run_id": "ae886f43ba35f58e",
+  "inputs": [
+    {
+      "path": "round30/source-startup-dmesg.txt",
+      "bytes": 1947179,
+      "sha256": "e75fad80e6d38aca4a58b6e578470d822251d54cb1c6beb3a45f4f581ab82af8"
+    },
+    {
+      "path": "round30/pstore-after-exec.txt",
+      "bytes": 117725,
+      "sha256": "bdd8369d15e253c656e7c1e6c456d2a6cf34df5f111a3363ba4d1a94187c281e"
+    },
+    {
+      "path": "round30/source-fdt.bin",
+      "bytes": 1600218,
+      "sha256": "1364e5e47b0666c6db95b927e7cc7215b11f6c776ed0cbf6ce3db87cc7dcf65a"
+    },
+    {
+      "path": "round30/loaded-target.dtb",
+      "bytes": 1601455,
+      "sha256": "4403286ac748746fc245c955b88728ca36440b99fe1e7611a4dabefe9fc4eed9"
+    },
+    {
+      "path": "round30/target-ready.json",
+      "bytes": 6339,
+      "sha256": "a3aa721f5a2c19898c707e2af2f673d94963987a56b0257d886e1b982159612b"
+    },
+    {
+      "path": "round30/loaded-fdt-audit.json",
+      "bytes": 5698,
+      "sha256": "e668cd281ea1ba171f88c8e0fbc331d29af1af4661319d49924a2210b753152a"
+    },
+    {
+      "path": "round30/kernel-gic-capture.json",
+      "bytes": 920,
+      "sha256": "768d9bf74ce5da55c3307f7f20888681619b8486e1d40903ca5bebf19b1ca956"
+    },
+    {
+      "path": "round30/tz-log-kernel-capture.json",
+      "bytes": 2200,
+      "sha256": "f0a2e8876e76e0881558d8edc0479b287b07e3ac9e61e776120c9bd1239b1b76"
+    },
+    {
+      "path": "round30/source-secure-pool-snapshot.json",
+      "bytes": 1713,
+      "sha256": "bcdc2b092f6bae39b72ae81c75aa01a0f8a665ad748f7f87cca18f422f215a41"
+    },
+    {
+      "path": "secure-pool-readonly-review/r30-pfn-884466/lookup.json",
+      "bytes": 7871,
+      "sha256": "3ff0a846afb503fa2c13f002660af55142cf4385fe0d80627268de21f1f1aab7"
+    }
+  ],
+  "measured_fault": {
+    "source": "Target KSEA/KSEAM printed scalar metadata, with exact original LF records.",
+    "FAR": "0xffffff8804466000",
+    "memstart": "0x80000000",
+    "PAGE_OFFSET": "0xffffff8000000000",
+    "PA_arithmetic": "0x884466000",
+    "PFN": "0x884466",
+    "end_page_exclusive": "0x884467000",
+    "formula": "FAR - PAGE_OFFSET + memstart == 0x884466000",
+    "formula_matches": true,
+    "arithmetic_only_not_PTE_translation_or_EL2_firmware_ACL_query": true,
+    "evidence": [
+      {
+        "LF": 1217,
+        "line_sha256": "a31afc3abdb46377591a541aeafbcf8298de41d8f229892612df3d39b7306461",
+        "raw_latin1": "[    0.712073][   T82] KSEA1 action=context esr=0000000096000010 far=ffffff8804466000 far_valid=1 fnv=0 pc=ffffffda2286ac4c lr=ffffffda21b73f80 sp=ffffffc08079b440 pstate=0000000081000005"
+      },
+      {
+        "LF": 1218,
+        "line_sha256": "418b6d8b012337d30c8c13c56125952c5827f947b6865a9beb52ada0b6c1d104",
+        "raw_latin1": "[    0.712129][   T82] KSEA1 action=symbols pc=clear_page+0x18/0x4c lr=post_alloc_hook+0x164/0x244"
+      },
+      {
+        "LF": 1224,
+        "line_sha256": "92805142c7ef45a6e87bdad932a1b4f22a5c10d0b04ff5be9c064a601d48b646",
+        "raw_latin1": "[    0.712437][   T82] KSEAM1 action=layout memstart=0000000080000000 phys_offset=0000000080000000 phys_valid=1 page_offset=ffffff8000000000 page_end=ffffffc000000000 kimage_voffset=ffffffd99d400000"
+      },
+      {
+        "LF": 1225,
+        "line_sha256": "e5de3b3494fb07c3c00bc6532c7f30ab46a5a648eb40696ce4d6aaeb86963bcc",
+        "raw_latin1": "[    0.712487][   T82] KSEAM1 action=arithmetic far_valid=1 linear=1 phys_valid=1 pa_valid=1 pa=0000000884466000 pfn=0000000000884466 arithmetic_only=1"
+      }
+    ],
+    "failure_context": "T82 kworker/u18:1; allocation during initramfs unpack, not an apexd process fault."
+  },
+  "dynamic_pool_comparison": {
+    "matched_source_and_target_dynamic_nodes": 14,
+    "all_14_target_bases_actually_observed_this_round": true,
+    "source_source_FDT_and_loaded_FDT_props_remain_size_only_and_byte_identical": true,
+    "changed_base_count": 6,
+    "pools": [
+      {
+        "path": "/reserved-memory/sp_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "reusable": "",
+          "alignment": "0000000000400000",
+          "size": "0000000001000000",
+          "phandle": "00000105"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xf2800000",
+          "end_exclusive": "0xf3800000",
+          "bytes": 16777216,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 15,
+            "line_sha256": "1b83d084ae3727dfd9e121e4656f548678fb76c8b55838c7d8e119ae0cd8c6ad",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000f2800000..0x00000000f37fffff (16384 KiB) map reusable sp_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xf2800000",
+          "end_exclusive": "0xf3800000",
+          "bytes": 16777216,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 16,
+            "line_sha256": "74a7f94f2e7feaae7d16344d0e0211d3f311da1608a2aa4db27291b8b83ea03a",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000f2800000..0x00000000f37fffff (16384 KiB) map reusable sp_region"
+          }
+        },
+        "base_moved": false,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/qseecom_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "reusable": "",
+          "alignment": "0000000000400000",
+          "size": "0000000001400000",
+          "phandle": "00000103"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xf1400000",
+          "end_exclusive": "0xf2800000",
+          "bytes": 20971520,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 18,
+            "line_sha256": "d70d61955f373bad3e71a082566d1176b3aab0ac786f81d856ee4eca476f44f1",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000f1400000..0x00000000f27fffff (20480 KiB) map reusable qseecom_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xf1400000",
+          "end_exclusive": "0xf2800000",
+          "bytes": 20971520,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 19,
+            "line_sha256": "6752fd2a0b01f149e84dd2c0878c9a940e992326ef652d92837774dffe0f8e72",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000f1400000..0x00000000f27fffff (20480 KiB) map reusable qseecom_region"
+          }
+        },
+        "base_moved": false,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/qseecom_ta_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "reusable": "",
+          "alignment": "0000000000400000",
+          "size": "0000000002000000",
+          "phandle": "00000104"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xef400000",
+          "end_exclusive": "0xf1400000",
+          "bytes": 33554432,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 21,
+            "line_sha256": "d9bcf8a3bd5b96f5b0f9ff150fc2de99dfa8fc00a0494f2a5040915410939d9e",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000ef400000..0x00000000f13fffff (32768 KiB) map reusable qseecom_ta_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xef400000",
+          "end_exclusive": "0xf1400000",
+          "bytes": 33554432,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 22,
+            "line_sha256": "771836a7bf106da263149313de35014ec3be9d4ec56f150ca8fb19133b8b9a3f",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000ef400000..0x00000000f13fffff (32768 KiB) map reusable qseecom_ta_region"
+          }
+        },
+        "base_moved": false,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/vm_comm_mem_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "reusable": "",
+          "alignment": "0000000000400000",
+          "size": "0000000000800000",
+          "phandle": "00000072"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xeec00000",
+          "end_exclusive": "0xef400000",
+          "bytes": 8388608,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 24,
+            "line_sha256": "a59b4e3b0649629c3cab70eeb4bbc6baafbb17098044c665bb09da38082065fe",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000eec00000..0x00000000ef3fffff (8192 KiB) map reusable vm_comm_mem_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xeec00000",
+          "end_exclusive": "0xef400000",
+          "bytes": 8388608,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 25,
+            "line_sha256": "d548466c3c6a4bf5e6b34dbc0db7751bfcade37f01cb1ec115406b0339df73fe",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000eec00000..0x00000000ef3fffff (8192 KiB) map reusable vm_comm_mem_region"
+          }
+        },
+        "base_moved": false,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/linux,cma",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "reusable": "",
+          "alignment": "0000000000400000",
+          "size": "0000000002400000",
+          "linux,cma-default": "",
+          "phandle": "00000097"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xec800000",
+          "end_exclusive": "0xeec00000",
+          "bytes": 37748736,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 27,
+            "line_sha256": "71e1925949f7bc921b8e1a234c74f97bead233bb0fff1e2643d09f80ab9a35b2",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000ec800000..0x00000000eebfffff (36864 KiB) map reusable linux,cma"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xea800000",
+          "end_exclusive": "0xecc00000",
+          "bytes": 37748736,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 28,
+            "line_sha256": "ce1179811fcd1eab81dea10335c24c76e270eb4e8b56d85938af3a2336c1b492",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000ea800000..0x00000000ecbfffff (36864 KiB) map reusable linux,cma"
+          }
+        },
+        "base_moved": true,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/cdsp_eva_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "reusable": "",
+          "alignment": "0000000000400000",
+          "size": "0000000000400000",
+          "phandle": "0000037e"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xff400000",
+          "end_exclusive": "0xff800000",
+          "bytes": 4194304,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 30,
+            "line_sha256": "465fa1014dc520e94b2c85632ee6d86018f7178fc17d3d2e95a135a4c83cf030",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000ff400000..0x00000000ff7fffff (4096 KiB) map reusable cdsp_eva_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xff400000",
+          "end_exclusive": "0xff800000",
+          "bytes": 4194304,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 31,
+            "line_sha256": "0d361083956f17f7a36694bcd0d41e06f45ff46dd385160ffd901d9086ad3365",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000ff400000..0x00000000ff7fffff (4096 KiB) map reusable cdsp_eva_region"
+          }
+        },
+        "base_moved": false,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/adsp_heap_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "reusable": "",
+          "alignment": "0000000000400000",
+          "size": "0000000000c00000",
+          "phandle": "0000008b"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xebc00000",
+          "end_exclusive": "0xec800000",
+          "bytes": 12582912,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 33,
+            "line_sha256": "894ca08401c613cbf6b572186f32799c42bf3564c58e9bcc95e335923a299db3",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000ebc00000..0x00000000ec7fffff (12288 KiB) map reusable adsp_heap_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xee000000",
+          "end_exclusive": "0xeec00000",
+          "bytes": 12582912,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 34,
+            "line_sha256": "5f9d8026ba53832cf47e9483be804e5b8ae5eac748462647f95487dbddab3b74",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000ee000000..0x00000000eebfffff (12288 KiB) map reusable adsp_heap_region"
+          }
+        },
+        "base_moved": true,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/non_secure_display_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "reusable": "",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "size": "000000000c800000",
+          "alignment": "0000000000400000",
+          "phandle": "00000102"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xc8400000",
+          "end_exclusive": "0xd4c00000",
+          "bytes": 209715200,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 36,
+            "line_sha256": "bd4a90480241867082167498a72f2a61e44f3083d88111be02add282a524dcad",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000c8400000..0x00000000d4bfffff (204800 KiB) map reusable non_secure_display_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xc8400000",
+          "end_exclusive": "0xd4c00000",
+          "bytes": 209715200,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 37,
+            "line_sha256": "d0d6446bb02673d32d3f2d767b81550b85d0553a6255f4f536905e91b3bb870c",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000c8400000..0x00000000d4bfffff (204800 KiB) map reusable non_secure_display_region"
+          }
+        },
+        "base_moved": false,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/debug_kinfo_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "alloc-ranges": "0000000000000000ffffffffffffffff",
+          "size": "0000000000001000",
+          "no-map": "",
+          "phandle": "00000069"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xbfffff000",
+          "end_exclusive": "0xc00000000",
+          "bytes": 4096,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "nomap",
+          "reuse": "non-reusable",
+          "evidence": {
+            "LF": 37,
+            "line_sha256": "6f3ab85a54723da402352aa08a2ef0bd18d5251139cdcf4c53bb6fe6708f36be",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x0000000bfffff000..0x0000000bffffffff (4 KiB) nomap non-reusable debug_kinfo_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xbfffff000",
+          "end_exclusive": "0xc00000000",
+          "bytes": 4096,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "nomap",
+          "reuse": "non-reusable",
+          "evidence": {
+            "LF": 38,
+            "line_sha256": "e66eb8cbc7762b08bc5a62c8d2017beaf21bc5b089a1c79a1f48e8a5da41e829",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x0000000bfffff000..0x0000000bffffffff (4 KiB) nomap non-reusable debug_kinfo_region"
+          }
+        },
+        "base_moved": false,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/va_md_mem_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "reusable": "",
+          "size": "0000000001000000",
+          "phandle": "0000006a"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xeac00000",
+          "end_exclusive": "0xebc00000",
+          "bytes": 16777216,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 40,
+            "line_sha256": "c7a2839e851b8fd56cb67bdec18c85eafbf0ea79d90ab38eb742addca1da533a",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000eac00000..0x00000000ebbfffff (16384 KiB) map reusable va_md_mem_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xe9800000",
+          "end_exclusive": "0xea800000",
+          "bytes": 16777216,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 41,
+            "line_sha256": "abcc05aed6d61da7e1ba1915d35eb16a7a514bb3e465dd89abcc1354239fe5f1",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000e9800000..0x00000000ea7fffff (16384 KiB) map reusable va_md_mem_region"
+          }
+        },
+        "base_moved": true,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/qmc_dma_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "reusable": "",
+          "alignment": "0000000000400000",
+          "size": "0000000001000000",
+          "phandle": "00000044"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xe9c00000",
+          "end_exclusive": "0xeac00000",
+          "bytes": 16777216,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 44,
+            "line_sha256": "691044ade908cf3c799cd7f35e3d333fc3fb625a477b8a46b0efe654bbc39cb2",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000e9c00000..0x00000000eabfffff (16384 KiB) map reusable qmc_dma_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xe8800000",
+          "end_exclusive": "0xe9800000",
+          "bytes": 16777216,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 44,
+            "line_sha256": "cc6b16602ea1fabdeb4fcf637d710c70ee8d7540361553b329e67060b7360ec3",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000e8800000..0x00000000e97fffff (16384 KiB) map reusable qmc_dma_region"
+          }
+        },
+        "base_moved": true,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/secure_cdsp_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "compatible": "7368617265642d646d612d706f6f6c00",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "reusable": "",
+          "alignment": "0000000000400000",
+          "size": "0000000004800000",
+          "phandle": "00000108"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xe5400000",
+          "end_exclusive": "0xe9c00000",
+          "bytes": 75497472,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 47,
+            "line_sha256": "4be480c4b1ff93b6727f5793d077d9dca52ca98ca62c5a7558282772bbc8ef3b",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000e5400000..0x00000000e9bfffff (73728 KiB) map reusable secure_cdsp_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xe4000000",
+          "end_exclusive": "0xe8800000",
+          "bytes": 75497472,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 47,
+            "line_sha256": "28a3e63ce367cf9f619532f635602d83aa4bed4f7581291f4cf91cdce9ccca63",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000e4000000..0x00000000e87fffff (73728 KiB) map reusable secure_cdsp_region"
+          }
+        },
+        "base_moved": true,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/dump_mem_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "alloc-ranges": "0000000100000000fffffffeffffffff",
+          "size": "0000000005a00000",
+          "phandle": "00000272"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0x880240000",
+          "end_exclusive": "0x885c40000",
+          "bytes": 94371840,
+          "intersects_R30_measured_arithmetic_PA": true,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "non-reusable",
+          "evidence": {
+            "LF": 48,
+            "line_sha256": "3ed5c05989b7775af69e2b6134f1499be757eddebe71ef014aeda246b75fe846",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x0000000880240000..0x0000000885c3ffff (92160 KiB) map non-reusable dump_mem_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0x884798000",
+          "end_exclusive": "0x88a198000",
+          "bytes": 94371840,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "non-reusable",
+          "evidence": {
+            "LF": 48,
+            "line_sha256": "0e321848e00de1646e91b697eeb38b01a9185402164f521c6e045a1c01ca8884",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x0000000884798000..0x000000088a197fff (92160 KiB) map non-reusable dump_mem_region"
+          }
+        },
+        "base_moved": true,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      },
+      {
+        "path": "/reserved-memory/cnss_wlan_region",
+        "source_and_loaded_target_node_properties_byte_identical": true,
+        "properties_hex": {
+          "phandle": "0000088b",
+          "size": "0000000002000000",
+          "alignment": "0000000000400000",
+          "reusable": "",
+          "alloc-ranges": "000000000000000000000000ffffffff",
+          "compatible": "7368617265642d646d612d706f6f6c00"
+        },
+        "source_boot_initial_allocation": {
+          "start": "0xd6000000",
+          "end_exclusive": "0xd8000000",
+          "bytes": 33554432,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 51,
+            "line_sha256": "f8f61edef14434f3454d42e9701e46bcfcabb3e7afae7378fa7b29faf227738e",
+            "raw_latin1": "[    0.000000] OF: reserved mem: 0x00000000d6000000..0x00000000d7ffffff (32768 KiB) map reusable cnss_wlan_region"
+          }
+        },
+        "target_boot_actual_initial_allocation": {
+          "start": "0xd6000000",
+          "end_exclusive": "0xd8000000",
+          "bytes": 33554432,
+          "intersects_R30_measured_arithmetic_PA": false,
+          "intersects_R29_historical_conditional_PA": false,
+          "mapping": "map",
+          "reuse": "reusable",
+          "evidence": {
+            "LF": 51,
+            "line_sha256": "25bf970d5c951c61118cb7540e1f6af93cfa99f39ac53925841fd2c560fdaf99",
+            "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x00000000d6000000..0x00000000d7ffffff (32768 KiB) map reusable cnss_wlan_region"
+          }
+        },
+        "base_moved": false,
+        "runtime_owner_or_firmware_access_not_established_by_initial_log": true
+      }
+    ],
+    "source_additional_dynamic_ramoops": {
+      "start": "0x880000000",
+      "end_exclusive": "0x880240000",
+      "bytes": 2359296,
+      "intersects_R30_measured_arithmetic_PA": false,
+      "intersects_R29_historical_conditional_PA": false,
+      "evidence": {
+        "LF": 41,
+        "line_sha256": "6bc811722b7cdeeca26b14dd155919d1f33e88cff48c08221ed749766c2e6214",
+        "raw_latin1": "[    0.000000] OF: reserved mem: 0x0000000880000000..0x000000088023ffff (2304 KiB) nomap non-reusable ramoops-region"
+      }
+    },
+    "source_ramoops_is_15th_source_dynamic_node_target_native_helper_makes_it_static": true,
+    "no_target_dynamic_pool_initial_extent_contains_fault_PA": true
+  },
+  "all_known_geometry": {
+    "source_static_DT_ranges": [
+      {
+        "start": "0x80000000",
+        "end_exclusive": "0x81200000",
+        "bytes": 18874368,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/gunyah_hyp_region@80000000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81200000",
+        "end_exclusive": "0x81400000",
+        "bytes": 2097152,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/cpucp_pdp_region@81200000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81a00000",
+        "end_exclusive": "0x81a40000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/xbl_dtlog_region@81a00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81c00000",
+        "end_exclusive": "0x81c60000",
+        "bytes": 393216,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/aop_image_region@81c00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81c60000",
+        "end_exclusive": "0x81c80000",
+        "bytes": 131072,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/aop_cmd_db_region@81c60000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81c80000",
+        "end_exclusive": "0x81cf4000",
+        "bytes": 475136,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/aop_tme_uefi_merged_region@81c80000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81d00000",
+        "end_exclusive": "0x81f00000",
+        "bytes": 2097152,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/smem_region@81d00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81f00000",
+        "end_exclusive": "0x82000000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/pdp_ns_shared_region@81f00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x82000000",
+        "end_exclusive": "0x82380000",
+        "bytes": 3670016,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/cpucp_scandump_region@82000000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x82380000",
+        "end_exclusive": "0x823a0000",
+        "bytes": 131072,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/adsp_mhi_region@82380000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x823a0000",
+        "end_exclusive": "0x823e0000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/soccp_sdi_region@823a0000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x823e0000",
+        "end_exclusive": "0x82460000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/pmic_minii_dump_region@823e0000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x824a0000",
+        "end_exclusive": "0x825a0000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/pvm_fw_region@824a0000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x82600000",
+        "end_exclusive": "0x82700000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/global_sync_region@82600000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x82700000",
+        "end_exclusive": "0x82800000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/tz_stat_region@82700000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x82800000",
+        "end_exclusive": "0x84800000",
+        "bytes": 33554432,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/qdss_apps_region@82800000",
+        "reg_tuple": 0,
+        "status": "disabled",
+        "no_map": false,
+        "reusable": true
+      },
+      {
+        "start": "0x84a00000",
+        "end_exclusive": "0x89300000",
+        "bytes": 76546048,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/dsm_partition_1_region@84a00000",
+        "reg_tuple": 0,
+        "status": "disabled",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x89300000",
+        "end_exclusive": "0x89d80000",
+        "bytes": 11010048,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/dsm_partition_2_region@89300000",
+        "reg_tuple": 0,
+        "status": "disabled",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x8ba00000",
+        "end_exclusive": "0x9b000000",
+        "bytes": 257949696,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/mpss_region@8ba00000",
+        "reg_tuple": 0,
+        "status": "disabled",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b000000",
+        "end_exclusive": "0x9b080000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/q6_mpss_dtb_region@9b000000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b080000",
+        "end_exclusive": "0x9b090000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/ipa_fw_region@9b080000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b090000",
+        "end_exclusive": "0x9b09a000",
+        "bytes": 40960,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/ipa_gsi_region@9b090000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b09a000",
+        "end_exclusive": "0x9b09c000",
+        "bytes": 8192,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/gpu_microcode_region@9b09a000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b09c000",
+        "end_exclusive": "0x9b0a0000",
+        "bytes": 16384,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/lost_reg_mem",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b0a0000",
+        "end_exclusive": "0x9b280000",
+        "bytes": 1966080,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/spss_region_region@9b0a0000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b280000",
+        "end_exclusive": "0x9b2c0000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/spu_secure_shared_memory_region@9b280000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b2c0000",
+        "end_exclusive": "0x9b300000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/spu_secure_shared_memory_region@9b2c0000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b300000",
+        "end_exclusive": "0x9bb00000",
+        "bytes": 8388608,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/camera_region@9b300000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9bb00000",
+        "end_exclusive": "0x9c300000",
+        "bytes": 8388608,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/camera_2_region@9bb00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9c300000",
+        "end_exclusive": "0x9cb00000",
+        "bytes": 8388608,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/video_region@9c300000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9cb00000",
+        "end_exclusive": "0x9d200000",
+        "bytes": 7340032,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/cvp_region@9cb00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9d200000",
+        "end_exclusive": "0x9eb00000",
+        "bytes": 26214400,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/cdsp_region@9d200000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9eb00000",
+        "end_exclusive": "0x9eb80000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/q6_cdsp_dtb_region@9eb00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9eb80000",
+        "end_exclusive": "0x9ec00000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/lost_reg_mem2",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9ec00000",
+        "end_exclusive": "0x9ed80000",
+        "bytes": 1572864,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/soccp_region@9ec00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9ed80000",
+        "end_exclusive": "0x9ee00000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/q6_adsp_dtb_region@9ed80000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9ee00000",
+        "end_exclusive": "0xa3e80000",
+        "bytes": 84410368,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/adspslpi_region@9ee00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xb8000000",
+        "end_exclusive": "0xb81c0000",
+        "bytes": 1835008,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/xbl_ramdump_region@b8000000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xbd930000",
+        "end_exclusive": "0xbe130000",
+        "bytes": 8388608,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/gunyah_hyp_region1@bd930000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xd4e23000",
+        "end_exclusive": "0xd5100000",
+        "bytes": 3002368,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/hwfence-shmem",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xd8000000",
+        "end_exclusive": "0xd8600000",
+        "bytes": 6291456,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/tz_merged_region@d8000000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xf3800000",
+        "end_exclusive": "0xf7c00000",
+        "bytes": 71303168,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/trust_ui_vm_region@f3800000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": true
+      },
+      {
+        "start": "0xf7c00000",
+        "end_exclusive": "0xfc800000",
+        "bytes": 79691776,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/oem_vm_region@f7c00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": true
+      },
+      {
+        "start": "0xff800000",
+        "end_exclusive": "0x100000000",
+        "bytes": 8388608,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/llcc_lpi_region@ff800000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81ce4000",
+        "end_exclusive": "0x81cf4000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/botloader_mem@0x81CE4000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0xa4f00000",
+        "end_exclusive": "0xa4f08000",
+        "bytes": 32768,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/device_info_mem@0xA4F00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0xfc800000",
+        "end_exclusive": "0xff300000",
+        "bytes": 45088768,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/splash_region",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x0",
+        "end_exclusive": "0x0",
+        "bytes": 0,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/demura_region_0",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x0",
+        "end_exclusive": "0x0",
+        "bytes": 0,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/demura_region_1",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      }
+    ],
+    "target_static_DT_ranges": [
+      {
+        "start": "0xecea0000",
+        "end_exclusive": "0xecec0000",
+        "bytes": 131072,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-tzlog-preserved",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xecec0000",
+        "end_exclusive": "0xecee1000",
+        "bytes": 135168,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-tzlog-preserved",
+        "reg_tuple": 1,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xece8c000",
+        "end_exclusive": "0xece8f000",
+        "bytes": 12288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-tzlog-preserved",
+        "reg_tuple": 2,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xed300000",
+        "end_exclusive": "0xed380000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-tzlog-preserved",
+        "reg_tuple": 3,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81b00000",
+        "end_exclusive": "0x81c00000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-gic-tables",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x8366d000",
+        "end_exclusive": "0x8366e000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-gic-tables",
+        "reg_tuple": 1,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x83670000",
+        "end_exclusive": "0x83680000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-gic-tables",
+        "reg_tuple": 2,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x83a40000",
+        "end_exclusive": "0x83a80000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-gic-tables",
+        "reg_tuple": 3,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x83e40000",
+        "end_exclusive": "0x83e80000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-gic-tables",
+        "reg_tuple": 4,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x84240000",
+        "end_exclusive": "0x84250000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-gic-tables",
+        "reg_tuple": 5,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x94f12000",
+        "end_exclusive": "0x94f13000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-gic-tables",
+        "reg_tuple": 6,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x99bad000",
+        "end_exclusive": "0x99bae000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-gic-tables",
+        "reg_tuple": 7,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0xae8c9000",
+        "end_exclusive": "0xae8ca000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-gic-tables",
+        "reg_tuple": 8,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x884797000",
+        "end_exclusive": "0x884798000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/kexec-gic-tables",
+        "reg_tuple": 9,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x80000000",
+        "end_exclusive": "0x81200000",
+        "bytes": 18874368,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/gunyah_hyp_region@80000000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81200000",
+        "end_exclusive": "0x81400000",
+        "bytes": 2097152,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/cpucp_pdp_region@81200000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81a00000",
+        "end_exclusive": "0x81a40000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/xbl_dtlog_region@81a00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81c00000",
+        "end_exclusive": "0x81c60000",
+        "bytes": 393216,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/aop_image_region@81c00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81c60000",
+        "end_exclusive": "0x81c80000",
+        "bytes": 131072,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/aop_cmd_db_region@81c60000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81c80000",
+        "end_exclusive": "0x81cf4000",
+        "bytes": 475136,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/aop_tme_uefi_merged_region@81c80000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81d00000",
+        "end_exclusive": "0x81f00000",
+        "bytes": 2097152,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/smem_region@81d00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81f00000",
+        "end_exclusive": "0x82000000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/pdp_ns_shared_region@81f00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x82000000",
+        "end_exclusive": "0x82380000",
+        "bytes": 3670016,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/cpucp_scandump_region@82000000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x82380000",
+        "end_exclusive": "0x823a0000",
+        "bytes": 131072,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/adsp_mhi_region@82380000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x823a0000",
+        "end_exclusive": "0x823e0000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/soccp_sdi_region@823a0000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x823e0000",
+        "end_exclusive": "0x82460000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/pmic_minii_dump_region@823e0000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x824a0000",
+        "end_exclusive": "0x825a0000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/pvm_fw_region@824a0000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x82600000",
+        "end_exclusive": "0x82700000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/global_sync_region@82600000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x82700000",
+        "end_exclusive": "0x82800000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/tz_stat_region@82700000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x82800000",
+        "end_exclusive": "0x84800000",
+        "bytes": 33554432,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/qdss_apps_region@82800000",
+        "reg_tuple": 0,
+        "status": "disabled",
+        "no_map": false,
+        "reusable": true
+      },
+      {
+        "start": "0x84a00000",
+        "end_exclusive": "0x89300000",
+        "bytes": 76546048,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/dsm_partition_1_region@84a00000",
+        "reg_tuple": 0,
+        "status": "disabled",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x89300000",
+        "end_exclusive": "0x89d80000",
+        "bytes": 11010048,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/dsm_partition_2_region@89300000",
+        "reg_tuple": 0,
+        "status": "disabled",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x8ba00000",
+        "end_exclusive": "0x9b000000",
+        "bytes": 257949696,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/mpss_region@8ba00000",
+        "reg_tuple": 0,
+        "status": "disabled",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b000000",
+        "end_exclusive": "0x9b080000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/q6_mpss_dtb_region@9b000000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b080000",
+        "end_exclusive": "0x9b090000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/ipa_fw_region@9b080000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b090000",
+        "end_exclusive": "0x9b09a000",
+        "bytes": 40960,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/ipa_gsi_region@9b090000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b09a000",
+        "end_exclusive": "0x9b09c000",
+        "bytes": 8192,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/gpu_microcode_region@9b09a000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b09c000",
+        "end_exclusive": "0x9b0a0000",
+        "bytes": 16384,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/lost_reg_mem",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b0a0000",
+        "end_exclusive": "0x9b280000",
+        "bytes": 1966080,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/spss_region_region@9b0a0000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b280000",
+        "end_exclusive": "0x9b2c0000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/spu_secure_shared_memory_region@9b280000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b2c0000",
+        "end_exclusive": "0x9b300000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/spu_secure_shared_memory_region@9b2c0000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9b300000",
+        "end_exclusive": "0x9bb00000",
+        "bytes": 8388608,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/camera_region@9b300000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9bb00000",
+        "end_exclusive": "0x9c300000",
+        "bytes": 8388608,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/camera_2_region@9bb00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9c300000",
+        "end_exclusive": "0x9cb00000",
+        "bytes": 8388608,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/video_region@9c300000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9cb00000",
+        "end_exclusive": "0x9d200000",
+        "bytes": 7340032,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/cvp_region@9cb00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9d200000",
+        "end_exclusive": "0x9eb00000",
+        "bytes": 26214400,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/cdsp_region@9d200000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9eb00000",
+        "end_exclusive": "0x9eb80000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/q6_cdsp_dtb_region@9eb00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9eb80000",
+        "end_exclusive": "0x9ec00000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/lost_reg_mem2",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9ec00000",
+        "end_exclusive": "0x9ed80000",
+        "bytes": 1572864,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/soccp_region@9ec00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9ed80000",
+        "end_exclusive": "0x9ee00000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/q6_adsp_dtb_region@9ed80000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x9ee00000",
+        "end_exclusive": "0xa3e80000",
+        "bytes": 84410368,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/adspslpi_region@9ee00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xb8000000",
+        "end_exclusive": "0xb81c0000",
+        "bytes": 1835008,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/xbl_ramdump_region@b8000000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xbd930000",
+        "end_exclusive": "0xbe130000",
+        "bytes": 8388608,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/gunyah_hyp_region1@bd930000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xd4e23000",
+        "end_exclusive": "0xd5100000",
+        "bytes": 3002368,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/hwfence-shmem",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xd8000000",
+        "end_exclusive": "0xd8600000",
+        "bytes": 6291456,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/tz_merged_region@d8000000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0xf3800000",
+        "end_exclusive": "0xf7c00000",
+        "bytes": 71303168,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/trust_ui_vm_region@f3800000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": true
+      },
+      {
+        "start": "0xf7c00000",
+        "end_exclusive": "0xfc800000",
+        "bytes": 79691776,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/oem_vm_region@f7c00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": true
+      },
+      {
+        "start": "0xff800000",
+        "end_exclusive": "0x100000000",
+        "bytes": 8388608,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/llcc_lpi_region@ff800000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x880000000",
+        "end_exclusive": "0x880240000",
+        "bytes": 2359296,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/ramoops-region",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": true,
+        "reusable": false
+      },
+      {
+        "start": "0x81ce4000",
+        "end_exclusive": "0x81cf4000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/botloader_mem@0x81CE4000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0xa4f00000",
+        "end_exclusive": "0xa4f08000",
+        "bytes": 32768,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/device_info_mem@0xA4F00000",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0xfc800000",
+        "end_exclusive": "0xff300000",
+        "bytes": 45088768,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/splash_region",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x0",
+        "end_exclusive": "0x0",
+        "bytes": 0,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/demura_region_0",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      },
+      {
+        "start": "0x0",
+        "end_exclusive": "0x0",
+        "bytes": 0,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "path": "/reserved-memory/demura_region_1",
+        "reg_tuple": 0,
+        "status": "okay",
+        "no_map": false,
+        "reusable": false
+      }
+    ],
+    "target_static_reg_tuple_count": 64,
+    "target_header_reserve_map": [
+      {
+        "start": "0x867f0000",
+        "end_exclusive": "0x879f7d18",
+        "bytes": 18906392,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      }
+    ],
+    "captured_GIC_merged_ranges": [
+      {
+        "start": "0x81b00000",
+        "end_exclusive": "0x81c00000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x8366d000",
+        "end_exclusive": "0x8366e000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x83670000",
+        "end_exclusive": "0x83680000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x83a40000",
+        "end_exclusive": "0x83a80000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x83e40000",
+        "end_exclusive": "0x83e80000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x84240000",
+        "end_exclusive": "0x84250000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x94f12000",
+        "end_exclusive": "0x94f13000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x99bad000",
+        "end_exclusive": "0x99bae000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0xae8c9000",
+        "end_exclusive": "0xae8ca000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x884797000",
+        "end_exclusive": "0x884798000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      }
+    ],
+    "captured_GIC_hardware_component_ranges": [
+      {
+        "start": "0x81b00000",
+        "end_exclusive": "0x81c00000",
+        "bytes": 1048576,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "its-baser"
+      },
+      {
+        "start": "0x8366d000",
+        "end_exclusive": "0x8366e000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "its-baser"
+      },
+      {
+        "start": "0x83670000",
+        "end_exclusive": "0x83680000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "its-command-queue"
+      },
+      {
+        "start": "0x83a40000",
+        "end_exclusive": "0x83a50000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "lpi-properties"
+      },
+      {
+        "start": "0x83a50000",
+        "end_exclusive": "0x83a60000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "lpi-pending"
+      },
+      {
+        "start": "0x83a60000",
+        "end_exclusive": "0x83a70000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "lpi-pending"
+      },
+      {
+        "start": "0x83a70000",
+        "end_exclusive": "0x83a80000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "lpi-pending"
+      },
+      {
+        "start": "0x83e40000",
+        "end_exclusive": "0x83e50000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "lpi-pending"
+      },
+      {
+        "start": "0x83e50000",
+        "end_exclusive": "0x83e60000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "lpi-pending"
+      },
+      {
+        "start": "0x83e60000",
+        "end_exclusive": "0x83e70000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "lpi-pending"
+      },
+      {
+        "start": "0x83e70000",
+        "end_exclusive": "0x83e80000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "lpi-pending"
+      },
+      {
+        "start": "0x84240000",
+        "end_exclusive": "0x84250000",
+        "bytes": 65536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "lpi-pending"
+      },
+      {
+        "start": "0x94f12000",
+        "end_exclusive": "0x94f13000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "its-device-itt"
+      },
+      {
+        "start": "0x99bad000",
+        "end_exclusive": "0x99bae000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "its-level2"
+      },
+      {
+        "start": "0xae8c9000",
+        "end_exclusive": "0xae8ca000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "its-device-itt"
+      },
+      {
+        "start": "0x884797000",
+        "end_exclusive": "0x884798000",
+        "bytes": 4096,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "its-level2"
+      }
+    ],
+    "fresh_pinned_TZ_buffers": [
+      {
+        "start": "0xecea0000",
+        "end_exclusive": "0xecec0000",
+        "bytes": 131072,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "raw_qsee"
+      },
+      {
+        "start": "0xecec0000",
+        "end_exclusive": "0xecee1000",
+        "bytes": 135168,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "encrypted_qsee"
+      },
+      {
+        "start": "0xece8c000",
+        "end_exclusive": "0xece8f000",
+        "bytes": 12288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "encrypted_tz"
+      },
+      {
+        "start": "0xed300000",
+        "end_exclusive": "0xed380000",
+        "bytes": 524288,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "use": "display"
+      }
+    ],
+    "three_loaded_segments": [
+      {
+        "start": "0x84400000",
+        "end_exclusive": "0x867f0000",
+        "bytes": 37683200,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "segment": 0,
+        "bufsz": 37001728
+      },
+      {
+        "start": "0x867f0000",
+        "end_exclusive": "0x879f8000",
+        "bytes": 18907136,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "segment": 1,
+        "bufsz": 18906392
+      },
+      {
+        "start": "0xbeb200000",
+        "end_exclusive": "0xbeb387000",
+        "bytes": 1601536,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false,
+        "segment": 2,
+        "bufsz": 1601455
+      }
+    ],
+    "unchanged_source_target_memory_reg_ranges": [
+      {
+        "start": "0x81960000",
+        "end_exclusive": "0x81a00000",
+        "bytes": 655360,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x81a40000",
+        "end_exclusive": "0x81c00000",
+        "bytes": 1835008,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x81cf4000",
+        "end_exclusive": "0x81d00000",
+        "bytes": 49152,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x82460000",
+        "end_exclusive": "0x824a0000",
+        "bytes": 262144,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0xbe360000",
+        "end_exclusive": "0xd4e23000",
+        "bytes": 380383232,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0xd5100000",
+        "end_exclusive": "0xd8000000",
+        "bytes": 49283072,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0xd8600000",
+        "end_exclusive": "0xd8600000",
+        "bytes": 0,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0xe3720000",
+        "end_exclusive": "0xff800000",
+        "bytes": 470679552,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x880000000",
+        "end_exclusive": "0x8af6fd000",
+        "bytes": 795856896,
+        "intersects_R30_measured_arithmetic_PA": true,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x8b0000000",
+        "end_exclusive": "0x8b5500000",
+        "bytes": 89128960,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0xa00000000",
+        "end_exclusive": "0xc00000000",
+        "bytes": 8589934592,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x8c0000000",
+        "end_exclusive": "0xa00000000",
+        "bytes": 5368709120,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0x82800000",
+        "end_exclusive": "0x9b000000",
+        "bytes": 411041792,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      },
+      {
+        "start": "0xa3e80000",
+        "end_exclusive": "0xb8000000",
+        "bytes": 337117184,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": true
+      },
+      {
+        "start": "0xb81c0000",
+        "end_exclusive": "0xbd930000",
+        "bytes": 91684864,
+        "intersects_R30_measured_arithmetic_PA": false,
+        "intersects_R29_historical_conditional_PA": false
+      }
+    ],
+    "measured_PA_is_in_memory_reg": true,
+    "fault_PA_intersections_with_target_static_GIC_TZ_segments_reservemap": []
+  },
+  "dump_mem_geometric_observation": {
+    "source_initial_dump_extent": {
+      "start": "0x880240000",
+      "end_exclusive": "0x885c40000",
+      "bytes": 94371840,
+      "intersects_R30_measured_arithmetic_PA": true,
+      "intersects_R29_historical_conditional_PA": false,
+      "mapping": "map",
+      "reuse": "non-reusable",
+      "evidence": {
+        "LF": 48,
+        "line_sha256": "3ed5c05989b7775af69e2b6134f1499be757eddebe71ef014aeda246b75fe846",
+        "raw_latin1": "[    0.000000] OF: reserved mem: 0x0000000880240000..0x0000000885c3ffff (92160 KiB) map non-reusable dump_mem_region"
+      }
+    },
+    "target_initial_dump_extent": {
+      "start": "0x884798000",
+      "end_exclusive": "0x88a198000",
+      "bytes": 94371840,
+      "intersects_R30_measured_arithmetic_PA": false,
+      "intersects_R29_historical_conditional_PA": false,
+      "mapping": "map",
+      "reuse": "non-reusable",
+      "evidence": {
+        "LF": 48,
+        "line_sha256": "0e321848e00de1646e91b697eeb38b01a9185402164f521c6e045a1c01ca8884",
+        "raw_latin1": "[    0.000000][    T0] OF: reserved mem: 0x0000000884798000..0x000000088a197fff (92160 KiB) map non-reusable dump_mem_region"
+      }
+    },
+    "source_offset_of_fault_PA": "0x4226000",
+    "fault_PA_below_target_pool_start_by": "0x332000",
+    "same_source_GIC_last_page_ends_exactly_at_target_pool_start": true,
+    "adjacency_is_geometry_not_proof_of_allocator_or_hardware_causality": true,
+    "must_not_treat_initial_90MiB_envelope_as_persistent_live_owner": true
+  },
+  "sampled_source_allocation_positive": {
+    "lookup": {
+      "path": "secure-pool-readonly-review/r30-pfn-884466/lookup.json",
+      "bytes": 7871,
+      "sha256": "3ff0a846afb503fa2c13f002660af55142cf4385fe0d80627268de21f1f1aab7"
+    },
+    "unique_archive_interval_match": {
+      "raw_file": "secure-pool-readonly-review/r30-pfn-884466/archive-match-1.txt",
+      "raw_sha256": "30922500a4d921b0ac021fb7c18cf8f6d12cb12361695920a9c9e09d946f4ce2",
+      "uncompressed_record_byte_offset": 141741691,
+      "record_bytes": 807,
+      "head_PFN": "0x884466",
+      "order": 0,
+      "end_PFN_exclusive": "0x884467",
+      "PA_start": "0x884466000",
+      "PA_end_exclusive": "0x884467000",
+      "queried_page_offset_from_head": 0,
+      "query_byte_offset_from_head": 0,
+      "raw_record_latin1": "Page allocated via order 0, mask 0x100dc2(GFP_HIGHUSER|__GFP_ZERO), pid 2313, tgid 2313 (surfaceflinger), ts 7391625178 ns, free_ts 7389526532 ns\nPFN 0x884466 type Unmovable Block 8721 type Unmovable Flags 0x2000000000000000(zone=1|kasantag=0x0)\n post_alloc_hook+0x23c/0x244\n prep_new_page+0x30/0x16c\n get_page_from_freelist+0x1fb4/0x201c\n __alloc_pages+0xfc/0x2fc\n kgsl_system_alloc_pages+0xc0/0x1dc [msm_kgsl]\n kgsl_allocate_secure+0xb0/0x254 [msm_kgsl]\n kgsl_allocate_global+0xac/0x364 [msm_kgsl]\n send_start_msg+0x3ec/0x754 [msm_kgsl]\n gen8_hwsched_hfi_start+0x3f8/0x5b8 [msm_kgsl]\n gen8_hwsched_first_open+0x4d8/0x700 [msm_kgsl]\n adreno_first_open+0x44/0x5c [msm_kgsl]\n kgsl_open+0x1d8/0x270 [msm_kgsl]\n chrdev_open+0x1b8/0x258\n do_dentry_open+0x2c4/0x718\n vfs_open+0x2c/0x3c\n path_openat+0xaec/0xce4\n\n"
+    },
+    "same_boot_UUID": true,
+    "stack_role": "surfaceflinger -> KGSL secure global allocation -> gen8 HFI start",
+    "source_capture_exit": 124,
+    "source_capture_reached_EOF": false,
+    "valid_archive_does_not_imply_global_complete_coverage": true,
+    "allocation_origin_is_not_proof_of_continued_ownership_at_handoff_or_target_fault": true,
+    "does_not_query_VMIDs_firmware_permissions_or_DMA_quiescence": true
+  },
+  "initial_dump_region_release_crosscheck": {
+    "source_DT_consumer": "/soc/mem_dump",
+    "compatible": "qcom,mem-dump",
+    "memory_region_phandle": "0x272",
+    "source_rmem_reusable_property_absent": true,
+    "primary_url": "https://raw.githubusercontent.com/OnePlusOSS/android_kernel_oneplus_sm8750/fe7332c9b344a4000a3fc92bb72dcac76c4d7bc5/drivers/soc/qcom/memory_dump_v2.c",
+    "download": {
+      "path": "sea-memory-runner-review/round30-memory_dump_v2-primary.c.txt",
+      "bytes": 41090,
+      "sha256": "85e1cdd2e541f723f5b9445d3e51075618937fd1b1f85d8bf55c172ac49d6f2a"
+    },
+    "primary_source_line_ranges": {
+      "mem_dump_free_rmem": "1084-1090",
+      "nonreusable_rmem_path_tail_release": "1342-1398",
+      "probe_branch": "1502-1519"
+    },
+    "finding": "The non-reusable rmem path frees its unused tail with free_reserved_page; the startup reservation is not a permanent whole-pool ownership claim.",
+    "limit": "Matching actual memory_dump_v2 ELF and exact runtime used_size were not inspected here. This cross-check establishes a supported release mechanism, not which instruction released this exact page."
+  },
+  "R29_historical_conditional_hypothesis_only": {
+    "candidate_PA": "0xaf32a000",
+    "not_a_new_R29_measurement_or_owner_assignment": true,
+    "R30_source_or_target_dynamic_intersections": [],
+    "known_target_static_GIC_TZ_segment_reserve_intersections": [],
+    "R30_page_owner_record_must_not_be_applied_to_R29": true
+  },
+  "minimum_next_evidence": [
+    "Follow the actual same-source KGSL secure allocation stack and actual msm_kgsl module ABI: determine its successful assign metadata and shutdown/free path without guessing current VMID or issuing SMC.",
+    "If a subsequent source sample is needed, capture bounded KGSL global secure allocation metadata with matching source UUID and range, then compare future measured fault PA; do not infer global coverage from this partial archive.",
+    "Do not blindly reserve the initial dump_mem 90MiB, skip page zeroing, or reverse-assign an inferred owner."
+  ],
+  "limits": [
+    "Target early log bounds are actual initial allocations this round. Both source and target consumers may later free subranges; initial OF allocation logs are not live owner maps.",
+    "A page_owner stack is a sampled Linux allocation origin, not a hardware permission query or proof of persistence until the abort.",
+    "The fault arithmetic PA is in DT-described RAM but that does not prove accessibility after kexec.",
+    "Some unrelated raw pstore lines are corrupted. Only complete required LF records were parsed; nothing was repaired.",
+    "Source collector partial/244 unknown/0 ranges is not a global ownership or ready assertion and does not exclude KGSL pages."
+  ],
+  "device_operations": 0,
+  "protected_payload_reads": 0,
+  "archive_stream_passes_in_this_review": 0
+}

@@ -1,0 +1,9 @@
+{
+  "status": "ACTUAL_R37_IMAGE_EMBEDDED_CONFIG_EQUALS_FROZEN_BUILD_CONFIG",
+  "Image_sha256": "8401f353d7477c87db2e54ef5734ad2ac25acbe574a928b1c5b6ff82579f4f9e",
+  "embedded_marker_offset": 17845928,
+  "config_sha256": "50b0b2693e5ef21aa6c3a3e32cceb4d1c519663bdbcb848763d7322c937b5dad",
+  "config_bytes": 212148,
+  "unique_valid_marker": true,
+  "no_config_changes": true
+}

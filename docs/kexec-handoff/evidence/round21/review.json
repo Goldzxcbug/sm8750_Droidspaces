@@ -1,0 +1,36 @@
+{
+  "status": "NORMAL_BOOT_OBSERVER_NOT_ADOPTED_COLD_REFERENCE_NOT_ESTABLISHED",
+  "epoch": 1794609340.4261842,
+  "reports_sha256": {
+    "round21/device-test.json": "dfbbcc07aa1f894bffd231746a2ba91dff5e7f1908562ec3dbb7d7531ffa100a",
+    "round21/recovery-readonly.json": "cd84ba5e67533a792b9f4458c6866b37127c18987854486660be449c72e61516",
+    "round21/observed-dmesg.txt": "eb374caf045e213407badf49e4a82c413b88950d91f95c616aa5787601d0b7af",
+    "round21/observed-fdt.bin": "af6f004336291a6b589943df568ae31b4cef95b153653766ccd130593dc2472e",
+    "round21/phy_qcom_ufs-note.bin": "a336d766f9e192114004f8c0ed2ff56c3fb4d608077ddb9a401dd6e1e51d126d",
+    "ufs-phy-cold-reference-boot/runner-review/round21-runtime-report.json": "9d7ad66e9d5d1ba8f618f7b7f8012aacc1a89de5b6219fb7e2fc22d019759466",
+    "ufs-phy-cold-reference-root-review/final-binding-audit.json": "d70dd5d139314c80408b21730d37b71b026b875a9d563ed550d94097237eaaf3",
+    "ufs-phy-cold-reference-boot/runner-review/host-validation.json": "ba76116da8bb087ba821d72bc8e99c59303f20b6b6d001d610cdb7c65ae1875a"
+  },
+  "temporary_boot_requests": 1,
+  "recovery_reboots": 1,
+  "helper_load_execute_requests": 0,
+  "actual_kernel_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+  "actual_PHY_build_id": "da0d45e45f727c03861320cf4132255b22a0cf5c",
+  "all_three_new_PHY_options_absent": true,
+  "observer_marker_count": 0,
+  "actual_initrd_extent_identical_to_original_boot": true,
+  "initrd_start": 3065507840,
+  "initrd_end": 3087003868,
+  "cold_PHY_register_values_observed": false,
+  "recovered_boot_id": "5ea13afb-0e5f-4019-b064-ad2a3bd10765",
+  "recovered_kernel": "6.6.89-Gold_bug",
+  "Android_root_watchdog_normal": true,
+  "partition_flashed": false,
+  "watchdog_changed": false,
+  "limits": [
+    "Actual Image adoption was verified; attached temporary ramdisk was not effective for the intended module replacement.",
+    "The closed bootloader/init_boot selection mechanism remains unproven.",
+    "No zero/nonzero PHY cold comparison can be drawn from this attempt."
+  ],
+  "next_action": "Use a separately guarded builtin observer in a new temporary Image; preserve stock modules and original BCR/PHY/clock ordering."
+}

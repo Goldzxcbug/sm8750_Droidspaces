@@ -1,0 +1,832 @@
+{
+  "scope": "保存的历轮状态；字段为当时记录，不把请求当执行证明，不将缺少日志等同未进入目标。",
+  "rounds": [
+    {
+      "round": 1,
+      "state_file": "evidence/initial/device-test.json",
+      "saved_state_fields": {
+        "stage": "ONE_EXECUTION_FAILED_RECOVERED_INSTALLED_ANDROID",
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/initial/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 2,
+      "state_file": "evidence/round2/device-test.json",
+      "saved_state_fields": {
+        "stage": "TARGET_ENTRY_CONFIRMED_THEN_RETURNED_INSTALLED_ANDROID",
+        "source_boot_id": "c6dfc58f-ab76-45e7-9c1a-c9418e33f4d6",
+        "source_expected_build_id": "6081c037cab4c9e169ee897e5d9ad65a98de5109",
+        "source_observed_build_ids": [
+          "6081c037cab4c9e169ee897e5d9ad65a98de5109"
+        ],
+        "source_android_boot_completed": true,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round2/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 3,
+      "state_file": "evidence/round3/device-test.json",
+      "saved_state_fields": {
+        "stage": "ALL_SEVEN_PRE_MMU_STAGES_CONFIRMED_ANDROID_BOOT_STILL_FAILS",
+        "source_boot_id": "a302531d-2b41-4dc6-97a6-6c1ccda15f63",
+        "source_expected_build_id": "6081c037cab4c9e169ee897e5d9ad65a98de5109",
+        "source_observed_build_ids": [
+          "6081c037cab4c9e169ee897e5d9ad65a98de5109"
+        ],
+        "source_android_boot_completed": true,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round3/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 4,
+      "state_file": "evidence/round4/device-test.json",
+      "saved_state_fields": {
+        "stage": "PRIMARY_PRE_START_KERNEL_BOUNDARIES_CONFIRMED_LATER_DIAGNOSTIC_HOOK_UNSAFE",
+        "source_boot_id": "bcda5c37-0b62-45a8-b464-2839aecae259",
+        "source_expected_build_id": "6081c037cab4c9e169ee897e5d9ad65a98de5109",
+        "source_observed_build_ids": [
+          "6081c037cab4c9e169ee897e5d9ad65a98de5109"
+        ],
+        "source_android_boot_completed": true,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round4/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 5,
+      "state_file": "evidence/round5/device-test.json",
+      "saved_state_fields": {
+        "stage": "ITS_CPU_EBUSY_CONFIRMED_EIGHT_CPUS_ONLINE_LATER_RESET",
+        "source_boot_id": "3542daef-dcc8-44b2-8fee-17113c89156c",
+        "source_expected_build_id": "f04d5f44f8eeaf7586a6da926defa4d252a9c6d8",
+        "source_observed_build_ids": [
+          "f04d5f44f8eeaf7586a6da926defa4d252a9c6d8"
+        ],
+        "source_android_boot_completed": true,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round5/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 6,
+      "state_file": "evidence/round6/device-test.json",
+      "saved_state_fields": {
+        "stage": "TARGET_PREALLOCATED_GIC_AND_NATIVE_PRINTK_CONFIRMED_LATER_RESET",
+        "source_boot_id": "2c09ac11-3067-448f-8d8e-846d1ed9df0b",
+        "source_expected_build_id": "7fbb6d4cdd9bbf06915a84f0d71665a4afbdb33f",
+        "source_observed_build_ids": [
+          "7fbb6d4cdd9bbf06915a84f0d71665a4afbdb33f"
+        ],
+        "target_build_id": "f04d5f44f8eeaf7586a6da926defa4d252a9c6d8",
+        "target_run_id": "299b13b02ffc1706",
+        "source_android_boot_completed": true,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round6/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 7,
+      "state_file": "evidence/round7/device-test.json",
+      "saved_state_fields": {
+        "stage": "TARGET_FATAL_SECURE_CARVEOUT_MEMSET_EXTERNAL_ABORT_CONFIRMED",
+        "source_boot_id": "188e1634-2e0c-4502-a2a7-8d2a8d056081",
+        "source_expected_build_id": "7fbb6d4cdd9bbf06915a84f0d71665a4afbdb33f",
+        "source_observed_build_ids": [
+          "7fbb6d4cdd9bbf06915a84f0d71665a4afbdb33f"
+        ],
+        "target_build_id": "f93a5b41fb60172452d1ba9cc767d9014162da82",
+        "target_run_id": "f12fb7103f83c4a6",
+        "source_android_boot_completed": true,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round7/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 8,
+      "state_file": "evidence/round8/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_SOURCE_SEALED_ISOLATED_SCM_RESULT_NOT_CAPTURED",
+        "source_boot_id": "c15d817d-ec82-4c37-b935-682f3b03a8e8",
+        "source_expected_build_id": "946e78ead3508f77b1e888f36f5b0485dc72942c",
+        "source_observed_build_ids": [
+          "946e78ead3508f77b1e888f36f5b0485dc72942c"
+        ],
+        "target_build_id": "f93a5b41fb60172452d1ba9cc767d9014162da82",
+        "target_run_id": "7c542957a37e4cde",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 3,
+        "helper_insmod_request_count": 2,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round8/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 9,
+      "state_file": "evidence/round9/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "c98d4c50-1f2d-47a9-a473-1ac89b4cbaec",
+        "source_expected_build_id": "8dde72278b557d4fd2488c1cab40759e890397bc",
+        "source_observed_build_ids": [
+          "8dde72278b557d4fd2488c1cab40759e890397bc"
+        ],
+        "target_build_id": "f93a5b41fb60172452d1ba9cc767d9014162da82",
+        "target_run_id": "d4b35dbfac8f843c",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round9/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 10,
+      "state_file": "evidence/round10/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "1ae13e2f-827d-4b6a-9fc0-0a802c814b8e",
+        "source_expected_build_id": "8dde72278b557d4fd2488c1cab40759e890397bc",
+        "source_observed_build_ids": [
+          "8dde72278b557d4fd2488c1cab40759e890397bc"
+        ],
+        "target_build_id": "f93a5b41fb60172452d1ba9cc767d9014162da82",
+        "target_run_id": "5910bfd030bfa731",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round10/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 11,
+      "state_file": "evidence/round11/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "5470e8b2-be0e-4308-bf73-39a03eb0f839",
+        "source_expected_build_id": "218a41818e13202f577a7ef27eca92a55fb84f83",
+        "source_observed_build_ids": [
+          "218a41818e13202f577a7ef27eca92a55fb84f83"
+        ],
+        "target_build_id": "f93a5b41fb60172452d1ba9cc767d9014162da82",
+        "target_run_id": "c1b3e952cbf046ea",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round11/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 12,
+      "state_file": "evidence/round12/device-test.json",
+      "saved_state_fields": {
+        "stage": "SOURCE_NORMAL_ANDROID_BOOT_VERIFIED",
+        "source_boot_id": "de477f49-259c-4895-9fce-a8fded3166c7",
+        "source_expected_build_id": "218a41818e13202f577a7ef27eca92a55fb84f83",
+        "source_observed_build_ids": [
+          "218a41818e13202f577a7ef27eca92a55fb84f83"
+        ],
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": null
+    },
+    {
+      "round": 13,
+      "state_file": "evidence/round13/device-test.json",
+      "saved_state_fields": {
+        "stage": "SOURCE_NORMAL_ANDROID_CMA_TRACE_AND_TZ_METADATA_CAPTURED_NO_KEXEC_PREPARED",
+        "source_boot_id": "2d6c16b8-04a2-4896-8510-eac3b157c377",
+        "source_expected_build_id": "218a41818e13202f577a7ef27eca92a55fb84f83",
+        "source_observed_build_ids": [
+          "218a41818e13202f577a7ef27eca92a55fb84f83"
+        ],
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": null
+    },
+    {
+      "round": 14,
+      "state_file": "evidence/round14/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "98887e59-b9df-4d55-afd5-2a4852beaab9",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_build_id": "f93a5b41fb60172452d1ba9cc767d9014162da82",
+        "target_run_id": "07d066c804098959",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round14/pstore-after-exec.txt",
+      "review_file": null
+    },
+    {
+      "round": 15,
+      "state_file": "evidence/round15/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "78e5e9a9-e184-4c9e-a4c5-53993eae5384",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+        "target_run_id": "f6f9a03da51a22c0",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round15/pstore-after-exec.txt",
+      "review_file": "evidence/round15/review.json"
+    },
+    {
+      "round": 16,
+      "state_file": "evidence/round16/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "5e3f9ca7-8559-4079-a091-14112373ca00",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+        "target_run_id": "ebbef56b71ae9afd",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round16/pstore-after-exec.txt",
+      "review_file": "evidence/round16/review.json"
+    },
+    {
+      "round": 17,
+      "state_file": "evidence/round17/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "7d09f53b-304e-41f2-bba3-f128bf8c3668",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+        "target_run_id": "0cc41bd073f1722e",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round17/pstore-after-exec.txt",
+      "review_file": "evidence/round17/review.json"
+    },
+    {
+      "round": 18,
+      "state_file": "evidence/round18/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "360c681a-a89d-4195-809a-f200ef1c24c1",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_run_id": "975b4ca7d46f50a5",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round18/pstore-after-exec.txt",
+      "review_file": "evidence/round18/review.json"
+    },
+    {
+      "round": 19,
+      "state_file": "evidence/round19/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "c60882e9-d8cf-496d-9f92-5b13e4fa8e9a",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_run_id": "b33ca89166fc34ef",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round19/pstore-after-exec.txt",
+      "review_file": "evidence/round19/review.json"
+    },
+    {
+      "round": 20,
+      "state_file": "evidence/round20/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "0edb7818-b0dc-4aea-a7f0-83fb684793c9",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_run_id": "1d32bf8cdb0f8491",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round20/pstore-after-exec.txt",
+      "review_file": "evidence/round20/review.json"
+    },
+    {
+      "round": 21,
+      "state_file": "evidence/round21/device-test.json",
+      "saved_state_fields": {
+        "stage": "NORMAL_ANDROID_OBSERVED_REFERENCE_NOT_ESTABLISHED",
+        "observed_boot_id": "d8eaa728-6b0e-4b94-a82e-caf447e2f3ab",
+        "observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round21/review.json"
+    },
+    {
+      "round": 22,
+      "state_file": "evidence/round22/device-test.json",
+      "saved_state_fields": {
+        "stage": "NORMAL_BOOT_REFERENCE_EVIDENCE_CAPTURED",
+        "observed_boot_id": "d4a82171-28f6-4fb3-812d-6bfb3ea3388e",
+        "observed_build_ids": [
+          "f29c7de230e4cb44d0192b4fc0d9eaa0a427ceef"
+        ],
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round22/review.json"
+    },
+    {
+      "round": 23,
+      "state_file": "evidence/round23/device-test.json",
+      "saved_state_fields": {
+        "stage": "NORMAL_BOOT_REFERENCE_EVIDENCE_CAPTURED",
+        "observed_boot_id": "653bf0ad-4b4f-46e8-9b6f-4a612da02732",
+        "observed_build_ids": [
+          "f29c7de230e4cb44d0192b4fc0d9eaa0a427ceef"
+        ],
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round23/review.json"
+    },
+    {
+      "round": 24,
+      "state_file": "evidence/round24/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "01126976-410f-448e-bd5d-0f599e094088",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+        "target_run_id": "05160cb2b82875bc",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round24/pstore-after-exec.txt",
+      "review_file": "evidence/round24/review.json"
+    },
+    {
+      "round": 25,
+      "state_file": "evidence/round25/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "aa4e24d2-4fe7-42c4-a1e4-0bcc8a8d3dc1",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "146835a59b80c2c467222aa7c28892c00044a135",
+        "target_run_id": "ec670bd5f4eed0cb",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round25/pstore-after-exec.txt",
+      "review_file": "evidence/round25/review.json"
+    },
+    {
+      "round": 26,
+      "state_file": "evidence/round26/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "c05e083e-8db6-49d3-a3f7-a5fa2c1627c0",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "87bae5a7d32c6d0a3103c2c067a52fc1b2d02138",
+        "target_run_id": "65294cb39f7574d2",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round26/pstore-after-exec.txt",
+      "review_file": "evidence/round26/review.json"
+    },
+    {
+      "round": 27,
+      "state_file": "evidence/round27/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "3832ee69-346e-43d3-b2c9-dadfbf1f9b5e",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "87bae5a7d32c6d0a3103c2c067a52fc1b2d02138",
+        "target_run_id": "cd1bd079e10e2ceb",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round27/pstore-after-exec.txt",
+      "review_file": "evidence/round27/review.json"
+    },
+    {
+      "round": 28,
+      "state_file": "evidence/round28/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "bd117c7f-5c34-46dd-9354-d6bcdeabbc9d",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "b04f54de1c3320828089eea032cc23bb774d6631",
+        "target_run_id": "db9b4a3ba4016008",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 2,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round28/pstore-after-exec.txt",
+      "review_file": "evidence/round28/review.json"
+    },
+    {
+      "round": 29,
+      "state_file": "evidence/round29/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "03cf38fd-4c8f-486c-8af7-2df1df955e60",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "b04f54de1c3320828089eea032cc23bb774d6631",
+        "target_run_id": "be34b99a4daad460",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round29/pstore-after-exec.txt",
+      "review_file": "evidence/round29/review.json"
+    },
+    {
+      "round": 30,
+      "state_file": "evidence/round30/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "ca907ddf-d59e-48e7-a9d9-64c45327e7eb",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "337beb1178af6295c7072e8f0b5011eced5a3552",
+        "target_run_id": "ae886f43ba35f58e",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round30/pstore-after-exec.txt",
+      "review_file": "evidence/round30/review.json"
+    },
+    {
+      "round": 31,
+      "state_file": "evidence/round31/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_CAPTURED_REVIEW_REQUIRED",
+        "source_boot_id": "aa6fa070-cc0e-4643-8d03-96a0f148b8fa",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "4646f9c53d37fb382dbd5c23aa773837dc427084",
+        "target_run_id": "f81560387ff99e55",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round31/pstore-after-exec.txt",
+      "review_file": "evidence/round31/review.json"
+    },
+    {
+      "round": 32,
+      "state_file": "evidence/round32/device-test.json",
+      "saved_state_fields": {
+        "stage": "EXACT4646_ORDINARY_ANDROID_BOOT_VERIFIED_DEFAULT_OFF",
+        "observed_boot_id": "52ac911d-1444-400b-bbe6-308c14dfe965",
+        "observed_build_ids": [
+          "4646f9c53d37fb382dbd5c23aa773837dc427084"
+        ],
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round32/review.json"
+    },
+    {
+      "round": 33,
+      "state_file": "evidence/round33/device-test.json",
+      "saved_state_fields": {
+        "stage": "ABORTED_BEFORE_LOAD_SOURCE_GPU_PARAMETER_CAPACITY",
+        "source_boot_id": "5fe1ded3-4868-49d8-942d-a4c63b129452",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "PENDING_NEW_TARGET_ACTUAL_ELF_VALIDATION",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round33/review.json"
+    },
+    {
+      "round": 34,
+      "state_file": "evidence/round34/device-test.json",
+      "saved_state_fields": {
+        "stage": "ABORTED_BEFORE_LOAD_SOURCE_METADATA_READ_BUDGET",
+        "source_boot_id": "d33443dc-8ee9-4956-929c-4c686a0c8a85",
+        "source_expected_build_id": "84260068f6d24ee8926dbe14ac0c131d8b23587a",
+        "source_observed_build_ids": [
+          "84260068f6d24ee8926dbe14ac0c131d8b23587a"
+        ],
+        "target_expected_build_id": "PENDING_NEW_TARGET_ACTUAL_ELF_VALIDATION",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round34/review.json"
+    },
+    {
+      "round": 35,
+      "state_file": "evidence/round35/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_REVIEWED_TARGET_ANDROID_FAILED",
+        "source_boot_id": "985424e2-23f9-49f9-8137-5ce33ca95ef4",
+        "source_expected_build_id": "4424630e5e18a578666635e066a255bdf42c3428",
+        "source_observed_build_ids": [
+          "4424630e5e18a578666635e066a255bdf42c3428"
+        ],
+        "target_expected_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+        "target_run_id": "93037c1caf16fd7a",
+        "source_android_boot_completed": true,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round35/pstore-after-exec.txt",
+      "review_file": "evidence/round35/review.json"
+    },
+    {
+      "round": 36,
+      "state_file": "evidence/round36/device-test.json",
+      "saved_state_fields": {
+        "stage": "SOURCE_TEMPBOOT_FAILED_RECOVERED_STOCK_NOT_LOADED",
+        "source_expected_build_id": "4424630e5e18a578666635e066a255bdf42c3428",
+        "target_expected_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round36/review.json"
+    },
+    {
+      "round": 37,
+      "state_file": "evidence/round37/device-test.json",
+      "saved_state_fields": {
+        "stage": "SOURCE_KGSL_DENIAL_OBSERVED_RECOVERED_STOCK_NO_KEXEC",
+        "source_expected_build_id": "72782e2196eb1c46c8c5205ccd93f2acf42de294",
+        "target_expected_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round37/review.json"
+    },
+    {
+      "round": 38,
+      "state_file": "evidence/round38/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_REVIEWED_TARGET_ANDROID_FAILED",
+        "source_boot_id": "a462744d-3679-42ac-9def-f1a2968ae8ff",
+        "source_expected_build_id": "72782e2196eb1c46c8c5205ccd93f2acf42de294",
+        "source_observed_build_ids": [
+          "72782e2196eb1c46c8c5205ccd93f2acf42de294"
+        ],
+        "target_expected_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+        "target_run_id": "5f6ebdb92e50a89a",
+        "source_android_boot_completed": false,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1,
+        "source_surfaceflinger_stop_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round38/pstore-after-exec.txt",
+      "review_file": "evidence/round38/review.json"
+    },
+    {
+      "round": 39,
+      "state_file": "evidence/round39/device-test.json",
+      "saved_state_fields": {
+        "stage": "EXACT68E8_ORDINARY_ANDROID_BOOT_VERIFIED_DEFAULT_OFF",
+        "observed_boot_id": "55cf2d03-4429-4d36-8115-8d3dbe078e57",
+        "observed_build_ids": [
+          "68e85e134a894c34b5fef3ac30f4dd450d00a6b5"
+        ],
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round39/review.json"
+    },
+    {
+      "round": 40,
+      "state_file": "evidence/round40/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_REVIEWED_TARGET_ANDROID_FAILED_GPI_RUNTIME_UNVERIFIED",
+        "source_boot_id": "052b2ac3-d801-4563-820c-384c3ad16996",
+        "source_expected_build_id": "72782e2196eb1c46c8c5205ccd93f2acf42de294",
+        "source_observed_build_ids": [
+          "72782e2196eb1c46c8c5205ccd93f2acf42de294"
+        ],
+        "target_expected_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+        "target_run_id": "f5b8101627e20e75",
+        "source_android_boot_completed": false,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1,
+        "source_surfaceflinger_stop_request_count": 1
+      },
+      "raw_postexec_pstore": "evidence/round40/pstore-after-exec.txt",
+      "review_file": "evidence/round40/review.json"
+    },
+    {
+      "round": 41,
+      "state_file": "evidence/round41/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_REVIEWED_TARGET_UNVERIFIED_MANUAL_FASTBOOT_INTERVENTION",
+        "source_boot_id": "f632eed3-0bd9-44d3-9a6e-649cbd833c4d",
+        "source_expected_build_id": "72782e2196eb1c46c8c5205ccd93f2acf42de294",
+        "source_observed_build_ids": [
+          "72782e2196eb1c46c8c5205ccd93f2acf42de294"
+        ],
+        "target_expected_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+        "target_run_id": "9992c1bb1822e215",
+        "source_android_boot_completed": false,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1,
+        "source_surfaceflinger_stop_request_count": 1
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round41/review.json"
+    },
+    {
+      "round": 42,
+      "state_file": "evidence/round42/device-test.json",
+      "saved_state_fields": {
+        "stage": "SINGLE_EXECUTED_EVIDENCE_REVIEWED_AUTOMATIC_FASTBOOT_TARGET_UNVERIFIED",
+        "source_boot_id": "fafaed69-96b0-4bb1-8491-9a15cbe8d380",
+        "source_expected_build_id": "72782e2196eb1c46c8c5205ccd93f2acf42de294",
+        "source_observed_build_ids": [
+          "72782e2196eb1c46c8c5205ccd93f2acf42de294"
+        ],
+        "target_expected_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+        "target_run_id": "92363ab1bd2cf98f",
+        "source_android_boot_completed": false,
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 1,
+        "load_request_count": 1,
+        "execute_request_count": 1,
+        "source_surfaceflinger_stop_request_count": 1
+      },
+      "raw_postexec_pstore": null,
+      "review_file": "evidence/round42/review.json"
+    },
+    {
+      "round": 43,
+      "state_file": "evidence/round43/device-test.json",
+      "saved_state_fields": {
+        "stage": "FULL_GRAPHICS_SOURCE_ANDROID_GPU_SF_VERIFIED",
+        "observed_boot_id": "8212bfe6-d5ed-4c8b-be3f-dbecf7d93a1e",
+        "observed_build_ids": [
+          "72782e2196eb1c46c8c5205ccd93f2acf42de294"
+        ],
+        "original_modules": 695,
+        "user_display_and_touch_confirmation": "桌面和触摸都正常",
+        "temporary_boot_request_count": 1,
+        "helper_insmod_request_count": 0,
+        "load_request_count": 0,
+        "execute_request_count": 0,
+        "surfaceflinger_stop_request_count": 0
+      },
+      "raw_postexec_pstore": null,
+      "review_file": null
+    }
+  ]
+}

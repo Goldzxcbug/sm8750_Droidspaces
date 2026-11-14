@@ -1,5 +1,7 @@
 # kexec 启动安卓内核：问题交接文档
 
+交接日志包与阅读入口：[kexec-handoff/README.md](kexec-handoff/README.md)。含历轮原始日志、关键证据索引、配置/制品身份和 SHA-256 校验。
+
 日期：2026-11-14（R42单次跳转后自动回fastboot；R43恢复GPU，完整源Android及桌面触摸已通过，尚未执行新kexec）
 设备：OnePlus Pad 2 Pro（OPD2413 / OP615EL1，SM8750，A/B 槽位 `_a`，16GB）
 
@@ -1576,3 +1578,7 @@ ROOT汇总`out/kexec-boot-fix/round42/review.json` SHA `745583788a085c37998108b4
 ## 六十七、kexec 分支隔离与 main 历史撤回
 
 按用户要求，原 main 的六个连续 kexec 提交（e349634ce 至 77128cb6f）及当前补丁、构建配置、文档和测试全部保存在 kexec 分支。远程 main 已改写，不再包含这六个提交；混合提交中的非 kexec cgroup 构建调整和 kernel/out 忽略规则单独保留在 main 的 5c83b2930。分支间内容差异仅为 kexec 工作。后续 kexec 修改继续在 kexec 分支进行；本次整理未运行设备测试。
+
+## 六十八、日志交接包
+
+按用户交接要求，将本地 out 中的历轮状态、关键原始pstore/dmesg、构建配置、原有独立报告及3个供离线反汇编的小型模块复制到`docs/kexec-handoff/`。入口README、关键证据表和43轮状态索引便于接手者查找；manifest给出源路径与原始哈希，verify.py只做本地校验。原始日志不修字、不重排，不以旧轮寄存器补缺。完整Image/vmlinux/ramdisk和page_owner大档案仍在原主机，包内说明未交付的边界；本次整理没有再运行设备测试。

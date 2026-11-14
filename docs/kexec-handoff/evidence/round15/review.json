@@ -1,0 +1,37 @@
+{
+  "status": "SINGLE_JUMP_REVIEWED_TARGET_UFS_AUX_CLOCK_FAILURE_ANDROID_NOT_BOOTED",
+  "review_epoch": 1794598610.1331973,
+  "raw_device_test_sha256": "d36d12273e850a25e7543608fb2786456dae0baf18a53b7cddf306eda7af0887",
+  "raw_pstore_sha256": "4b3253d17920e20f2286c086955d309c3f2f6c98a79dd1c720de7b263d5e5c89",
+  "raw_pstore_bytes": 262132,
+  "raw_pstore_LF": 2824,
+  "review_reports_sha256": {
+    "ufs-clock-trace-review/round15-evidence.json": "7c8348f23c6906aeded0ee2cb45a59fe0f54eb8eecb7a8c6e921ccf2a11c3507",
+    "ufs-handoff-trace-review/round15-evidence.json": "17bd987d5f92a13233495847e3668eb12ba2012f03d6ef3b01d47f4c11338df4",
+    "ufs-handoff-runner-review/round15-evidence.json": "b414d124f0cf0ac4a67aa60883f0bf317cac2b40e264874a30e46c9a14ef2b4e"
+  },
+  "target_build_id": "7cfb27fb800a8d51ef5f2a90ba582cb03185fdd5",
+  "source_boot_id": "78e5e9a9-e184-4c9e-a4c5-53993eae5384",
+  "recovered_build_ids": [
+    "931f89c6463a6af0eea9436b61f059f31e451f6a"
+  ],
+  "recovered_boot_id": "c324ca10-b089-486e-8a6a-2b8cc5b527e4",
+  "all_four_mutation_request_counts": 1,
+  "no_automatic_device_retry": true,
+  "device_partition_flashed": false,
+  "watchdog_state_changed": false,
+  "key_positive_evidence": [
+    "Actual init loaded UFS module with kexec_handoff_diag=1; new module build ID present",
+    "Target loaded minidump successfully",
+    "SRC initial enable path returned0 and held enable_count1 before GCC registered",
+    "Later leaf provider callback returned-16, with parent skip/count rollback positive records",
+    "First pre-BCR full HBA sample AHIT0 HCE0 CFG1d85c052c HW60010000 AH8_CFG183c",
+    "UFS initialization failed; required partitions missing; init exit7f00 caused panic"
+  ],
+  "not_proven": [
+    "AH8 request line electrical state or firmware owner",
+    "That clearing0x3c repairs the UFS clock failure",
+    "Full functional secure-heap/TZ-log/repeated-kexec handoff"
+  ],
+  "next_step": "Prepare a separate default-off guarded mask-clear-before-reset experiment; no AH8 write has been tested."
+}

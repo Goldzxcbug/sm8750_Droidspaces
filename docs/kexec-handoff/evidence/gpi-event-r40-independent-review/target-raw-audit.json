@@ -1,0 +1,410 @@
+{
+  "status": "INDEPENDENT_R40_RAW_AUDIT_COMPLETE_TARGET_IDENTITY_AND_FAILURE_CHAIN_NOT_RECOVERABLE_FROM_THIS_CONSOLE",
+  "scope": "Only saved raw bytes, saved first-contact record and module/kernel note bytes. No state, stage-load, runtimeguard or repaired text promoted to raw target identity.",
+  "files_sha256": {
+    "pstore-after-exec.txt": "71e22c265731434aecbb7efb61ec586e4a03b0b87223339d16cfd170a0a2806e",
+    "pstore-before-exec.txt": "85f4349d8d040c3433494fee033f4a37700ca9463fd026e545660d83cbfccac0",
+    "live-kmsg-before-exec.txt": "10e94aa32f9ca0f4bacb53a56a5c5c8401546fad0d4d2f07285fbc00e43c0921",
+    "first-post-exec-capture.json": "5c8445048385e135abd22112737ead37998ebf322bec939d9ebb4a315cc1dd4c",
+    "first-post-exec-notes.stdout.bin": "555f7afcdc056ea7737eef09081f008e803cb1322736be1e24d7d43916b75885",
+    "first-post-exec-gpi-note.stdout.bin": "0cc3e5a283a51e1ba60b5d9539cfb9e19318c2ed4f672059feca7cd2a00e547e",
+    "first-post-exec-boot-before.stdout.bin": "7b3222e880d0b6331a8d8abecad15c4121521fdc68fde9a96fdbf2de321e8f86",
+    "first-post-exec-boot-after.stdout.bin": "7b3222e880d0b6331a8d8abecad15c4121521fdc68fde9a96fdbf2de321e8f86",
+    "first-post-exec-dmesg.stdout.bin": "46036a39f41afd5bed9677b9f7efd4a93700753ebd31ce1a05b796e901bdbae7",
+    "observed-notes-after-exec.bin": "555f7afcdc056ea7737eef09081f008e803cb1322736be1e24d7d43916b75885",
+    "observed-dmesg-after-exec.txt": "aa7fd9e81a860c252f266d2f0584217fa26e1385044ce6da8bbf2b1325a2671b"
+  },
+  "raw_structure": {
+    "bytes": 262132,
+    "sha256": "71e22c265731434aecbb7efb61ec586e4a03b0b87223339d16cfd170a0a2806e",
+    "LF_delimiters": 1894,
+    "LF_segments": 1895,
+    "ends_in_LF": false,
+    "NUL_bytes": 6731,
+    "C0_excluding_LF_TAB_CR_including_NUL": 22461,
+    "high_bit_bytes": 1908,
+    "printable_ASCII_segments_at_least24_bytes": 28,
+    "exact_token_counts": {
+      "target_full_BID": 0,
+      "source_full_BID": 0,
+      "new_GPI_full_BID": 0,
+      "round40_exact_nonce": 0,
+      "KGPICMD1": 0,
+      "KGPUM3": 0,
+      "KSEA1": 0,
+      "KSEAM1": 0,
+      "KUSR1": 0,
+      "KUSR2": 1,
+      "gpi_send_cmd": 0,
+      "msm_gpi": 0,
+      "kernel_panic": 0,
+      "internal_error": 0,
+      "call_trace": 0,
+      "SHRC": 0,
+      "KT": 0
+    }
+  },
+  "pre_execute_persistent_structure": {
+    "bytes": 262132,
+    "sha256": "85f4349d8d040c3433494fee033f4a37700ca9463fd026e545660d83cbfccac0",
+    "LF_delimiters": 2135,
+    "LF_segments": 2136,
+    "ends_in_LF": true,
+    "NUL_bytes": 27,
+    "C0_excluding_LF_TAB_CR_including_NUL": 146,
+    "high_bit_bytes": 61,
+    "printable_ASCII_segments_at_least24_bytes": 1982,
+    "exact_token_counts": {
+      "target_full_BID": 10,
+      "source_full_BID": 0,
+      "new_GPI_full_BID": 0,
+      "round40_exact_nonce": 0,
+      "KGPICMD1": 0,
+      "KGPUM3": 0,
+      "KSEA1": 0,
+      "KSEAM1": 0,
+      "KUSR1": 0,
+      "KUSR2": 0,
+      "gpi_send_cmd": 0,
+      "msm_gpi": 3,
+      "kernel_panic": 0,
+      "internal_error": 0,
+      "call_trace": 10,
+      "SHRC": 0,
+      "KT": 1
+    }
+  },
+  "source_live_structure": {
+    "bytes": 2122529,
+    "sha256": "10e94aa32f9ca0f4bacb53a56a5c5c8401546fad0d4d2f07285fbc00e43c0921",
+    "LF_delimiters": 22263,
+    "LF_segments": 22264,
+    "ends_in_LF": true,
+    "NUL_bytes": 0,
+    "C0_excluding_LF_TAB_CR_including_NUL": 0,
+    "high_bit_bytes": 0,
+    "printable_ASCII_segments_at_least24_bytes": 22220,
+    "exact_token_counts": {
+      "target_full_BID": 0,
+      "source_full_BID": 2,
+      "new_GPI_full_BID": 0,
+      "round40_exact_nonce": 0,
+      "KGPICMD1": 0,
+      "KGPUM3": 0,
+      "KSEA1": 0,
+      "KSEAM1": 0,
+      "KUSR1": 0,
+      "KUSR2": 0,
+      "gpi_send_cmd": 0,
+      "msm_gpi": 2,
+      "kernel_panic": 0,
+      "internal_error": 0,
+      "call_trace": 27,
+      "SHRC": 1,
+      "KT": 4
+    }
+  },
+  "format_limits": [
+    "A262132-byte datafile occupies the known console capacity, but that alone does not establish exact wrap points/chronology. First and last segments are partial.",
+    "Only28 post-exec LF segments>=24B contain solely printableASCII/TAB; this is a byte-class count, not proof those texts are undamaged.",
+    "6731 NUL,22461 C0 excludingLF/TAB/CR (including thoseNULs),1908 highbit bytes. Far more such bytes than before-exec; this does not identify RAM, CPU, persistence/cache, ACL or another cause.",
+    "Timestamp/task/PC/register/code-looking fields remain raw. Do not choose apparently plausible bits, adjust case or reconstruct missing diagnostic keys."
+  ],
+  "current_raw_binding": {
+    "exact_nonce_absent": true,
+    "complete_target_BID_absent": true,
+    "complete_new_GPI_BID_absent": true,
+    "KGPICMD1_absent": true,
+    "independently_binds_expected_target68e8_and_current_round": false,
+    "loaded_image_and_command_identity_are_external_evidence_only": true,
+    "cannot_verify_modified_GPI_loaded_or_trace_window_reached_from_raw": true
+  },
+  "positive_raw_observations": [
+    {
+      "file": "round40/pstore-after-exec.txt",
+      "LF": 1,
+      "byte_offset_0based": 0,
+      "bytes_without_LF": 20,
+      "sha256_without_LF": "dcd7fb2790c42c1f76ba70bde40183f2418ee128966b0aa8fc0d651769976a89",
+      "label": "Capture starts mid-record; no identity proof"
+    },
+    {
+      "file": "round40/pstore-after-exec.txt",
+      "LF": 572,
+      "byte_offset_0based": 80698,
+      "bytes_without_LF": 86,
+      "sha256_without_LF": "4bd86a1abf94fe36b08218ab65f48aac9226b89d05a294f3c15fe722c4d7e386",
+      "label": "Exact local ASCII init/libfs_mgr ext4-superblock message; not fatal/rootcause/target identity"
+    },
+    {
+      "file": "round40/pstore-after-exec.txt",
+      "LF": 1404,
+      "byte_offset_0based": 186214,
+      "bytes_without_LF": 391,
+      "sha256_without_LF": "2153a8bf06dfa800805501c3844ce26deae1e27c30b8975445f7011adeb9170f",
+      "label": "Complete literal KUSR2 token; the rest of the LF record has corrupt kind/keys/values; do not reconstruct"
+    },
+    {
+      "file": "round40/pstore-after-exec.txt",
+      "LF": 1405,
+      "byte_offset_0based": 186606,
+      "bytes_without_LF": 155,
+      "sha256_without_LF": "18c4d012ce1cf53e4974361c8e5d6c2556593eed2ca80961b81e163d4530e7c2",
+      "label": "Damaged following diagnostic-looking LF; no reconstruction"
+    },
+    {
+      "file": "round40/pstore-after-exec.txt",
+      "LF": 1406,
+      "byte_offset_0based": 186762,
+      "bytes_without_LF": 168,
+      "sha256_without_LF": "d797d59991a523809afb10fcaba4f9f85d0a8842a8fa0c212bfed9dec5eba483",
+      "label": "Damaged code-looking LF; no original opcode, PC permission or read-success assertion"
+    },
+    {
+      "file": "round40/pstore-after-exec.txt",
+      "LF": 1408,
+      "byte_offset_0based": 187089,
+      "bytes_without_LF": 90,
+      "sha256_without_LF": "0d9da07bb850e35e28c065f7d16d7016d51414045b0043990eb25317ccb5582f",
+      "label": "Local fatal fragment in damaged crash-dump-looking record; no signal number assertion"
+    },
+    {
+      "file": "round40/pstore-after-exec.txt",
+      "LF": 1444,
+      "byte_offset_0based": 192230,
+      "bytes_without_LF": 40,
+      "sha256_without_LF": "bfad90eac5ceffe5e486c2c3e7d010dec440142e79d6e7f5e862e92195702a0e",
+      "label": "Damaged fatal-looking fragment; no signal number assertion"
+    },
+    {
+      "file": "round40/pstore-after-exec.txt",
+      "LF": 1445,
+      "byte_offset_0based": 192271,
+      "bytes_without_LF": 173,
+      "sha256_without_LF": "3787fdb9234ff9a2d5267caafe73c716061df6fba49bf8bde986ef5762ab07c1",
+      "label": "Damaged CPU/release/BID-looking record; only local68e8 fragment, never normalize to complete BID"
+    },
+    {
+      "file": "round40/pstore-after-exec.txt",
+      "LF": 1448,
+      "byte_offset_0based": 192623,
+      "bytes_without_LF": 44,
+      "sha256_without_LF": "9b9113a24aa7bbe1244b4ec3f0b70d17a51036d6c2fa0f957eec39f769a5ef2e",
+      "label": "Damaged pc-looking record, no register reconstruction"
+    },
+    {
+      "file": "round40/pstore-after-exec.txt",
+      "LF": 1895,
+      "byte_offset_0based": 262017,
+      "bytes_without_LF": 115,
+      "sha256_without_LF": "c2110d0a7b781315a4bc572779b949f0d3564d867e535d763a58a3aa39d3b776",
+      "label": "Final partial LF segment; no reboot boundary"
+    }
+  ],
+  "historical_BID_confound": {
+    "prior_complete68e8_BID_records": [
+      {
+        "file": "round40/pstore-before-exec.txt",
+        "LF": 1652,
+        "byte_offset_0based": 197684,
+        "bytes_without_LF": 163,
+        "sha256_without_LF": "c3f829a9899209247af87558567572baaae47e0eab7f53f11fbd06223f10c1f1",
+        "label": "Complete expected-target BID already present BEFORE current execute; historical persistence, not R40 target proof"
+      },
+      {
+        "file": "round40/pstore-before-exec.txt",
+        "LF": 1723,
+        "byte_offset_0based": 214613,
+        "bytes_without_LF": 163,
+        "sha256_without_LF": "9e2c50f87f3fd4da1e50df54ef7586c689a39bdf1b8a1e8abc6325b224e57c44",
+        "label": "Complete expected-target BID already present BEFORE current execute; historical persistence, not R40 target proof"
+      },
+      {
+        "file": "round40/pstore-before-exec.txt",
+        "LF": 1807,
+        "byte_offset_0based": 233367,
+        "bytes_without_LF": 163,
+        "sha256_without_LF": "b29a0f6b84211dde4815c55f7f30daed0fb484c85ad828562e9982e11b4331b7",
+        "label": "Complete expected-target BID already present BEFORE current execute; historical persistence, not R40 target proof"
+      },
+      {
+        "file": "round40/pstore-before-exec.txt",
+        "LF": 1962,
+        "byte_offset_0based": 248673,
+        "bytes_without_LF": 168,
+        "sha256_without_LF": "e7c5643327a9b34a93236157ffa0ea0e78e4b0cf867163d6d480b60d4e7defb1",
+        "label": "Complete expected-target BID already present BEFORE current execute; historical persistence, not R40 target proof"
+      },
+      {
+        "file": "round40/pstore-before-exec.txt",
+        "LF": 1987,
+        "byte_offset_0based": 250603,
+        "bytes_without_LF": 168,
+        "sha256_without_LF": "96054f84d5fe0b7515bc65dff3fe107b106b574f93dd17fcbbfd51aee516b7ba",
+        "label": "Complete expected-target BID already present BEFORE current execute; historical persistence, not R40 target proof"
+      },
+      {
+        "file": "round40/pstore-before-exec.txt",
+        "LF": 2012,
+        "byte_offset_0based": 252533,
+        "bytes_without_LF": 168,
+        "sha256_without_LF": "4173fd4efae3dfecb6c4548ece0ec70e75f7a780172231f28f26182f73f518a8",
+        "label": "Complete expected-target BID already present BEFORE current execute; historical persistence, not R40 target proof"
+      },
+      {
+        "file": "round40/pstore-before-exec.txt",
+        "LF": 2037,
+        "byte_offset_0based": 254463,
+        "bytes_without_LF": 168,
+        "sha256_without_LF": "30c9998f0ce6cce0d39f088f90354a3095f7fee238152dcf983c663e8ea4fe59",
+        "label": "Complete expected-target BID already present BEFORE current execute; historical persistence, not R40 target proof"
+      },
+      {
+        "file": "round40/pstore-before-exec.txt",
+        "LF": 2062,
+        "byte_offset_0based": 256393,
+        "bytes_without_LF": 168,
+        "sha256_without_LF": "473882f433538c8795a8e568fbbdeb46cbc8be40f86296df5ea2afd3b2c5d1e4",
+        "label": "Complete expected-target BID already present BEFORE current execute; historical persistence, not R40 target proof"
+      },
+      {
+        "file": "round40/pstore-before-exec.txt",
+        "LF": 2087,
+        "byte_offset_0based": 258323,
+        "bytes_without_LF": 168,
+        "sha256_without_LF": "b512dadb4c24172c31217571047b708d0a69b2ff43eda6af8979313a1b07115c",
+        "label": "Complete expected-target BID already present BEFORE current execute; historical persistence, not R40 target proof"
+      },
+      {
+        "file": "round40/pstore-before-exec.txt",
+        "LF": 2112,
+        "byte_offset_0based": 260253,
+        "bytes_without_LF": 168,
+        "sha256_without_LF": "07fc4d63c1907c0435deb5d500e48ba0e824a024d288d1dbcaea85203a1a41c3",
+        "label": "Complete expected-target BID already present BEFORE current execute; historical persistence, not R40 target proof"
+      }
+    ],
+    "prior_complete_BID_count": 10,
+    "prior_times_visible": "5344.071721..5345.742277",
+    "source_live_complete7278_records": [
+      {
+        "file": "round40/live-kmsg-before-exec.txt",
+        "LF": 7808,
+        "byte_offset_0based": 798804,
+        "bytes_without_LF": 169,
+        "sha256_without_LF": "a6c02f4915d98c113975ea77683491b00632d44831112c59d91dd0f649532142",
+        "label": "Complete7278 source BID in live pre-execute log, distinct from historical68e8 persistent records"
+      },
+      {
+        "file": "round40/live-kmsg-before-exec.txt",
+        "LF": 15943,
+        "byte_offset_0based": 1650591,
+        "bytes_without_LF": 160,
+        "sha256_without_LF": "bd095813ec5434a24c35df44b38b372362df18cb4e35ca9e93145f8c3b3b3664",
+        "label": "Complete7278 source BID in live pre-execute log, distinct from historical68e8 persistent records"
+      }
+    ],
+    "interpretation": "The expected target Image was also used in the preceding ordinary boot. Its complete BID is already in pre-execute persistence. Never substitute that old identity for damaged post-exec text; raw current nonce remains absent."
+  },
+  "before_after_exact_comparison": {
+    "post_complete_LF_matches_before_at_least24B": [],
+    "post_complete_LF_matches_live_source_at_least24B": [],
+    "meaning": "No exact complete LF pair found under this strict criterion. No bit-flip model, byte correction or whole-log provenance follows from absence of a pair."
+  },
+  "first_post_contact": {
+    "capture_manifest_sha256": "5c8445048385e135abd22112737ead37998ebf322bec939d9ebb4a315cc1dd4c",
+    "record_file_hashes_verified": [
+      {
+        "label": "boot-before",
+        "exit": 0,
+        "timed_out": false,
+        "stdout_sha256": "7b3222e880d0b6331a8d8abecad15c4121521fdc68fde9a96fdbf2de321e8f86",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "notes",
+        "exit": 0,
+        "timed_out": false,
+        "stdout_sha256": "555f7afcdc056ea7737eef09081f008e803cb1322736be1e24d7d43916b75885",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "cmdline",
+        "exit": 0,
+        "timed_out": false,
+        "stdout_sha256": "1c99d1112459c7c705c7deac68805f711ea37115d8a5fff588754e25f2bcda3f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "dmesg",
+        "exit": 0,
+        "timed_out": false,
+        "stdout_sha256": "46036a39f41afd5bed9677b9f7efd4a93700753ebd31ce1a05b796e901bdbae7",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "gpi-note",
+        "exit": 0,
+        "timed_out": false,
+        "stdout_sha256": "0cc3e5a283a51e1ba60b5d9539cfb9e19318c2ed4f672059feca7cd2a00e547e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "gpi-traceparam",
+        "exit": 1,
+        "timed_out": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "6a3f6826596b3b730c7ffedb70aca63ad81d9ee5588f4c9299abc1a67a3167f1"
+      },
+      {
+        "label": "boot-after",
+        "exit": 0,
+        "timed_out": false,
+        "stdout_sha256": "7b3222e880d0b6331a8d8abecad15c4121521fdc68fde9a96fdbf2de321e8f86",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "trigger_UUID": "16b13af7-b3d4-48e7-a4e5-d9e09d87d4af",
+    "source_UUID_in_capture_metadata": "052b2ac3-d801-4563-820c-384c3ad16996",
+    "boot_UUID_before_after_equal": "16b13af7-b3d4-48e7-a4e5-d9e09d87d4af",
+    "actual_kernel_GNU_notes": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "actual_GPI_GNU_notes": [
+      "017204038f33bb4419f33057adedc2b0a2490c74"
+    ],
+    "actual_new_trace_parameter": "read exit1, empty stdout, No such file stderr kept verbatim",
+    "scope": "Recovered stock931f/oldGPI0172040. These first-contact and later observed live dmesg files are not targetlive logs.",
+    "later_observed_kernel_notes": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ]
+  },
+  "failure_chain": {
+    "complete_Kernel_panic_Internal_error_Call_trace_tokens": false,
+    "first_fault_PC_ESR_FAR_or_signal_number_proven": false,
+    "KUSR2_literal_LF": 1404,
+    "KUSR2_kind_ESR_PC_VMA_opcode_fields_reliably_parseable": false,
+    "panic_or_reboot_chain_can_be_reconstructed": false,
+    "R38_comparison": "R38 had a complete gpi_send_cmd+0x180 PC record. R40 has neither that PC nor any usable alternative fault-chain record. Cannot claim the NULLfix resolved the original timeout or moved the first blocker; no GPI completion/IRQ causal conclusion."
+  },
+  "forbidden_inferences": [
+    "No KGPICMD1 does not prove no submit, IRQ or completion.",
+    "Damaged KUSR2/fatal-looking text is not reliable SIGILL/SIGSEGV/DABT/PCcode/VMA evidence.",
+    "No complete panic text does not prove no panic.",
+    "A targetfalse external observation does not identify its rootcause.",
+    "Stock first-contact services, module notes, trace-parameter absence and dmesg cannot establish target success or target driver identity."
+  ],
+  "evidence_artifacts": {
+    "records_path": "gpi-event-r40-independent-review/target-raw-records.json",
+    "records_sha256": "047818b53374baab4816142076495661ae4cf3ef2938df581ce5021a95cd712c",
+    "damaged_window_path": "gpi-event-r40-independent-review/target-damaged-diagnostic-window-LF1395-1453.bin",
+    "damaged_window_sha256": "08190bda80697c9dd0aaf257af8097dbb3233795b1a0863580183a47c77b71d0",
+    "damaged_window_scope": "Exact LF1395..1453 including original controls; appended original terminatingLF only."
+  },
+  "audit_script_sha256": "9124c134278fa7b2bc4757b0354aea88d8a9a8f244d910897eecc2f7e4c77e5d",
+  "device_operations": 0,
+  "producer_changes": 0,
+  "actual_state_reads": 0,
+  "actual_state_writes": 0,
+  "bytes_repaired_or_guessed": 0
+}

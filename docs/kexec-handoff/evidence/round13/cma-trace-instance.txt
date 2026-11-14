@@ -1,0 +1,5536 @@
+# tracer: nop
+#
+# entries-in-buffer/entries-written: 646/646   #P:8
+#
+#                                _-----=> irqs-off/BH-disabled
+#                               / _----=> need-resched
+#                              | / _---=> hardirq/softirq
+#                              || / _--=> preempt-depth
+#                              ||| / _-=> migrate-disable
+#                              |||| /     delay
+#           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+#              | |         |   |||||     |         |
+       swapper/0-1       [000] .....     0.073340: cma_alloc_start: name=linux,cma count=512 align=8
+       swapper/0-1       [000] .....     0.073343: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_from_contiguous
+ => atomic_pool_expand
+ => __dma_atomic_pool_init
+ => dma_atomic_pool_init
+ => do_one_initcall
+ => do_initcall_level
+ => do_initcalls
+ => do_basic_setup
+ => kernel_init_freeable
+ => kernel_init
+ => ret_from_fork
+       swapper/0-1       [000] .....     0.073603: cma_alloc_finish: name=linux,cma pfn=0xec800 page=000000009df5fb9d count=512 align=8 errorno=0
+       swapper/0-1       [000] .....     0.073603: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_from_contiguous
+ => atomic_pool_expand
+ => __dma_atomic_pool_init
+ => dma_atomic_pool_init
+ => do_one_initcall
+ => do_initcall_level
+ => do_initcalls
+ => do_basic_setup
+ => kernel_init_freeable
+ => kernel_init
+ => ret_from_fork
+            init-183     [007] .....     0.641476: cma_alloc_start: name=linux,cma count=512 align=8
+            init-183     [007] .....     0.641478: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => atomic_pool_expand
+ => qcom_dma_iommu_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => 0xffffffef2221f1e0
+ => 0xffffffef2221f07c
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+            init-183     [006] .....     0.644003: cma_alloc_finish: name=linux,cma pfn=0xeca00 page=000000008a1bb957 count=512 align=8 errorno=0
+            init-183     [006] .....     0.644005: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => atomic_pool_expand
+ => qcom_dma_iommu_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => 0xffffffef2221f1e0
+ => 0xffffffef2221f07c
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+            init-182     [006] .....     0.671791: cma_alloc_start: name=linux,cma count=64 align=0
+            init-182     [006] .....     0.671792: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => md_register_memory_dump
+ => md_minidump_memory_init
+ => msm_minidump_log_init
+ => msm_minidump_driver_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => __ksymtab_ipc_log_extract
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+            init-182     [006] .....     0.672047: cma_alloc_finish: name=linux,cma pfn=0xecc00 page=000000007fc1637f count=64 align=0 errorno=0
+            init-182     [006] .....     0.672048: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => md_register_memory_dump
+ => md_minidump_memory_init
+ => msm_minidump_log_init
+ => msm_minidump_driver_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => __ksymtab_ipc_log_extract
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+            init-182     [006] .....     0.672056: cma_alloc_start: name=linux,cma count=64 align=0
+            init-182     [006] .....     0.672056: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => md_register_memory_dump
+ => md_minidump_memory_init
+ => msm_minidump_log_init
+ => msm_minidump_driver_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => __ksymtab_ipc_log_extract
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+            init-182     [006] .....     0.672098: cma_alloc_finish: name=linux,cma pfn=0xecc40 page=000000006d3c8f3d count=64 align=0 errorno=0
+            init-182     [006] .....     0.672098: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => md_register_memory_dump
+ => md_minidump_memory_init
+ => msm_minidump_log_init
+ => msm_minidump_driver_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => __ksymtab_ipc_log_extract
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+            init-224     [003] .....     0.773377: cma_alloc_start: name=linux,cma count=9 align=4
+            init-224     [003] .....     0.773379: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qrtr_gunyah_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => qcom_icc_bcm_voter_remove
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+            init-224     [006] .....     0.775113: cma_alloc_finish: name=linux,cma pfn=0xecc80 page=0000000041b594fd count=9 align=4 errorno=0
+            init-224     [006] .....     0.775114: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qrtr_gunyah_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => qcom_icc_bcm_voter_remove
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+            init-224     [006] .....     0.775163: cma_alloc_start: name=linux,cma count=9 align=4
+            init-224     [006] .....     0.775164: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qrtr_gunyah_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => qcom_icc_bcm_voter_remove
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+            init-224     [007] .....     0.775219: cma_alloc_finish: name=linux,cma pfn=0xecc90 page=0000000094a77a4d count=9 align=4 errorno=0
+            init-224     [007] .....     0.775220: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qrtr_gunyah_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => qcom_icc_bcm_voter_remove
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        modprobe-615     [007] .....     1.574262: cma_alloc_start: name=va_md_mem_region count=4096 align=8
+        modprobe-615     [007] .....     1.574264: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_va_md_driver_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => __ksymtab_hbp_register_devices
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        modprobe-615     [006] .....     1.581632: cma_alloc_finish: name=va_md_mem_region pfn=0xeac00 page=000000004658f990 count=4096 align=8 errorno=0
+        modprobe-615     [006] .....     1.581635: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_va_md_driver_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => __ksymtab_hbp_register_devices
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        modprobe-615     [007] .....     1.584019: cma_release: name=va_md_mem_region pfn=0xeac00 page=000000004658f990 count=4096
+        modprobe-615     [007] .....     1.584021: <stack trace>
+ => cma_release
+ => dma_free_contiguous
+ => dma_direct_free
+ => dma_free_attrs
+ => qcom_va_md_driver_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => __ksymtab_hbp_register_devices
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        modprobe-687     [006] .....     1.843757: cma_alloc_start: name=linux,cma count=1024 align=8
+        modprobe-687     [006] .....     1.843759: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => msm_sharedmem_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => 0xffffffef2313604c
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+   kworker/u17:0-75      [002] .....     1.846919: cma_alloc_start: name=linux,cma count=32 align=5
+   kworker/u17:0-75      [002] .....     1.846921: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => tz_log_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+        modprobe-687     [001] .....     1.850190: cma_alloc_finish: name=linux,cma pfn=0xecd00 page=00000000bf627edc count=1024 align=8 errorno=0
+        modprobe-687     [001] .....     1.850192: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => msm_sharedmem_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => 0xffffffef2313604c
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+   kworker/u17:0-75      [002] .....     1.859702: cma_alloc_finish: name=linux,cma pfn=0xecca0 page=0000000095f93c16 count=32 align=5 errorno=0
+   kworker/u17:0-75      [002] .....     1.859705: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => tz_log_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u17:0-75      [002] .....     1.860810: cma_alloc_start: name=linux,cma count=33 align=6
+   kworker/u17:0-75      [002] .....     1.860811: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => tz_log_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u17:0-75      [006] .....     1.873056: cma_alloc_finish: name=linux,cma pfn=0xeccc0 page=00000000c168b69a count=33 align=6 errorno=0
+   kworker/u17:0-75      [006] .....     1.873058: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => tz_log_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u17:0-75      [006] .....     1.873192: cma_alloc_start: name=linux,cma count=3 align=2
+   kworker/u17:0-75      [006] .....     1.873192: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => tz_log_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u17:0-75      [003] .....     1.874556: cma_alloc_finish: name=linux,cma pfn=0xecc8c page=00000000fc1756a6 count=3 align=2 errorno=0
+   kworker/u17:0-75      [003] .....     1.874558: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => tz_log_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u17:0-75      [003] .....     1.874674: cma_alloc_start: name=linux,cma count=128 align=7
+   kworker/u17:0-75      [003] .....     1.874675: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => tz_log_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u17:0-75      [001] .....     1.877013: cma_alloc_finish: name=linux,cma pfn=0xed100 page=00000000a3d1c560 count=128 align=7 errorno=0
+   kworker/u17:0-75      [001] .....     1.877015: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => tz_log_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+        qseecomd-1244    [002] .....     2.526309: cma_alloc_start: name=qseecom_region count=7 align=3
+        qseecomd-1244    [002] .....     2.526312: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [005] .....     2.527171: cma_alloc_finish: name=qseecom_region pfn=0xf1400 page=000000005384ddfd count=7 align=3 errorno=0
+        qseecomd-1244    [005] .....     2.527172: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [002] .....     2.529313: cma_alloc_start: name=qseecom_region count=5 align=3
+        qseecomd-1244    [002] .....     2.529314: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [001] .....     2.529466: cma_alloc_finish: name=qseecom_region pfn=0xf1408 page=0000000087e8daa0 count=5 align=3 errorno=0
+        qseecomd-1244    [001] .....     2.529466: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [002] .....     2.531525: cma_alloc_start: name=qseecom_region count=64 align=6
+        qseecomd-1244    [002] .....     2.531526: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [002] .....     2.531719: cma_alloc_finish: name=qseecom_region pfn=0xf1440 page=00000000711cd5a6 count=64 align=6 errorno=0
+        qseecomd-1244    [002] .....     2.531719: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [005] .....     2.533784: cma_alloc_start: name=qseecom_region count=5 align=3
+        qseecomd-1244    [005] .....     2.533785: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [000] .....     2.533980: cma_alloc_finish: name=qseecom_region pfn=0xf1410 page=00000000b751e9d5 count=5 align=3 errorno=0
+        qseecomd-1244    [000] .....     2.533980: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [000] .....     2.536592: cma_alloc_start: name=qseecom_region count=5 align=3
+        qseecomd-1244    [000] .....     2.536592: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [004] .....     2.536725: cma_alloc_finish: name=qseecom_region pfn=0xf1418 page=000000006fd2a5a2 count=5 align=3 errorno=0
+        qseecomd-1244    [004] .....     2.536726: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [002] .....     2.538826: cma_alloc_start: name=qseecom_region count=126 align=7
+        qseecomd-1244    [002] .....     2.538827: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [001] .....     2.538979: cma_alloc_finish: name=qseecom_region pfn=0xf1480 page=0000000033f3d432 count=126 align=7 errorno=0
+        qseecomd-1244    [001] .....     2.538980: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [001] .....     2.541037: cma_alloc_start: name=qseecom_region count=5 align=3
+        qseecomd-1244    [001] .....     2.541037: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [002] .....     2.541203: cma_alloc_finish: name=qseecom_region pfn=0xf1420 page=0000000061f8ce88 count=5 align=3 errorno=0
+        qseecomd-1244    [002] .....     2.541204: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [001] .....     2.543242: cma_alloc_start: name=qseecom_region count=7 align=3
+        qseecomd-1244    [001] .....     2.543242: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [001] .....     2.543377: cma_alloc_finish: name=qseecom_region pfn=0xf1428 page=00000000774643bd count=7 align=3 errorno=0
+        qseecomd-1244    [001] .....     2.543378: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [003] .....     2.545462: cma_alloc_start: name=qseecom_region count=1 align=0
+        qseecomd-1244    [003] .....     2.545463: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [005] .....     2.545646: cma_alloc_finish: name=qseecom_region pfn=0xf1407 page=00000000fb54e19a count=1 align=0 errorno=0
+        qseecomd-1244    [005] .....     2.545646: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [004] .....     2.547741: cma_alloc_start: name=qseecom_region count=7 align=3
+        qseecomd-1244    [004] .....     2.547742: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        qseecomd-1244    [002] .....     2.547878: cma_alloc_finish: name=qseecom_region pfn=0xf1430 page=00000000ccec7a26 count=7 align=3 errorno=0
+        qseecomd-1244    [002] .....     2.547878: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+   kworker/u18:4-272     [004] .....     2.861123: cma_alloc_start: name=linux,cma count=2 align=1
+   kworker/u18:4-272     [004] .....     2.861125: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => fw_load
+ => __load_fw
+ => venus_hfi_core_init
+ => msm_vidc_core_init
+ => msm_vidc_component_master_bind
+ => try_to_bring_up_aggregate_device
+ => __component_add
+ => component_add
+ => msm_vidc_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __device_attach_driver
+ => bus_for_each_drv
+ => __device_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u18:4-272     [004] .....     2.862812: cma_alloc_finish: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2 align=1 errorno=0
+   kworker/u18:4-272     [004] .....     2.862813: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => fw_load
+ => __load_fw
+ => venus_hfi_core_init
+ => msm_vidc_core_init
+ => msm_vidc_component_master_bind
+ => try_to_bring_up_aggregate_device
+ => __component_add
+ => component_add
+ => msm_vidc_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __device_attach_driver
+ => bus_for_each_drv
+ => __device_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u18:4-272     [004] .....     2.878978: cma_release: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2
+   kworker/u18:4-272     [004] .....     2.878979: <stack trace>
+ => cma_release
+ => dma_free_contiguous
+ => dma_direct_free
+ => dma_free_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => fw_load
+ => __load_fw
+ => venus_hfi_core_init
+ => msm_vidc_core_init
+ => msm_vidc_component_master_bind
+ => try_to_bring_up_aggregate_device
+ => __component_add
+ => component_add
+ => msm_vidc_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __device_attach_driver
+ => bus_for_each_drv
+ => __device_attach_async_helper
+ => async_run_entry_fn
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+     kworker/1:6-1129    [001] .....     2.898435: cma_alloc_start: name=linux,cma count=2 align=1
+     kworker/1:6-1129    [001] .....     2.898436: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => adsp_start
+ => rproc_start
+ => rproc_fw_boot
+ => rproc_boot
+ => rproc_auto_boot_callback
+ => request_firmware_work_func
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+     kworker/1:6-1129    [001] .....     2.901828: cma_alloc_finish: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2 align=1 errorno=0
+     kworker/1:6-1129    [001] .....     2.901828: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => adsp_start
+ => rproc_start
+ => rproc_fw_boot
+ => rproc_boot
+ => rproc_auto_boot_callback
+ => request_firmware_work_func
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+     kworker/1:6-1129    [001] .....     2.961027: cma_release: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2
+     kworker/1:6-1129    [001] .....     2.961029: <stack trace>
+ => cma_release
+ => dma_free_contiguous
+ => dma_direct_free
+ => dma_free_attrs
+ => qcom_scm_pas_metadata_release
+ => adsp_start
+ => rproc_start
+ => rproc_fw_boot
+ => rproc_boot
+ => rproc_auto_boot_callback
+ => request_firmware_work_func
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+        modprobe-1043    [001] .....     2.993290: cma_alloc_start: name=linux,cma count=2048 align=8
+        modprobe-1043    [001] .....     2.993292: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => kgsl_device_snapshot_probe
+ => adreno_device_probe
+ => gen8_probe_common
+ => gen8_hwsched_probe
+ => adreno_bind
+ => try_to_bring_up_aggregate_device
+ => component_master_add_with_match
+ => adreno_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => DATARMNETe64f65b66c
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+        modprobe-1043    [007] .....     2.994213: cma_alloc_finish: name=linux,cma pfn=0xed200 page=00000000bf97629e count=2048 align=8 errorno=0
+        modprobe-1043    [007] .....     2.994215: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => kgsl_device_snapshot_probe
+ => adreno_device_probe
+ => gen8_probe_common
+ => gen8_hwsched_probe
+ => adreno_bind
+ => try_to_bring_up_aggregate_device
+ => component_master_add_with_match
+ => adreno_probe
+ => platform_probe
+ => really_probe
+ => __driver_probe_device
+ => driver_probe_device
+ => __driver_attach
+ => bus_for_each_dev
+ => driver_attach
+ => bus_add_driver
+ => driver_register
+ => __platform_driver_register
+ => DATARMNETe64f65b66c
+ => do_one_initcall
+ => do_init_module
+ => load_module
+ => __arm64_sys_finit_module
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+     kworker/0:2-929     [000] .....     4.072306: cma_alloc_start: name=linux,cma count=2 align=1
+     kworker/0:2-929     [000] .....     4.072308: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => adsp_start
+ => rproc_start
+ => rproc_fw_boot
+ => rproc_boot
+ => rproc_auto_boot_callback
+ => request_firmware_work_func
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+     kworker/2:1-124     [002] .....     4.073713: cma_alloc_start: name=linux,cma count=3 align=2
+     kworker/2:1-124     [002] .....     4.073714: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => adsp_start
+ => rproc_start
+ => rproc_fw_boot
+ => rproc_boot
+ => rproc_auto_boot_callback
+ => request_firmware_work_func
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+     kworker/0:2-929     [000] .....     4.073747: cma_alloc_finish: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2 align=1 errorno=0
+     kworker/0:2-929     [000] .....     4.073747: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => adsp_start
+ => rproc_start
+ => rproc_fw_boot
+ => rproc_boot
+ => rproc_auto_boot_callback
+ => request_firmware_work_func
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+     kworker/2:1-124     [002] .....     4.073956: cma_alloc_finish: name=linux,cma pfn=0xecc9c page=00000000991755f0 count=3 align=2 errorno=0
+     kworker/2:1-124     [002] .....     4.073956: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => adsp_start
+ => rproc_start
+ => rproc_fw_boot
+ => rproc_boot
+ => rproc_auto_boot_callback
+ => request_firmware_work_func
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+     kworker/0:2-929     [000] .....     4.205156: cma_release: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2
+     kworker/0:2-929     [000] .....     4.205157: <stack trace>
+ => cma_release
+ => dma_free_contiguous
+ => dma_direct_free
+ => dma_free_attrs
+ => qcom_scm_pas_metadata_release
+ => adsp_start
+ => rproc_start
+ => rproc_fw_boot
+ => rproc_boot
+ => rproc_auto_boot_callback
+ => request_firmware_work_func
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+     kworker/2:1-124     [002] .....     4.779937: cma_release: name=linux,cma pfn=0xecc9c page=00000000991755f0 count=3
+     kworker/2:1-124     [002] .....     4.779939: <stack trace>
+ => cma_release
+ => dma_free_contiguous
+ => dma_direct_free
+ => dma_free_attrs
+ => qcom_scm_pas_metadata_release
+ => adsp_start
+ => rproc_start
+ => rproc_fw_boot
+ => rproc_boot
+ => rproc_auto_boot_callback
+ => request_firmware_work_func
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+ init.qti.write.-2037    [003] .....     6.329655: cma_alloc_start: name=cdsp_eva_region count=768 align=8
+ init.qti.write.-2037    [003] .....     6.329657: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => iris_hfi_core_init
+ => msm_cvp_comm_try_state
+ => msm_cvp_open
+ => boot_store
+ => dev_attr_store
+ => sysfs_kf_write
+ => kernfs_fop_write_iter
+ => vfs_write
+ => ksys_write
+ => __arm64_sys_write
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ init.qti.write.-2037    [003] .....     6.333977: cma_alloc_finish: name=cdsp_eva_region pfn=0xff400 page=0000000070ec2af8 count=768 align=8 errorno=0
+ init.qti.write.-2037    [003] .....     6.333979: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => iris_hfi_core_init
+ => msm_cvp_comm_try_state
+ => msm_cvp_open
+ => boot_store
+ => dev_attr_store
+ => sysfs_kf_write
+ => kernfs_fop_write_iter
+ => vfs_write
+ => ksys_write
+ => __arm64_sys_write
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ init.qti.write.-2037    [005] .....     6.348328: cma_alloc_start: name=linux,cma count=2 align=1
+ init.qti.write.-2037    [005] .....     6.348331: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => load_cvp_fw_impl
+ => __load_fw
+ => iris_hfi_core_init
+ => msm_cvp_comm_try_state
+ => msm_cvp_open
+ => boot_store
+ => dev_attr_store
+ => sysfs_kf_write
+ => kernfs_fop_write_iter
+ => vfs_write
+ => ksys_write
+ => __arm64_sys_write
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ init.qti.write.-2037    [005] .....     6.349902: cma_alloc_finish: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2 align=1 errorno=0
+ init.qti.write.-2037    [005] .....     6.349903: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => load_cvp_fw_impl
+ => __load_fw
+ => iris_hfi_core_init
+ => msm_cvp_comm_try_state
+ => msm_cvp_open
+ => boot_store
+ => dev_attr_store
+ => sysfs_kf_write
+ => kernfs_fop_write_iter
+ => vfs_write
+ => ksys_write
+ => __arm64_sys_write
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ init.qti.write.-2037    [000] .....     6.368820: cma_release: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2
+ init.qti.write.-2037    [000] .....     6.368822: <stack trace>
+ => cma_release
+ => dma_free_contiguous
+ => dma_direct_free
+ => dma_free_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => load_cvp_fw_impl
+ => __load_fw
+ => iris_hfi_core_init
+ => msm_cvp_comm_try_state
+ => msm_cvp_open
+ => boot_store
+ => dev_attr_store
+ => sysfs_kf_write
+ => kernfs_fop_write_iter
+ => vfs_write
+ => ksys_write
+ => __arm64_sys_write
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ android.hardwar-2062    [006] .....     6.420259: cma_alloc_start: name=qseecom_ta_region count=35 align=6
+ android.hardwar-2062    [006] .....     6.420261: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ android.hardwar-2062    [005] .....     6.440144: cma_alloc_finish: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=35 align=6 errorno=0
+ android.hardwar-2062    [005] .....     6.440146: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ android.hardwar-2062    [005] .....     6.494457: cma_release: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=35
+ android.hardwar-2062    [005] .....     6.494459: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ android.hardwar-2062    [005] .....     6.494542: cma_alloc_start: name=qseecom_region count=33 align=6
+ android.hardwar-2062    [005] .....     6.494542: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ android.hardwar-2062    [005] .....     6.498573: cma_alloc_finish: name=qseecom_region pfn=0xf1500 page=000000000aa079cf count=33 align=6 errorno=0
+ android.hardwar-2062    [005] .....     6.498574: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ android.hardwar-2062    [002] .....     6.574758: cma_alloc_start: name=qseecom_region count=1 align=0
+ android.hardwar-2062    [002] .....     6.574760: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ android.hardwar-2062    [002] .....     6.586908: cma_alloc_finish: name=qseecom_region pfn=0xf140d page=00000000aab642d8 count=1 align=0 errorno=0
+ android.hardwar-2062    [002] .....     6.586910: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2204    [006] .....     6.592933: cma_alloc_start: name=qseecom_ta_region count=247 align=8
+ vendor.oplus.ha-2204    [006] .....     6.592935: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+   audioadsprpcd-570     [005] .....     6.594238: cma_alloc_start: name=adsp_heap_region count=768 align=8
+   audioadsprpcd-570     [005] .....     6.594240: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => __fastrpc_buf_alloc
+ => fastrpc_buf_alloc
+ => fastrpc_device_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2204    [001] .....     6.604182: cma_alloc_finish: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=247 align=8 errorno=0
+ vendor.oplus.ha-2204    [001] .....     6.604184: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+   audioadsprpcd-570     [005] .....     6.614314: cma_alloc_finish: name=adsp_heap_region pfn=0xebc00 page=000000006aa425d6 count=768 align=8 errorno=0
+   audioadsprpcd-570     [005] .....     6.614315: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => __fastrpc_buf_alloc
+ => fastrpc_buf_alloc
+ => fastrpc_device_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2204    [001] .....     6.646831: cma_release: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=247
+ vendor.oplus.ha-2204    [001] .....     6.646833: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2204    [001] .....     6.647008: cma_alloc_start: name=qseecom_region count=6 align=3
+ vendor.oplus.ha-2204    [001] .....     6.647009: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2204    [002] .....     6.649565: cma_alloc_finish: name=qseecom_region pfn=0xf1438 page=00000000dff4628d count=6 align=3 errorno=0
+ vendor.oplus.ha-2204    [002] .....     6.649566: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ ider-service_64-2116    [004] .....     6.873073: cma_alloc_start: name=linux,cma count=2 align=1
+ ider-service_64-2116    [004] .....     6.873076: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => cam_icp_v2_process_cmd
+ => cam_icp_mgr_proc_boot
+ => cam_icp_mgr_hw_open
+ => cam_icp_mgr_hw_open_u
+ => cam_icp_subdev_open
+ => subdev_open
+ => v4l2_open
+ => chrdev_open
+ => do_dentry_open
+ => vfs_open
+ => path_openat
+ => do_filp_open
+ => do_sys_openat2
+ => __arm64_sys_openat
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ ider-service_64-2116    [000] .....     6.879259: cma_alloc_finish: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2 align=1 errorno=0
+ ider-service_64-2116    [000] .....     6.879262: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => cam_icp_v2_process_cmd
+ => cam_icp_mgr_proc_boot
+ => cam_icp_mgr_hw_open
+ => cam_icp_mgr_hw_open_u
+ => cam_icp_subdev_open
+ => subdev_open
+ => v4l2_open
+ => chrdev_open
+ => do_dentry_open
+ => vfs_open
+ => path_openat
+ => do_filp_open
+ => do_sys_openat2
+ => __arm64_sys_openat
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ ider-service_64-2116    [000] .....     6.896230: cma_release: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2
+ ider-service_64-2116    [000] .....     6.896232: <stack trace>
+ => cma_release
+ => dma_free_contiguous
+ => dma_direct_free
+ => dma_free_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => cam_icp_v2_process_cmd
+ => cam_icp_mgr_proc_boot
+ => cam_icp_mgr_hw_open
+ => cam_icp_mgr_hw_open_u
+ => cam_icp_subdev_open
+ => subdev_open
+ => v4l2_open
+ => chrdev_open
+ => do_dentry_open
+ => vfs_open
+ => path_openat
+ => do_filp_open
+ => do_sys_openat2
+ => __arm64_sys_openat
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ ider-service_64-2116    [001] .....     6.936531: cma_alloc_start: name=linux,cma count=2 align=1
+ ider-service_64-2116    [001] .....     6.936533: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => cam_icp_v2_process_cmd
+ => cam_icp_mgr_proc_boot
+ => cam_icp_mgr_hw_open
+ => cam_icp_mgr_hw_open_u
+ => cam_icp_subdev_open
+ => subdev_open
+ => v4l2_open
+ => chrdev_open
+ => do_dentry_open
+ => vfs_open
+ => path_openat
+ => do_filp_open
+ => do_sys_openat2
+ => __arm64_sys_openat
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ ider-service_64-2116    [002] .....     6.940280: cma_alloc_finish: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2 align=1 errorno=0
+ ider-service_64-2116    [002] .....     6.940282: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => dma_alloc_contiguous
+ => __dma_direct_alloc_pages
+ => dma_direct_alloc
+ => dma_alloc_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => cam_icp_v2_process_cmd
+ => cam_icp_mgr_proc_boot
+ => cam_icp_mgr_hw_open
+ => cam_icp_mgr_hw_open_u
+ => cam_icp_subdev_open
+ => subdev_open
+ => v4l2_open
+ => chrdev_open
+ => do_dentry_open
+ => vfs_open
+ => path_openat
+ => do_filp_open
+ => do_sys_openat2
+ => __arm64_sys_openat
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+   kworker/u16:2-1071    [003] .....     6.948071: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [003] .....     6.948072: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [002] .....     6.950732: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6000 page=000000006e03bdcd count=128 align=7 errorno=0
+   kworker/u16:2-1071    [002] .....     6.950733: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [002] .....     6.950740: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [002] .....     6.950740: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [003] .....     6.952477: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6080 page=0000000058bb90b8 count=128 align=7 errorno=0
+   kworker/u16:2-1071    [003] .....     6.952478: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [003] .....     6.952484: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [003] .....     6.952484: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [002] .....     6.955936: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6100 page=00000000bcfe4fd6 count=128 align=7 errorno=0
+   kworker/u16:2-1071    [002] .....     6.955937: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [002] .....     6.955943: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [002] .....     6.955944: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+ ider-service_64-2116    [005] .....     6.957120: cma_release: name=linux,cma pfn=0xecc8a page=000000009e0f8cbd count=2
+ ider-service_64-2116    [005] .....     6.957122: <stack trace>
+ => cma_release
+ => dma_free_contiguous
+ => dma_direct_free
+ => dma_free_attrs
+ => qcom_scm_pas_init_image
+ => qcom_mdt_pas_init
+ => qcom_mdt_load
+ => cam_icp_v2_process_cmd
+ => cam_icp_mgr_proc_boot
+ => cam_icp_mgr_hw_open
+ => cam_icp_mgr_hw_open_u
+ => cam_icp_subdev_open
+ => subdev_open
+ => v4l2_open
+ => chrdev_open
+ => do_dentry_open
+ => vfs_open
+ => path_openat
+ => do_filp_open
+ => do_sys_openat2
+ => __arm64_sys_openat
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+   kworker/u16:2-1071    [003] .....     6.957891: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6180 page=000000006bdf182e count=128 align=7 errorno=0
+   kworker/u16:2-1071    [003] .....     6.957892: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [003] .....     6.957901: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [003] .....     6.957902: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.962047: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6200 page=00000000746814e3 count=128 align=7 errorno=0
+   kworker/u16:2-1071    [006] .....     6.962049: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.962056: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [006] .....     6.962056: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.962362: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6280 page=00000000ce1f5af7 count=128 align=7 errorno=0
+   kworker/u16:2-1071    [006] .....     6.962363: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.962366: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [006] .....     6.962367: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.962597: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6300 page=000000005445876a count=128 align=7 errorno=0
+   kworker/u16:2-1071    [006] .....     6.962597: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.962600: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [006] .....     6.962601: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.962833: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6380 page=00000000947ae81c count=128 align=7 errorno=0
+   kworker/u16:2-1071    [006] .....     6.962833: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.962837: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [006] .....     6.962837: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.963059: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6400 page=000000005214c5c0 count=128 align=7 errorno=0
+   kworker/u16:2-1071    [006] .....     6.963059: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.963062: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [006] .....     6.963063: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.963557: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6480 page=00000000b6ecae79 count=128 align=7 errorno=0
+   kworker/u16:2-1071    [006] .....     6.963557: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.963561: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [006] .....     6.963561: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.963890: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6500 page=0000000066007de5 count=128 align=7 errorno=0
+   kworker/u16:2-1071    [006] .....     6.963890: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.963894: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [006] .....     6.963894: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [005] .....     6.965869: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6580 page=000000009d260515 count=128 align=7 errorno=0
+   kworker/u16:2-1071    [005] .....     6.965870: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [005] .....     6.965880: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [005] .....     6.965880: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.966096: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6600 page=00000000f240249d count=128 align=7 errorno=0
+   kworker/u16:2-1071    [006] .....     6.966097: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.966105: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [006] .....     6.966105: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.966173: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6680 page=00000000f26bfdfe count=128 align=7 errorno=0
+   kworker/u16:2-1071    [006] .....     6.966173: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [006] .....     6.966180: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u16:2-1071    [006] .....     6.966181: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [003] .....     6.970093: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6700 page=000000007c81ca09 count=128 align=7 errorno=0
+   kworker/u16:2-1071    [003] .....     6.970095: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [003] .....     6.970101: cma_alloc_start: name=cnss_wlan_region count=1 align=0
+   kworker/u16:2-1071    [003] .....     6.970101: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:2-1071    [003] .....     6.970359: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6780 page=000000006a62f371 count=1 align=0 errorno=0
+   kworker/u16:2-1071    [003] .....     6.970359: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_prepare_for_power_up
+ => cnss_pci_set_mhi_state
+ => cnss_pci_start_mhi
+ => cnss_pci_dev_powerup
+ => cnss_bus_dev_powerup
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.061456: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [004] .....     7.061458: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [001] .....     7.069687: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6800 page=0000000029b9ccf0 count=128 align=7 errorno=0
+   kworker/u19:0-97      [001] .....     7.069689: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [001] .....     7.069705: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [001] .....     7.069705: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [005] .....     7.072861: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6880 page=00000000c1bd5201 count=128 align=7 errorno=0
+   kworker/u19:0-97      [005] .....     7.072862: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [005] .....     7.072870: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [005] .....     7.072870: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [001] .....     7.075188: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6900 page=0000000058ffa0ae count=128 align=7 errorno=0
+   kworker/u19:0-97      [001] .....     7.075189: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [001] .....     7.075200: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [001] .....     7.075200: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.082828: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6980 page=000000000f29560a count=128 align=7 errorno=0
+   kworker/u19:0-97      [004] .....     7.082829: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.082836: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [004] .....     7.082837: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [005] .....     7.088142: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6a00 page=00000000c5e1731a count=128 align=7 errorno=0
+   kworker/u19:0-97      [005] .....     7.088144: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [005] .....     7.088153: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [005] .....     7.088153: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.088911: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6a80 page=00000000aa9141de count=128 align=7 errorno=0
+   kworker/u19:0-97      [004] .....     7.088912: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.088918: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [004] .....     7.088918: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [006] .....     7.094032: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6b00 page=00000000ac8e5137 count=128 align=7 errorno=0
+   kworker/u19:0-97      [006] .....     7.094035: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [006] .....     7.094047: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [006] .....     7.094048: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.094910: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6b80 page=000000004f59bf32 count=128 align=7 errorno=0
+   kworker/u19:0-97      [004] .....     7.094912: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.094919: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [004] .....     7.094920: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.099145: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6c00 page=00000000be259c5f count=128 align=7 errorno=0
+   kworker/u19:0-97      [004] .....     7.099146: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.099153: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [004] .....     7.099153: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.099892: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6c80 page=00000000aafb3413 count=128 align=7 errorno=0
+   kworker/u19:0-97      [004] .....     7.099893: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [004] .....     7.099899: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [004] .....     7.099899: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [001] .....     7.101133: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6d00 page=00000000d5e4914d count=128 align=7 errorno=0
+   kworker/u19:0-97      [001] .....     7.101134: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [001] .....     7.101145: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [001] .....     7.101145: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [001] .....     7.101944: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6d80 page=000000000575b3bd count=128 align=7 errorno=0
+   kworker/u19:0-97      [001] .....     7.101945: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [001] .....     7.101950: cma_alloc_start: name=cnss_wlan_region count=128 align=7
+   kworker/u19:0-97      [001] .....     7.101950: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [007] .....     7.102826: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6e00 page=000000005f468821 count=128 align=7 errorno=0
+   kworker/u19:0-97      [007] .....     7.102828: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [007] .....     7.102835: cma_alloc_start: name=cnss_wlan_region count=1 align=0
+   kworker/u19:0-97      [007] .....     7.102835: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u19:0-97      [003] .....     7.106823: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6781 page=0000000038237e92 count=1 align=0 errorno=0
+   kworker/u19:0-97      [003] .....     7.106825: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => mhi_alloc_bhie_table
+ => mhi_fw_load_handler
+ => mhi_pm_st_worker
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+ feature_enabler-2850    [002] .....     7.360333: cma_alloc_start: name=qseecom_region count=2 align=1
+ feature_enabler-2850    [002] .....     7.360336: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2884    [006] .....     7.361700: cma_alloc_start: name=qseecom_ta_region count=124 align=7
+ vendor.oplus.ha-2884    [006] .....     7.361702: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ feature_enabler-2850    [001] .....     7.366090: cma_alloc_finish: name=qseecom_region pfn=0xf140e page=00000000296027bd count=2 align=1 errorno=0
+ feature_enabler-2850    [001] .....     7.366091: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2884    [006] .....     7.369835: cma_alloc_finish: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=124 align=7 errorno=0
+ vendor.oplus.ha-2884    [006] .....     7.369837: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2890    [006] .....     7.373409: cma_alloc_start: name=qseecom_ta_region count=57 align=6
+ vendor.oplus.ha-2890    [006] .....     7.373410: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2890    [002] .....     7.374751: cma_alloc_finish: name=qseecom_ta_region pfn=0xef480 page=00000000390c92ab count=57 align=6 errorno=0
+ vendor.oplus.ha-2890    [002] .....     7.374753: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2886    [007] .....     7.376733: cma_alloc_start: name=qseecom_ta_region count=61 align=6
+ vendor.oplus.ha-2886    [007] .....     7.376734: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2886    [007] .....     7.377950: cma_alloc_finish: name=qseecom_ta_region pfn=0xef4c0 page=00000000d5c9b159 count=61 align=6 errorno=0
+ vendor.oplus.ha-2886    [007] .....     7.377951: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.qti.hard-2859    [007] .....     7.409961: cma_alloc_start: name=qseecom_ta_region count=23 align=5
+ vendor.qti.hard-2859    [007] .....     7.409963: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.qti.hard-2859    [001] .....     7.413932: cma_alloc_finish: name=qseecom_ta_region pfn=0xef500 page=0000000020f8b3c6 count=23 align=5 errorno=0
+ vendor.qti.hard-2859    [001] .....     7.413935: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2884    [005] .....     7.456745: cma_release: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=124
+ vendor.oplus.ha-2884    [005] .....     7.456747: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2884    [005] .....     7.456829: cma_alloc_start: name=qseecom_region count=5 align=3
+ vendor.oplus.ha-2884    [005] .....     7.456830: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2886    [003] .....     7.457018: cma_release: name=qseecom_ta_region pfn=0xef4c0 page=00000000d5c9b159 count=61
+ vendor.oplus.ha-2886    [003] .....     7.457018: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2886    [003] .....     7.457172: cma_alloc_start: name=qseecom_region count=7 align=3
+ vendor.oplus.ha-2886    [003] .....     7.457172: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2884    [005] .....     7.461983: cma_alloc_finish: name=qseecom_region pfn=0xf1528 page=00000000b8208d75 count=5 align=3 errorno=0
+ vendor.oplus.ha-2884    [005] .....     7.461984: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2886    [005] .....     7.465100: cma_alloc_finish: name=qseecom_region pfn=0xf1530 page=000000008cea7a36 count=7 align=3 errorno=0
+ vendor.oplus.ha-2886    [005] .....     7.465101: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2890    [005] .....     7.479040: cma_release: name=qseecom_ta_region pfn=0xef480 page=00000000390c92ab count=57
+ vendor.oplus.ha-2890    [005] .....     7.479042: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2890    [005] .....     7.479118: cma_alloc_start: name=qseecom_region count=150 align=8
+ vendor.oplus.ha-2890    [005] .....     7.479119: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2890    [001] .....     7.486117: cma_alloc_finish: name=qseecom_region pfn=0xf1600 page=0000000083d22726 count=150 align=8 errorno=0
+ vendor.oplus.ha-2890    [001] .....     7.486118: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.qti.hard-2859    [005] .....     7.486650: cma_release: name=qseecom_ta_region pfn=0xef500 page=0000000020f8b3c6 count=23
+ vendor.qti.hard-2859    [005] .....     7.486651: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.qti.hard-2859    [005] .....     7.486718: cma_alloc_start: name=qseecom_region count=3 align=2
+ vendor.qti.hard-2859    [005] .....     7.486718: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.qti.hard-2859    [001] .....     7.487266: cma_alloc_finish: name=qseecom_region pfn=0xf1524 page=000000000384704b count=3 align=2 errorno=0
+ vendor.qti.hard-2859    [001] .....     7.487266: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+   kworker/u16:4-2651    [006] .....     7.528200: cma_alloc_start: name=cnss_wlan_region count=1808 align=8
+   kworker/u16:4-2651    [006] .....     7.528202: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => cnss_pci_alloc_fw_mem
+ => cnss_bus_alloc_fw_mem
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+   kworker/u16:4-2651    [006] .....     7.531235: cma_alloc_finish: name=cnss_wlan_region pfn=0xd6f00 page=00000000aa4ab79e count=1808 align=8 errorno=0
+   kworker/u16:4-2651    [006] .....     7.531236: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => qcom_dma_alloc_from_contiguous
+ => __fast_smmu_alloc_contiguous
+ => fast_smmu_alloc
+ => dma_alloc_attrs
+ => cnss_pci_alloc_fw_mem
+ => cnss_bus_alloc_fw_mem
+ => cnss_driver_event_work
+ => process_scheduled_works
+ => worker_thread
+ => kthread
+ => ret_from_fork
+ vendor.oplus.ha-2878    [006] .....     7.796008: cma_alloc_start: name=qseecom_ta_region count=167 align=8
+ vendor.oplus.ha-2878    [006] .....     7.796010: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [007] .....     7.802533: cma_alloc_finish: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=167 align=8 errorno=0
+ vendor.oplus.ha-2878    [007] .....     7.802534: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [007] .....     7.830277: cma_release: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=167
+ vendor.oplus.ha-2878    [007] .....     7.830278: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [007] .....     7.830384: cma_alloc_start: name=qseecom_region count=1 align=0
+ vendor.oplus.ha-2878    [007] .....     7.830384: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....     7.830620: cma_alloc_finish: name=qseecom_region pfn=0xf1415 page=0000000030cddff5 count=1 align=0 errorno=0
+ vendor.oplus.ha-2878    [006] .....     7.830621: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [007] .....     7.831348: cma_alloc_start: name=qseecom_region count=1 align=0
+ vendor.oplus.ha-2878    [007] .....     7.831348: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....     7.831414: cma_alloc_finish: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=1 align=0 errorno=0
+ vendor.oplus.ha-2878    [006] .....     7.831414: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....     7.831975: cma_release: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=1
+ vendor.oplus.ha-2878    [006] .....     7.831975: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....     7.831992: cma_alloc_start: name=qseecom_region count=1 align=0
+ vendor.oplus.ha-2878    [006] .....     7.831992: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.832223: cma_alloc_finish: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=1 align=0 errorno=0
+ vendor.oplus.ha-2878    [003] .....     7.832226: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.833066: cma_release: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=1
+ vendor.oplus.ha-2878    [002] .....     7.833068: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.833128: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [002] .....     7.833129: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [007] .....     7.833671: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [007] .....     7.833672: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [007] .....     7.834344: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [007] .....     7.834344: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [007] .....     7.834359: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [007] .....     7.834359: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....     7.834524: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [006] .....     7.834524: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.835434: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [002] .....     7.835434: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.835458: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [002] .....     7.835458: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.840255: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [001] .....     7.840256: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.841175: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [004] .....     7.841176: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.841204: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [004] .....     7.841205: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.841855: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [002] .....     7.841856: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.842583: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [004] .....     7.842584: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.842605: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [004] .....     7.842605: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.849912: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [002] .....     7.849913: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.850553: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [002] .....     7.850554: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.850583: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [002] .....     7.850583: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.853885: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [004] .....     7.853886: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.854657: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [004] .....     7.854658: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.854681: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [004] .....     7.854682: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.857987: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [001] .....     7.857988: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.858616: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [001] .....     7.858617: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.858643: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [001] .....     7.858643: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.865925: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [002] .....     7.865926: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.867327: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [004] .....     7.867328: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.875760: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [002] .....     7.875762: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.876649: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [005] .....     7.876651: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....     7.877364: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [006] .....     7.877366: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....     7.877515: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [006] .....     7.877516: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....     7.883007: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [006] .....     7.883009: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....     7.886545: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [006] .....     7.886546: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....     7.886606: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [006] .....     7.886606: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.890029: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [002] .....     7.890032: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.890877: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [001] .....     7.890878: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.890923: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [001] .....     7.890923: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.893872: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [005] .....     7.893873: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.894526: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [005] .....     7.894527: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.894560: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [005] .....     7.894560: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.899533: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [004] .....     7.899535: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.900898: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [004] .....     7.900899: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.900954: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [004] .....     7.900955: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.901528: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [004] .....     7.901528: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.903784: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [004] .....     7.903785: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.903816: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [004] .....     7.903817: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.916513: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [005] .....     7.916515: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.917404: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [005] .....     7.917405: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.917451: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [005] .....     7.917452: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.921966: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [005] .....     7.921967: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.923373: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [005] .....     7.923374: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.923410: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [005] .....     7.923410: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [004] .....     7.930174: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [004] .....     7.930175: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.930908: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [002] .....     7.930910: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.930945: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [002] .....     7.930946: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.937950: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [001] .....     7.937952: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.938772: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [001] .....     7.938772: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.938805: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [001] .....     7.938806: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.941891: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [003] .....     7.941893: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.942681: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [005] .....     7.942682: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.942714: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [005] .....     7.942714: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.945951: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [003] .....     7.945952: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.946695: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [003] .....     7.946695: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.946728: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [003] .....     7.946729: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.949872: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [001] .....     7.949872: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.950616: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [002] .....     7.950617: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.950650: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [002] .....     7.950651: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.950934: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [002] .....     7.950934: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.951791: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [003] .....     7.951791: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.951815: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [003] .....     7.951815: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.954022: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [003] .....     7.954023: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.954748: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [003] .....     7.954749: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.954774: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [003] .....     7.954775: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.961873: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [001] .....     7.961874: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.962536: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [005] .....     7.962537: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.962566: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [005] .....     7.962566: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.962719: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [005] .....     7.962720: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.963236: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [005] .....     7.963236: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.963254: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [005] .....     7.963254: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [003] .....     7.964498: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [003] .....     7.964499: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.965332: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [001] .....     7.965332: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [001] .....     7.965532: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [001] .....     7.965533: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....     7.969885: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [002] .....     7.969886: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....     7.970507: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [005] .....     7.970507: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....    13.854421: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [006] .....    13.854423: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    13.861956: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [000] .....    13.861958: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    13.924370: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [000] .....    13.924373: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    13.924449: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [000] .....    13.924449: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....    13.927915: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [002] .....    13.927917: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    13.930024: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [000] .....    13.930025: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    13.930063: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [000] .....    13.930063: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [007] .....    13.931536: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [007] .....    13.931537: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....    13.932907: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [006] .....    13.932909: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....    13.932978: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [006] .....    13.932979: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    13.933201: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [000] .....    13.933202: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [006] .....    13.935982: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [006] .....    13.935983: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [007] .....    14.004734: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [007] .....    14.004736: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    14.009886: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [000] .....    14.009888: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    14.010643: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [000] .....    14.010644: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    14.011838: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [000] .....    14.011840: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    14.013105: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [000] .....    14.013106: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    14.014510: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [000] .....    14.014511: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    14.015068: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [000] .....    14.015069: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    14.015533: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [000] .....    14.015533: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    14.016333: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [000] .....    14.016333: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [002] .....    14.016616: cma_alloc_start: name=qseecom_region count=16 align=4
+ vendor.oplus.ha-2878    [002] .....    14.016617: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [000] .....    14.017081: cma_alloc_finish: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16 align=4 errorno=0
+ vendor.oplus.ha-2878    [000] .....    14.017081: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2878    [005] .....    14.018168: cma_release: name=qseecom_region pfn=0xf1540 page=00000000ce3e0d36 count=16
+ vendor.oplus.ha-2878    [005] .....    14.018169: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [007] .....    20.274528: cma_alloc_start: name=qseecom_ta_region count=23 align=5
+ vendor.oplus.ha-2963    [007] .....    20.274530: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [007] .....    20.277341: cma_alloc_finish: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23 align=5 errorno=0
+ vendor.oplus.ha-2963    [007] .....    20.277343: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [006] .....    20.335508: cma_release: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23
+ vendor.oplus.ha-2963    [006] .....    20.335510: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [006] .....    20.335992: cma_alloc_start: name=qseecom_region count=2 align=1
+ vendor.oplus.ha-2963    [006] .....    20.335992: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [006] .....    20.338753: cma_alloc_finish: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2 align=1 errorno=0
+ vendor.oplus.ha-2963    [006] .....    20.338755: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [006] .....    20.373287: cma_release: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2
+ vendor.oplus.ha-2963    [006] .....    20.373290: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [003] .....    21.376266: cma_alloc_start: name=qseecom_ta_region count=23 align=5
+ vendor.oplus.ha-2963    [003] .....    21.376269: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [002] .....    21.380943: cma_alloc_finish: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23 align=5 errorno=0
+ vendor.oplus.ha-2963    [002] .....    21.380946: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [007] .....    21.407157: cma_release: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23
+ vendor.oplus.ha-2963    [007] .....    21.407159: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [007] .....    21.407240: cma_alloc_start: name=qseecom_region count=2 align=1
+ vendor.oplus.ha-2963    [007] .....    21.407241: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [002] .....    21.422876: cma_alloc_finish: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2 align=1 errorno=0
+ vendor.oplus.ha-2963    [002] .....    21.422878: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [006] .....    21.425038: cma_release: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2
+ vendor.oplus.ha-2963    [006] .....    21.425040: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [003] .....    22.428541: cma_alloc_start: name=qseecom_ta_region count=23 align=5
+ vendor.oplus.ha-2963    [003] .....    22.428544: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [003] .....    22.433930: cma_alloc_finish: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23 align=5 errorno=0
+ vendor.oplus.ha-2963    [003] .....    22.433932: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [006] .....    22.458781: cma_release: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23
+ vendor.oplus.ha-2963    [006] .....    22.458783: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [006] .....    22.458866: cma_alloc_start: name=qseecom_region count=2 align=1
+ vendor.oplus.ha-2963    [006] .....    22.458867: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [004] .....    22.459282: cma_alloc_finish: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2 align=1 errorno=0
+ vendor.oplus.ha-2963    [004] .....    22.459286: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [006] .....    22.462224: cma_release: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2
+ vendor.oplus.ha-2963    [006] .....    22.462225: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2363    [005] .....    22.662110: cma_alloc_start: name=qseecom_region count=1 align=0
+ vendor.oplus.ha-2363    [005] .....    22.662112: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2363    [004] .....    22.669859: cma_alloc_finish: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=1 align=0 errorno=0
+ vendor.oplus.ha-2363    [004] .....    22.669860: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2363    [004] .....    22.671967: cma_release: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=1
+ vendor.oplus.ha-2363    [004] .....    22.671968: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [006] .....    23.467613: cma_alloc_start: name=qseecom_ta_region count=23 align=5
+ vendor.oplus.ha-2963    [006] .....    23.467616: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [006] .....    23.469745: cma_alloc_finish: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23 align=5 errorno=0
+ vendor.oplus.ha-2963    [006] .....    23.469746: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [003] .....    23.504074: cma_release: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23
+ vendor.oplus.ha-2963    [003] .....    23.504078: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [003] .....    23.504244: cma_alloc_start: name=qseecom_region count=2 align=1
+ vendor.oplus.ha-2963    [003] .....    23.504245: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [004] .....    23.506005: cma_alloc_finish: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2 align=1 errorno=0
+ vendor.oplus.ha-2963    [004] .....    23.506006: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [003] .....    23.509695: cma_release: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2
+ vendor.oplus.ha-2963    [003] .....    23.509697: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [004] .....    24.517874: cma_alloc_start: name=qseecom_ta_region count=23 align=5
+ vendor.oplus.ha-2963    [004] .....    24.517880: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [005] .....    24.522242: cma_alloc_finish: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23 align=5 errorno=0
+ vendor.oplus.ha-2963    [005] .....    24.522246: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [005] .....    24.548741: cma_release: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23
+ vendor.oplus.ha-2963    [005] .....    24.548744: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [001] .....    24.548824: cma_alloc_start: name=qseecom_region count=2 align=1
+ vendor.oplus.ha-2963    [001] .....    24.548825: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [005] .....    24.553912: cma_alloc_finish: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2 align=1 errorno=0
+ vendor.oplus.ha-2963    [005] .....    24.553913: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [005] .....    24.556027: cma_release: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2
+ vendor.oplus.ha-2963    [005] .....    24.556027: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [005] .....    25.563668: cma_alloc_start: name=qseecom_ta_region count=23 align=5
+ vendor.oplus.ha-2963    [005] .....    25.563674: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [005] .....    25.570031: cma_alloc_finish: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23 align=5 errorno=0
+ vendor.oplus.ha-2963    [005] .....    25.570033: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [000] .....    25.596286: cma_release: name=qseecom_ta_region pfn=0xef400 page=00000000b9d17aa0 count=23
+ vendor.oplus.ha-2963    [000] .....    25.596289: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [000] .....    25.596473: cma_alloc_start: name=qseecom_region count=2 align=1
+ vendor.oplus.ha-2963    [000] .....    25.596474: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [000] .....    25.596853: cma_alloc_finish: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2 align=1 errorno=0
+ vendor.oplus.ha-2963    [000] .....    25.596854: <stack trace>
+ => __cma_alloc
+ => cma_alloc
+ => cma_heap_allocate
+ => dma_heap_buffer_alloc
+ => dma_heap_ioctl
+ => __arm64_sys_ioctl
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync
+ vendor.oplus.ha-2963    [004] .....    25.599256: cma_release: name=qseecom_region pfn=0xf1416 page=0000000019f0e00b count=2
+ vendor.oplus.ha-2963    [004] .....    25.599258: <stack trace>
+ => cma_release
+ => cma_heap_free
+ => qcom_sg_release
+ => dma_buf_release
+ => __dentry_kill
+ => dentry_kill
+ => dput
+ => __fput
+ => __fput_sync
+ => __arm64_sys_close
+ => invoke_syscall
+ => el0_svc_common
+ => do_el0_svc
+ => el0_svc
+ => el0t_64_sync_handler
+ => el0t_64_sync

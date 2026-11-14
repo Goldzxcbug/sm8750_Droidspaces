@@ -1,0 +1,101 @@
+{
+  "status": "R41_SINGLE_EXECUTED_TARGET_RUNTIME_UNVERIFIED_WITH_USER_FASTBOOT_INTERVENTION_STOCK_RECOVERED",
+  "round": 41,
+  "created_epoch": 1794658860.1971169,
+  "runner_terminal_stage": "SINGLE_EXECUTED_ANDROID_NOT_OBSERVED_WITHIN_BOUND",
+  "request_counts": {
+    "temporary_boot_request_count": 1,
+    "source_surfaceflinger_stop_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "normal_installed_recovery_reboot_request_count": 1,
+  "source": {
+    "kernel_build_id": "72782e2196eb1c46c8c5205ccd93f2acf42de294",
+    "boot_id": "f632eed3-0bd9-44d3-9a6e-649cbd833c4d",
+    "verified_epoch": 1794657801.7980733,
+    "module_count": 693,
+    "stable_seconds": 60.475019115023315,
+    "GPU_blacklisted": true,
+    "ADB_and_kernel_identity_verified": true,
+    "display_observed_by_agent": false,
+    "complete_Android_or_GUI_success_claimed": false
+  },
+  "target_requested": {
+    "kernel_build_id": "68e85e134a894c34b5fef3ac30f4dd450d00a6b5",
+    "run_id": "9992c1bb1822e215",
+    "normal_GPI_first_stage_requested": true,
+    "normal_modules_load_sha256": "ff5116fb9eb9a12dfdaead42fbda2efc74779c7b89f636019e9d0922d0a79753",
+    "GPI_module_build_id": "44f9608d617294a503cf5c0ecebad2da5bccb9d6",
+    "actual_target_runtime_GPI_adoption_verified": false,
+    "actual_target_Android_success_verified": false,
+    "initial_GPI_timeout_cause_determined": false
+  },
+  "first_post_observed": {
+    "kernel_build_id": "931f89c6463a6af0eea9436b61f059f31e451f6a",
+    "boot_id": "73f15c91-ae79-4aab-b80f-f0d2f011ea46",
+    "GPI_build_id": "017204038f33bb4419f33057adedc2b0a2490c74",
+    "GPI_trace_parameter_exit": 1,
+    "complete_Android_verified": false,
+    "trigger_of_return_to_stock_known": false
+  },
+  "manual_intervention": {
+    "user_confirmed_manual_fastboot_entry": true,
+    "exact_time_known": false,
+    "fastboot_and_Android_wait_timeout_are_not_natural_failure_proof": true
+  },
+  "collection_gap": {
+    "original_first_contact_pstore_read": false,
+    "original_post_Android_pstore_after_exec_exists": false,
+    "post_wait_readonly_attempt_all_failed": true,
+    "empty_before_after_UUID_does_not_verify_same_boot": true,
+    "restored_pstore_crossed_manual_fastboot_and_normal_stock_boot": true,
+    "no_complete_target_nonce_buildid_GPI_diag_in_later_pstore": true
+  },
+  "restored_current": {
+    "kernel_build_id": "931f89c6463a6af0eea9436b61f059f31e451f6a",
+    "boot_id": "5719bd82-5a19-4cb0-a3d3-2d036f861682",
+    "Android_completed": true,
+    "root": true,
+    "graphics_service_PIDs_and_KGSL_char_device": true,
+    "watchdog_disable": 0,
+    "kptr_restrict": 2,
+    "helper_absent": true,
+    "kexec_loaded_interface_absent": true,
+    "foreign_debugfs_mount_recorded_not_unmounted": true
+  },
+  "repository": {
+    "kernel_source_diff_empty": true,
+    "main_patch_unchanged_this_round_sha256": "2ff710c967cfdf8cf8247ac71d95d061fe93709730373f5d530cca42e55588b7",
+    "partition_flashed": false,
+    "watchdog_modified": false
+  },
+  "static_freeze_file_count": 83,
+  "evidence_sha256": {
+    "source-kgsl-blocked-boot-verification.json": "1860ea1b62a6975dc5c3607a4c86992eb76f332c37392f161757517536034397",
+    "source-surfaceflinger-stop-stability.json": "eed4700568071c37636e0413f51361fcec5e33edeb6a7f6d7020624cbdb2e26e",
+    "source-page-owner-runtime-verification-accepted.json": "3947aeb938b07e2d53161574d859933061093d86ac76367748d78fb59b03980e",
+    "root-full-runtime-final-binding.json": "18cd757979ab00e767654c3e7b9ab618c78f1c8d929c7e719689d6b02b712bb5",
+    "target-ready.json": "ff07419b3e84cd92ea1065e141e197005147a638188fa304d851c810468fa43c",
+    "loaded-audit.json": "f40495d796842d1e85f5c3186ff33160cc932b5bfc11ca3631799d11dc91676c",
+    "gpu-disabled-loaded-audit.json": "2b561785008d6dcf1d74c263301c35ac480815d841681253647850001ee40523",
+    "first-post-exec-capture.json": "e301c458d3e47364ba48c3b759e61b508d386f6c9da9ab85629601ef94203949",
+    "post-exec-readonly.json": "2f24d657badbfe00c4b05a08115f4ce31fc56afd96453a8246e6f5ffd071a72e",
+    "post-wait-USB-inventory.json": "73d7a3725f706bd603f00497a22befa2d2669faefc09209b18471cda0b96387e",
+    "screen-state-discrepancy-review.json": "14601ac21760e2f633bcc1b15df2e5cefb20eaa0e06d870dcb771992d1776c7c",
+    "user-recovery-normal-reboot.json": "eb0deefe9f8c55e177749ad413bb31a40c729e277f443c1e37bb006b6e61b10e",
+    "installed-recovery-readonly.json": "9eee1f494e1e7568fc873557bf484665b010e986f557752c349ba273082fee0f",
+    "installed-recovery-capture/pstore-console.stdout.bin": "f5154810597ece16f61ba872203c77b6d93538632e2b199ede3ec3837c179aa4",
+    "root-chain-events.jsonl": "fe5e3f37630cc8be63668fcf8f58bf6302c1c821e39ae15861c920bcb3f1dc13",
+    "gpi-event-r41-result-review/audit.json": "9f39e4894ca3b9721ce17d017adc77f0ad12acf1f48e6e36485e6ba572c957a6",
+    "gpi-event-r41-raw-result-review/audit.json": "38edbd9bd7364a7b08ee1a9f1244135fc7b6915d4b00d50ca1c15bd343a0d8cf",
+    "gpi-event-r41-root-review/runtime-freeze-binding.json": "279f731d7fbbcaa0b214e62f1c968a24c976d37eff7cb5cdbc8a74bc9285694c",
+    "gpi-event-r41-runner/validation.json": "affd4a1370cce9ef474c600fb0398bbd48f4db220ee9e25e6f2a10b1bc6b41c2",
+    "device-test-runner-terminal.json": "321acc728acba0227186774f1cb860e369ea805149b059991e18a08211938b6d"
+  },
+  "next_step": "Preserve pstore immediately on first successful fresh-UUID ADB contact before waiting for Android completion; future integration still required. No new R41 execute.",
+  "mutable_final_state_points_to_this_review": true,
+  "initial_review_preserved_sha256": "45ebef45a425efff9f8bc67d1eb5b01ad53c67fa3e4d4748fd2c2a1f9e94cb59",
+  "terminal_state_snapshot_byte_identical_to_pre_review_runner_state": true
+}

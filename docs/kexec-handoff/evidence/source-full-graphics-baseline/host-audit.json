@@ -1,0 +1,99 @@
+{
+  "status": "SOURCE_FULL_GRAPHICS_PACKAGE_AND_BOOT_ONLY_RUNNER_STATIC_REVIEW_PASS_NOT_RUNTIME_VALIDATION",
+  "blocking_findings": [],
+  "package": {
+    "boot_path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/source-full-graphics-baseline/kexec-source-full-graphics-boot.img",
+    "boot_sha256": "dc0526c2aab863e50dc623059c59c8d990af738b0eaae0a9390319c8870e0da5",
+    "boot_bytes": 37007360,
+    "parent_boot_sha256": "8b3a4a3acee3f01fc48fe30aa20f49a07af8f115976271b6ba4bac28880b4964",
+    "actual_changed_bytes": 40,
+    "changed_byte_offsets_min_max": [
+      72,
+      111
+    ],
+    "all_differences_within_v4_cmdline": true,
+    "header_cmdline_exact": "ramoops.console_flush_diag=1",
+    "kernel_Image_byte_identical_parent": true,
+    "Image_sha256": "8401f353d7477c87db2e54ef5734ad2ac25acbe574a928b1c5b6ff82579f4f9e",
+    "Image_bytes": 37001728,
+    "header_size": 1584,
+    "version": 4,
+    "ramdisk_bytes": 0,
+    "signature_bytes": 0,
+    "all_other_header_and_padding_bytes_identical_parent": true,
+    "canonical_patch_sha256": "6bbb59da45410025c70383795da5d1dea1365b2685c173db8ca211abd6d37352",
+    "saved_patch_apply_has_no_fuzz_or_offset_or_stderr": true
+  },
+  "runner": {
+    "path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/source-full-graphics-baseline/boot-once.py",
+    "sha256": "78eafc8d15ca7b6e0c7d4fd7896a64788302bd0f698f67b7b08caf959cc3fb41",
+    "ordinary_boot_request_sites": [
+      72
+    ],
+    "bootloader_reboot_request_sites": [
+      55
+    ],
+    "temporary_boot_initial_budget_zero_and_consumed_before_request": true,
+    "no_service_control_helper_load_or_kexec_execution_calls": true,
+    "no_partition_or_watchdog_control": true,
+    "preflight_stock_UUID": "d8c53019-2f45-4c1f-a999-d0667971464d",
+    "preflight_stock_GNU": "931f89c6463a6af0eea9436b61f059f31e451f6a",
+    "preflight_root_Android1_WD0_helper_and_kexec_interface_absence_required": true,
+    "future_source_GNU_required": "72782e2196eb1c46c8c5205ccd93f2acf42de294",
+    "future_source_new_UUID_and_stable_final_UUID_required": true,
+    "future_source_BTF_required": "4af0d389bc92615ac8982233f544f4653b67c6535ae869267f80da0fbf273550",
+    "exact_original_module_count": 695,
+    "original_module_names_baseline_sha256": "a75037cc1341daabbab63b832e78ea047f2bee4c6ef21e0988525a06d2e1b5db",
+    "original_GPU_GNU_required": "f95e145481d6423dffac1f0cb3e1236dfbb1b753",
+    "original_GCC_UFS_PHY_GPI_SPI_notes_required": true,
+    "GPU_character_device_SF_running_and_nonempty_numeric_SF_SS_PIDs_required": true,
+    "prior_PID_whitespace_guard_note_resolved": true,
+    "final_root_Android1_kexec0_WD0_required": true,
+    "runtime_blacklist_and_page_owner_and_kexec_diag_selectors_forbidden": true,
+    "no_boot_or_kexec_retry": true
+  },
+  "limits": [
+    "This static review establishes package bytes and executable checks, not actual Android, graphics or display success.",
+    "The unchanged7278 diagnostic Image is reused; compiled hooks remain, so this is not a pristine kernel or a kexec repair proof.",
+    "Prior ABI or ordinary-boot results do not exclude warm-handoff-specific effects.",
+    "No kexec belongs to this boot-only check; no physical display or touch response is asserted."
+  ],
+  "inputs": {
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/source-full-graphics-baseline/manifest.json": {
+      "bytes": 2036,
+      "sha256": "758c0bcc68607c743a0dc658bd2e1dffd8e70b54c51b2722b0a61781dbe01469"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/source-full-graphics-baseline/boot-once.py": {
+      "bytes": 8036,
+      "sha256": "78eafc8d15ca7b6e0c7d4fd7896a64788302bd0f698f67b7b08caf959cc3fb41"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/other_patch/kexec_source_full_graphics_boot_6.6.89.patch": {
+      "bytes": 907,
+      "sha256": "6bbb59da45410025c70383795da5d1dea1365b2685c173db8ca211abd6d37352"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/source-full-graphics-baseline/header-source/boot-header-cmdline.txt": {
+      "bytes": 29,
+      "sha256": "1b570b0cd6bf569c95d622496dabdf9f821983fb77b3baa6c66c41517086dde8"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/source-full-graphics-baseline/apply.stdout.txt": {
+      "bytes": 38,
+      "sha256": "105905ad8a9373ddd4cc4e92c344e2a8949d6e9ae9e9cec7df099f6df9ce0826"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/source-full-graphics-baseline/apply.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/round35/source-modules.txt": {
+      "bytes": 51252,
+      "sha256": "a75037cc1341daabbab63b832e78ea047f2bee4c6ef21e0988525a06d2e1b5db"
+    }
+  },
+  "review_actions": {
+    "device_operations": 0,
+    "runner_main_invocations": 0,
+    "actual_state_writes": 0,
+    "producer_or_frozen_file_edits": 0,
+    "test_cases_run": 0,
+    "old_ABI_or_suite_reruns": 0
+  }
+}

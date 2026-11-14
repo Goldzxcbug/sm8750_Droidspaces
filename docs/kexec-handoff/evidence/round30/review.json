@@ -1,0 +1,68 @@
+{
+  "status": "R30_FIRST_SEA_PA_ORIGINAL_ROOTFS_STACK_AND_SAME_SOURCE_KGSL_SECURE_ALLOCATION_CORRELATED_REPAIR_NOT_VERIFIED",
+  "epoch": 1794628400.231808,
+  "source_boot_id": "ca907ddf-d59e-48e7-a9d9-64c45327e7eb",
+  "target_build_id": "337beb1178af6295c7072e8f0b5011eced5a3552",
+  "run_id": "ae886f43ba35f58e",
+  "target_console_positive": true,
+  "target_runtime_live_identity_flag_describes_recovered_stock_only": true,
+  "raw_pstore_sha256": "bdd8369d15e253c656e7c1e6c456d2a6cf34df5f111a3363ba4d1a94187c281e",
+  "raw_bytes": 117725,
+  "raw_LF_count": 1298,
+  "critical_Image_pages_verified": 123,
+  "actual_loaded_DTB_sha256": "4403286ac748746fc245c955b88728ca36440b99fe1e7611a4dabefe9fc4eed9",
+  "actual_fault_PA": "0x884466000",
+  "actual_fault_PFN": "0x884466",
+  "actual_memstart": "0x80000000",
+  "ESR": "0x96000010",
+  "fault_operation": "clear_page DC ZVA x0",
+  "fault_task": "PID82 kworker/u18:1 events_unbound async_run_entry_fn",
+  "fault_context": "initramfs decompression writes shmem, before this trace contains user init exec",
+  "native_original_stack_frames": 24,
+  "same_source_archive_match_count": 1,
+  "same_source_archive_matching_allocation": "order0 PID2313 surfaceflinger; kgsl_system_alloc_pages -> kgsl_allocate_secure -> kgsl_allocate_global -> send_start_msg",
+  "actual_KGSL_shutdown_slots_zero": 6,
+  "actual_KGSL_free_globals_called_by": "remove/unbind chain, not normal platform_shutdown",
+  "source_initial_dump_region_geometry_hit_but_source_tail_released_before_KGSL_allocation": true,
+  "target_all_14_dynamic_reserved_pools_observed_not_overlapping_fault_PA": true,
+  "references_sha256": {
+    "sea-memory-review/round30-evidence.json": "58adfc3a768fe7226e94af0dc5a84847b52cd194917eb570d466aba5611dd4f8",
+    "secure-pool-readonly-review/r30-pfn-884466/lookup.json": "3ff0a846afb503fa2c13f002660af55142cf4385fe0d80627268de21f1f1aab7",
+    "sea-memory-runner-review/round30-physical-range-review.json": "0b64ee85581f41e33f67a43251d7759dede57c6ccfca7e94784ded21371ff4e2",
+    "sea-memory-runner-review/round30-dump-release-addendum.json": "fa3e8825c82e183adb802247e2224b74388bd0b5d22c1c87cc18f658fbf85d85",
+    "kgsl-shutdown-independent-review/audit.json": "0f255c1033e5fc987ec56ce5572e594f56908c9c5c3c722b7c907d79a3361dfe",
+    "round30/recovery-readonly.json": "57b3a14002e8d448e986884f29dd61097a4a4489cc75eb4638ea43ae49757980"
+  },
+  "source_page_owner_accepted_sha256": "9bf0504321c428563d6ad15fa558523c444aa560e5e3e7344909ecdddb45e91f",
+  "source_secure_pool_snapshot_sha256": "bcdc2b092f6bae39b72ae81c75aa01a0f8a665ad748f7f87cca18f422f215a41",
+  "source_secure_pool_sample": "partial, ranges0; excludes KGSL globals",
+  "root_preparation_binding_sha256": "349b20b9e96a84ef16b72381a1ed64b94c568bc69fe38390198779734d43b4f2",
+  "root_execution_binding_sha256": "b929a145a0f6ad2d52dbed67c796b26cbe12a09d056e7d23fb4fd64bf7761908",
+  "counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1,
+    "source_metadata_collector_insmod_request_count": 1,
+    "source_metadata_collector_rmmod_request_count": 1
+  },
+  "recovered_stock_boot_id": "49d71bde-6915-40a6-bd6a-96959e57f480",
+  "recovered_stock_build_ids": [
+    "931f89c6463a6af0eea9436b61f059f31e451f6a"
+  ],
+  "recovery_android_root_watchdog_zero_verified": true,
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "kernel_repository_unchanged": true,
+  "main_patch_sha256": "2ff710c967cfdf8cf8247ac71d95d061fe93709730373f5d530cca42e55588b7",
+  "remaining": [
+    "Same-boot bounded SG/global metadata observation; software allocation is not a current firmware ACL query.",
+    "Establish GPU quiescence and secure page handoff or explicit isolation contract; no private-function/SCM blind call.",
+    "A repair must boot the actual target Android and verify functional handoff; existing SP/TZ/clock diagnostics are not production fixes."
+  ],
+  "limits": [
+    "R30 source page_owner sampled non-atomically and its capture exited124 before EOF; a positive historical record is not immediate owner proof.",
+    "R30 source KGSL GNU note was not saved before handoff; actual recovered module was separately read and GNU/file SHA verified.",
+    "No claim all earlier SIGILL, SEA, USB issues or persistence corruption share this cause."
+  ]
+}

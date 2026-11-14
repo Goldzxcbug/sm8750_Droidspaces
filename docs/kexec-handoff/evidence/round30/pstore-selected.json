@@ -1,0 +1,134 @@
+[
+  [
+    162,
+    "[    0.000000][    T0] Kernel command line: console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.stacktrace=off kvm-arm.mode=protected bootconfig ioremap_guard kexec_diag.run_id=ae886f43ba35f58e kexec_diag.early_ramoops=1 kexec_diag.skip_secure_sp_heaps=1 kexec_diag.preserve_tzlog=1 kexec_diag.ufs_clocks=1 kexec_diag.sea_context=1 print-fatal-signals=1 sysctl.debug.exception-trace=1 kexec_diag.user_state=1 kexec_diag.sea_memory=1 console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.stacktrace=off kvm-arm.mode=protected bootconfig ioremap_guard log_buf_len=512K cpufreq.default_governor=performance sysctl.kernel.sched_pelt_multiplier=4 no-steal-acc kpti=0 swiotlb=0 loop.max_part=7 irqaffinity=0-1 pcie_ports=compat printk.console_no_auto_verbose=0 kasan=off rcupdate.rcu_expedited=1 rcu_nocbs=0-7 kernel.panic_on_rcu_stall=1 disable_dma32=on cgroup_disable=pressure fw_devlink.strict=1 can.stats_timer=0 pci-msm-drv.pcie_sm_regs=0x1D07000,0x1040,0x1048,0x3000,0x1 ftrace_dump_on_oops slub_debug=- minidump"
+  ],
+  [
+    313,
+    "[    0.038324][    T1] KSEA1 action=armed current_el_data_sea=1 first_only=1"
+  ],
+  [
+    1207,
+    "[    0.389393][    T1] KUSR1 kind=armed origin_limit=4 signal_limit=4 event_limit=32 task_limit=16 frame_limit=8 delays_ms=5000,12000,24000 fatal_verdict=0"
+  ],
+  [
+    1217,
+    "[    0.712073][   T82] KSEA1 action=context esr=0000000096000010 far=ffffff8804466000 far_valid=1 fnv=0 pc=ffffffda2286ac4c lr=ffffffda21b73f80 sp=ffffffc08079b440 pstate=0000000081000005"
+  ],
+  [
+    1218,
+    "[    0.712129][   T82] KSEA1 action=symbols pc=clear_page+0x18/0x4c lr=post_alloc_hook+0x164/0x244"
+  ],
+  [
+    1219,
+    "[    0.712193][   T82] KSEA1 x0=ffffff8804466000 x1=0000000000000040 x2=0000000000000004 x3=0000000000000901"
+  ],
+  [
+    1220,
+    "[    0.712243][   T82] KSEA1 x4=ffffff8b6dfcab00 x5=ffffff8b6dfcab28 x6=0000000000000000 x7=0000000000000000"
+  ],
+  [
+    1221,
+    "[    0.712292][   T82] KSEA1 x19=0000000002140cca x20=0000000000000000 x21=fffffffe20111980 x22=0000000000000001"
+  ],
+  [
+    1222,
+    "[    0.712341][   T82] KSEA1 x23=ffff880446600000 x24=ffffffda23aea940 x25=fffffffe20111980 x26=0000000000000068"
+  ],
+  [
+    1223,
+    "[    0.712389][   T82] KSEA1 x27=ffffffc08079b690 x28=dead000000000100 fp=ffffffc08079b450"
+  ],
+  [
+    1224,
+    "[    0.712437][   T82] KSEAM1 action=layout memstart=0000000080000000 phys_offset=0000000080000000 phys_valid=1 page_offset=ffffff8000000000 page_end=ffffffc000000000 kimage_voffset=ffffffd99d400000"
+  ],
+  [
+    1225,
+    "[    0.712487][   T82] KSEAM1 action=arithmetic far_valid=1 linear=1 phys_valid=1 pa_valid=1 pa=0000000884466000 pfn=0000000000884466 arithmetic_only=1"
+  ],
+  [
+    1226,
+    "[    0.712538][   T82] KSEAM1 action=stack origin_pc=ffffffda2286ac4c entries=16 cap=16 limit_reached=1 best_effort=1"
+  ],
+  [
+    1227,
+    "[    0.712590][   T82] KSEAM1 action=frame i=0 pc=ffffffda2286ac4c symbol=clear_page+0x18/0x4c best_effort=1"
+  ],
+  [
+    1228,
+    "[    0.712641][   T82] KSEAM1 action=frame i=1 pc=ffffffda21b740b8 symbol=prep_new_page+0x30/0x16c best_effort=1"
+  ],
+  [
+    1229,
+    "[    0.712691][   T82] KSEAM1 action=frame i=2 pc=ffffffda21b79f04 symbol=get_page_from_freelist+0x1fb4/0x201c best_effort=1"
+  ],
+  [
+    1230,
+    "[    0.712741][   T82] KSEAM1 action=frame i=3 pc=ffffffda21b77d50 symbol=__alloc_pages+0xfc/0x2fc best_effort=1"
+  ],
+  [
+    1231,
+    "[    0.712790][   T82] KSEAM1 action=frame i=4 pc=ffffffda21b7b734 symbol=__folio_alloc+0x18/0x38 best_effort=1"
+  ],
+  [
+    1232,
+    "[    0.712841][   T82] KSEAM1 action=frame i=5 pc=ffffffda21b1eb38 symbol=shmem_alloc_and_acct_folio+0x118/0x2b4 best_effort=1"
+  ],
+  [
+    1233,
+    "[    0.712891][   T82] KSEAM1 action=frame i=6 pc=ffffffda21b1b648 symbol=shmem_get_folio_gfp+0x354/0x898 best_effort=1"
+  ],
+  [
+    1234,
+    "[    0.712940][   T82] KSEAM1 action=frame i=7 pc=ffffffda21b1d12c symbol=shmem_write_begin+0x60/0xe8 best_effort=1"
+  ],
+  [
+    1235,
+    "[    0.712990][   T82] KSEAM1 action=frame i=8 pc=ffffffda21af2600 symbol=generic_perform_write+0xb0/0x284 best_effort=1"
+  ],
+  [
+    1236,
+    "[    0.713040][   T82] KSEAM1 action=frame i=9 pc=ffffffda21b21344 symbol=shmem_file_write_iter+0x78/0xa4 best_effort=1"
+  ],
+  [
+    1237,
+    "[    0.713091][   T82] KSEAM1 action=frame i=10 pc=ffffffda21be3d70 sym\"ol=__kernel_write_iter+0xc4/0x1f4 best_effort=1"
+  ],
+  [
+    1238,
+    "[    0.713140][   T82] KSEAM1 action=frame i=11 pc=ffffffda21be3fe4 symbol=kernel_write+0xac/0x120 best_effort=1"
+  ],
+  [
+    1239,
+    "[    0.713192][   T82] KSEAM1 action=frame i=12 pc=ffffffda23524f64 symbol=xwrite+0x50/0xe0 best_effort=1"
+  ],
+  [
+    1240,
+    "[    0.713241][   T82] KSEAM1 action=frame i=13 pc=ffffffda235246d0 symbol=do_copy+0x5c/0x1bc best_effort=1"
+  ],
+  [
+    1241,
+    "[    0.713290][   T82] KSEAM1 action=frame i=14 pc=ffffffda23523f18 symbol=flush_buffer+0xb0/0x108 best_effort=1"
+  ],
+  [
+    1242,
+    "[    0.713342][   T82] KSEAM1 action=frame i=15 pc=ffffffda2357dc40 symbol=__gunzip+0x35c/0x3e0 best_effort=1"
+  ],
+  [
+    1243,
+    "[    0.713392][   T82] Internal error: synchronous external abort: 0000000096000010 [#1] PREEMPT SMP"
+  ],
+  [
+    1247,
+    "[    0.713591][   T82] CPU: 6 PID: 82 Comm: kworker/u18:1 Not tainted 6.6.89-Gold_Bug_kexec_sea_memory_diag #11 337beb1178af6295c7072e8f0b5011eced5a3552"
+  ],
+  [
+    1251,
+    "[    0.713795][   T82] pc : clear_page+0x18/0x4c"
+  ],
+  [
+    1291,
+    "[    0.715811][   T82] Kernel panic - not syncing: synchronous external abort: Fatal exception"
+  ]
+]

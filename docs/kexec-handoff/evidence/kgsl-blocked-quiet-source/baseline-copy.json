@@ -1,0 +1,44 @@
+{
+  "status": "FROZEN_4424_REFLINK_COPY_ONLY_ONE_PRINT_LINE_DELETED_FUZZ0_NO_OFFSET_READY",
+  "baseline_build_id": "4424630e5e18a578666635e066a255bdf42c3428",
+  "baseline_manifest_path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/kgsl-binary-source/manifest.json",
+  "baseline_manifest_sha256": "e0224418a4d5821f32b62f93398f4b746166ee81ce4b89a33be925356245ae48",
+  "baseline_vmlinux_sha256": "2774d576ed6f8a436565ae6f2e5ba9f6eac899722efb5b61b59be0eb6d68a338",
+  "patch_path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/other_patch/kexec_shutdown_log_quiet_diag_6.6.89.patch",
+  "patch_sha256": "2cacafea0871231d02fd096968e7af68eabb1416d331fa5e999c1d64ec1cb6c8",
+  "patch_apply_log_sha256": "c983a1ac4c532e075d0cfb49e7d5214f12879698975b6a07d483945cdbccf5dc",
+  "source_parent_sha256": {
+    "drivers/base/core.c": "b0af269d83089a8bfaef01ebbf658694241b14df4c2a77ca66b64e35c5f8c70c"
+  },
+  "source_after_sha256": {
+    "drivers/base/core.c": "11e7697ba90863932c70c94f5afd1bd38ccbd9941880b92eff6a37aa53353374"
+  },
+  "source_full_tree_diff_path": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/kgsl-blocked-quiet-source/source-diff-before-build.txt",
+  "source_full_tree_diff_sha256": "1fd599e8651f909ef7a39c038041e12fadfd476f4d115457501cd86a73db2efc",
+  "only_source_difference": "drivers/base/core.c:4868 deletion of one preexisting unconditional pr_emerg",
+  "config_before_sha256": "50b0b2693e5ef21aa6c3a3e32cceb4d1c519663bdbcb848763d7322c937b5dad",
+  "config_after_sha256": "50b0b2693e5ef21aa6c3a3e32cceb4d1c519663bdbcb848763d7322c937b5dad",
+  "requested_config_delta": [],
+  "Module_symvers_before_sha256": null,
+  "vmlinux_symvers_before_sha256": "388c489890e2c99942da4d9cfd5de1baf0e1f75782033a93d720db510ed05f18",
+  "generated_metadata_rebase_count": 4529,
+  "generated_metadata_rebase_sha256": "03ab7fd933ba6893ccc489b1865b372f53843338f4d84410eadeba627dfa05af",
+  "reuse": "Independent reflink source/build; only generated Kbuild paths rebased, original timestamps retained. No object/ELF byte edits.",
+  "unchanged_key_source_sha256": {
+    "arch/arm64/kernel/head.S": "4e4cee52f5be673841bc8b8af2ee138adb2964b7d90fa532956fa7fab56589a5",
+    "arch/arm64/kernel/cpu-reset.S": "0fc8025d86c2b3f6020cce56a657755e650a6b11f7a9153f71c7dac6dd23b0db",
+    "arch/arm64/kernel/relocate_kernel.S": "3a00a3683cdd216ebd9c8801b41da4e883cb1944163959f15c974e57367f7750",
+    "arch/arm64/mm/cache.S": "18617a28c443dc42adbd7d947ef74a696a4afa75c85efe80ad6dfc4fa643317e",
+    "arch/arm64/mm/proc.S": "655259e43533727611c6d09961c58fc51d46b2e56f27331227022b7fc7f68582",
+    "arch/arm64/kernel/machine_kexec.c": "a1a41fbff719c162d7552ef42305505036d2fc140fde0bf26c17ee8c8fb7ee1a",
+    "arch/arm64/kernel/kexec_kgsl.c": "e0f692d066f4123ab45eeeac5117721aa1598c4fa635a55d9e0943a68692745c",
+    "arch/arm64/kernel/kexec_tzlog.c": "d854602e18808a2e734a9c5a6eea4277e84676bff30ce1ba048a398dec8a5d25",
+    "drivers/irqchip/irq-gic-v3-its.c": "913082c89a7343bb06497752aa7ff62493f62456e246a35d0c7c535c76e9aef2",
+    "drivers/remoteproc/remoteproc_core.c": "450ff56abd42b3d7543e5eedd05af1f4446b737e96e6895a240395a8c2870d3d",
+    "fs/pstore/ram.c": "574a93a8ae39aed714fc1081aa0491a85d6ba967f715045f8c1f7a2d51c708ee",
+    "kernel/Kconfig.kexec": "e104d4a2dba811ec23c96ca7109821a3af799686872cb71893f142487acb6028",
+    "Makefile": "110f55dc2be6059ed4d249cb194feda39ffd041916d5f4e6dbe9085fc831f5bf"
+  },
+  "device_operations": 0,
+  "elapsed_seconds": 33.52311223800643
+}

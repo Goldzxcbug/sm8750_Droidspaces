@@ -1,0 +1,46 @@
+{
+  "PSCI": {
+    "path": "/soc/psci",
+    "compatible": [
+      "arm,psci-1.0"
+    ],
+    "method": "smc"
+  },
+  "source_build_id": "6081c037cab4c9e169ee897e5d9ad65a98de5109",
+  "source_boot_id": "a302531d-2b41-4dc6-97a6-6c1ccda15f63",
+  "epoch": 1794564510.5469882,
+  "ring_physical": "0x880000000",
+  "capacity": 262132,
+  "console_Normal_WB_mapping_verified": true,
+  "linear_alias_absent": true,
+  "ECC_absent": true,
+  "bounded_reads": 10,
+  "status": "HOST_TARGET_READY_NOT_LOADED_NOT_EXECUTED",
+  "target": "/home/gold/\u6587\u6863/\u4ed3\u5e93/sm8750_Droidspaces/out/kexec-boot-fix/early-fault/kexec-early-fault.Image",
+  "target_sha256": "03e280133667aac94daf4f6fe283137c5f8f0b88990fa40e08db55204a235b86",
+  "target_bytes": 37691392,
+  "template_sha256": "8577cade8644dda048b2cb5653893782e9267c3a356745ce9ac5b31939783e82",
+  "stages": [
+    "target-entry",
+    "mmu-state-recorded",
+    "boot-args-preserved",
+    "idmap-created",
+    "exception-level-ready",
+    "cpu-setup-returned",
+    "before-enable-mmu"
+  ],
+  "hooks": [
+    4,
+    30478508,
+    30478512,
+    30478548,
+    30478556,
+    30478560,
+    30479596
+  ],
+  "scope": "Seven B/BL sites before MMU enable plus temporary EL1 exception vectors; no page-table or device register edits",
+  "fatal_exception_register_capture": true,
+  "fatal_reset": "PSCI SYSTEM_RESET via verified smc method",
+  "temporary_VBAR_installed_after_first_valid_stage_marker": true,
+  "source_normal_boot_image_unchanged": true
+}

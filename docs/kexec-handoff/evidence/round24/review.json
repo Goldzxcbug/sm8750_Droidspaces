@@ -1,0 +1,89 @@
+{
+  "status": "SINGLE_JUMP_CROSSED_AUX_MINUS16_AND_BCR_RELEASE_THEN_UNLOCATED_SEA_ANDROID_NOT_BOOTED",
+  "previous_goal_turn_classification": "progress",
+  "previous_progress_basis": "R22/R23 valid normal references changed the next experiment from local PHY zeros to early AUX reference/halt ordering.",
+  "immutable_inputs_sha256": {
+    "round24/device-test.json": "233e0ee85866f83262d0a40be1ab068c6c065e14b84e7d903d3a2dc902e52312",
+    "round24/recovery-readonly.json": "beacc074ec2adaeb092c221be5f0ee43a742c61d585fb0498a79b4be2cdebafc",
+    "round24/pstore-after-exec.txt": "3fd849fec08f76c95b780c109d8976d5603985e133e001379109054eb2ca7faf",
+    "round24/observed-dmesg-after-exec.txt": "4cda6cd3d215d9925494d993cb429d5429b4a48c3d49eac9418463be4727b46f",
+    "ufs-aux-halt-skip-review/round24-evidence.json": "e8fbc2aeafd30982da472d44b46fd4383b7bca17af9c08b675d42c3a0197dbf7",
+    "ufs-aux-halt-skip-runner-review/round24-evidence.json": "3412d3e93e55b2df646285fd2acea3465074eee746438cd98e957418f2a20e52",
+    "ufs-aux-halt-skip-root-review/final-binding-audit.json": "723bc3ba418faecc4f64cdfc712ee8221bcf95df19e046bae40e81b97b0297b1",
+    "ufs-aux-halt-skip-independent-review/audit.json": "69475512d05a60091ce3496567c64ffef50083f5ddc5ee9ba4581dfd45c81543",
+    "ufs-aux-halt-skip/validation.json": "9d1466f4225e6a78a597ada8681f586daa9a92869f76dcebe85db6064a421e0c",
+    "round24/loaded-audit.json": "a6f30080bf017311a037fc7bf78ec3351add5fedce871897bc0d375e64109906",
+    "round24/loaded-target.dtb": "eff7f3b34441cbfcd001517057f8e88cbda861c665730c474b2ec43ec3c41a78",
+    "round24/gic-final-snapshot.json": "a83a0b397cebfda3c3f0e882e11a62618e8e7bbe66139cdf57afe7ce52a4877e",
+    "round24/secure-heap-skip-loaded-dtb-audit.json": "0c2081f59402db88e59b1b7c196d932dbc5ae8603f4fe421ed5e765edb0d8e17",
+    "round24/tzlog-preservation-loaded-dtb-audit.json": "bd13a64b3315192341db4952a6b6de960d4b03209f115a9efef8ae5443affea8",
+    "round24/phy-local-read-loaded-resource-audit.json": "aa1a9b355c14399ea79abc55455c300cbf65316598bcf21ebd60a63564daef93",
+    "round24/target-ready.json": "b3846740d2e6d08b302133cbdcdcc2173bd499e20d7d5b9a46e2325117088cb5",
+    "round24/post-exec-module-identity.json": "04423297fa5223a3a363890c98508e33260c7872593572737a2f1e91bd6061f8"
+  },
+  "source_boot_id": "01126976-410f-448e-bd5d-0f599e094088",
+  "target_run_id": "05160cb2b82875bc",
+  "loaded_dtb_sha256": "eff7f3b34441cbfcd001517057f8e88cbda861c665730c474b2ec43ec3c41a78",
+  "ramdisk_bytes": 18906392,
+  "ramdisk_sha256": "5387d934444dd3d498be5ea1d72bb714c88ab6789a1c221f90be3bff3995ee31",
+  "counts": {
+    "temporary_boot_request_count": 1,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "raw_console": {
+    "bytes": 211045,
+    "LF_count": 2295,
+    "selected_intact_rows": {
+      "2148": "[    1.734618][  T138] gcc-sun 100000.clock-controller: KUFSAUX3 stage=before-clock-registration clock=gcc_ufs_phy_phy_aux_clk old_halt_check=128 new_halt_check=3",
+      "2279": "[    1.814693][  T138] KUFSCLK: event=enable.callback-begin name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=2 parent_prepare=2 has_enable=1 has_disable=1 ret_valid=0 ret=0",
+      "2280": "[    1.814744][  T138] KUFSCLK: event=enable.callback-return name=gcc_ufs_phy_phy_aux_clk enable=0 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=2 parent_prepare=2 has_enable=1 has_disable=1 ret_valid=1 ret=0",
+      "2281": "[    1.814792][  T138] KUFSCLK: event=enable.return name=gcc_ufs_phy_phy_aux_clk enable=1 prepare=1 parent=gcc_ufs_phy_phy_aux_clk_src parent_enable=2 parent_prepare=2 has_enable=1 has_disable=1 ret_valid=1 ret=0",
+      "2288": "[    1.815127][  T138] ufs_qcom_phy_qmp_v4_sun 1d80000.ufsphy_mem: UFSPWR1 stage=power-on-return major=6 ref_cached=1 iface_cached=0 qref_present=1 aux_present=1 vreg_present_mask=1f vreg_enabled_mask=1f ret_valid=1 ret=0",
+      "2290": "[    1.815481][  T138] ufshcd-qcom 1d84000.ufshc: UFSKH1 stage=post-bcr-deassert major=6 ret=0 is_phy_pwr_on=1 ahit=00000000 hce=00000000 cfg1=1c00052c hw_version=60010000 ah8_cfg=00001800",
+      "2294": "[    1.828530][  T138] Internal error: synchronous external abort: 0000000096000010 [#1] PREEMPT SMP",
+      "2295": "[    1.828581][  T138] Skip md ftrace buffer dump for: 0x1609e0"
+    },
+    "damaged_rows_not_repaired": [
+      2282,
+      2289
+    ]
+  },
+  "positive_findings": [
+    "The new single-leaf HALT_SKIP selection actually ran (128 to 3).",
+    "The original CCF leaf callback/final return and PHY power-on return are zero.",
+    "The original BCR deassert reports success and HBA HW_VERSION is readable again.",
+    "The first newly recorded Internal error is synchronous external abort ESR96000010; the log ends immediately after the next skipmd line."
+  ],
+  "causal_limits": [
+    "HALT_SKIP deliberately masks the halt failure; ret0 does not prove a running physical AUX clock.",
+    "The experiment passes the former software rejection and reaches a later fault but does not establish that the two failures have independent physical causes.",
+    "No PC, FAR or stack belonging to this last abort was saved; older WARN PCs cannot fill that gap.",
+    "No PCS/link/MCQ/LUN or target Android success is established.",
+    "New GCC complete build ID was not present in saved target raw; unique KUFSAUX3 execution plus loaded-payload binding is the positive new-code evidence.",
+    "Post-exec live log/notes/modules describe restored stock and are not target identities."
+  ],
+  "next_required_evidence": "Record the first matching kernel SEA context before vendor hooks/die notifiers, preserving all original fault handling and without reading the fault address.",
+  "recovery": {
+    "status": "STOCK_ANDROID_ROOT_WATCHDOG_REVALIDATED_AFTER_R24_SINGLE_JUMP",
+    "epoch": 1794614020.3596308,
+    "boot_id": "2236796a-1f91-4b9d-9646-060bda2e763f",
+    "kernel": "6.6.89-Gold_bug",
+    "build_ids": [
+      "931f89c6463a6af0eea9436b61f059f31e451f6a"
+    ],
+    "android_boot_completed": true,
+    "root_available": true,
+    "watchdog_disable": "0",
+    "same_boot_id_before_after": true,
+    "recovery_was_automatic": true,
+    "device_mutations_by_this_recovery_check": 0,
+    "partition_flashed": false,
+    "watchdog_changed": false
+  },
+  "partition_flashed": false,
+  "watchdog_changed": false,
+  "repository_kernel_status_empty": true,
+  "goal_achieved": false
+}

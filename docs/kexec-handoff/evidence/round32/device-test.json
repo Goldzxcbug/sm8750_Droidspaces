@@ -1,0 +1,48 @@
+{
+  "round": 32,
+  "kind": "ORDINARY_EXACT_TARGET_IMAGE_DEFAULT_OFF_CONTROL",
+  "stage": "EXACT4646_ORDINARY_ANDROID_BOOT_VERIFIED_DEFAULT_OFF",
+  "temporary_boot_request_count": 1,
+  "helper_insmod_request_count": 0,
+  "load_request_count": 0,
+  "execute_request_count": 0,
+  "expected_build_id": "4646f9c53d37fb382dbd5c23aa773837dc427084",
+  "preflight_boot_id": "62826719-1cea-40ef-932c-8d88896b4212",
+  "boot_sha256": "744d170ba64fefa248f3fd7df5bfb5c2fa131cc84704880814c85263a6ad01b9",
+  "Image_sha256": "c86280df7acdeaec37fdfd125c30f2c422e35a40689282d49202a7116569aef4",
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "no_kexec_or_quarantine_runtime_claim": true,
+  "requested_epoch": 1794633746.838175,
+  "upload_exit": 0,
+  "upload_returned_epoch": 1794633761.6435473,
+  "observed_build_ids": [
+    "4646f9c53d37fb382dbd5c23aa773837dc427084"
+  ],
+  "observed_boot_id": "52ac911d-1444-400b-bbe6-308c14dfe965",
+  "observed_kernel": "6.6.89-Gold_Bug_kexec_kgsl_secure_nomap_diag",
+  "android_boot_completed": true,
+  "module_count": 695,
+  "module_build_ids": {
+    "gcc_sun": [
+      "fd0294bddc6fc79a28a1a6826e5328eee01567cb"
+    ],
+    "ufs_qcom": [
+      "a0f190cdb34943457dc4f4642b720838e77acda3"
+    ],
+    "phy_qcom_ufs": [
+      "da0d45e45f727c03861320cf4132255b22a0cf5c"
+    ],
+    "msm_kgsl": [
+      "f95e145481d6423dffac1f0cb3e1236dfbb1b753"
+    ]
+  },
+  "module_names_match_previous_source": true,
+  "modules_missing": [],
+  "modules_added": [],
+  "verified_epoch": 1794633782.6635704,
+  "same_kernel_Image_normally_boots_Android": true,
+  "cold_control_does_not_prove_kexec_or_GPU_quarantine": true,
+  "chosen_kexec_marker_absent": true,
+  "quarantine_selector_absent": true
+}

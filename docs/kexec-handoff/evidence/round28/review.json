@@ -1,0 +1,47 @@
+{
+  "status": "R28_SOURCE_LAST_HANDOFF_PRINTS_SAVED_TARGET_RUNTIME_POSITION_UNDETERMINED",
+  "epoch": 1794622530.4557602,
+  "target_build_id": "b04f54de1c3320828089eea032cc23bb774d6631",
+  "target_Image_sha256": "ffa73e57c5cb7544fc6e17d604a15ff15ec765a4ce8d37ab23fdef690d8b003d",
+  "source_boot_id": "bd117c7f-5c34-46dd-9354-d6bcdeabbc9d",
+  "run_id": "db9b4a3ba4016008",
+  "request_counts": {
+    "temporary_boot_request_count": 2,
+    "helper_insmod_request_count": 1,
+    "load_request_count": 1,
+    "execute_request_count": 1
+  },
+  "first_temporary_boot_failed_during_USB_transfer_second_succeeded": true,
+  "loaded_metadata_checks": "PASS",
+  "critical_image_pages_verified": 119,
+  "actual_loaded_DTB_sha256": "fff75bd009b13b2c185f97bd3b05458b908a353112f4f17be6984f92accadbcc",
+  "ramdisk_sha256": "5387d934444dd3d498be5ea1d72bb714c88ab6789a1c221f90be3bff3995ee31",
+  "raw_console": {
+    "bytes": 262132,
+    "LF_count": 4047,
+    "sha256": "2f02ccf3288b269d1227e1077f63d8ce24f4f0641e79560fad24448e75c80387",
+    "scope": "source-session shutdown and final machine_kexec prints; target logs not obtained"
+  },
+  "artifacts_sha256": {
+    "device-test.json": "bf311512962e9d1d0b865b3750f36f886378e1f0263742be6ca746a8b624b639",
+    "loaded-audit.json": "80f122dc43782666673af193c7740c06b77586a3d951c8a1361e24ac15f2c4f0",
+    "phy-local-read-loaded-resource-audit.json": "11d3a212bf27b9cfbee4770b5eb0f9f36219c8456439e756e028a6b3a0944d11",
+    "recovery-readonly.json": "cc62e9f8a9a5b9fdfe4234df97b6404a426b7e3f4da585bd42ad8873ffa6aaf8",
+    "pstore-after-exec.txt": "2f02ccf3288b269d1227e1077f63d8ce24f4f0641e79560fad24448e75c80387",
+    "observed-dmesg-after-exec.txt": "2d20b4e8209765f6ae0e9f45ff34dee05b09a9ec9caf76a90447523c7beceffe",
+    "transfer-failure-review.json": "06852cd3c3b69e6dcd0c78e37ce03f7ea35c7bc82655ade8c700b1b790708db3"
+  },
+  "independent_runtime_evidence_sha256": "6e8d9c06ade1dba896025d0e6e6f09d2afb69b094313fce7d855a3007be74f59",
+  "source_live_vs_persistent_pairs_sha256": "96a78eec7d81c6ce9191e53291765e3bb4c66bad6d4895edd2d06710038eda1a",
+  "observed_stock_UUID": "a7abdfb2-c01b-47b4-9427-9713388af0aa",
+  "android_target_success": false,
+  "additional_recovery_reboot_requests": 0,
+  "next_step": "One repeat with same b04 Image/source842/helper/payload/bootargs; no kernel code change. If no target logs again, separately design a fresh entry witness binding.",
+  "limits": [
+    "Last C-side prints do not prove the physical branch or target entry executed.",
+    "No target console does not prove that the target never ran or that the late observer caused failure.",
+    "Persistent bad text also affects source-session lines that were intact in live dmesg; not evidence alone of target user-memory corruption."
+  ],
+  "partition_flashed": false,
+  "watchdog_state_changed": false
+}

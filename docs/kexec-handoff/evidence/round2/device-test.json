@@ -1,0 +1,104 @@
+{
+  "round": 2,
+  "authorization": "User explicitly approved a second temporary diagnostic boot and exactly one entry-probe kexec execution.",
+  "stage": "TARGET_ENTRY_CONFIRMED_THEN_RETURNED_INSTALLED_ANDROID",
+  "partition_write_allowed": false,
+  "watchdog_state_change_allowed": false,
+  "automatic_jump_retry_allowed": false,
+  "execute_request_count": 1,
+  "source_expected_build_id": "6081c037cab4c9e169ee897e5d9ad65a98de5109",
+  "source_boot_sha256": "be7aa32a416c8c4fdbcca7a1fc77630271d6daff3bcf2bddfcf912fea70d997e",
+  "preflight_epoch": 1794559911.7825837,
+  "recovery_kernel_before_test": "6.6.89-Gold_bug",
+  "temporary_boot_requested_epoch": 1794559934.6896687,
+  "source_observed_build_ids": [
+    "6081c037cab4c9e169ee897e5d9ad65a98de5109"
+  ],
+  "source_boot_id": "c6dfc58f-ab76-45e7-9c1a-c9418e33f4d6",
+  "ramdisk_sha256": "b9d50144482f916a157e548a3c79e20e1b3683bc982d6a8e01b0c8e8dd9eae02",
+  "ramdisk_cpio_body_sha256": "a5f001b2020f167b4c9bdd51973ec70011d0fd33ea2618f9237f298162fa5bc5",
+  "ramdisk_footer_refreshed": true,
+  "source_android_boot_completed": true,
+  "console_mapping_observation": {
+    "physical": "0x880000000",
+    "size": 262144,
+    "attr_index": 0,
+    "type": "Normal write-back, not Device",
+    "linear_alias": false
+  },
+  "probe_preparation_change": "Added full ring DC CIVAC and DSB before MMU-off physical access to account for verified cached ramoops mapping; normal-boot source image unchanged.",
+  "load_requested_epoch": 1794560343.3895686,
+  "target_Image_sha256": "31d5a51d71428769e8fa277eec8d07059ae69ab92bdb79be46d53e90dba473cd",
+  "remote_directory": "/data/local/tmp/kexec-entry-round2",
+  "probe_console_physical": "0x880000000",
+  "probe_console_capacity": 262132,
+  "probe_template_sha256": "04788d6e82265583e8e5785355fc866606905b8263140928c586a5212ec3ddb5",
+  "load_exit": 0,
+  "load_result": "1\n",
+  "load_returned_epoch": 1794560343.7068586,
+  "freeze_userspace": true,
+  "load_stage_log": [
+    "0,29609,406186262,-,caller=T19357;KT: post_load file=1 path=relocate head=0x9095b6002 start=0x82800000 dtb=0x0000000beb200000",
+    "0,29610,406186275,-,caller=T19357;KT: segment[0] mem=0x82800000 memsz=0x23f1000 bufsz=0x23f1000",
+    "0,29611,406186276,-,caller=T19357;KT: segment[1] mem=0x84bf1000 memsz=0x1157000 bufsz=0x1156480",
+    "0,29612,406186277,-,caller=T19357;KT: segment[2] mem=0xbeb200000 memsz=0x187000 bufsz=0x186bf2"
+  ],
+  "segments": [
+    {
+      "start": 2189426688,
+      "end_exclusive": 2227113984,
+      "bufsz": 37687296
+    },
+    {
+      "start": 2227113984,
+      "end_exclusive": 2245296128,
+      "bufsz": 18179200
+    },
+    {
+      "start": 51189383168,
+      "end_exclusive": 51190984704,
+      "bufsz": 1600498
+    }
+  ],
+  "loaded_metadata_checks": "PASS",
+  "gic_overlap_count": 0,
+  "probe_staged_page_verified": true,
+  "execute_requested_epoch": 1794560461.2498899,
+  "first_usb_observation_epoch": 1794560483.0061839,
+  "first_usb_observation_state": "device",
+  "first_usb_observation_exit": 0,
+  "adb_wait_exit": 0,
+  "adb_wait_returned_epoch": 1794560483.0165572,
+  "recovery_kernel": "6.6.89-Gold_bug",
+  "recovery_boot_id": "b46c82ea-7e53-493c-aedc-ffb040f44bb3",
+  "recovery_android_boot_completed": true,
+  "pstore_printable_ratio": 0.9997329589672379,
+  "pstore_sha256": "c5e8a4656030408fbdef44348a198761541deff4fc6af1d09ef4c927c0c9a6d5",
+  "target_entry_marker_count": 1,
+  "last_readable_lines": [
+    "[  526.151721][T21165] KT: dev cpu",
+    "[  526.151725][T21165] KT: dev platform",
+    "[  526.151728][T21165] kexec_core: KT: after restart_prepare",
+    "[  526.151791][T21165] kexec_core: KT: after migrate_to_reboot_cpu",
+    "[  526.151801][T21165] KT: syscore irq_gc_shutdown",
+    "[  526.151813][T21165] kexec_core: KT: after syscore_shutdown",
+    "[  526.151816][T21165] kexec_core: KT: after cpu_hotplug_enable",
+    "[  526.222728][T21165] kexec_core: KT: after machine_shutdown",
+    "[  526.222736][T21165] kexec_core: KT: before kmsg_dump",
+    "[  526.222739][T21165] kexec_core: KT: before machine_kexec",
+    "[  526.222742][T21165] KT: machine_kexec stuck=0 online=1 pkm=0",
+    "[  526.222746][T21165] KT: machine_kexec path=relocate head=0x9095b6002 start=0x82800000 dtb=0x0000000beb200000",
+    "[  526.222754][T21165] KT: machine_kexec reloc=0x00000009095b0000 ttbr0=0x000000099b11f000 ttbr1=0x000000098c766000 el2=0",
+    "KEXEC_FILE_PROBE stage=target-entry"
+  ],
+  "execute_adb_exit": 0,
+  "partition_flashed": false,
+  "watchdog_state_changed": false,
+  "target_entry_confirmed": true,
+  "target_probe_EL1_MMU_off_Dcache_off": true,
+  "target_original_primary_entry_execution_not_yet_proven": true,
+  "probe_marker_absent_before_test": true,
+  "recovery_build_ids": [
+    "931f89c6463a6af0eea9436b61f059f31e451f6a"
+  ]
+}
