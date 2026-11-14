@@ -352,7 +352,7 @@ __arm64_sys_reboot+0x214/0x2c0
 
 ## 十、代码位置
 
-仓库：`Goldzxcbug/sm8750_Droidspaces`，分支 `main`，HEAD `77128cb6f`
+仓库：`Goldzxcbug/sm8750_Droidspaces`，当前开发分支 `kexec`；诊断历史原基线为旧 `main` 提交 `77128cb6f`。
 
 - `other_patch/kexec_kabi_6.6.89.patch` —— kexec 相关全部改动，涉及 6 个文件：
   - `include/linux/kexec.h`、`drivers/base/cpu.c`：`__GENKSYMS__` 隔离，保证 KABI/CRC 不偏移
@@ -1572,3 +1572,7 @@ ROOT汇总`out/kexec-boot-fix/round42/review.json` SHA `745583788a085c37998108b4
 该对照确认：GPU禁用及SF停止流程干扰了源系统的完整使用，旧源“ADB可用”不能冒充“Android正常”。它没有执行kexec，不能解释或证明修好了目标跳转后的复位；R42目标参数本身没有GPU黑名单，也没有继承源SF停止状态。7278 Image仍含此前编译进去的诊断/交接改动，恢复图形并不等于已换回干净源内核。
 
 为建立未改目标对照，已在R43前仅只读提取当前已安装、可正常启动的931f版本：`installed-kernel-baseline-audit/installed-boot-a.img`为100663296字节，SHA `3b6d3985f2fe5acbbbb326b54ecfa8f27b4f7d26e1e4e8c143419aeeafc458ef`；原始ARM64内核`installed-kernel-payload.bin`为37345792字节，SHA `c36d8c0f7d5f03ce3cc42c98b383166bc29ff838e677b765e56448d67211e980`。读取前后均为d8c5/931f，未写设备。它是已安装的Gold_bug自定义版本，不能称为未经修改的OEM内核；尚未用该原始目标执行新的kexec。
+
+## 六十七、kexec 分支隔离与 main 历史撤回
+
+按用户要求，原 main 的六个连续 kexec 提交（e349634ce 至 77128cb6f）及当前补丁、构建配置、文档和测试全部保存在 kexec 分支。远程 main 已改写，不再包含这六个提交；混合提交中的非 kexec cgroup 构建调整和 kernel/out 忽略规则单独保留在 main 的 5c83b2930。分支间内容差异仅为 kexec 工作。后续 kexec 修改继续在 kexec 分支进行；本次整理未运行设备测试。
