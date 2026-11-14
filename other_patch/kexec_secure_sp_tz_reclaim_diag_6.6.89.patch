@@ -1,0 +1,536 @@
+Diagnostic-only external GPL module for a single SP-TZ reclaim experiment.
+
+Requires the separately applied remoteproc offline seal patch and the verified
+source kernel build. It is not installed or loaded automatically. No backing
+carveout RAM is read or written. SP-modem is intentionally outside this test.
+Apply into an empty module directory under out/kexec-boot-fix, then build.py
+generates binding.h from the verified source manifest and builds the module.
+
+--- /dev/null
++++ b/Makefile
+@@ -0,0 +1 @@
++obj-m += secure_heap_reclaim.o
+--- /dev/null
++++ b/secure_heap_reclaim.c
+@@ -0,0 +1,420 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* One-way SP-TZ handoff diagnostic. Never accesses carveout backing RAM. */
++#define pr_fmt(fmt) "SHRC: " fmt
++
++#include <linux/build_bug.h>
++#include <linux/dma-heap.h>
++#include <linux/err.h>
++#include <linux/firmware/qcom/qcom_scm.h>
++#include <linux/genalloc.h>
++#include <linux/limits.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
++#include <linux/of_reserved_mem.h>
++#include <linux/reboot.h>
++#include <linux/remoteproc.h>
++#include <linux/remoteproc_kexec.h>
++#include <linux/rwsem.h>
++
++#include "binding.h"
++
++#define SHRC_HEAP "qcom,secure-sp-tz"
++#define SHRC_HEAP_PATH "/soc/qcom,dma-heaps/qcom,secure_sp_tz"
++#define SHRC_RPROC_PATH "/soc/remoteproc-spss@1880000"
++#define SHRC_RMEM_PATH "/reserved-memory/spu_secure_shared_memory_region@9b280000"
++#define SHRC_BASE ((phys_addr_t)0x9b280000)
++#define SHRC_SIZE 0x40000UL
++#define SHRC_TOKEN 0x01000000U
++#define SHRC_OLD_VMID 34
++#define SHRC_HLOS_VMID 3
++#define SHRC_HLOS_RWX 7
++
++/* Exact vendor d06a59ae private layout, independently checked in actual ko. */
++struct shrc_carveout_heap {
++	struct dma_heap *heap;
++	struct rw_semaphore mem_sem;
++	struct gen_pool *pool;
++	struct device *dev;
++	bool is_secure;
++	phys_addr_t base;
++};
++
++struct shrc_secure_heap {
++	u32 token;
++	struct shrc_carveout_heap carveout;
++};
++
++static_assert(PAGE_SHIFT == 12);
++static_assert(sizeof(unsigned long) == 8);
++static_assert(sizeof(struct rw_semaphore) == 0x40);
++static_assert(sizeof(struct shrc_carveout_heap) == 0x68);
++static_assert(sizeof(struct shrc_secure_heap) == 0x70);
++static_assert(offsetof(struct shrc_secure_heap, token) == 0);
++static_assert(offsetof(struct shrc_secure_heap, carveout.heap) == 0x08);
++static_assert(offsetof(struct shrc_secure_heap, carveout.mem_sem) == 0x10);
++static_assert(offsetof(struct shrc_secure_heap, carveout.pool) == 0x50);
++static_assert(offsetof(struct shrc_secure_heap, carveout.dev) == 0x58);
++static_assert(offsetof(struct shrc_secure_heap, carveout.is_secure) == 0x60);
++static_assert(offsetof(struct shrc_secure_heap, carveout.base) == 0x68);
++static_assert(sizeof(struct gen_pool) == 0x38);
++static_assert(offsetof(struct gen_pool, min_alloc_order) == 0x18);
++static_assert(sizeof(struct gen_pool_chunk) == 0x38);
++static_assert(offsetof(struct gen_pool_chunk, avail) == 0x10);
++static_assert(offsetof(struct gen_pool_chunk, phys_addr) == 0x18);
++static_assert(offsetof(struct gen_pool_chunk, owner) == 0x20);
++static_assert(offsetof(struct gen_pool_chunk, start_addr) == 0x28);
++static_assert(offsetof(struct gen_pool_chunk, end_addr) == 0x30);
++static_assert(offsetof(struct gen_pool_chunk, bits) == 0x38);
++static_assert(SHRC_SIZE / PAGE_SIZE == BITS_PER_LONG);
++static_assert(sizeof(struct qcom_scm_vmperm) == 8);
++static_assert(offsetof(struct qcom_scm_vmperm, vmid) == 0);
++static_assert(offsetof(struct qcom_scm_vmperm, perm) == 4);
++static_assert(sizeof(struct rproc) == 0x5c0);
++static_assert(offsetof(struct rproc, dev) == 0x38);
++static_assert(offsetof(struct rproc, power) == 0x3e0);
++static_assert(offsetof(struct rproc, state) == 0x3e4);
++static_assert(offsetof(struct rproc, lock) == 0x3f0);
++static_assert(offsetof(struct rproc, recovery_disabled) == 0x4dc);
++static_assert(offsetof(struct rproc, auto_boot) == 0x509);
++
++static bool armed;
++module_param(armed, bool, 0400);
++MODULE_PARM_DESC(armed, "Required one-use arm; consumed only by the exact frozen kexec restart notification");
++static unsigned int spss_phandle;
++module_param(spss_phandle, uint, 0400);
++MODULE_PARM_DESC(spss_phandle, "Required live phandle matching the fixed Sun SPSS OF path");
++
++struct shrc_context {
++	struct dma_heap *heap;
++	struct shrc_secure_heap *sc;
++	struct device_node *heap_np;
++	struct device_node *rmem_np;
++	struct device_node *rproc_np;
++	struct device *heap_dev;
++	struct device *heap_parent;
++	struct device *rproc_parent;
++	struct device_driver *heap_driver;
++	struct device_driver *rproc_driver;
++	struct module *heap_owner;
++	/* The exact module reference acquired by rproc_get_by_phandle(). */
++	struct module *rproc_owner;
++	struct rproc *rproc;
++};
++
++static struct shrc_context ctx;
++static atomic_t attempted = ATOMIC_INIT(0);
++
++static void __noreturn shrc_fatal(const char *phase, int error)
++{
++	pr_emerg("fatal phase=%s error=%d forced_normal_reset=1 no_android_return=1\n",
++		 phase, error);
++	emergency_restart();
++	/* The architecture reset must not return to the reboot chain. */
++	panic("SHRC: emergency_restart unexpectedly returned");
++}
++
++static bool shrc_u32(struct device_node *np, const char *name, u32 wanted)
++{
++	const __be32 *p;
++	int len;
++
++	p = of_get_property(np, name, &len);
++	return p && len == sizeof(*p) && be32_to_cpup(p) == wanted;
++}
++
++static int shrc_validate_dt(void)
++{
++	struct reserved_mem *rmem;
++	struct device_node *node;
++	struct property *nomap;
++	const char *name;
++	int len;
++
++	if (!of_device_is_available(ctx.heap_np) ||
++	    !of_device_is_available(ctx.rproc_np) ||
++	    !of_device_is_compatible(ctx.rproc_np, "qcom,sun-spss-pas") ||
++	    !spss_phandle || ctx.rproc_np->phandle != spss_phandle ||
++	    !shrc_u32(ctx.heap_np, "qcom,dma-heap-type", 0) ||
++	    !shrc_u32(ctx.heap_np, "qcom,token", SHRC_TOKEN) ||
++	    !shrc_u32(ctx.heap_np, "memory-region", ctx.rmem_np->phandle) ||
++	    of_property_read_string(ctx.heap_np, "qcom,dma-heap-name", &name) ||
++	    strcmp(name, SHRC_HEAP))
++		return -EINVAL;
++	node = of_parse_phandle(ctx.heap_np, "memory-region", 0);
++	if (node != ctx.rmem_np) {
++		of_node_put(node);
++		return -EINVAL;
++	}
++	of_node_put(node);
++	nomap = of_find_property(ctx.rmem_np, "no-map", &len);
++	if (!nomap || len || of_property_read_bool(ctx.rmem_np, "reusable"))
++		return -EINVAL;
++	rmem = of_reserved_mem_lookup(ctx.rmem_np);
++	if (!rmem || rmem->base != SHRC_BASE || rmem->size != SHRC_SIZE || rmem->ops)
++		return -EINVAL;
++	return 0;
++}
++
++static bool shrc_private_identity(void)
++{
++	return ctx.sc && READ_ONCE(ctx.sc->carveout.heap) == ctx.heap &&
++		READ_ONCE(ctx.sc->token) == SHRC_TOKEN &&
++		READ_ONCE(ctx.sc->carveout.base) == SHRC_BASE &&
++		READ_ONCE(ctx.sc->carveout.dev) == ctx.heap_dev &&
++		READ_ONCE(*(u8 *)&ctx.sc->carveout.is_secure) == 1;
++}
++
++struct shrc_pool_check {
++	struct gen_pool *pool;
++	unsigned int chunks;
++	int error;
++};
++
++static void shrc_check_chunk(struct gen_pool *pool, struct gen_pool_chunk *chunk,
++			     void *data)
++{
++	struct shrc_pool_check *c = data;
++
++	if (c->chunks < 2)
++		c->chunks++;
++	if (c->error)
++		return;
++	if (pool != c->pool || c->chunks != 1 ||
++	    READ_ONCE(chunk->start_addr) != SHRC_BASE ||
++	    READ_ONCE(chunk->end_addr) != SHRC_BASE + SHRC_SIZE - 1 ||
++	    READ_ONCE(chunk->phys_addr) != (phys_addr_t)-1 ||
++	    READ_ONCE(chunk->owner) ||
++	    atomic_long_read(&chunk->avail) != SHRC_SIZE ||
++	    READ_ONCE(chunk->bits[0]))
++		c->error = -EBUSY;
++}
++
++/* Caller holds the heap write semaphore; allocation/free take read locking. */
++static int shrc_validate_empty_pool(void)
++{
++	struct shrc_pool_check c = { .pool = READ_ONCE(ctx.sc->carveout.pool) };
++
++	if (!shrc_private_identity() || !c.pool ||
++	    READ_ONCE(c.pool->min_alloc_order) != PAGE_SHIFT ||
++	    gen_pool_size(c.pool) != SHRC_SIZE ||
++	    gen_pool_avail(c.pool) != SHRC_SIZE)
++		return -EBUSY;
++	gen_pool_for_each_chunk(c.pool, shrc_check_chunk, &c);
++	if (c.error || c.chunks != 1 || gen_pool_size(c.pool) != SHRC_SIZE ||
++	    gen_pool_avail(c.pool) != SHRC_SIZE)
++		return c.error ?: -EINVAL;
++	return 0;
++}
++
++/* Both the parent device lock and rproc mutex are held by the caller. */
++static bool shrc_rproc_offline(void)
++{
++	return ctx.rproc_parent->driver == ctx.rproc_driver &&
++		ctx.rproc_parent->of_node == ctx.rproc_np &&
++		ctx.rproc->dev.parent == ctx.rproc_parent &&
++		READ_ONCE(ctx.rproc->state) == RPROC_OFFLINE &&
++		atomic_read(&ctx.rproc->power) == 0 &&
++		READ_ONCE(*(u8 *)&ctx.rproc->auto_boot) == 0 &&
++		READ_ONCE(*(u8 *)&ctx.rproc->recovery_disabled) == 1;
++}
++
++static int shrc_restart(struct notifier_block *nb, unsigned long event, void *cmd)
++{
++	struct qcom_scm_vmperm destination = {
++		.vmid = SHRC_HLOS_VMID, .perm = SHRC_HLOS_RWX,
++	};
++	u64 owners = BIT_ULL(SHRC_OLD_VMID);
++	int ret;
++
++	if (event != SYS_RESTART || !cmd || strcmp(cmd, "kexec reboot"))
++		return NOTIFY_DONE;
++	/* Pin this callback and the retained references through the handoff. */
++	if (!try_module_get(THIS_MODULE))
++		shrc_fatal("self-pin", -EBUSY);
++	if (atomic_xchg(&attempted, 1) || !xchg(&armed, false))
++		shrc_fatal("one-use-arm", -EPERM);
++	ret = shrc_validate_dt();
++	if (ret)
++		shrc_fatal("live-dt", ret);
++	/* No parent/rproc/heap lock may be held across this API. */
++	ret = rproc_kexec_seal_offline(ctx.rproc);
++	if (ret)
++		shrc_fatal("offline-seal", ret);
++	pr_emerg("phase=sealed one_heap_only=1 source=%s\n", SHRC_SOURCE_BUILD_ID);
++
++	if (!device_trylock(ctx.rproc_parent))
++		shrc_fatal("rproc-parent-lock", -EBUSY);
++	if (!device_trylock(ctx.heap_parent))
++		shrc_fatal("heap-parent-lock", -EBUSY);
++	if (!mutex_trylock(&ctx.rproc->lock))
++		shrc_fatal("sealed-rproc-lock", -EBUSY);
++	if (!shrc_rproc_offline() || ctx.heap_parent->driver != ctx.heap_driver ||
++	    ctx.heap_dev->parent != ctx.heap_parent ||
++	    ctx.heap_parent->of_node != ctx.heap_np->parent || !shrc_private_identity())
++		shrc_fatal("sealed-identity", -EINVAL);
++	if (!down_write_trylock(&ctx.sc->carveout.mem_sem))
++		shrc_fatal("heap-write-lock", -EBUSY);
++	ret = shrc_validate_empty_pool();
++	if (ret)
++		shrc_fatal("empty-pool", ret);
++	/* Intentionally orphan this empty pool until reset. Never restore it. */
++	WRITE_ONCE(ctx.sc->carveout.pool, NULL);
++	pr_emerg("phase=isolated heap=%s base=%pa size=%#lx old_owners=%#llx dst=%u perms=%u\n",
++		 SHRC_HEAP, &ctx.sc->carveout.base, SHRC_SIZE, owners,
++		 SHRC_HLOS_VMID, SHRC_HLOS_RWX);
++	ret = qcom_scm_assign_mem(SHRC_BASE, SHRC_SIZE, &owners, &destination, 1);
++	if (ret || owners != BIT_ULL(SHRC_HLOS_VMID))
++		shrc_fatal("scm-reclaim", ret ?: -EIO);
++	if (!shrc_rproc_offline() || !shrc_private_identity() ||
++	    READ_ONCE(ctx.sc->carveout.pool))
++		shrc_fatal("post-reclaim-identity", -EINVAL);
++	pr_emerg("phase=reclaimed heap=%s owners_after=%#llx pool_present=0 continue_kexec=1\n",
++		 SHRC_HEAP, owners);
++	up_write(&ctx.sc->carveout.mem_sem);
++	mutex_unlock(&ctx.rproc->lock);
++	device_unlock(ctx.heap_parent);
++	device_unlock(ctx.rproc_parent);
++	return NOTIFY_OK;
++}
++
++static struct notifier_block shrc_notifier = {
++	.notifier_call = shrc_restart,
++	.priority = INT_MAX,
++};
++
++static void shrc_release_references(void)
++{
++	if (ctx.rproc) {
++		/* Balance exactly what rproc_get_by_phandle acquired. Public
++		 * rproc_put dereferences parent->driver, which may be NULL after
++		 * unbind; use the owner captured while that parent was locked.
++		 */
++		module_put(ctx.rproc_owner);
++		put_device(&ctx.rproc->dev);
++	}
++	module_put(ctx.heap_owner);
++	put_device(ctx.rproc_parent);
++	put_device(ctx.heap_parent);
++	put_device(ctx.heap_dev);
++	if (ctx.heap)
++		dma_heap_put(ctx.heap);
++	of_node_put(ctx.rproc_np);
++	of_node_put(ctx.rmem_np);
++	of_node_put(ctx.heap_np);
++}
++
++static int __init secure_heap_reclaim_init(void)
++{
++	struct platform_device *pdev;
++	int ret = -EINVAL;
++
++	if (!IS_ENABLED(CONFIG_REMOTEPROC_KEXEC_OFFLINE_GATE))
++		return -EOPNOTSUPP;
++	if (!armed || !spss_phandle)
++		return -EPERM;
++	ctx.heap_np = of_find_node_by_path(SHRC_HEAP_PATH);
++	ctx.rmem_np = of_find_node_by_path(SHRC_RMEM_PATH);
++	ctx.rproc_np = of_find_node_by_path(SHRC_RPROC_PATH);
++	if (!ctx.heap_np || !ctx.rmem_np || !ctx.rproc_np)
++		goto reject;
++	ret = shrc_validate_dt();
++	if (ret)
++		goto reject;
++	ctx.heap = dma_heap_find(SHRC_HEAP);
++	if (!ctx.heap || strcmp(dma_heap_get_name(ctx.heap), SHRC_HEAP)) {
++		ret = -ENODEV;
++		goto reject;
++	}
++	ctx.sc = dma_heap_get_drvdata(ctx.heap);
++	if (!ctx.sc || !IS_ALIGNED((unsigned long)ctx.sc, __alignof__(*ctx.sc))) {
++		ret = -EINVAL;
++		goto reject;
++	}
++	pdev = of_find_device_by_node(ctx.heap_np);
++	if (!pdev) {
++		ret = -ENODEV;
++		goto reject;
++	}
++	ctx.heap_dev = &pdev->dev;
++	ctx.heap_parent = get_device(ctx.heap_dev->parent);
++	if (!ctx.heap_parent || ctx.heap_parent->of_node != ctx.heap_np->parent ||
++	    !shrc_private_identity()) {
++		ret = -EINVAL;
++		goto reject;
++	}
++	device_lock(ctx.heap_parent);
++	ctx.heap_driver = ctx.heap_parent->driver;
++	if (ctx.heap_driver && ctx.heap_driver->owner &&
++	    !strcmp(ctx.heap_driver->name, "qcom-dma-heap") &&
++	    try_module_get(ctx.heap_driver->owner))
++		ctx.heap_owner = ctx.heap_driver->owner;
++	device_unlock(ctx.heap_parent);
++	if (!ctx.heap_owner) {
++		ret = -ENODEV;
++		goto reject;
++	}
++	if (!down_write_trylock(&ctx.sc->carveout.mem_sem)) {
++		ret = -EBUSY;
++		goto reject;
++	}
++	ret = shrc_validate_empty_pool();
++	up_write(&ctx.sc->carveout.mem_sem);
++	if (ret)
++		goto reject;
++	pdev = of_find_device_by_node(ctx.rproc_np);
++	if (!pdev) {
++		ret = -ENODEV;
++		goto reject;
++	}
++	ctx.rproc_parent = &pdev->dev;
++	device_lock(ctx.rproc_parent);
++	ctx.rproc_driver = ctx.rproc_parent->driver;
++	if (!ctx.rproc_driver || !ctx.rproc_driver->owner ||
++	    strcmp(ctx.rproc_driver->name, "qcom_spss")) {
++		ret = -ENODEV;
++		goto unlock_parent;
++	}
++	ctx.rproc = rproc_get_by_phandle(spss_phandle);
++	if (!ctx.rproc) {
++		ret = -ENODEV;
++		goto unlock_parent;
++	}
++	/* The locked, uniquely bound OF parent is the getter's owner source. */
++	if (ctx.rproc->dev.parent != ctx.rproc_parent)
++		shrc_fatal("unexpected-rproc-reference-owner", -EINVAL);
++	ctx.rproc_owner = ctx.rproc_driver->owner;
++	mutex_lock(&ctx.rproc->lock);
++	ret = shrc_rproc_offline() ? 0 : -EBUSY;
++	mutex_unlock(&ctx.rproc->lock);
++unlock_parent:
++	device_unlock(ctx.rproc_parent);
++	if (ret)
++		goto reject;
++	ret = register_reboot_notifier(&shrc_notifier);
++	if (ret)
++		goto reject;
++	pr_info("armed=1 source_build=%s vendor_dma=d06a59aeae01fb44d0ba7088ec1b6f142127d51c vendor_scm=45818a2df3a2eb3401fae24aa624f6c312d5d9f9 scm_crc=cdaced8a init_metadata_only=1 external_identity_required=1\n",
++		SHRC_SOURCE_BUILD_ID);
++	return 0;
++reject:
++	if (ret >= 0)
++		ret = -EINVAL;
++	pr_err("init rejected error=%d no_heap_or_rproc_change=1\n", ret);
++	shrc_release_references();
++	return ret;
++}
++
++static void __exit secure_heap_reclaim_exit(void)
++{
++	unregister_reboot_notifier(&shrc_notifier);
++	if (atomic_read(&attempted))
++		shrc_fatal("unload-after-attempt", -EPERM);
++	shrc_release_references();
++}
++
++module_init(secure_heap_reclaim_init);
++module_exit(secure_heap_reclaim_exit);
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("One-way, SP-TZ-only secure carveout reclaim mechanism diagnostic");
++MODULE_VERSION("1");
+--- /dev/null
++++ b/build.py
+@@ -0,0 +1,98 @@
++#!/usr/bin/env python3
++"""Build the external helper against the final new gate source only.
++
++An isolated kbuild view keeps every source-kernel build/config input read-only.
++The sole vendor import is bound to the *actual* round7 qcom-scm export CRC.
++No missing-symbol, modversion, namespace or CFI check is bypassed.
++"""
++from pathlib import Path
++import hashlib
++import json
++import os
++import runpy
++import shutil
++import struct
++import subprocess
++
++HERE = Path(__file__).resolve().parent
++ROOT = HERE.parent
++SOURCE = ROOT/'secure-heap-gate/source'
++BUILD = ROOT/'secure-heap-gate/build'
++VIEW = HERE/'kbuild-view'
++sha = lambda raw: hashlib.sha256(raw).hexdigest()
++ELF = runpy.run_path(str(ROOT/'late-boot-review/audit.py'), run_name='library')['ELF']
++
++
++def main():
++    manifest = json.loads((ROOT/'secure-heap-gate/manifest.json').read_text())
++    assert manifest['build_id'] not in ('7fbb6d4cdd9bbf06915a84f0d71665a4afbdb33f',
++                                        'f93a5b41fb60172452d1ba9cc767d9014162da82')
++    assert sha((BUILD/'vmlinux').read_bytes()) == manifest['vmlinux_sha256']
++    assert '\nCONFIG_REMOTEPROC_KEXEC_OFFLINE_GATE=y\n' in (BUILD/'.config').read_text()
++    assert '\trproc_kexec_seal_offline\t' in (BUILD/'vmlinux.symvers').read_text()
++    for name, digest in manifest.get('source_files_sha256', {}).items():
++        assert sha((SOURCE/name).read_bytes()) == digest, name
++    vendor_path = ROOT/'round7-dma-review/modules/qcom-scm.ko'
++    vendor = ELF(vendor_path)
++    audit = json.loads((ROOT/'round7-dma-review/audit.json').read_text())
++    assert sha(vendor.raw) == audit['modules']['qcom-scm.ko']['sha256']
++    assert audit['modules']['qcom-scm.ko']['build_id'] == '45818a2df3a2eb3401fae24aa624f6c312d5d9f9'
++    crc_symbol = vendor.unique('__crc_qcom_scm_assign_mem')
++    crc = struct.unpack_from('<I', vendor.data(vendor.section(crc_symbol)), crc_symbol['value'])[0]
++    assert crc == 0xcdaced8a
++    export_symbol = vendor.unique('__ksymtab_qcom_scm_assign_mem')
++    assert vendor.section(export_symbol)['name'] == '__ksymtab_gpl'
++    vendor_symvers = HERE/'vendor.symvers'
++    vendor_symvers.write_text('0xcdaced8a\tqcom_scm_assign_mem\tqcom-scm\tEXPORT_SYMBOL_GPL\t\n')
++    (HERE/'binding.h').write_text('/* Exact build basis; runtime identity is verified externally. */\n'
++        '#define SHRC_SOURCE_BUILD_ID "'+manifest['build_id']+'"\n')
++    inputs = [BUILD/'.config', BUILD/'include/config/auto.conf',
++              BUILD/'include/generated/autoconf.h', BUILD/'vmlinux.symvers',
++              SOURCE/'include/linux/remoteproc_kexec.h',
++              SOURCE/'include/linux/firmware/qcom/qcom_scm.h']
++    before = {str(p): sha(p.read_bytes()) for p in inputs}
++    assert not (BUILD/'Module.symvers').exists()
++    VIEW.mkdir(exist_ok=True)
++    for name in ('include', 'arch', 'tools', 'vmlinux'):
++        target = BUILD/name
++        if target.exists() and not (VIEW/name).exists():
++            (VIEW/name).symlink_to(target, target_is_directory=target.is_dir())
++    (VIEW/'Makefile').write_text(f'include {SOURCE}/Makefile\n')
++    shutil.copyfile(BUILD/'.config', VIEW/'.config')
++    (VIEW/'Module.symvers').write_text('')
++    scripts = VIEW/'scripts'
++    scripts.mkdir(exist_ok=True)
++    for target in (BUILD/'scripts').iterdir():
++        local = scripts/target.name
++        if target.name != 'module.lds' and not local.exists():
++            local.symlink_to(target, target_is_directory=target.is_dir())
++    metadata = json.loads((ROOT/'secure-heap-gate/build-command.json').read_text())
++    cmd = [('O='+str(VIEW)) if x.startswith('O=') else x
++           for x in metadata['command'] if x != 'Image']
++    cmd += ['M='+str(HERE), 'KBUILD_EXTRA_SYMBOLS='+str(BUILD/'vmlinux.symvers')+
++            ' '+str(vendor_symvers), 'modules']
++    env = os.environ.copy()
++    env.update(metadata['env'])
++    for name in ('KBUILD_MODPOST_WARN', 'KBUILD_MODPOST_NOFINAL', 'KBUILD_NSDEPS'):
++        assert not env.get(name)
++    lds = ['clang', '-E', '-P', '-x', 'assembler-with-cpp', '-D__KERNEL__', '-D__ASSEMBLY__',
++           '-DLINKER_SCRIPT', '-Uarm64', '-I'+str(SOURCE/'arch/arm64/include'),
++           '-I'+str(VIEW/'arch/arm64/include/generated'), '-I'+str(SOURCE/'include'),
++           '-I'+str(VIEW/'include'), '-include', str(SOURCE/'include/linux/kconfig.h'),
++           '-o', str(scripts/'module.lds'), str(SOURCE/'scripts/module.lds.S')]
++    subprocess.run(lds, env=env, check=True)
++    report = {'command': cmd, 'module_linker_script_cpp_command': lds,
++              'input_sha256': before, 'source_build_id': manifest['build_id'],
++              'vendor_qcom_scm_sha256': sha(vendor.raw), 'vendor_CRC': hex(crc),
++              'unresolved_are_errors': True, 'frozen_build_Module_symvers_created': False}
++    (HERE/'build-command.json').write_text(json.dumps(report, indent=2)+'\n')
++    with (HERE/'build.log').open('w') as log:
++        result = subprocess.run(cmd, env=env, stdout=log, stderr=subprocess.STDOUT)
++    assert before == {str(p): sha(p.read_bytes()) for p in inputs}
++    assert not (BUILD/'Module.symvers').exists()
++    assert result.returncode == 0, (HERE/'build.log').read_text()[-6000:]
++    print((HERE/'build.log').read_text(), end='')
++
++
++if __name__ == '__main__':
++    main()

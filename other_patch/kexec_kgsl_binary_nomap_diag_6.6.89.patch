@@ -1,0 +1,321 @@
+From: kexec diagnostics <local>
+Subject: [DIAG] arm64: accept bounded versioned KGSL NOMAP metadata
+
+Parent: frozen ca789 target. Default-n diagnostic transport, exact ranges only.
+No firmware/GPU call, backing read, earlier memblock resize, or owner claim.
+Legacy ASCII limits remain32/256; binary v1 caps512 tuples and64MiB total.
+All input/collision/capacity checks precede reserve/NOMAP; partial failure
+continues to panic. Historical cache/replay does not query live ownership.
+
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -34,6 +34,7 @@
+ #include <linux/kmemleak.h>
+ #ifndef __GENKSYMS__
+ #include <linux/atomic.h>
++#include <linux/bitmap.h>
+ #include <linux/memory_hotplug.h>
+ #include <asm/kexec_kgsl_diag.h>
+ #include <linux/libfdt.h>
+@@ -341,20 +342,39 @@
+ #define KGPUM_MAX_RANGES 32
+ #define KGPUM_MAX_INPUT 256
+ #define KGPUM_MAX_BYTES SZ_64M
++#define KGPUM_BINARY_MAX_RANGES 512
++#define KGPUM_BINARY_HEADER 32
++#define KGPUM_BINARY_ENTRY 16
++#define KGPUM_BINARY_MAX_BLOB (KGPUM_BINARY_HEADER + 			      KGPUM_BINARY_MAX_RANGES * KGPUM_BINARY_ENTRY)
++#define KGPUM_BINARY_PROPERTY "linux,kexec-kgsl-ranges"
++#define KGPUM_LOG_RANGES 8
++#ifdef CONFIG_ARM64_KEXEC_KGSL_NOMAP_FDT_DIAG
++#define KGPUM_STORAGE_RANGES KGPUM_BINARY_MAX_RANGES
++#else
++#define KGPUM_STORAGE_RANGES KGPUM_MAX_RANGES
++#endif
+ struct kgpum_range { phys_addr_t base, size; };
+-static struct kgpum_range kgpum_ranges[KGPUM_MAX_RANGES] __initdata;
++static struct kgpum_range kgpum_ranges[KGPUM_STORAGE_RANGES] __initdata;
+ static unsigned int kgpum_count __initdata;
+ static u64 kgpum_total __initdata;
+ static bool kgpum_seen __initdata;
+ static bool kgpum_bad __initdata;
+-
+-/* Exactly 512 bytes of retained range metadata; no page backing is accessed. */
+-static struct kgpum_range kgpum_diag_ranges[KGPUM_MAX_RANGES] __ro_after_init;
+-static_assert(sizeof(kgpum_diag_ranges) == 512);
++static bool kgpum_fdt_seen __initdata;
++static bool kgpum_fdt_bad __initdata __maybe_unused;
++static u32 kgpum_blob_crc __initdata;
++static u32 kgpum_body_crc __initdata;
++
++/* Retained bounded range metadata only; no page backing is accessed. */
++static struct kgpum_range kgpum_diag_ranges[KGPUM_STORAGE_RANGES] __ro_after_init;
++static_assert(sizeof(kgpum_diag_ranges) == KGPUM_STORAGE_RANGES * 16);
+ static unsigned int kgpum_diag_count __ro_after_init;
+ static unsigned int kgpum_diag_applied __ro_after_init;
+-static unsigned int kgpum_diag_nomap_mask __ro_after_init;
+-static unsigned int kgpum_diag_reserved_mask __ro_after_init;
++static DECLARE_BITMAP(kgpum_diag_nomap_mask, KGPUM_BINARY_MAX_RANGES) __ro_after_init;
++static DECLARE_BITMAP(kgpum_diag_reserved_mask, KGPUM_BINARY_MAX_RANGES) __ro_after_init;
++static bool kgpum_diag_blob_mode __ro_after_init;
++static u32 kgpum_diag_blob_crc __ro_after_init;
++static u32 kgpum_diag_body_crc __ro_after_init;
++static u64 kgpum_diag_total __ro_after_init;
+ static unsigned long kgpum_diag_memory_regions __ro_after_init;
+ static unsigned long kgpum_diag_reserved_regions __ro_after_init;
+ static bool kgpum_diag_armed __ro_after_init;
+@@ -390,19 +410,29 @@
+ 
+ static void kgpum_diag_print(const char *phase)
+ {
+-	unsigned int i;
+-
+-	pr_emerg("KGPUM2 action=%s ranges=%u applied=%u checked=%u nomap_mask=%08x reserved_mask=%08x memory_regions=%lu reserved_regions=%lu historical=1 non_atomic=1\n",
+-		 phase, kgpum_diag_count, kgpum_diag_applied, kgpum_diag_checked,
+-		 kgpum_diag_nomap_mask, kgpum_diag_reserved_mask,
+-		 kgpum_diag_memory_regions, kgpum_diag_reserved_regions);
+-	for (i = 0; i < kgpum_diag_count; i++)
+-		pr_emerg("KGPUM2 action=range phase=%s index=%u pfn=%llx pages=%llx nomap_full=%u reserved_full=%u\n",
++	unsigned int i, logged = min(kgpum_diag_count, (unsigned int)KGPUM_LOG_RANGES);
++
++	/* At most 11 lines; each payload is below 1024 bytes, even for 512 bits. */
++	pr_emerg("KGPUM3 action=%s mode=%s ranges=%u applied=%u checked=%u total=%llu blob_crc32=%08x body_crc32=%08x memory_regions=%lu reserved_regions=%lu historical=1 non_atomic=1 logged=%u omitted=%u\n",
++		 phase, kgpum_diag_blob_mode ? "fdt-v1" : "legacy",
++		 kgpum_diag_count, kgpum_diag_applied, kgpum_diag_checked,
++		 (unsigned long long)kgpum_diag_total,
++		 kgpum_diag_blob_crc, kgpum_diag_body_crc,
++		 kgpum_diag_memory_regions, kgpum_diag_reserved_regions,
++		 logged, kgpum_diag_count - logged);
++	pr_emerg("KGPUM3 action=mask phase=%s kind=nomap bits=%u meaningful=%u value=%*pb historical=1\n",
++		 phase, KGPUM_BINARY_MAX_RANGES, kgpum_diag_count,
++		 KGPUM_BINARY_MAX_RANGES, kgpum_diag_nomap_mask);
++	pr_emerg("KGPUM3 action=mask phase=%s kind=reserved bits=%u meaningful=%u value=%*pb historical=1\n",
++		 phase, KGPUM_BINARY_MAX_RANGES, kgpum_diag_count,
++		 KGPUM_BINARY_MAX_RANGES, kgpum_diag_reserved_mask);
++	for (i = 0; i < logged; i++)
++		pr_emerg("KGPUM3 action=range phase=%s index=%u pfn=%llx pages=%llx nomap_full=%u reserved_full=%u\n",
+ 			 phase, i,
+ 			 (unsigned long long)(kgpum_diag_ranges[i].base >> PAGE_SHIFT),
+ 			 (unsigned long long)(kgpum_diag_ranges[i].size >> PAGE_SHIFT),
+-			 !!(kgpum_diag_nomap_mask & BIT(i)),
+-			 !!(kgpum_diag_reserved_mask & BIT(i)));
++			 !!test_bit(i, kgpum_diag_nomap_mask),
++			 !!test_bit(i, kgpum_diag_reserved_mask));
+ }
+ 
+ void __init kexec_kgsl_nomap_diag_snapshot(void)
+@@ -432,11 +462,11 @@
+ 			if (kgpum_diag_full_cover(memory, memory_count,
+ 					kgpum_diag_ranges[i].base,
+ 					kgpum_diag_ranges[i].size, true))
+-				kgpum_diag_nomap_mask |= BIT(i);
++				__set_bit(i, kgpum_diag_nomap_mask);
+ 			if (kgpum_diag_full_cover(reserved, reserved_count,
+ 					kgpum_diag_ranges[i].base,
+ 					kgpum_diag_ranges[i].size, false))
+-				kgpum_diag_reserved_mask |= BIT(i);
++				__set_bit(i, kgpum_diag_reserved_mask);
+ 		}
+ 	}
+ 	put_online_mems();
+@@ -522,6 +552,75 @@
+ }
+ early_param("kexec_diag.kgsl_nomap", kgpum_setup);
+ 
++
++#ifdef CONFIG_ARM64_KEXEC_KGSL_NOMAP_FDT_DIAG
++static int __init kgpum_fdt_setup(char *arg)
++{
++	if (kgpum_fdt_seen)
++		kgpum_fdt_bad = true;
++	kgpum_fdt_seen = true;
++	if (!arg || strcmp(arg, "1"))
++		kgpum_fdt_bad = true;
++	return 0;
++}
++early_param("kexec_diag.kgsl_nomap_fdt", kgpum_fdt_setup);
++
++/* IEEE/zlib CRC of ordinary metadata, without early CPU-feature assumptions. */
++static u32 __init kgpum_crc32(const void *buffer, size_t len)
++{
++	const u8 *p = buffer;
++	u32 crc = ~0U;
++	unsigned int bit;
++
++	while (len--) {
++		crc ^= *p++;
++		for (bit = 0; bit < 8; bit++)
++			crc = (crc >> 1) ^ (0xedb88320U & (0U - (crc & 1U)));
++	}
++	return crc ^ ~0U;
++}
++
++static int __init kgpum_decode_blob(const void *blob, int len)
++{
++	const u8 *p = blob;
++	u64 base, size, end, total = 0, declared;
++	u32 count, crc;
++	unsigned int i;
++
++	if (!blob || len < KGPUM_BINARY_HEADER || len > KGPUM_BINARY_MAX_BLOB ||
++	    memcmp(p, "KGPURNG1", 8) || fdt32_ld((const fdt32_t *)(p + 8)) != 1 ||
++	    fdt32_ld((const fdt32_t *)(p + 12)) != KGPUM_BINARY_ENTRY)
++		return -EINVAL;
++	count = fdt32_ld((const fdt32_t *)(p + 16));
++	crc = fdt32_ld((const fdt32_t *)(p + 20));
++	declared = fdt64_ld((const fdt64_t *)(p + 24));
++	if (!count || count > KGPUM_BINARY_MAX_RANGES ||
++	    len != KGPUM_BINARY_HEADER + count * KGPUM_BINARY_ENTRY ||
++	    !declared || declared > KGPUM_MAX_BYTES ||
++	    crc != kgpum_crc32(p + KGPUM_BINARY_HEADER, len - KGPUM_BINARY_HEADER))
++		return -EINVAL;
++	for (i = 0; i < count; i++) {
++		const u8 *entry = p + KGPUM_BINARY_HEADER + i * KGPUM_BINARY_ENTRY;
++
++		base = fdt64_ld((const fdt64_t *)entry);
++		size = fdt64_ld((const fdt64_t *)(entry + 8));
++		if (!size || !IS_ALIGNED(base, PAGE_SIZE) || !IS_ALIGNED(size, PAGE_SIZE) ||
++		    check_add_overflow(base, size, &end) || end <= base ||
++		    check_add_overflow(total, size, &total) || total > KGPUM_MAX_BYTES ||
++		    (i && base < kgpum_ranges[i - 1].base + kgpum_ranges[i - 1].size))
++			return -EINVAL;
++		kgpum_ranges[i] = (struct kgpum_range) { base, size };
++	}
++	if (total != declared)
++		return -EINVAL;
++	kgpum_count = count;
++	kgpum_total = total;
++	kgpum_body_crc = crc;
++	kgpum_blob_crc = kgpum_crc32(blob, len);
++	return 0;
++}
++#endif
++
+ static void __init kgpum_reject(const char *reason)
+ {
+ 	pr_emerg("KGPUM1 action=reject reason=%s sampled_only=1\n", reason);
+@@ -556,6 +655,8 @@
+ 	chosen = fdt_path_offset(fdt, "/chosen");
+ 	if (chosen < 0 || !fdt_getprop(fdt, chosen, "linux,booted-from-kexec", NULL))
+ 		kgpum_reject("not-kexec");
++	if (kgpum_seen && fdt_getprop(fdt, chosen, KGPUM_BINARY_PROPERTY, NULL))
++		kgpum_reject("legacy-and-binary");
+ 	kgpum_check_collision(__pa_symbol(_text), _end - _text);
+ 	kgpum_check_collision(initial_boot_params_pa, fdt_totalsize(fdt));
+ 	if (IS_ENABLED(CONFIG_BLK_DEV_INITRD) && phys_initrd_size)
+@@ -625,10 +726,29 @@
+ 	int ret;
+ 	phys_addr_t base, size;
+ 
+-	if (!kgpum_seen)
++	if (!kgpum_seen && !kgpum_fdt_seen)
+ 		return;
+-	if (kgpum_bad || !kgpum_count)
++	if (kgpum_fdt_seen) {
++#ifdef CONFIG_ARM64_KEXEC_KGSL_NOMAP_FDT_DIAG
++		const void *blob, *fdt = initial_boot_params;
++		int chosen, len;
++
++		if (kgpum_seen || kgpum_fdt_bad)
++			kgpum_reject("binary-selector-or-legacy");
++		if (!fdt || fdt_check_header(fdt) || fdt_totalsize(fdt) > SZ_2M)
++			kgpum_reject("binary-FDT-header-or-size");
++		chosen = fdt_path_offset(fdt, "/chosen");
++		if (chosen < 0 || !fdt_getprop(fdt, chosen, "linux,booted-from-kexec", NULL))
++			kgpum_reject("not-kexec");
++		blob = fdt_getprop(fdt, chosen, KGPUM_BINARY_PROPERTY, &len);
++		if (kgpum_decode_blob(blob, len))
++			kgpum_reject("binary-blob");
++#else
++		kgpum_reject("binary-disabled");
++#endif
++	} else if (kgpum_bad || !kgpum_count) {
+ 		kgpum_reject("parameter");
++	}
+ 	kgpum_check_fdt();
+ 	/* Validate every range before mutating either memblock table. */
+ 	for (i = 0; i < kgpum_count; i++) {
+@@ -640,10 +760,25 @@
+ 		    memblock_is_region_reserved(base, size))
+ 			kgpum_reject("RAM-map-or-reserved");
+ 	}
++	/* No allocation/resize here: reject inadequate static capacity up front. */
++	if (kgpum_fdt_seen &&
++	    (memblock.memory.cnt > memblock.memory.max ||
++	     memblock.reserved.cnt > memblock.reserved.max ||
++	     memblock.memory.max - memblock.memory.cnt < 2UL * kgpum_count ||
++	     memblock.reserved.max - memblock.reserved.cnt < kgpum_count))
++		kgpum_reject("memblock-capacity");
++	kgpum_diag_blob_mode = kgpum_fdt_seen;
++	kgpum_diag_blob_crc = kgpum_blob_crc;
++	kgpum_diag_body_crc = kgpum_body_crc;
++	kgpum_diag_total = kgpum_total;
+ 	kgpum_diag_count = kgpum_count;
+ 	memcpy(kgpum_diag_ranges, kgpum_ranges,
+ 	       kgpum_count * sizeof(kgpum_diag_ranges[0]));
+ 	kgpum_diag_armed = true;
++	if (kgpum_fdt_seen)
++		pr_info("KGPUM3 action=input mode=fdt-v1 ranges=%u total=%llu blob_crc32=%08x body_crc32=%08x sampled_only=1\n",
++			kgpum_count, (unsigned long long)kgpum_total,
++			kgpum_blob_crc, kgpum_body_crc);
+ 	pr_info("KGPUM1 action=validated ranges=%u bytes=%llu sampled_only=1\n",
+ 		kgpum_count, (unsigned long long)kgpum_total);
+ 	for (i = 0; i < kgpum_count; i++) {
+@@ -657,10 +792,16 @@
+ 			panic("KGPUM1 partial isolation cannot continue");
+ 		}
+ 		kgpum_diag_applied++;
+-		pr_info("KGPUM1 action=nomap index=%u pfn=%llx pages=%llx sampled_only=1\n",
+-			i, (unsigned long long)(base >> PAGE_SHIFT),
+-			(unsigned long long)(size >> PAGE_SHIFT));
+-	}
++		if (!kgpum_fdt_seen || i < KGPUM_LOG_RANGES)
++			pr_info("KGPUM1 action=nomap index=%u pfn=%llx pages=%llx sampled_only=1\n",
++				i, (unsigned long long)(base >> PAGE_SHIFT),
++				(unsigned long long)(size >> PAGE_SHIFT));
++	}
++	if (kgpum_fdt_seen)
++		pr_info("KGPUM3 action=apply-summary ranges=%u applied=%u logged=%u omitted=%u sampled_only=1\n",
++			kgpum_count, kgpum_diag_applied,
++			min(kgpum_count, (unsigned int)KGPUM_LOG_RANGES),
++			kgpum_count - min(kgpum_count, (unsigned int)KGPUM_LOG_RANGES));
+ }
+ 
+ void __init arm64_memblock_init(void)
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -26,6 +26,14 @@
+ 
+ #define INIT_MEMBLOCK_REGIONS			128
+ #define INIT_PHYSMEM_REGIONS			4
++
++/* Only the explicit diagnostic target needs many exact protected intervals. */
++#ifdef CONFIG_ARM64_KEXEC_KGSL_NOMAP_FDT_DIAG
++#undef INIT_MEMBLOCK_MEMORY_REGIONS
++#undef INIT_MEMBLOCK_RESERVED_REGIONS
++#define INIT_MEMBLOCK_MEMORY_REGIONS 2048
++#define INIT_MEMBLOCK_RESERVED_REGIONS 2048
++#endif
+ 
+ #ifndef INIT_MEMBLOCK_RESERVED_REGIONS
+ # define INIT_MEMBLOCK_RESERVED_REGIONS		INIT_MEMBLOCK_REGIONS
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -44,6 +44,17 @@
+ 	  file based and takes file descriptors as system call argument
+ 	  for kernel and initramfs as opposed to list of segments as
+ 	  accepted by kexec system call.
++
++config ARM64_KEXEC_KGSL_NOMAP_FDT_DIAG
++	bool "Diagnostic exact KGSL ranges from chosen binary metadata"
++	depends on ARM64 && KEXEC_CORE && OF_EARLY_FLATTREE
++	default n
++	help
++	  Permit explicit versioned binary sampled-range isolation during early
++	  kexec target boot, retaining bounded historical coverage metadata.
++	  Uses static 2048-entry memblock memory/reserved tables. Disabled builds
++	  preserve architecture defaults. This is not an ownership or GPU
++	  quiescence protocol and requires explicit diagnostic command line input.
+ 
+ config KEXEC_RAMOOPS_FLUSH_DIAG
+ 	bool "Diagnostic PoC flush after native ramoops console writes"

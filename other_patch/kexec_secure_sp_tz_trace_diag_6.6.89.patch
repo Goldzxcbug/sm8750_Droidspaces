@@ -1,0 +1,316 @@
+Diagnostic-only telemetry supplement to kexec_secure_sp_tz_reclaim_diag_6.6.89.patch.
+
+Apply after the base helper patch to the frozen b99466b source. trace_scm=0
+preserves its execution/logging behavior; trace_scm=1 adds four SCM-module
+kprobes and normal-context best-effort console flushing. No register, stack,
+SCM argument, assignment count, seal/heap guard or target zeroing is changed.
+External preflight must match SCM Build ID45818a2df3a2eb3401fae24aa624f6c312d5d9f9,
+source8dde72278b557d4fd2488c1cab40759e890397bc and the only enabled consoles
+ttynull0 and ramoops-1. Missing output is never proof that an instruction did
+not execute. Kprobe/printk/console attempts alter timing and are diagnostic only.
+
+--- a/secure_heap_reclaim.c
++++ b/secure_heap_reclaim.c
+@@ -2,11 +2,15 @@
+ /* One-way SP-TZ handoff diagnostic. Never accesses carveout backing RAM. */
+ #define pr_fmt(fmt) "SHRC: " fmt
+ 
++#include <linux/arm-smccc.h>
+ #include <linux/build_bug.h>
++#include <linux/console.h>
++#include <linux/delay.h>
+ #include <linux/dma-heap.h>
+ #include <linux/err.h>
+ #include <linux/firmware/qcom/qcom_scm.h>
+ #include <linux/genalloc.h>
++#include <linux/kprobes.h>
+ #include <linux/limits.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+@@ -16,6 +20,8 @@
+ #include <linux/remoteproc.h>
+ #include <linux/remoteproc_kexec.h>
+ #include <linux/rwsem.h>
++#include <linux/sched.h>
++#include <linux/uaccess.h>
+ 
+ #include "binding.h"
+ 
+@@ -78,6 +84,10 @@
+ static_assert(offsetof(struct rproc, recovery_disabled) == 0x4dc);
+ static_assert(offsetof(struct rproc, auto_boot) == 0x509);
+ 
++static bool trace_scm;
++module_param(trace_scm, bool, 0400);
++MODULE_PARM_DESC(trace_scm, "Read-only SCM kprobe telemetry; external exact Build-ID/console preflight required");
++
+ static bool armed;
+ module_param(armed, bool, 0400);
+ MODULE_PARM_DESC(armed, "Required one-use arm; consumed only by the exact frozen kexec restart notification");
+@@ -105,10 +115,209 @@
+ static struct shrc_context ctx;
+ static atomic_t attempted = ATOMIC_INIT(0);
+ 
++
++/* Exact SCM BID45818a2d; external live Build-ID/console preflight is required. */
++struct shrc_trace_desc {
++	u32 svc, cmd, arginfo, pad;
++	u64 args[10];
++	u32 owner;
++	u8 allow_multi;
++};
++
++static_assert(sizeof(struct shrc_trace_desc) == 0x68);
++static_assert(offsetof(struct shrc_trace_desc, args) == 0x10);
++static_assert(offsetof(struct shrc_trace_desc, owner) == 0x60);
++static_assert(offsetof(struct shrc_trace_desc, allow_multi) == 0x64);
++
++static struct task_struct *shrc_trace_task;
++static const u64 *shrc_trace_owner_ptr;
++static const struct qcom_scm_vmperm *shrc_trace_dest_ptr;
++static unsigned long shrc_trace_public_sp;
++static unsigned long shrc_trace_lower_sp;
++static unsigned int shrc_trace_records;
++static unsigned int shrc_trace_registered;
++
++static int shrc_trace_pre(struct kprobe *kp, struct pt_regs *regs);
++static struct kprobe shrc_trace_probes[] = {
++	{ .symbol_name = "qcom_scm:qcom_scm_assign_mem", .pre_handler = shrc_trace_pre },
++	{ .symbol_name = "qcom_scm:__scm_smc_call", .pre_handler = shrc_trace_pre },
++	{ .symbol_name = "qcom_scm:__scm_smc_call", .offset = 0x200,
++	  .pre_handler = shrc_trace_pre },
++	{ .symbol_name = "qcom_scm:__scm_smc_call", .offset = 0x204,
++	  .pre_handler = shrc_trace_pre },
++};
++
++/* Acquisition attempts are bounded; console_unlock may hand over or take time. */
++static void shrc_trace_drain(void)
++{
++	unsigned int i;
++
++	if (in_atomic() || irqs_disabled())
++		return;
++	for (i = 0; i < 10; i++) {
++		if (console_trylock()) {
++			console_unlock();
++			return;
++		}
++		if (i != 9)
++			msleep(1);
++	}
++}
++
++/* Reads only private kernel descriptors; never reads carveout/DMA backing RAM. */
++static int shrc_trace_pre(struct kprobe *kp, struct pt_regs *regs)
++{
++	struct shrc_trace_desc desc;
++	struct arm_smccc_res result;
++	unsigned long entry_sp, result_ptr;
++	bool valid;
++
++	if (smp_load_acquire(&shrc_trace_task) != current)
++		return 0;
++	if (kp == &shrc_trace_probes[0]) {
++		valid = regs->regs[0] == SHRC_BASE && regs->regs[1] == SHRC_SIZE &&
++			regs->regs[2] == (unsigned long)READ_ONCE(shrc_trace_owner_ptr) &&
++			regs->regs[3] == (unsigned long)READ_ONCE(shrc_trace_dest_ptr) &&
++			regs->regs[4] == 1;
++		if (valid && !READ_ONCE(shrc_trace_public_sp))
++			WRITE_ONCE(shrc_trace_public_sp, regs->sp);
++		if (shrc_trace_records < 64) {
++			shrc_trace_records++;
++			pr_emerg("trace=assign-enter valid=%u base=%#lx size=%#lx nr=%lu\n",
++				 valid, (unsigned long)regs->regs[0], (unsigned long)regs->regs[1], (unsigned long)regs->regs[4]);
++		}
++		return 0;
++	}
++	if (kp == &shrc_trace_probes[1]) {
++		valid = !copy_from_kernel_nofault(&desc, (void *)regs->regs[1],
++						 sizeof(desc));
++		valid = valid && desc.svc == 12 && desc.cmd == 22 &&
++			desc.arginfo == 0x1117 && desc.owner == 2 && !desc.allow_multi &&
++			desc.args[1] == 16 && desc.args[3] == 4 && desc.args[5] == 24 &&
++			!desc.args[6] && !desc.args[7] && !desc.args[8] && !desc.args[9] &&
++			regs->regs[2] == 3 && !regs->regs[4] &&
++			READ_ONCE(shrc_trace_public_sp) &&
++			regs->sp == READ_ONCE(shrc_trace_public_sp) - 0x130;
++		/* Keep the first matching invocation; an IRQ must not replace it. */
++		if (valid && !READ_ONCE(shrc_trace_lower_sp))
++			WRITE_ONCE(shrc_trace_lower_sp, regs->sp);
++		if (shrc_trace_records < 64) {
++			shrc_trace_records++;
++			pr_emerg("trace=lower-enter valid=%u convention=%lu mode=%lu frame_match=%u\n",
++				 valid, (unsigned long)regs->regs[2], (unsigned long)regs->regs[4],
++				 regs->sp == READ_ONCE(shrc_trace_lower_sp));
++		}
++		return 0;
++	}
++	/* Actual normal-mode frame at +0x200/+0x204; rejects IRQ/nested callers. */
++	entry_sp = READ_ONCE(shrc_trace_lower_sp);
++	if (!entry_sp || regs->sp + 0x130 != entry_sp ||
++	    regs->regs[29] != regs->sp + 0xd0 ||
++	    copy_from_kernel_nofault(&result_ptr, (void *)regs->sp, sizeof(result_ptr)) ||
++	    result_ptr != regs->regs[29] - 0x58 || shrc_trace_records >= 64)
++		return 0;
++	shrc_trace_records++;
++	if (kp == &shrc_trace_probes[2]) {
++		/* Log every actual retry/resume FID, not only initial 0x42000c16. */
++		pr_emerg("trace=smc-before fid=%#lx info=%#lx mem=%#lx memsz=%#lx src=%#lx ext=%#lx\n",
++			 (unsigned long)regs->regs[0], (unsigned long)regs->regs[1], (unsigned long)regs->regs[2], (unsigned long)regs->regs[3],
++			 (unsigned long)regs->regs[4], (unsigned long)regs->regs[5]);
++	} else if (kp == &shrc_trace_probes[3]) {
++		valid = !copy_from_kernel_nofault(&result, (void *)result_ptr, sizeof(result));
++		pr_emerg("trace=smc-after a0=%#lx a1=%#lx a2=%#lx a3=%#lx stack_valid=%u same=%u\n",
++			 (unsigned long)regs->regs[0], (unsigned long)regs->regs[1], (unsigned long)regs->regs[2], (unsigned long)regs->regs[3], valid,
++			 valid && result.a0 == regs->regs[0] && result.a1 == regs->regs[1] &&
++			 result.a2 == regs->regs[2] && result.a3 == regs->regs[3]);
++	}
++	/* Kprobes executes/simulates the original instruction with untouched regs. */
++	return 0;
++}
++NOKPROBE_SYMBOL(shrc_trace_pre);
++
++static bool shrc_trace_entry_matches(struct kprobe *kp, const u32 expected[4])
++{
++	u32 words[4];
++
++	words[0] = kp->opcode;
++	return !copy_from_kernel_nofault(words + 1, (void *)((unsigned long)kp->addr + 4), 12) &&
++		!memcmp(words, expected, sizeof(words));
++}
++
++/* Accept the actual relocated BL either directly or through an existing PLT. */
++static bool shrc_trace_smc_target(struct kprobe *kp)
++{
++	u32 plt[3], op = kp->opcode;
++	u64 immediate;
++	unsigned long branch, target;
++
++	if ((op & 0xfc000000) != 0x94000000)
++		return false;
++	branch = (unsigned long)kp->addr + sign_extend64((u64)(op & 0x03ffffff) << 2, 27);
++	if (branch == (unsigned long)__arm_smccc_smc)
++		return true;
++	if (copy_from_kernel_nofault(plt, (void *)branch, sizeof(plt)) ||
++	    (plt[0] & 0x9f00001f) != 0x90000010 ||
++	    (plt[1] & 0xffc003ff) != 0x91000210 || plt[2] != 0xd61f0200)
++		return false;
++	immediate = ((plt[0] >> 29) & 3) | (((u64)(plt[0] >> 5) & 0x7ffff) << 2);
++	target = (branch & PAGE_MASK) + sign_extend64(immediate, 20) * (s64)PAGE_SIZE;
++	target += (plt[1] >> 10) & 0xfff;
++	return target == (unsigned long)__arm_smccc_smc;
++}
++
++static void shrc_trace_unregister(void)
++{
++	smp_store_release(&shrc_trace_task, NULL);
++	while (shrc_trace_registered)
++		unregister_kprobe(&shrc_trace_probes[--shrc_trace_registered]);
++}
++
++static int shrc_trace_register(void)
++{
++	static const u32 public_words[] = { 0xd503233f, 0xd10203ff, 0xa9027bfd, 0xa9036ffc };
++	static const u32 lower_words[] = { 0xd503233f, 0xd104c3ff, 0xa90d7bfd, 0xa90e6ffc };
++	unsigned long public, lower;
++	unsigned int i;
++	int ret;
++
++	for (i = 0; i < ARRAY_SIZE(shrc_trace_probes); i++) {
++		ret = register_kprobe(&shrc_trace_probes[i]);
++		if (ret)
++			goto reject;
++		shrc_trace_registered++;
++		if (shrc_trace_probes[i].flags & (KPROBE_FLAG_GONE | KPROBE_FLAG_DISABLED |
++						 KPROBE_FLAG_FTRACE | KPROBE_FLAG_OPTIMIZED)) {
++			ret = -EINVAL;
++			goto reject;
++		}
++	}
++	public = (unsigned long)shrc_trace_probes[0].addr;
++	lower = (unsigned long)shrc_trace_probes[1].addr;
++	if (lower - public != 0x6e90 - 0x29fc ||
++	    (unsigned long)shrc_trace_probes[2].addr != lower + 0x200 ||
++	    (unsigned long)shrc_trace_probes[3].addr != lower + 0x204 ||
++	    !shrc_trace_entry_matches(&shrc_trace_probes[0], public_words) ||
++	    !shrc_trace_entry_matches(&shrc_trace_probes[1], lower_words) ||
++	    shrc_trace_probes[3].opcode != 0xf85a83a8 ||
++	    !shrc_trace_smc_target(&shrc_trace_probes[2])) {
++		ret = -EINVAL;
++		goto reject;
++	}
++	pr_info("trace=registered count=4 public=%px lower=%px before=%px after=%px external_scm_bid=45818a2df3a2eb3401fae24aa624f6c312d5d9f9 required_consoles=ttynull0,ramoops-1\n",
++		shrc_trace_probes[0].addr, shrc_trace_probes[1].addr,
++		shrc_trace_probes[2].addr, shrc_trace_probes[3].addr);
++	return 0;
++reject:
++	shrc_trace_unregister();
++	return ret;
++}
++
+ static void __noreturn shrc_fatal(const char *phase, int error)
+ {
+ 	pr_emerg("fatal phase=%s error=%d forced_normal_reset=1 no_android_return=1\n",
+ 		 phase, error);
++	if (trace_scm)
++		shrc_trace_drain();
+ 	emergency_restart();
+ 	/* The architecture reset must not return to the reboot chain. */
+ 	panic("SHRC: emergency_restart unexpectedly returned");
+@@ -263,7 +472,26 @@
+ 	pr_emerg("phase=isolated heap=%s base=%pa size=%#lx old_owners=%#llx dst=%u perms=%u\n",
+ 		 SHRC_HEAP, &ctx.sc->carveout.base, SHRC_SIZE, owners,
+ 		 SHRC_HLOS_VMID, SHRC_HLOS_RWX);
++	if (trace_scm) {
++		WRITE_ONCE(shrc_trace_public_sp, 0);
++		WRITE_ONCE(shrc_trace_lower_sp, 0);
++		shrc_trace_records = 0;
++		WRITE_ONCE(shrc_trace_owner_ptr, &owners);
++		WRITE_ONCE(shrc_trace_dest_ptr, &destination);
++		pr_emerg("trace=call-begin base=%pa size=%#lx old_owners=%#llx dst=%u perms=%u\n",
++			 &ctx.sc->carveout.base, SHRC_SIZE, owners, SHRC_HLOS_VMID, SHRC_HLOS_RWX);
++		shrc_trace_drain();
++		smp_store_release(&shrc_trace_task, current);
++	}
+ 	ret = qcom_scm_assign_mem(SHRC_BASE, SHRC_SIZE, &owners, &destination, 1);
++	if (trace_scm) {
++		smp_store_release(&shrc_trace_task, NULL);
++		pr_emerg("trace=call-return ret=%d owners=%#llx records=%u nmissed=%lu,%lu,%lu,%lu\n",
++			 ret, owners, shrc_trace_records,
++			 shrc_trace_probes[0].nmissed, shrc_trace_probes[1].nmissed,
++			 shrc_trace_probes[2].nmissed, shrc_trace_probes[3].nmissed);
++		shrc_trace_drain();
++	}
+ 	if (ret || owners != BIT_ULL(SHRC_HLOS_VMID))
+ 		shrc_fatal("scm-reclaim", ret ?: -EIO);
+ 	if (!shrc_rproc_offline() || !shrc_private_identity() ||
+@@ -391,6 +619,11 @@
+ 	device_unlock(ctx.rproc_parent);
+ 	if (ret)
+ 		goto reject;
++	if (trace_scm) {
++		ret = shrc_trace_register();
++		if (ret)
++			goto reject;
++	}
+ 	ret = register_reboot_notifier(&shrc_notifier);
+ 	if (ret)
+ 		goto reject;
+@@ -398,6 +631,8 @@
+ 		SHRC_SOURCE_BUILD_ID);
+ 	return 0;
+ reject:
++	if (trace_scm)
++		shrc_trace_unregister();
+ 	if (ret >= 0)
+ 		ret = -EINVAL;
+ 	pr_err("init rejected error=%d no_heap_or_rproc_change=1\n", ret);
+@@ -410,6 +645,8 @@
+ 	unregister_reboot_notifier(&shrc_notifier);
+ 	if (atomic_read(&attempted))
+ 		shrc_fatal("unload-after-attempt", -EPERM);
++	if (trace_scm)
++		shrc_trace_unregister();
+ 	shrc_release_references();
+ }
+ 

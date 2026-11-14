@@ -1,0 +1,192 @@
+From: kexec diagnostics <local>
+Subject: [DIAG] arm64: bounded synchronous first selected user DABT metadata
+
+Parent: frozen KGSL nomap target4646. Requires the separate private
+asm/kexec_kgsl_diag.h cache-replay API from the companion patch.
+Only existing user_state=1 + chosen + active and selected roles can log.
+One ordinary failed lower-EL data-abort event, original ESR/FAR/regs and
+trylocked PC/LR VMA/file scalars; optional one no-fault 4-byte original PC
+read only for regular readable+executable file mappings; XOM stays unread.
+No FAR/data/stack access,
+no pathname/ELF backing parse, hardware/PTE/SCM/callback or required worker.
+Original handler, signal, registers and return/control flow are unchanged.
+Best-effort diagnostic metadata/code sample, not an ownership/fatal verdict.
+
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -18,6 +18,7 @@
+ #include <linux/of.h>
+ #include <linux/stacktrace.h>
+ #include <asm/memory.h>
++#include <asm/kexec_user_state.h>
+ #endif
+ #include <linux/string.h>
+ #include <linux/hardirq.h>
+@@ -702,6 +703,8 @@
+ 		pagefault_out_of_memory();
+ 		return 0;
+ 	}
++
++	kexec_user_state_dabt(regs, esr, far);
+ 
+ 	inf = esr_to_fault_info(esr);
+ 	set_thread_esr(addr, esr);
+--- a/arch/arm64/kernel/kexec_user_state.c
++++ b/arch/arm64/kernel/kexec_user_state.c
+@@ -4,6 +4,8 @@
+ #include <linux/binfmts.h>
+ #include <linux/dcache.h>
+ #include <linux/err.h>
++#include <linux/fs.h>
++#include <linux/hardirq.h>
+ #include <linux/init.h>
+ #include <linux/jiffies.h>
+ #include <linux/kernel.h>
+@@ -21,8 +23,11 @@
+ #include <linux/signal.h>
+ #include <linux/stacktrace.h>
+ #include <linux/string.h>
++#include <linux/uaccess.h>
+ #include <linux/workqueue.h>
+ #include <asm/kexec_user_state.h>
++#include <asm/kexec_kgsl_diag.h>
++#include <asm/esr.h>
+ #include <asm/processor.h>
+ #include <asm/ptrace.h>
+ #include <trace/events/sched.h>
+@@ -80,6 +85,7 @@
+ static atomic_t kus_origin_next = ATOMIC_INIT(0);
+ static atomic_t kus_signal_next = ATOMIC_INIT(0);
+ static atomic_t kus_event_next = ATOMIC_INIT(0);
++static atomic_t kus_dabt_seen = ATOMIC_INIT(0);
+ static struct kus_record kus_origins[KUSR_SLOTS];
+ static struct kus_record kus_signals[KUSR_SLOTS];
+ static struct kus_snapshot kus_snapshots[3];
+@@ -90,6 +96,7 @@
+ static struct kus_budget kus_raw_budget = KUS_BUDGET(3072);
+ static struct kus_budget kus_map_budget = KUS_BUDGET(2048);
+ static struct kus_budget kus_event_budget = KUS_BUDGET(1536);
++static struct kus_budget kus_dabt_budget = KUS_BUDGET(2048);
+ 
+ static __printf(2, 3) bool kus_emit(struct kus_budget *budget,
+ 				  const char *fmt, ...)
+@@ -309,6 +316,101 @@
+ 		 origin, r->pc, r->lr, r->sp, r->pstate, r->esr_valid,
+ 		 r->esr, r->insn_valid, r->insn, r->code);
+ 	kus_queue_mm(r);
++}
++
++/* Numeric VMA/file identity only; no pathname or file-backed ELF parsing. */
++struct kus_dabt_map {
++	unsigned long addr, start, end, pgoff, flags;
++	unsigned long ino;
++	u32 dev, generation;
++	bool found, file, regular;
++};
++
++void kexec_user_state_dabt(struct pt_regs *regs, unsigned long esr,
++			   unsigned long far)
++{
++	struct kus_dabt_map maps[2] = { };
++	struct mm_struct *mm = current->mm;
++	struct vm_area_struct *vma;
++	struct inode *inode;
++	char comm[TASK_COMM_LEN];
++	unsigned int role, i;
++	u32 insn = 0;
++	long insn_status = -EOPNOTSUPP;
++	bool context_ok, locked = false, attempted = false;
++
++	if (!smp_load_acquire(&kus_active) || !user_mode(regs) ||
++	    ESR_ELx_EC(esr) != ESR_ELx_EC_DABT_LOW)
++		return;
++	kus_comm(current, comm);
++	role = kus_role(current, comm);
++	if (!role || atomic_cmpxchg(&kus_dabt_seen, 0, 1))
++		return;
++
++	/* The call site passes original locals before thread ESR sanitization. */
++	kus_emit(&kus_dabt_budget, "KUSR2 kind=dabt first=1 role=%s pid=%d tgid=%d comm=%s pc=%lx lr=%lx sp=%lx pstate=%lx esr=%lx far=%lx far_valid=%u fatal_verdict=0\n",
++		 kus_role_name(role), task_pid_nr(current), task_tgid_nr(current),
++		 comm, (unsigned long)regs->pc, (unsigned long)regs->regs[30],
++		 (unsigned long)regs->sp, (unsigned long)regs->pstate,
++		 esr, far, !(esr & ESR_ELx_FnV));
++
++	/* The replay is immutable earlier metadata, never a fault-time scan. */
++	kexec_kgsl_nomap_diag_replay();
++	maps[0].addr = regs->pc;
++	maps[1].addr = regs->regs[30];
++	context_ok = mm && !in_interrupt() && !in_atomic() &&
++		     !irqs_disabled() && !faulthandler_disabled();
++	if (context_ok)
++		locked = mmap_read_trylock(mm);
++	if (!locked) {
++		kus_emit(&kus_dabt_budget, "KUSR2 kind=dabt-vma valid=0 result=%s context_ok=%u mmap_trylocked=0\n",
++			 context_ok ? "lock-busy" : "unsafe-context", context_ok);
++		goto code_result;
++	}
++
++	for (i = 0; i < ARRAY_SIZE(maps); i++) {
++		vma = find_vma(mm, maps[i].addr);
++		if (!vma || maps[i].addr < vma->vm_start ||
++		    maps[i].addr >= vma->vm_end)
++			continue;
++		maps[i].found = true;
++		maps[i].start = vma->vm_start;
++		maps[i].end = vma->vm_end;
++		maps[i].pgoff = vma->vm_pgoff;
++		maps[i].flags = vma->vm_flags;
++		if (!vma->vm_file)
++			continue;
++		inode = file_inode(vma->vm_file);
++		maps[i].file = true;
++		maps[i].regular = S_ISREG(READ_ONCE(inode->i_mode));
++		maps[i].ino = READ_ONCE(inode->i_ino);
++		maps[i].dev = READ_ONCE(inode->i_sb->s_dev);
++		maps[i].generation = READ_ONCE(inode->i_generation);
++	}
++	/* Only the original user PC, not FAR, registers' targets or user stack. */
++	if (!compat_user_mode(regs) && IS_ALIGNED(regs->pc, sizeof(insn)) &&
++	    maps[0].found && maps[0].file && maps[0].regular &&
++	    (maps[0].flags & (VM_READ | VM_EXEC)) == (VM_READ | VM_EXEC) &&
++	    !(maps[0].flags & (VM_IO | VM_PFNMAP | VM_MIXEDMAP)) &&
++	    maps[0].end - regs->pc >= sizeof(insn)) {
++		attempted = true;
++		insn_status = copy_from_user_nofault(&insn,
++				(const void __user *)regs->pc, sizeof(insn));
++	}
++	mmap_read_unlock(mm);
++
++	/* All output is outside mmap_lock; copied values have explicit validity. */
++	for (i = 0; i < ARRAY_SIZE(maps); i++)
++		kus_emit(&kus_dabt_budget, "KUSR2 kind=dabt-vma reg=%s valid=%u raw=%lx start=%lx end=%lx pgoff=%lx flags=%lx file=%u regular=%u dev=%x ino=%lu generation=%x sync=1\n",
++			 i ? "lr" : "pc", maps[i].found, maps[i].addr,
++			 maps[i].start, maps[i].end, maps[i].pgoff, maps[i].flags,
++			 maps[i].file, maps[i].regular, maps[i].dev,
++			 maps[i].ino, maps[i].generation);
++code_result:
++	kus_emit(&kus_dabt_budget, "KUSR2 kind=pc-code bytes=4 attempted=%u valid=%u value=%08x result=%ld mmap_trylocked=%u context_ok=%u vma_readable=%u vma_executable=%u no_faultin=1\n",
++		 attempted, attempted && !insn_status, insn, insn_status,
++		 locked, context_ok, !!(maps[0].flags & VM_READ),
++		 !!(maps[0].flags & VM_EXEC));
+ }
+ 
+ static void kus_signal(void *unused, int sig, struct kernel_siginfo *info,
+--- a/arch/arm64/include/asm/kexec_user_state.h
++++ b/arch/arm64/include/asm/kexec_user_state.h
+@@ -11,11 +11,15 @@
+ };
+ 
+ #ifdef CONFIG_KEXEC_CORE
++void kexec_user_state_dabt(struct pt_regs *regs, unsigned long esr,
++			   unsigned long far);
+ void kexec_user_state_fault(struct pt_regs *regs, unsigned long esr,
+ 			   unsigned int esr_valid, unsigned int insn,
+ 			   unsigned int insn_valid, int code,
+ 			   enum kexec_user_state_origin origin);
+ #else
++static inline void kexec_user_state_dabt(struct pt_regs *regs,
++		unsigned long esr, unsigned long far) { }
+ static inline void kexec_user_state_fault(struct pt_regs *regs,
+ 		unsigned long esr, unsigned int esr_valid, unsigned int insn,
+ 		unsigned int insn_valid, int code,

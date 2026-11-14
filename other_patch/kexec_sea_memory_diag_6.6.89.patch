@@ -1,0 +1,95 @@
+From: kexec diagnostics <local>
+Subject: [DIAG] arm64: opt-in first SEA layout arithmetic and current stack
+
+Parent: frozen user-state b04f54de. Requires the existing explicit
+sea_context option, chosen kexec marker and first matched current-EL SEA.
+Default off. Address arithmetic is not a translation or access check.
+No fault-address, user-memory, page-table or page-backing access.
+Existing KSEA1 output and do_sea hooks/fixups/returns are preserved.
+
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -16,6 +16,8 @@
+ #include <linux/mm.h>
+ #ifndef __GENKSYMS__
+ #include <linux/of.h>
++#include <linux/stacktrace.h>
++#include <asm/memory.h>
+ #endif
+ #include <linux/string.h>
+ #include <linux/hardirq.h>
+@@ -787,6 +789,66 @@
+ }
+ core_initcall(kexec_sea_context_init);
+ 
++/* Only called after the original context/current-EL/SEA/once guards. */
++static bool kexec_sea_memory_requested __ro_after_init;
++
++static int __init kexec_sea_memory_setup(char *str)
++{
++	kexec_sea_memory_requested = str && !strcmp(str, "1");
++	return 1;
++}
++__setup("kexec_diag.sea_memory=", kexec_sea_memory_setup);
++
++static void kexec_sea_memory(unsigned long far, unsigned long esr,
++			     const struct pt_regs *regs)
++{
++	struct pt_regs snapshot;
++	unsigned long entries[16];
++	unsigned long memstart, page_end, voffset;
++	unsigned long long pa = 0, pfn = 0;
++	unsigned int count, i;
++	bool far_valid, phys_valid, linear, pa_valid;
++	char symbol[96];
++
++	if (!READ_ONCE(kexec_sea_memory_requested))
++		return;
++
++	/* PHYS_OFFSET is memstart_addr with a VM_BUG_ON(bit0). Observe the
++	 * same scalar without adding a diagnostic BUG on corrupt metadata.
++	 */
++	memstart = (unsigned long)READ_ONCE(memstart_addr);
++	page_end = PAGE_END;
++	voffset = READ_ONCE(kimage_voffset);
++	phys_valid = !(memstart & 1);
++	far_valid = !(esr & ESR_ELx_FnV);
++	/* Raw FAR only: no tag/PAC repair, page walk or physical ACL query. */
++	linear = (far - PAGE_OFFSET) < (page_end - PAGE_OFFSET);
++	pa_valid = far_valid && phys_valid && linear;
++	if (pa_valid) {
++		pa = (unsigned long long)(far - PAGE_OFFSET) + memstart;
++		pfn = pa >> PAGE_SHIFT;
++	}
++	pr_emerg("KSEAM1 action=layout memstart=%016lx phys_offset=%016lx phys_valid=%u page_offset=%016lx page_end=%016lx kimage_voffset=%016lx\n",
++		 memstart, memstart, phys_valid, PAGE_OFFSET, page_end, voffset);
++	pr_emerg("KSEAM1 action=arithmetic far_valid=%u linear=%u phys_valid=%u pa_valid=%u pa=%016llx pfn=%016llx arithmetic_only=1\n",
++		 far_valid, linear, phys_valid, pa_valid, pa, pfn);
++
++	/* Current kernel registers are copied, never modified. The existing
++	 * arch walker validates kernel-stack ranges before reading frames;
++	 * it neither reads FAR nor walks a user stack or a page table.
++	 */
++	snapshot = *regs;
++	count = stack_trace_save_regs(&snapshot, entries, ARRAY_SIZE(entries), 0);
++	pr_emerg("KSEAM1 action=stack origin_pc=%016lx entries=%u cap=16 limit_reached=%u best_effort=1\n",
++		 (unsigned long)regs->pc, count, count == ARRAY_SIZE(entries));
++	for (i = 0; i < count; i++) {
++		/* Bound symbol text, including unexpectedly long module names. */
++		scnprintf(symbol, sizeof(symbol), "%pS", (void *)entries[i]);
++		pr_emerg("KSEAM1 action=frame i=%u pc=%016lx symbol=%s best_effort=1\n",
++			 i, entries[i], symbol);
++	}
++}
++
+ static void kexec_sea_context(unsigned long far, unsigned long esr,
+ 			      const struct pt_regs *regs)
+ {
+@@ -820,6 +882,7 @@
+ 	pr_emerg("KSEA1 x27=%016lx x28=%016lx fp=%016lx\n",
+ 		 (unsigned long)regs->regs[27], (unsigned long)regs->regs[28],
+ 		 (unsigned long)regs->regs[29]);
++	kexec_sea_memory(far, esr, regs);
+ }
+ 
+ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)

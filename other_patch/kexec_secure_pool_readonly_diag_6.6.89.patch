@@ -1,0 +1,398 @@
+From: kexec diagnostics <local@invalid>
+Subject: [DIAGNOSTIC ONLY] Add one-shot secure pool metadata collector
+
+Source842/exact qcom_dma_heaps d06a59ae only. Ordinary metadata, no backing
+page reads, map, exporter calls, SCM, reclaim, shutdown hook or reservations.
+Partial/unknown is not a negative ownership result. Close blob FDs before
+unload. Imported function addresses pin/identify the provider but are never
+called. These private offsets are not a portable or production interface.
+
+--- /dev/null
++++ b/tools/kexec_secure_pool_readonly/secure_pool_readonly.c
+@@ -0,0 +1,381 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* One-shot ordinary metadata sample. Never an ownership or kexec PASS. */
++#include <linux/debugfs.h>
++#include <linux/dma-buf.h>
++#include <linux/dma-heap.h>
++#include <linux/err.h>
++#include <linux/mm.h>
++#include <linux/module.h>
++#include <linux/mutex.h>
++#include <linux/overflow.h>
++#include <linux/scatterlist.h>
++#include <linux/slab.h>
++#include <linux/uaccess.h>
++#include <linux/utsname.h>
++#include <linux/vmalloc.h>
++
++#ifndef CONFIG_STACKTRACE_BUILD_ID
++#error This diagnostic requires the reviewed module build-ID layout
++#endif
++
++#define SPR_POOLS 3
++#define SPR_HEAPS 2
++#define SPR_POOL_CAP 256
++#define SPR_BUF_CAP 512
++#define SPR_SG_CAP 256
++#define SPR_HOP_CAP 512
++#define SPR_RANGE_CAP 4096
++#define SPR_TEXT_CAP (1024 * 1024)
++#define SPR_SOURCE "6.6.89-Gold_Bug_kexec_tzlog_preserve_diag"
++
++struct mem_buf_vmperm;
++extern void qcom_sg_release(struct dma_buf *buf);
++extern struct mem_buf_vmperm *qcom_sg_lookup_vmperm(struct dma_buf *buf);
++extern int qcom_sg_attach(struct dma_buf *buf, struct dma_buf_attachment *a);
++
++static bool armed;
++static unsigned long vendor_module_addr;
++static unsigned long sg_ops_addr;
++module_param(armed, bool, 0400);
++module_param(vendor_module_addr, ulong, 0400);
++module_param(sg_ops_addr, ulong, 0400);
++MODULE_PARM_DESC(armed, "Enable exactly one normal-context metadata sample at init");
++MODULE_PARM_DESC(vendor_module_addr, "Exact live qcom_dma_heaps __this_module address, preflight required");
++MODULE_PARM_DESC(sg_ops_addr, "Full qcom_sg_buf_ops address (.data+0x120), not nested dma_ops");
++
++/* Matched private layouts; no vendor method below is ever invoked. */
++struct spr_heap {
++	void *pools;
++	int token;
++	u32 pad;
++	struct list_head list;
++};
++struct spr_pool {
++	int high_count, low_count;
++	atomic_t count;
++	u32 pad0;
++	struct list_head high_items, low_items;
++	s64 last_low;
++	void *refill_worker;
++	spinlock_t lock;
++	gfp_t gfp;
++	unsigned int order;
++	u32 pad1;
++	struct list_head list;
++	int token;
++	u32 pad2;
++	void *prerelease;
++};
++struct spr_buffer {
++	struct dma_heap *heap;
++	struct list_head attachments;
++	struct mutex lock;
++	unsigned long len;
++	struct sg_table sg;
++	int vmap_cnt;
++	u32 pad0;
++	void *vaddr;
++	bool uncached;
++	u8 pad1[7];
++	void *vmperm;
++	u8 deferred[32];
++	void *free;
++};
++struct spr_ops {
++	void *lookup, *attach;
++	struct dma_buf_ops dma;
++};
++static_assert(sizeof(struct spr_heap) == 32);
++static_assert(sizeof(struct spr_pool) == 112);
++static_assert(offsetof(struct spr_pool, high_items) == 16);
++static_assert(offsetof(struct spr_pool, low_items) == 32);
++static_assert(offsetof(struct spr_pool, lock) == 64);
++static_assert(offsetof(struct spr_pool, order) == 72);
++static_assert(offsetof(struct spr_pool, token) == 96);
++static_assert(offsetof(struct spr_pool, prerelease) == 104);
++static_assert(sizeof(struct spr_buffer) == 168);
++static_assert(offsetof(struct spr_buffer, lock) == 24);
++static_assert(offsetof(struct spr_buffer, len) == 72);
++static_assert(offsetof(struct spr_buffer, sg) == 80);
++static_assert(offsetof(struct spr_buffer, vmperm) == 120);
++static_assert(offsetof(struct spr_buffer, free) == 160);
++static_assert(sizeof(struct spr_ops) == 160);
++static_assert(offsetof(struct spr_ops, dma) == 16);
++static_assert(offsetof(struct spr_ops, dma.release) == 72);
++static_assert(sizeof(struct page) == 64);
++static_assert(offsetof(struct page, lru) == 8);
++static_assert(offsetof(struct page, private) == 40);
++static_assert(sizeof(struct scatterlist) == 32);
++static_assert(offsetof(struct dma_buf, ops) == 32);
++static_assert(offsetof(struct dma_buf, priv) == 112);
++
++struct spr_range {
++	u64 start, length;
++	unsigned long object, page, flags, private;
++	u32 kind, heap, order;
++};
++struct spr_context {
++	struct spr_range *ranges;
++	unsigned int nr, partial, busy, bad, capped, unknown, nofault;
++	unsigned int scanned, matched, pools[SPR_HEAPS][SPR_POOLS];
++	struct dma_heap *heap[SPR_HEAPS];
++	unsigned long text_base;
++	unsigned long seen[SPR_HOP_CAP];
++	struct spr_ops ops;
++	struct module mod;
++	char *text;
++	size_t used;
++};
++static struct spr_context *ctx;
++static struct dentry *dir;
++static struct debugfs_blob_wrapper blob;
++static const char * const heap_names[] = { "qcom,secure-pixel", "qcom,secure-non-pixel" };
++static const int heap_tokens[] = { 0x80000, 0x100000 };
++static const unsigned int pool_orders[] = { 9, 4, 0 };
++static const u8 vendor_bid[20] = { 0xd0,0x6a,0x59,0xae,0xae,0x01,0xfb,0x44,0xd0,0xba,0x70,0x88,0xec,0x1b,0x6f,0x14,0x21,0x27,0xd5,0x1c };
++
++static bool spr_read(void *dst, const void *src, size_t len)
++{
++	if (!src || copy_from_kernel_nofault(dst, src, len)) {
++		ctx->partial++; ctx->nofault++;
++		return false;
++	}
++	return true;
++}
++static void spr_bad(void) { ctx->partial++; ctx->bad++; }
++static void spr_cap(void) { ctx->partial++; ctx->capped++; }
++static bool spr_seen(unsigned long p, unsigned int nr)
++{
++	unsigned int i;
++	for (i = 0; i < nr; i++)
++		if (ctx->seen[i] == p)
++			return true;
++	return false;
++}
++static bool spr_extent(unsigned long start, size_t len, enum mod_mem_type type)
++{
++	unsigned long base = (unsigned long)ctx->mod.mem[type].base, end, limit;
++	return base && len && !check_add_overflow(start, len, &end) &&
++		!check_add_overflow(base, (unsigned long)ctx->mod.mem[type].size, &limit) &&
++		start >= base && end <= limit;
++}
++static int spr_binding(void)
++{
++	if (!armed || !vendor_module_addr || !sg_ops_addr ||
++	    strcmp(init_utsname()->release, SPR_SOURCE))
++		return -EPERM;
++	if (!spr_read(&ctx->mod, (void *)vendor_module_addr, sizeof(ctx->mod)) ||
++	    ctx->mod.state != MODULE_STATE_LIVE ||
++	    strncmp(ctx->mod.name, "qcom_dma_heaps", MODULE_NAME_LEN) ||
++	    memcmp(ctx->mod.build_id, vendor_bid, sizeof(vendor_bid)))
++		return -EINVAL;
++	/* Strong imported-address references pin this exact provider via modpost. */
++	ctx->text_base = (unsigned long)qcom_sg_release - 0x1454;
++	if ((unsigned long)qcom_sg_lookup_vmperm != ctx->text_base + 0x15bc ||
++	    (unsigned long)qcom_sg_attach != ctx->text_base + 0x718 ||
++	    !spr_extent(ctx->text_base, 0x6afc + 268, MOD_TEXT) ||
++	    !spr_extent(sg_ops_addr, sizeof(ctx->ops), MOD_DATA) ||
++	    !spr_read(&ctx->ops, (void *)sg_ops_addr, sizeof(ctx->ops)) ||
++	    ctx->ops.lookup != (void *)qcom_sg_lookup_vmperm ||
++	    ctx->ops.attach != (void *)qcom_sg_attach ||
++	    ctx->ops.dma.release != qcom_sg_release)
++		return -EINVAL;
++	return 0;
++}
++static bool spr_add(unsigned int kind, unsigned int heap, unsigned int order,
++		    void *object, struct page *page, unsigned int offset, u64 len)
++{
++	struct spr_range *r;
++	unsigned long pfn;
++	u64 start, end;
++	if (ctx->nr == SPR_RANGE_CAP) { spr_cap(); return false; }
++	if (!page || ((unsigned long)page & (sizeof(*page) - 1)) || offset >= PAGE_SIZE || !len) {
++		spr_bad(); return false;
++	}
++	pfn = page_to_pfn(page);
++	if (!pfn_valid(pfn) || check_add_overflow((u64)PFN_PHYS(pfn), (u64)offset, &start) ||
++	    check_add_overflow(start, len, &end) || end <= start || !pfn_valid(PHYS_PFN(end - 1))) {
++		spr_bad(); return false;
++	}
++	r = &ctx->ranges[ctx->nr];
++	if (!spr_read(&r->flags, &page->flags, sizeof(r->flags)) ||
++	    !spr_read(&r->private, &page->private, sizeof(r->private)))
++		return false;
++	r->start = start; r->length = len; r->object = (unsigned long)object;
++	r->page = (unsigned long)page; r->kind = kind; r->heap = heap; r->order = order;
++	ctx->nr++;
++	return true;
++}
++static unsigned int spr_pool_list(struct spr_pool *pool, struct list_head *head,
++				 unsigned int heap, unsigned int order)
++{
++	struct list_head h, links, *entry, *prev = head;
++	unsigned int nr = 0;
++	unsigned long flags, tail_flags;
++	struct page *page;
++	if (!spr_read(&h, head, sizeof(h))) return 0;
++	entry = h.next;
++	while (entry != head) {
++		if (nr == SPR_POOL_CAP || ctx->nr == SPR_RANGE_CAP) { spr_cap(); break; }
++		if (spr_seen((unsigned long)entry, nr)) { spr_bad(); break; }
++		ctx->seen[nr] = (unsigned long)entry;
++		if (!spr_read(&links, entry, sizeof(links)) || links.prev != prev) { spr_bad(); break; }
++		page = container_of(entry, struct page, lru);
++		if (!spr_read(&flags, &page->flags, sizeof(flags))) break;
++		if (order) {
++			if (!(flags & BIT(PG_head)) ||
++			    !spr_read(&tail_flags, &(page + 1)->flags, sizeof(tail_flags)) ||
++			    (tail_flags & 0xff) != order) { spr_bad(); break; }
++		} else if (flags & BIT(PG_head)) { spr_bad(); break; }
++		if (!spr_add(1, heap, order, pool, page, 0, (u64)PAGE_SIZE << order)) break;
++		nr++; prev = entry; entry = links.next;
++	}
++	if (entry == head && h.prev != prev) spr_bad();
++	return nr;
++}
++static void spr_inactive(unsigned int hi)
++{
++	struct spr_heap heap;
++	struct spr_pool *pool, snap;
++	void *pools[SPR_POOLS];
++	unsigned int i, high, low;
++	unsigned long flags;
++	if (!ctx->heap[hi] || !spr_read(&heap, dma_heap_get_drvdata(ctx->heap[hi]), sizeof(heap)) ||
++	    heap.token != heap_tokens[hi] || !spr_read(pools, heap.pools, sizeof(pools))) {
++		spr_bad(); return;
++	}
++	for (i = 0; i < SPR_POOLS; i++) {
++		pool = pools[i];
++		if (!spr_read(&snap, pool, sizeof(snap)) || snap.order != pool_orders[i] ||
++		    snap.token != heap_tokens[hi] || snap.prerelease != (void *)(ctx->text_base + 0x6afc)) {
++			spr_bad(); continue;
++		}
++		if (!spin_trylock_irqsave(&pool->lock, flags)) { ctx->partial++; ctx->busy++; continue; }
++		if (!spr_read(&snap, pool, sizeof(snap)) || snap.high_count < 0 || snap.low_count < 0 ||
++		    (u64)snap.high_count + snap.low_count != (unsigned int)atomic_read(&snap.count)) {
++			spr_bad(); goto unlock;
++		}
++		high = spr_pool_list(pool, &pool->high_items, hi, pool_orders[i]);
++		low = spr_pool_list(pool, &pool->low_items, hi, pool_orders[i]);
++		if (high != snap.high_count || low != snap.low_count) spr_bad();
++		ctx->pools[hi][i] = high + low;
++unlock:
++		spin_unlock_irqrestore(&pool->lock, flags);
++	}
++}
++static int spr_active(const struct dma_buf *buf, void *unused)
++{
++	struct spr_buffer *buffer, snap;
++	struct scatterlist sg;
++	struct scatterlist *entry;
++	struct sg_table check;
++	unsigned int hi, entries = 0, hops = 0;
++	u64 sum = 0;
++	unsigned long link;
++	(void)unused;
++	if (ctx->scanned == SPR_BUF_CAP || ctx->nr == SPR_RANGE_CAP) { spr_cap(); return -E2BIG; }
++	ctx->scanned++;
++	if (buf->ops != (struct dma_buf_ops *)(sg_ops_addr + 16)) return 0;
++	buffer = buf->priv;
++	if (!spr_read(&snap, buffer, sizeof(snap))) return 0;
++	for (hi = 0; hi < SPR_HEAPS; hi++)
++		if (ctx->heap[hi] && snap.heap == ctx->heap[hi]) break;
++	if (hi == SPR_HEAPS) { ctx->partial++; ctx->unknown++; return 0; }
++	if (!mutex_trylock(&buffer->lock)) { ctx->partial++; ctx->busy++; return 0; }
++	if (!spr_read(&snap, buffer, sizeof(snap)) || snap.heap != ctx->heap[hi] ||
++	    snap.len != buf->size || !snap.len || !snap.sg.orig_nents ||
++	    snap.sg.orig_nents > SPR_SG_CAP || snap.sg.nents > snap.sg.orig_nents) {
++		spr_bad(); goto unlock;
++	}
++	ctx->matched++;
++	entry = snap.sg.sgl;
++	while (entry && entries < snap.sg.orig_nents) {
++		if (hops == SPR_HOP_CAP || ctx->nr == SPR_RANGE_CAP) { spr_cap(); break; }
++		if (spr_seen((unsigned long)entry, hops)) { spr_bad(); break; }
++		ctx->seen[hops++] = (unsigned long)entry;
++		if (!spr_read(&sg, entry, sizeof(sg))) break;
++		link = sg.page_link;
++		if (link & SG_CHAIN) { entry = (struct scatterlist *)(link & ~3UL); continue; }
++		if (!sg.length || check_add_overflow(sum, (u64)sg.length, &sum) || sum > snap.len ||
++		    !spr_add(2, hi, UINT_MAX, (void *)buf, (struct page *)(link & ~3UL), sg.offset, sg.length)) {
++			spr_bad(); break;
++		}
++		entries++;
++		entry = (link & SG_END) ? NULL : entry + 1;
++	}
++	if (entries != snap.sg.orig_nents || sum != snap.len || entry) spr_bad();
++	if (!spr_read(&check, &buffer->sg, sizeof(check)) || memcmp(&check, &snap.sg, sizeof(check))) spr_bad();
++unlock:
++	mutex_unlock(&buffer->lock);
++	return 0;
++}
++static void spr_format(void)
++{
++	unsigned int i;
++	struct spr_range *r;
++	ctx->used = scnprintf(ctx->text, SPR_TEXT_CAP,
++		"SPR1 version=1 result=%s partial=%u busy=%u bad=%u cap=%u unknown_qcom_heap=%u nofault=%u ranges=%u active_scanned=%u active_matched=%u acl_covered=0 firmware_owner_query=0 no_absence_inference=1\n",
++		ctx->partial ? "partial" : "bounded-metadata-sample", ctx->partial, ctx->busy, ctx->bad,
++		ctx->capped, ctx->unknown, ctx->nofault, ctx->nr, ctx->scanned, ctx->matched);
++	for (i = 0; i < ctx->nr; i++) {
++		r = &ctx->ranges[i];
++		if (SPR_TEXT_CAP - ctx->used < 512) {
++			ctx->used += scnprintf(ctx->text + ctx->used, SPR_TEXT_CAP - ctx->used,
++				"SPR1 result=partial reason=output-cap records_emitted=%u\n", i);
++			break;
++		}
++		ctx->used += scnprintf(ctx->text + ctx->used, SPR_TEXT_CAP - ctx->used,
++			"SPR1 kind=%s heap=%s token=%x order=%u object=%lx page=%lx start=%llx length=%llx page_flags=%lx page_private=%lx head_metadata_only=1\n",
++			r->kind == 1 ? "inactive-pool" : "active-sg", heap_names[r->heap], heap_tokens[r->heap],
++			r->order, r->object, r->page, r->start, r->length, r->flags, r->private);
++	}
++	ctx->used += scnprintf(ctx->text + ctx->used, SPR_TEXT_CAP - ctx->used,
++		"SPR1 end=1 sampled_only=1 global_atomic_snapshot=0 protected_payload_read=0 vendor_ops_called=0 scm_calls=0\n");
++}
++static int __init spr_init(void)
++{
++	unsigned int i;
++	int ret;
++	struct dentry *file;
++	ctx = kvzalloc(sizeof(*ctx), GFP_KERNEL);
++	if (!ctx) return -ENOMEM;
++	ctx->ranges = kvcalloc(SPR_RANGE_CAP, sizeof(*ctx->ranges), GFP_KERNEL);
++	ctx->text = kvzalloc(SPR_TEXT_CAP, GFP_KERNEL);
++	if (!ctx->ranges || !ctx->text) { ret = -ENOMEM; goto fail; }
++	ret = spr_binding();
++	if (ret) goto fail;
++	for (i = 0; i < SPR_HEAPS; i++) {
++		ctx->heap[i] = dma_heap_find(heap_names[i]);
++		if (!ctx->heap[i] || strcmp(dma_heap_get_name(ctx->heap[i]), heap_names[i])) spr_bad();
++		spr_inactive(i);
++	}
++	ret = dma_buf_get_each(spr_active, NULL);
++	if (ret) ctx->partial++;
++	for (i = 0; i < SPR_HEAPS; i++) {
++		if (ctx->heap[i]) dma_heap_put(ctx->heap[i]);
++		ctx->heap[i] = NULL;
++	}
++	spr_format();
++	kvfree(ctx->ranges); ctx->ranges = NULL;
++	dir = debugfs_create_dir("secure_pool_readonly", NULL);
++	if (IS_ERR_OR_NULL(dir)) { ret = dir ? PTR_ERR(dir) : -ENOMEM; dir = NULL; goto fail; }
++	blob.data = ctx->text; blob.size = ctx->used;
++	file = debugfs_create_blob("result", 0400, dir, &blob);
++	if (IS_ERR_OR_NULL(file)) { ret = file ? PTR_ERR(file) : -ENOMEM; goto fail; }
++	pr_info("secure_pool_readonly: one-shot metadata blob ready, partial=%u ranges=%u\n", ctx->partial, ctx->nr);
++	return 0;
++fail:
++	debugfs_remove(dir); dir = NULL;
++	if (ctx) { kvfree(ctx->ranges); kvfree(ctx->text); kvfree(ctx); ctx = NULL; }
++	return ret;
++}
++static void __exit spr_exit(void)
++{
++	debugfs_remove(dir); dir = NULL;
++	kvfree(ctx->text); kvfree(ctx); ctx = NULL;
++}
++module_init(spr_init);
++module_exit(spr_exit);
++MODULE_IMPORT_NS(MINIDUMP);
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Bounded normal-context secure heap metadata snapshot; no ownership or handoff claim");
+--- /dev/null
++++ b/tools/kexec_secure_pool_readonly/Makefile
+@@ -0,0 +1,2 @@
++obj-m += secure_pool_readonly.o
++ccflags-y += -Werror

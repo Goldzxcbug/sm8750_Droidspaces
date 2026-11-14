@@ -1,0 +1,183 @@
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -98,6 +98,56 @@
+ 	struct kref		ref;
+ };
+ 
++/*
++ * Temporary kexec-only UFS clock diagnosis.  These are metadata snapshots,
++ * taken under enable_lock; prepare_count is sampled with READ_ONCE because
++ * prepare_lock is a separate lock.  No clock operation is invoked here.
++ * Logging with IRQs off can perturb timing and does not prove hardware state.
++ */
++static bool kexec_ufs_clk_trace_requested __ro_after_init;
++static bool kexec_ufs_clk_trace_seen __initdata;
++
++static int __init kexec_ufs_clk_trace_setup(char *arg)
++{
++	if (kexec_ufs_clk_trace_seen || !arg || strcmp(arg, "1")) {
++		kexec_ufs_clk_trace_seen = true;
++		kexec_ufs_clk_trace_requested = false;
++		return -EINVAL;
++	}
++
++	kexec_ufs_clk_trace_seen = true;
++	kexec_ufs_clk_trace_requested = true;
++	return 0;
++}
++early_param("kexec_diag.ufs_clocks", kexec_ufs_clk_trace_setup);
++
++static bool kexec_ufs_clk_trace_match(struct clk_core *core)
++{
++	if (!kexec_ufs_clk_trace_requested ||
++	    (strcmp(core->name, "gcc_ufs_phy_phy_aux_clk_src") &&
++	     strcmp(core->name, "gcc_ufs_phy_phy_aux_clk")))
++		return false;
++
++	/* of_chosen is established after the early parameter was parsed. */
++	return of_chosen &&
++		of_property_present(of_chosen, "linux,booted-from-kexec");
++}
++
++static void kexec_ufs_clk_trace(struct clk_core *core, const char *event,
++			      int ret, bool ret_valid)
++{
++	struct clk_core *parent = core->parent;
++
++	pr_emerg("KUFSCLK: event=%s name=%.64s enable=%u prepare=%u parent=%.64s parent_enable=%u parent_prepare=%u has_enable=%u has_disable=%u ret_valid=%u ret=%d\n",
++		 event, core->name, READ_ONCE(core->enable_count),
++		 READ_ONCE(core->prepare_count), parent ? parent->name : "<none>",
++		 parent ? READ_ONCE(parent->enable_count) : 0,
++		 parent ? READ_ONCE(parent->prepare_count) : 0,
++		 (unsigned int)!!core->ops->enable,
++		 (unsigned int)!!core->ops->disable,
++		 (unsigned int)ret_valid, ret);
++}
++
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/clk.h>
+ 
+@@ -1175,29 +1225,53 @@
+ 
+ static void clk_core_disable(struct clk_core *core)
+ {
++	bool trace;
++
+ 	lockdep_assert_held(&enable_lock);
+ 
+ 	if (!core)
+ 		return;
+ 
+-	if (WARN(core->enable_count == 0, "%s already disabled\n", core->name))
++	trace = kexec_ufs_clk_trace_match(core);
++	if (trace)
++		kexec_ufs_clk_trace(core, "disable.enter", 0, false);
++
++	if (WARN(core->enable_count == 0, "%s already disabled\n", core->name)) {
++		if (trace)
++			kexec_ufs_clk_trace(core, "disable.reject-zero", 0, false);
+ 		return;
++	}
+ 
+ 	if (WARN(core->enable_count == 1 && core->flags & CLK_IS_CRITICAL,
+-	    "Disabling critical %s\n", core->name))
++	    "Disabling critical %s\n", core->name)) {
++		if (trace)
++			kexec_ufs_clk_trace(core, "disable.reject-critical", 0, false);
+ 		return;
+-
+-	if (--core->enable_count > 0)
++	}
++
++	if (--core->enable_count > 0) {
++		if (trace)
++			kexec_ufs_clk_trace(core, "disable.skip-count", 0, false);
+ 		return;
++	}
+ 
+ 	trace_clk_disable(core);
+ 
+-	if (core->ops->disable)
++	if (core->ops->disable) {
++		if (trace)
++			kexec_ufs_clk_trace(core, "disable.callback-begin", 0, false);
+ 		core->ops->disable(core->hw);
++		if (trace)
++			kexec_ufs_clk_trace(core, "disable.callback-return", 0, false);
++	} else if (trace) {
++		kexec_ufs_clk_trace(core, "disable.no-callback", 0, false);
++	}
+ 
+ 	trace_clk_disable_complete(core);
+ 
+ 	clk_core_disable(core->parent);
++	if (trace)
++		kexec_ufs_clk_trace(core, "disable.return", 0, false);
+ }
+ 
+ static void clk_core_disable_lock(struct clk_core *core)
+@@ -1233,36 +1307,60 @@
+ static int clk_core_enable(struct clk_core *core)
+ {
+ 	int ret = 0;
++	bool trace;
+ 
+ 	lockdep_assert_held(&enable_lock);
+ 
+ 	if (!core)
+ 		return 0;
+ 
++	trace = kexec_ufs_clk_trace_match(core);
++	if (trace)
++		kexec_ufs_clk_trace(core, "enable.enter", 0, false);
++
+ 	if (WARN(core->prepare_count == 0,
+-	    "Enabling unprepared %s\n", core->name))
++	    "Enabling unprepared %s\n", core->name)) {
++		if (trace)
++			kexec_ufs_clk_trace(core, "enable.return", -ESHUTDOWN, true);
+ 		return -ESHUTDOWN;
++	}
+ 
+ 	if (core->enable_count == 0) {
+ 		ret = clk_core_enable(core->parent);
+ 
+-		if (ret)
++		if (ret) {
++			if (trace)
++				kexec_ufs_clk_trace(core, "enable.parent-error", ret, true);
+ 			return ret;
++		}
+ 
+ 		trace_clk_enable(core);
+ 
+-		if (core->ops->enable)
++		if (core->ops->enable) {
++			if (trace)
++				kexec_ufs_clk_trace(core, "enable.callback-begin", 0, false);
+ 			ret = core->ops->enable(core->hw);
++			if (trace)
++				kexec_ufs_clk_trace(core, "enable.callback-return", ret, true);
++		} else if (trace) {
++			kexec_ufs_clk_trace(core, "enable.no-callback", 0, false);
++		}
+ 
+ 		trace_clk_enable_complete(core);
+ 
+ 		if (ret) {
+ 			clk_core_disable(core->parent);
++			if (trace)
++				kexec_ufs_clk_trace(core, "enable.return", ret, true);
+ 			return ret;
+ 		}
++	} else if (trace) {
++		kexec_ufs_clk_trace(core, "enable.skip-count", 0, false);
+ 	}
+ 
+ 	core->enable_count++;
++	if (trace)
++		kexec_ufs_clk_trace(core, "enable.return", 0, true);
+ 	return 0;
+ }
+ 

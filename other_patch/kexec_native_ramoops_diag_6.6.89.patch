@@ -1,0 +1,644 @@
+Historical native early ramoops target-FDT diagnostic; no new logic.
+
+Apply after kexec_gic_tables_handoff_6.6.89.patch. This packages exactly
+the already-built gic-fix/source native-console helper and caller.
+CONFIG_KEXEC_NATIVE_RAMOOPS_DIAG defaults n and the exact target token
+kexec_diag.early_ramoops=1 is required. Only a clone of the target FDT
+is changed after strict source reserved-memory/layout validation.
+It disables the vendor consumer and creates the native ramoops node;
+the running source FDT is unchanged. Apply later gate, console-flush
+and dual-secure-heap-skip patches separately as documented.
+
+--- a/arch/arm64/kernel/machine_kexec_file.c
++++ b/arch/arm64/kernel/machine_kexec_file.c
+@@ -10,9 +10,11 @@
+ 
+ #define pr_fmt(fmt) "kexec_file: " fmt
+ 
++#include <linux/ctype.h>
+ #include <linux/ioport.h>
+ #include <linux/kernel.h>
+ #include <linux/kexec.h>
++#include <linux/kexec_ramoops_native.h>
+ #include <linux/libfdt.h>
+ #include <linux/memblock.h>
+ #include <linux/of.h>
+@@ -21,6 +23,26 @@
+ #include <linux/string.h>
+ #include <linux/types.h>
+ #include <linux/vmalloc.h>
++
++static bool native_ramoops_requested(const char *cmdline)
++{
++	static const char token[] = "kexec_diag.early_ramoops=1";
++	const char *start;
++
++	if (!IS_ENABLED(CONFIG_KEXEC_NATIVE_RAMOOPS_DIAG) || !cmdline)
++		return false;
++	while (*cmdline) {
++		while (isspace(*cmdline))
++			cmdline++;
++		start = cmdline;
++		while (*cmdline && !isspace(*cmdline))
++			cmdline++;
++		if (cmdline - start == sizeof(token) - 1 &&
++		    !memcmp(start, token, sizeof(token) - 1))
++			return true;
++	}
++	return false;
++}
+ 
+ const struct kexec_file_ops * const kexec_file_loaders[] = {
+ 	&kexec_image_ops,
+@@ -97,6 +119,7 @@
+ 	unsigned long headers_sz, initrd_load_addr = 0, dtb_len,
+ 		      orig_segments = image->nr_segments;
+ 	int ret = 0;
++	bool native_ramoops = native_ramoops_requested(cmdline);
+ 
+ 	kbuf.image = image;
+ 	/* not allocate anything below the kernel */
+@@ -155,7 +178,8 @@
+ 	/* load dtb */
+ 	dtb = of_kexec_alloc_and_setup_fdt(image, initrd_load_addr,
+ 					   initrd_len, cmdline,
+-					   arm64_kexec_gic_fdt_size(image));
++					   arm64_kexec_gic_fdt_size(image) +
++					   (native_ramoops ? SZ_1K : 0));
+ 	if (!dtb) {
+ 		pr_err("Preparing for new dtb failed\n");
+ 		ret = -EINVAL;
+@@ -165,6 +189,14 @@
+ 	if (ret) {
+ 		pr_err("Preparing GIC table reservations failed (%d)\n", ret);
+ 		goto out_err;
++	}
++	if (native_ramoops) {
++		ret = kexec_ramoops_native_fdt(dtb);
++		if (ret) {
++			pr_err("Preparing native ramoops diagnostic failed (%d)\n",
++			       ret);
++			goto out_err;
++		}
+ 	}
+ 
+ 	/* trim it */
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -12,6 +12,7 @@
+ obj-$(CONFIG_OF_RESOLVE)  += resolver.o
+ obj-$(CONFIG_OF_OVERLAY) += overlay.o
+ obj-$(CONFIG_OF_NUMA) += of_numa.o
++obj-$(CONFIG_KEXEC_NATIVE_RAMOOPS_DIAG) += kexec_ramoops_native.o
+ 
+ ifdef CONFIG_KEXEC_FILE
+ ifdef CONFIG_OF_FLATTREE
+--- /dev/null
++++ b/drivers/of/kexec_ramoops_native.c
+@@ -0,0 +1,505 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Diagnostic-only transition from the current QCOM dynamic ramoops wrapper to
++ * native DT ramoops in a newly allocated kexec FDT.  No live property or RAM is
++ * modified.  The caller alone selects this mode and discards the FDT on error.
++ *
++ * The supported console/pmsg layout is deliberately narrow.  Both the live
++ * reserved_mem/DT and the bound vendor-created ramoops platform data must agree.
++ * This is not a generic reserved-memory relocation interface.
++ */
++#include <linux/errno.h>
++#include <linux/kernel.h>
++#include <linux/kmsg_dump.h>
++#include <linux/kexec_ramoops_native.h>
++#include <linux/libfdt.h>
++#include <linux/of.h>
++#include <linux/of_reserved_mem.h>
++#include <linux/platform_device.h>
++#include <linux/pstore_ram.h>
++#include <linux/sizes.h>
++#include <linux/string.h>
++
++#include <asm/page.h>
++
++#define KRN_REGION "/reserved-memory/ramoops-region"
++#define KRN_CONSUMER "/soc/qcom_ramoops"
++#define KRN_CONSOLE SZ_256K
++#define KRN_PMSG SZ_2M
++
++struct krn_layout {
++	u64 base;
++	u64 size;
++	u32 phandle;
++	u32 flags;
++	u32 max_reason;
++};
++
++static bool krn_overlap(u64 a, u64 as, u64 b, u64 bs)
++{
++	return as && bs && a < b + bs && b < a + as;
++}
++
++static int krn_live_u32(const struct device_node *np, const char *name,
++			      u32 fallback, u32 *value)
++{
++	const struct property *p;
++	int len;
++
++	p = of_find_property(np, name, &len);
++	if (!p) {
++		*value = fallback;
++		return 0;
++	}
++	if (len != sizeof(__be32) || !p->value)
++		return -EINVAL;
++	*value = be32_to_cpup(p->value);
++	return *value <= INT_MAX ? 0 : -ERANGE;
++}
++
++static int krn_live_boolean(const struct device_node *np, const char *name)
++{
++	const struct property *p;
++	int len;
++
++	p = of_find_property(np, name, &len);
++	return p && !len ? 0 : -EINVAL;
++}
++
++/* The vendor wrapper registers this exact platform-data device.  Holding its
++ * device lock prevents probe/remove from changing the binding while copying
++ * its public, lifetime-owned platform data.  The device reference owns pdata.
++ */
++static int krn_validate_bound_backend(const struct krn_layout *l)
++{
++	const struct ramoops_platform_data *p;
++	struct device *dev;
++	int ret = -ENODEV;
++
++	dev = bus_find_device_by_name(&platform_bus_type, NULL, "ramoops");
++	if (!dev)
++		return ret;
++	device_lock(dev);
++	if (!dev->driver || strcmp(dev->driver->name, "ramoops"))
++		goto out;
++	p = dev_get_platdata(dev);
++	if (!p)
++		goto out;
++	ret = -EINVAL;
++	if (p->mem_address != l->base || p->mem_size != l->size ||
++	    p->console_size != KRN_CONSOLE || p->pmsg_size != KRN_PMSG ||
++	    p->record_size || p->ftrace_size || p->mem_type != 2 ||
++	    p->ecc_info.ecc_size || p->flags != l->flags ||
++	    p->max_reason != l->max_reason)
++		goto out;
++	ret = 0;
++out:
++	device_unlock(dev);
++	put_device(dev);
++	return ret;
++}
++
++static int krn_snapshot_live(struct krn_layout *l)
++{
++	struct device_node *region, *consumer, *reference;
++	const struct reserved_mem *rmem;
++	const struct property *p;
++	const __be32 *cells;
++	u64 start, size, alignment;
++	u32 value;
++	int len, at, ret = -EINVAL;
++	bool covered = false;
++
++	region = of_find_node_by_path(KRN_REGION);
++	consumer = of_find_node_by_path(KRN_CONSUMER);
++	if (!region || !consumer) {
++		ret = -ENODEV;
++		goto out;
++	}
++	if (!of_device_is_available(region) || !of_device_is_available(consumer) ||
++	    !of_device_is_compatible(consumer, "qcom,ramoops") ||
++	    krn_live_boolean(region, "no-map") ||
++	    of_find_property(region, "reusable", NULL) ||
++	    of_find_property(region, "reg", NULL) ||
++	    of_find_property(region, "compatible", NULL) ||
++	    of_find_property(region, "iommu-addresses", NULL))
++		goto out;
++	p = of_find_property(consumer, "memory-region", &len);
++	if (!p || len != sizeof(__be32) || !p->value)
++		goto out;
++	reference = of_parse_phandle(consumer, "memory-region", 0);
++	if (reference != region) {
++		of_node_put(reference);
++		goto out;
++	}
++	of_node_put(reference);
++	l->phandle = region->phandle;
++	if (!l->phandle || l->phandle == U32_MAX)
++		goto out;
++	rmem = of_reserved_mem_lookup(region);
++	if (!rmem || !rmem->base || rmem->size != KRN_CONSOLE + KRN_PMSG ||
++	    !IS_ALIGNED(rmem->base, PAGE_SIZE) ||
++	    !IS_ALIGNED(rmem->size, PAGE_SIZE) ||
++	    rmem->base + rmem->size <= rmem->base)
++		goto out;
++	l->base = rmem->base;
++	l->size = rmem->size;
++	p = of_find_property(region, "size", &len);
++	if (!p || len != 2 * sizeof(__be32) || !p->value ||
++	    of_read_number(p->value, 2) != l->size)
++		goto out;
++	p = of_find_property(region, "alignment", &len);
++	if (p) {
++		if (len != 2 * sizeof(__be32) || !p->value)
++			goto out;
++		alignment = of_read_number(p->value, 2);
++		if (!alignment || (alignment & (alignment - 1)) ||
++		    !IS_ALIGNED(l->base, alignment))
++			goto out;
++	}
++	p = of_find_property(region, "alloc-ranges", &len);
++	if (!p || !p->value || len <= 0 || len % (4 * sizeof(__be32)))
++		goto out;
++	cells = p->value;
++	for (at = 0; at < len / sizeof(__be32); at += 4) {
++		start = of_read_number(cells + at, 2);
++		size = of_read_number(cells + at + 2, 2);
++		if (!size || start + size <= start)
++			goto out;
++		if (l->base >= start && l->base + l->size <= start + size)
++			covered = true;
++	}
++	if (!covered)
++		goto out;
++	if (krn_live_u32(consumer, "console-size", 0, &value) || value != KRN_CONSOLE ||
++	    krn_live_u32(consumer, "pmsg-size", 0, &value) || value != KRN_PMSG ||
++	    krn_live_u32(consumer, "mem-type", 2, &value) || value != 2 ||
++	    krn_live_u32(consumer, "record-size", 0, &value) || value ||
++	    krn_live_u32(consumer, "ftrace-size", 0, &value) || value ||
++	    krn_live_u32(consumer, "ecc-size", 0, &value) || value ||
++	    krn_live_u32(region, "ecc-size", 0, &value) || value ||
++	    krn_live_u32(consumer, "flags", 0, &l->flags) ||
++	    (l->flags & ~RAMOOPS_FLAG_FTRACE_PER_CPU) ||
++	    krn_live_u32(consumer, "max-reason", KMSG_DUMP_PANIC, &l->max_reason))
++		goto out;
++	ret = krn_validate_bound_backend(l);
++out:
++	of_node_put(consumer);
++	of_node_put(region);
++	return ret;
++}
++
++static int krn_fdt_u32(const void *fdt, int node, const char *name,
++			     u32 fallback, u32 *value)
++{
++	const fdt32_t *p;
++	int len;
++
++	p = fdt_getprop(fdt, node, name, &len);
++	if (!p && len == -FDT_ERR_NOTFOUND) {
++		*value = fallback;
++		return 0;
++	}
++	if (!p || len != sizeof(*p))
++		return -EINVAL;
++	*value = fdt32_to_cpu(*p);
++	return *value <= INT_MAX ? 0 : -ERANGE;
++}
++
++static bool krn_fdt_available(const void *fdt, int node)
++{
++	const char *status;
++	int len;
++
++	status = fdt_getprop(fdt, node, "status", &len);
++	return (!status && len == -FDT_ERR_NOTFOUND) ||
++		(status && ((len == 3 && !memcmp(status, "ok", 3)) ||
++			    (len == 5 && !memcmp(status, "okay", 5))));
++}
++
++static int krn_fdt_geometry(const void *fdt)
++{
++	int root, reserved, len;
++	const void *ranges;
++
++	root = fdt_path_offset(fdt, "/");
++	reserved = fdt_path_offset(fdt, "/reserved-memory");
++	if (root < 0 || reserved < 0 ||
++	    fdt_address_cells(fdt, root) != 2 || fdt_size_cells(fdt, root) != 2 ||
++	    fdt_address_cells(fdt, reserved) != 2 || fdt_size_cells(fdt, reserved) != 2)
++		return -EINVAL;
++	ranges = fdt_getprop(fdt, reserved, "ranges", &len);
++	return ranges && !len ? 0 : -EINVAL;
++}
++
++static int krn_fdt_consumer(const void *fdt, const struct krn_layout *l,
++			    bool disabled)
++{
++	const fdt32_t *ref;
++	const char *status;
++	u32 value;
++	int node, len;
++
++	node = fdt_path_offset(fdt, KRN_CONSUMER);
++	if (node < 0 || fdt_node_check_compatible(fdt, node, "qcom,ramoops"))
++		return -EINVAL;
++	if (disabled) {
++		status = fdt_getprop(fdt, node, "status", &len);
++		if (!status || len != sizeof("disabled") ||
++		    memcmp(status, "disabled", sizeof("disabled")))
++			return -EINVAL;
++	} else if (!krn_fdt_available(fdt, node)) {
++		return -EINVAL;
++	}
++	ref = fdt_getprop(fdt, node, "memory-region", &len);
++	if (!ref || len != sizeof(*ref) || fdt32_to_cpu(*ref) != l->phandle)
++		return -EINVAL;
++	if (krn_fdt_u32(fdt, node, "console-size", 0, &value) || value != KRN_CONSOLE ||
++	    krn_fdt_u32(fdt, node, "pmsg-size", 0, &value) || value != KRN_PMSG ||
++	    krn_fdt_u32(fdt, node, "mem-type", 2, &value) || value != 2 ||
++	    krn_fdt_u32(fdt, node, "record-size", 0, &value) || value ||
++	    krn_fdt_u32(fdt, node, "ftrace-size", 0, &value) || value ||
++	    krn_fdt_u32(fdt, node, "ecc-size", 0, &value) || value ||
++	    krn_fdt_u32(fdt, node, "flags", 0, &value) || value != l->flags ||
++	    krn_fdt_u32(fdt, node, "max-reason", KMSG_DUMP_PANIC, &value) || value != l->max_reason)
++		return -EINVAL;
++	return 0;
++}
++
++static int krn_fdt_region(const void *fdt, const struct krn_layout *l,
++			  bool native)
++{
++	const void *p;
++	const fdt64_t *reg;
++	u32 value;
++	int node, len;
++
++	node = fdt_path_offset(fdt, KRN_REGION);
++	if (node < 0 || !krn_fdt_available(fdt, node) ||
++	    fdt_get_phandle(fdt, node) != l->phandle ||
++	    fdt_getprop(fdt, node, "reusable", NULL) ||
++	    fdt_getprop(fdt, node, "iommu-addresses", NULL))
++		return -EINVAL;
++	p = fdt_getprop(fdt, node, "no-map", &len);
++	if (!p || len)
++		return -EINVAL;
++	if (!native) {
++		if (fdt_getprop(fdt, node, "reg", NULL) ||
++		    fdt_getprop(fdt, node, "compatible", NULL))
++			return -EINVAL;
++		reg = fdt_getprop(fdt, node, "size", &len);
++		return reg && len == sizeof(*reg) &&
++			fdt64_ld(reg) == l->size ? 0 : -EINVAL;
++	}
++	p = fdt_getprop(fdt, node, "compatible", &len);
++	if (!p || len != sizeof("ramoops") || memcmp(p, "ramoops", sizeof("ramoops")) ||
++	    fdt_getprop(fdt, node, "size", NULL) ||
++	    fdt_getprop(fdt, node, "alignment", NULL) ||
++	    fdt_getprop(fdt, node, "alloc-ranges", NULL))
++		return -EINVAL;
++	reg = fdt_getprop(fdt, node, "reg", &len);
++	if (!reg || len != 2 * sizeof(*reg) ||
++	    fdt64_ld(reg) != l->base || fdt64_ld(reg + 1) != l->size)
++		return -EINVAL;
++	if (krn_fdt_u32(fdt, node, "console-size", 0, &value) || value != KRN_CONSOLE ||
++	    krn_fdt_u32(fdt, node, "pmsg-size", 0, &value) || value != KRN_PMSG ||
++	    krn_fdt_u32(fdt, node, "mem-type", 0, &value) || value != 2 ||
++	    krn_fdt_u32(fdt, node, "record-size", 1, &value) || value ||
++	    krn_fdt_u32(fdt, node, "ftrace-size", 1, &value) || value ||
++	    krn_fdt_u32(fdt, node, "ecc-size", 1, &value) || value ||
++	    krn_fdt_u32(fdt, node, "flags", U32_MAX, &value) || value != l->flags ||
++	    krn_fdt_u32(fdt, node, "max-reason", U32_MAX, &value) || value != l->max_reason)
++		return -EINVAL;
++	return 0;
++}
++
++/* Static/GIC reservations must not overlap.  Dynamic allocations will observe
++ * the fixed NOMAP reservation during the target's reserved-memory scan.
++ * Header memreserve overlap is also rejected: it would make the target's
++ * early_init_dt_reserve_memory(nomap=true) fail with -EBUSY.
++ */
++static int krn_fdt_ranges(const void *fdt, const struct krn_layout *l)
++{
++	const fdt64_t *reg;
++	const char *type;
++	u64 base, size;
++	int node, region, reserved, len, at, depth, count, ret;
++	bool in_ram = false;
++
++	region = fdt_path_offset(fdt, KRN_REGION);
++	reserved = fdt_path_offset(fdt, "/reserved-memory");
++	if (region < 0 || reserved < 0)
++		return -EINVAL;
++	for (node = fdt_first_subnode(fdt, reserved); node >= 0;
++	     node = fdt_next_subnode(fdt, node)) {
++		if (node == region || !krn_fdt_available(fdt, node))
++			continue;
++		reg = fdt_getprop(fdt, node, "reg", &len);
++		if (!reg && len == -FDT_ERR_NOTFOUND)
++			continue;
++		if (!reg || len <= 0 || len % (2 * sizeof(*reg)))
++			return -EINVAL;
++		for (at = 0; at < len / sizeof(*reg); at += 2) {
++			base = fdt64_ld(reg + at);
++			size = fdt64_ld(reg + at + 1);
++			if (size && base + size <= base)
++				return -ERANGE;
++			if (krn_overlap(base, size, l->base, l->size))
++				return -EEXIST;
++		}
++	}
++	if (node != -FDT_ERR_NOTFOUND)
++		return -EINVAL;
++	count = fdt_num_mem_rsv(fdt);
++	if (count < 0)
++		return -EINVAL;
++	for (at = 0; at < count; at++) {
++		ret = fdt_get_mem_rsv(fdt, at, &base, &size);
++		if (ret || (size && base + size <= base))
++			return -EINVAL;
++		if (krn_overlap(base, size, l->base, l->size))
++			return -EEXIST;
++	}
++	/* Reject a second enabled backend/wrapper anywhere in the incoming tree. */
++	depth = -1;
++	for (node = fdt_next_node(fdt, -1, &depth); node >= 0 && depth >= 0;
++	     node = fdt_next_node(fdt, node, &depth)) {
++		if (!krn_fdt_available(fdt, node))
++			continue;
++		if (node != region && !fdt_node_check_compatible(fdt, node, "ramoops"))
++			return -EEXIST;
++		if (!fdt_node_check_compatible(fdt, node, "qcom,ramoops") &&
++		    node != fdt_path_offset(fdt, KRN_CONSUMER))
++			return -EEXIST;
++		if (depth != 1)
++			continue;
++		type = fdt_getprop(fdt, node, "device_type", &len);
++		if (!type || len != sizeof("memory") || memcmp(type, "memory", sizeof("memory")))
++			continue;
++		reg = fdt_getprop(fdt, node, "reg", &len);
++		if (!reg || len <= 0 || len % (2 * sizeof(*reg)))
++			return -EINVAL;
++		for (at = 0; at < len / sizeof(*reg); at += 2) {
++			base = fdt64_ld(reg + at);
++			size = fdt64_ld(reg + at + 1);
++			if (size && base + size <= base)
++				return -ERANGE;
++			if (l->base >= base && l->base + l->size <= base + size)
++				in_ram = true;
++		}
++	}
++	if (node < 0 && node != -FDT_ERR_NOTFOUND)
++		return -EINVAL;
++	return in_ram ? 0 : -EINVAL;
++}
++
++static int krn_setprop(void *fdt, const char *path, const char *name,
++			const void *value, int len)
++{
++	int node = fdt_path_offset(fdt, path);
++	int ret;
++
++	if (node < 0)
++		return -EINVAL;
++	ret = fdt_setprop(fdt, node, name, value, len);
++	return ret == -FDT_ERR_NOSPACE ? -ENOSPC : ret ? -EINVAL : 0;
++}
++
++static int krn_set_u32(void *fdt, const char *name, u32 value)
++{
++	fdt32_t cell = cpu_to_fdt32(value);
++
++	return krn_setprop(fdt, KRN_REGION, name, &cell, sizeof(cell));
++}
++
++static int krn_delprop(void *fdt, const char *name)
++{
++	int node = fdt_path_offset(fdt, KRN_REGION);
++	int ret;
++
++	if (node < 0)
++		return -EINVAL;
++	ret = fdt_delprop(fdt, node, name);
++	return !ret || ret == -FDT_ERR_NOTFOUND ? 0 : -EINVAL;
++}
++
++int kexec_ramoops_native_fdt(void *fdt)
++{
++	struct krn_layout layout = { };
++	fdt64_t reg[2];
++	int ret;
++
++	if (!fdt || fdt_check_header(fdt))
++		return -EINVAL;
++	ret = krn_snapshot_live(&layout);
++	if (ret)
++		return ret;
++	ret = krn_fdt_geometry(fdt);
++	if (ret)
++		return ret;
++	ret = krn_fdt_consumer(fdt, &layout, false);
++	if (ret)
++		return ret;
++	ret = krn_fdt_region(fdt, &layout, false);
++	if (ret)
++		return ret;
++	ret = krn_fdt_ranges(fdt, &layout);
++	if (ret)
++		return ret;
++
++	/* Every write re-resolves the path: property growth moves later offsets. */
++	ret = krn_setprop(fdt, KRN_CONSUMER, "status", "disabled", sizeof("disabled"));
++	if (ret)
++		return ret;
++	ret = krn_delprop(fdt, "size");
++	if (ret)
++		return ret;
++	ret = krn_delprop(fdt, "alignment");
++	if (ret)
++		return ret;
++	ret = krn_delprop(fdt, "alloc-ranges");
++	if (ret)
++		return ret;
++	reg[0] = cpu_to_fdt64(layout.base);
++	reg[1] = cpu_to_fdt64(layout.size);
++	ret = krn_setprop(fdt, KRN_REGION, "reg", reg, sizeof(reg));
++	if (ret)
++		return ret;
++	ret = krn_setprop(fdt, KRN_REGION, "compatible", "ramoops", sizeof("ramoops"));
++	if (ret)
++		return ret;
++	ret = krn_setprop(fdt, KRN_REGION, "no-map", NULL, 0);
++	if (ret)
++		return ret;
++	ret = krn_set_u32(fdt, "console-size", KRN_CONSOLE);
++	if (ret)
++		return ret;
++	ret = krn_set_u32(fdt, "pmsg-size", KRN_PMSG);
++	if (ret)
++		return ret;
++	ret = krn_set_u32(fdt, "mem-type", 2);
++	if (ret)
++		return ret;
++	ret = krn_set_u32(fdt, "record-size", 0);
++	if (ret)
++		return ret;
++	ret = krn_set_u32(fdt, "ftrace-size", 0);
++	if (ret)
++		return ret;
++	ret = krn_set_u32(fdt, "ecc-size", 0);
++	if (ret)
++		return ret;
++	ret = krn_set_u32(fdt, "flags", layout.flags);
++	if (ret)
++		return ret;
++	ret = krn_set_u32(fdt, "max-reason", layout.max_reason);
++	if (ret)
++		return ret;
++	ret = krn_fdt_consumer(fdt, &layout, true);
++	if (ret)
++		return ret;
++	ret = krn_fdt_region(fdt, &layout, true);
++	if (ret)
++		return ret;
++	return krn_fdt_ranges(fdt, &layout);
++}
+--- /dev/null
++++ b/include/linux/kexec_ramoops_native.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_KEXEC_RAMOOPS_NATIVE_H
++#define _LINUX_KEXEC_RAMOOPS_NATIVE_H
++
++/* Additional capacity for properties in the new FDT, never the live tree. */
++#define KEXEC_NATIVE_RAMOOPS_FDT_SLACK 1024U
++
++#ifdef CONFIG_KEXEC_NATIVE_RAMOOPS_DIAG
++int kexec_ramoops_native_fdt(void *fdt);
++#else
++static inline int kexec_ramoops_native_fdt(void *fdt)
++{
++	return 0;
++}
++#endif
++
++#endif
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -56,6 +56,18 @@
+ 	  an unknown or changed table set causes a normal machine restart.
+ 	  This preserves memory only and does not claim to quiesce the GIC.
+ 	  The legacy kexec_load interface is rejected while this is enabled.
++
++config KEXEC_NATIVE_RAMOOPS_DIAG
++	bool "Native early ramoops console for ARM64 kexec diagnostics"
++	depends on ARM64 && KEXEC_FILE && OF_RESERVED_MEM
++	depends on PSTORE_CONSOLE && PSTORE_RAM = y
++	default n
++	help
++	  With the exact kexec target command-line token
++	  kexec_diag.early_ramoops=1, convert the cloned FDT's validated existing
++	  ramoops reserved region to the native driver and disable its vendor
++	  consumer. The running FDT is not modified. This diagnostic intentionally
++	  changes which target driver owns the persistent console; say N normally.
+ 
+ config KEXEC_TARGET_TRACE
+ 	bool "ARM64 kexec target startup trace (diagnostic only)"

@@ -1,0 +1,100 @@
+Candidate diagnostic only: clear inherited AH8 CLK_REQ enables before reset.
+
+DEPENDENCY: apply only after kexec_ufs_handoff_trace_diag_6.6.89.patch
+(SHA256 874ecef29b3d6fad7917f8b0927f8bb7502362b559a39d6b0d332ce5cf698fe2)
+to the frozen complete five-object UFS vendor baseline. Input ufs-qcom.c
+SHA256 52a16b15cdeaefbd44e528f238bf9e70002e7e30ed392a0c51f329269e3965e4.
+Patch generation and host path review are separate from module application,
+build and device validation, whose results must be recorded with exact hashes.
+
+Explicit load options kexec_handoff_diag=1 AND kexec_ah8_reset_diag=1
+are required, as is /chosen/linux,booted-from-kexec. The new bool defaults
+false and has 0400 permissions. Only hardware major exactly 6 is eligible,
+with valid core/device reset controls and PHY not already powered. A nonzero
+AH8 UFS_HW_CLK_CTRL_EN mask (0x3c) is required before the one write occurs.
+
+After the original optional-device-reset rejection and before its original
+GPIO assert/BCR sequence, read AH8_CFG, clear only 0x3c, read back, execute mb(),
+and log UFSKH2 old/desired/readback/mask/full_match. Keep 0x1800 and all other
+bits unchanged in the written value. A mismatched readback is printed as
+full_match=0; it does not trigger retries, return a new result, bypass normal
+clock/PHY failures, or force any clocks. Continue the original path unchanged.
+The normal link-startup POST code still re-enables hardware clock requests.
+
+This is a bounded causal experiment for round15's observed pre-reset183c,
+not a production fix or a guarantee about reset latches, power, request-line
+levels, MMIO safety, or successful hardware state transition. Barriers/readback
+order the software sequence; only the unchanged hardware checks can establish
+whether this experiment changes the observed boot result.
+
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -99,6 +99,11 @@
+ module_param(kexec_handoff_diag, bool, 0400);
+ MODULE_PARM_DESC(kexec_handoff_diag,
+ 		 "Diagnostic-only UFS handoff register samples for kexec boots");
++
++static bool kexec_ah8_reset_diag;
++module_param(kexec_ah8_reset_diag, bool, 0400);
++MODULE_PARM_DESC(kexec_ah8_reset_diag,
++		 "Kexec-only AH8 clock-request reset experiment; default off");
+ 
+ static DEFINE_PER_CPU(struct freq_qos_request, qos_min_req);
+ 
+@@ -1009,6 +1014,47 @@
+ 		 stage, (unsigned int)host->hw_ver.major, ret,
+ 		 (unsigned int)READ_ONCE(host->is_phy_pwr_on),
+ 		 ahit, hce, cfg1, hw_version, ah8_cfg);
++}
++
++/*
++ * Causal experiment for a warm major-6 handoff, not a hardware-state proof.
++ * Disable only the existing AH8 clock-request feature before the original
++ * device GPIO/BCR sequence. Keep all unrelated AH8 bits and all original
++ * reset/PHY/error handling. Normal link-startup POST still re-enables it.
++ */
++static void ufs_qcom_kexec_ah8_reset_diag(struct ufs_hba *hba)
++{
++	struct ufs_qcom_host *host;
++	u32 old, desired, readback;
++
++	if (!READ_ONCE(kexec_ah8_reset_diag) ||
++	    !READ_ONCE(kexec_handoff_diag) || !of_chosen ||
++	    !of_property_read_bool(of_chosen, "linux,booted-from-kexec"))
++		return;
++
++	host = ufshcd_get_variant(hba);
++	if (host->hw_ver.major != 0x6 ||
++	    IS_ERR_OR_NULL(host->core_reset) ||
++	    IS_ERR_OR_NULL(host->device_reset) ||
++	    READ_ONCE(host->is_phy_pwr_on))
++		return;
++
++	old = ufshcd_readl(hba, UFS_AH8_CFG);
++	if (!(old & UFS_HW_CLK_CTRL_EN))
++		return;
++
++	desired = old & ~UFS_HW_CLK_CTRL_EN;
++	ufshcd_writel(hba, desired, UFS_AH8_CFG);
++	readback = ufshcd_readl(hba, UFS_AH8_CFG);
++	/* Finish this write/readback before the original GPIO/BCR operations. */
++	mb();
++
++	/* Mismatch is evidence, not success: no retry or forced-clock fallback. */
++	dev_info(hba->dev,
++		 "UFSKH2 stage=ah8-req-clear major=%u old=%08x desired=%08x readback=%08x mask=%08x full_match=%u\n",
++		 (unsigned int)host->hw_ver.major, old, desired, readback,
++		 (unsigned int)UFS_HW_CLK_CTRL_EN,
++		 (unsigned int)(readback == desired));
+ }
+ 
+ /*
+@@ -5369,6 +5415,8 @@
+ 	if (!host->device_reset)
+ 		return -EOPNOTSUPP;
+ 
++	ufs_qcom_kexec_ah8_reset_diag(hba);
++
+ 	/*
+ 	 * The UFS device shall detect reset pulses of 1us,
+ 	 * sleep for 10us to be on the safe side.

@@ -1,0 +1,693 @@
+From: kexec diagnostics <local>
+Subject: [DIAG] arm64: bounded opt-in user fault and task metadata
+
+Parent: shutdown-log-quiet 87bae5a7. Diagnostic only; no additional
+user VA or file-content reads. Event absence and handled SIGILL do not
+prove fatality, hardware state or task progress.
+
+--- a/arch/arm64/include/asm/kexec_user_state.h
++++ b/arch/arm64/include/asm/kexec_user_state.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __ASM_KEXEC_USER_STATE_H
++#define __ASM_KEXEC_USER_STATE_H
++
++struct pt_regs;
++
++enum kexec_user_state_origin {
++	KUSR_UNDEF = 1,
++	KUSR_BTI,
++	KUSR_FPAC,
++};
++
++#ifdef CONFIG_KEXEC_CORE
++void kexec_user_state_fault(struct pt_regs *regs, unsigned long esr,
++			   unsigned int esr_valid, unsigned int insn,
++			   unsigned int insn_valid, int code,
++			   enum kexec_user_state_origin origin);
++#else
++static inline void kexec_user_state_fault(struct pt_regs *regs,
++		unsigned long esr, unsigned int esr_valid, unsigned int insn,
++		unsigned int insn_valid, int code,
++		enum kexec_user_state_origin origin) { }
++#endif
++
++#endif /* __ASM_KEXEC_USER_STATE_H */
+--- a/arch/arm64/kernel/kexec_user_state.c
++++ b/arch/arm64/kernel/kexec_user_state.c
+@@ -0,0 +1,592 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Bounded, opt-in observations; no event here is a fatality verdict. */
++#include <linux/atomic.h>
++#include <linux/binfmts.h>
++#include <linux/dcache.h>
++#include <linux/err.h>
++#include <linux/init.h>
++#include <linux/jiffies.h>
++#include <linux/kernel.h>
++#include <linux/mm.h>
++#include <linux/mmap_lock.h>
++#include <linux/of.h>
++#include <linux/path.h>
++#include <linux/pid_namespace.h>
++#include <linux/printk.h>
++#include <linux/rcupdate.h>
++#include <linux/sched.h>
++#include <linux/sched/mm.h>
++#include <linux/sched/signal.h>
++#include <linux/sched/task.h>
++#include <linux/signal.h>
++#include <linux/stacktrace.h>
++#include <linux/string.h>
++#include <linux/workqueue.h>
++#include <asm/kexec_user_state.h>
++#include <asm/processor.h>
++#include <asm/ptrace.h>
++#include <trace/events/sched.h>
++#include <trace/events/signal.h>
++
++#define KUSR_SLOTS	4
++#define KUSR_TASKS	16
++#define KUSR_FRAMES	8
++#define KUSR_SNAPSHOT_FRAMES 32
++#define KUSR_EVENTS	32
++#define KUSR_SCAN	4096
++#define KUSR_PATH	192
++
++enum kus_role { KUS_NONE, KUS_INIT, KUS_APEXD, KUS_LINKER,
++	       KUS_CRASH, KUS_CHILD };
++
++struct kus_record {
++	struct work_struct work;
++	struct mm_struct *mm;
++	unsigned long pc, lr, sp, pstate, esr;
++	unsigned long handler, sa_flags, fault_addr;
++	unsigned int esr_valid, insn, insn_valid, slot, kind, role;
++	unsigned int info_valid, addr_valid, sender_valid, sender_uid;
++	unsigned int action_valid;
++	int code, layout, sender_pid, pid, tgid;
++	char comm[TASK_COMM_LEN];
++};
++
++struct kus_map {
++	struct path path;
++	unsigned long addr, start, end, pgoff, flags;
++	bool found, file;
++};
++
++struct kus_budget {
++	atomic_t left;
++	atomic_t dropped;
++};
++
++struct kus_snapshot {
++	struct delayed_work work;
++	unsigned int delay_ms;
++	struct kus_budget log;
++	struct kus_budget stack_log;
++};
++
++struct kus_task {
++	struct task_struct *task;
++	int ppid;
++	unsigned int role;
++};
++
++static bool kus_requested __initdata;
++static bool kus_active __ro_after_init;
++static atomic_t kus_origin_next = ATOMIC_INIT(0);
++static atomic_t kus_signal_next = ATOMIC_INIT(0);
++static atomic_t kus_event_next = ATOMIC_INIT(0);
++static struct kus_record kus_origins[KUSR_SLOTS];
++static struct kus_record kus_signals[KUSR_SLOTS];
++static struct kus_snapshot kus_snapshots[3];
++static unsigned long kus_armed_jiffies;
++
++/* Budgets include 48 bytes per line for console timestamps/prefixes. */
++#define KUS_BUDGET(n) { .left = ATOMIC_INIT(n), .dropped = ATOMIC_INIT(0) }
++static struct kus_budget kus_raw_budget = KUS_BUDGET(3072);
++static struct kus_budget kus_map_budget = KUS_BUDGET(2048);
++static struct kus_budget kus_event_budget = KUS_BUDGET(1536);
++
++static __printf(2, 3) bool kus_emit(struct kus_budget *budget,
++				  const char *fmt, ...)
++{
++	char line[384];
++	va_list args;
++	unsigned int tries;
++	int len, left, charge;
++
++	va_start(args, fmt);
++	len = vscnprintf(line, sizeof(line), fmt, args);
++	va_end(args);
++	if (len == sizeof(line) - 1)
++		line[len - 1] = '\n';
++	charge = len + 48;
++	for (tries = 0; tries < 4; tries++) {
++		left = atomic_read(&budget->left);
++		if (left < charge)
++			break;
++		if (atomic_cmpxchg(&budget->left, left, left - charge) == left) {
++			pr_emerg("%s", line);
++			return true;
++		}
++	}
++	atomic_inc(&budget->dropped);
++	return false;
++}
++
++static int __init kus_setup(char *arg)
++{
++	if (!arg || strcmp(arg, "1"))
++		return 0;
++	kus_requested = true;
++	return 1;
++}
++__setup("kexec_diag.user_state=", kus_setup);
++
++/* Bounded CAS budget: contention can lose an observation, never wrap the cap. */
++static int kus_slot(atomic_t *next, unsigned int limit)
++{
++	unsigned int tries;
++	int n;
++
++	for (tries = 0; tries < limit; tries++) {
++		n = atomic_read(next);
++		if (n >= limit)
++			return -1;
++		if (atomic_cmpxchg(next, n, n + 1) == n)
++			return n;
++	}
++	return -1;
++}
++
++/* Do not acquire task_lock in signal_deliver's IRQ-off siglock context. */
++static void kus_comm(struct task_struct *p, char *comm)
++{
++	unsigned int i;
++
++	for (i = 0; i < TASK_COMM_LEN - 1; i++)
++		comm[i] = READ_ONCE(p->comm[i]);
++	comm[TASK_COMM_LEN - 1] = 0;
++}
++
++static unsigned int kus_role(struct task_struct *p, const char *comm)
++{
++	if (task_pid_nr(p) == 1)
++		return KUS_INIT;
++	if (!strncmp(comm, "apexd", 5))
++		return KUS_APEXD;
++	if (!strcmp(comm, "linkerconfig"))
++		return KUS_LINKER;
++	return KUS_NONE;
++}
++
++static const char *kus_role_name(unsigned int role)
++{
++	switch (role) {
++	case KUS_INIT: return "pid1";
++	case KUS_APEXD: return "apexd";
++	case KUS_LINKER: return "linkerconfig";
++	case KUS_CRASH: return "crash_dump";
++	case KUS_CHILD: return "pid1-child";
++	default: return "none";
++	}
++}
++
++/* Caller holds RCU for real_parent.  These samples are not atomic with exec. */
++static unsigned int kus_related(struct task_struct *p, const char *comm)
++{
++	unsigned int role = kus_role(p, comm);
++	struct task_struct *parent;
++
++	if (role)
++		return role;
++	if (!strncmp(comm, "crash_dump", 10))
++		return KUS_CRASH;
++	parent = rcu_dereference(p->real_parent);
++	if (!(READ_ONCE(p->flags) & PF_KTHREAD) && task_pid_nr(parent) == 1)
++		return KUS_CHILD;
++	return KUS_NONE;
++}
++
++static void kus_vma_work(struct work_struct *work)
++{
++	struct kus_record *r = container_of(work, struct kus_record, work);
++	struct mm_struct *mm = xchg(&r->mm, NULL);
++	struct kus_map maps[2] = { };
++	struct vm_area_struct *vma;
++	char path_buf[KUSR_PATH];
++	char *path;
++	unsigned int i;
++
++	if (!mm)
++		return;
++	maps[0].addr = r->pc;
++	maps[1].addr = r->lr;
++	if (!mmap_read_trylock(mm)) {
++		kus_emit(&kus_map_budget, "KUSR1 kind=vma source=%u slot=%u pid=%d result=lock-busy\n",
++			 r->kind, r->slot, r->pid);
++		goto put_mm;
++	}
++	for (i = 0; i < ARRAY_SIZE(maps); i++) {
++		vma = find_vma(mm, maps[i].addr);
++		if (!vma || maps[i].addr < vma->vm_start ||
++		    maps[i].addr >= vma->vm_end)
++			continue;
++		maps[i].found = true;
++		maps[i].start = vma->vm_start;
++		maps[i].end = vma->vm_end;
++		maps[i].pgoff = vma->vm_pgoff;
++		maps[i].flags = vma->vm_flags;
++		if (vma->vm_file) {
++			maps[i].path = vma->vm_file->f_path;
++			path_get(&maps[i].path);
++			maps[i].file = true;
++		}
++	}
++	mmap_read_unlock(mm);
++	/* No pathname callback, printk or backing-memory read under mmap_lock. */
++	for (i = 0; i < ARRAY_SIZE(maps); i++) {
++		kus_emit(&kus_map_budget, "KUSR1 kind=vma source=%u slot=%u pid=%d reg=%s raw=%lx found=%u start=%lx end=%lx pgoff=%lx flags=%lx worker_time=1\n",
++			 r->kind, r->slot, r->pid, i ? "lr" : "pc",
++			 maps[i].addr, maps[i].found, maps[i].start,
++			 maps[i].end, maps[i].pgoff, maps[i].flags);
++		if (!maps[i].file)
++			continue;
++		path = d_path(&maps[i].path, path_buf, sizeof(path_buf));
++		if (IS_ERR(path))
++			kus_emit(&kus_map_budget, "KUSR1 kind=path source=%u slot=%u pid=%d reg=%s error=%ld worker_root=1\n",
++				 r->kind, r->slot, r->pid, i ? "lr" : "pc",
++				 PTR_ERR(path));
++		else
++			kus_emit(&kus_map_budget, "KUSR1 kind=path source=%u slot=%u pid=%d reg=%s path=%s worker_root=1\n",
++				 r->kind, r->slot, r->pid, i ? "lr" : "pc", path);
++		path_put(&maps[i].path);
++	}
++put_mm:
++	mmput(mm);
++}
++
++static void kus_queue_mm(struct kus_record *r)
++{
++	struct mm_struct *mm = current->mm;
++
++	if (!mm || !mmget_not_zero(mm))
++		return;
++	WRITE_ONCE(r->mm, mm);
++	/* Each immutable slot has one virgin work item; xchg also guards fallback. */
++	if (!queue_work(system_unbound_wq, &r->work)) {
++		mm = xchg(&r->mm, NULL);
++		if (mm)
++			mmput_async(mm);
++	}
++}
++
++static void kus_regs(struct kus_record *r, struct pt_regs *regs,
++		     unsigned int role, const char *comm)
++{
++	r->role = role;
++	r->pid = task_pid_nr(current);
++	r->tgid = task_tgid_nr(current);
++	memcpy(r->comm, comm, TASK_COMM_LEN);
++	r->pc = regs->pc;
++	r->lr = regs->regs[30];
++	r->sp = regs->sp;
++	r->pstate = regs->pstate;
++}
++
++void kexec_user_state_fault(struct pt_regs *regs, unsigned long esr,
++			   unsigned int esr_valid, unsigned int insn,
++			   unsigned int insn_valid, int code,
++			   enum kexec_user_state_origin origin)
++{
++	struct kus_record *r;
++	char comm[TASK_COMM_LEN];
++	unsigned int role;
++	int slot;
++
++	if (!smp_load_acquire(&kus_active) || !user_mode(regs))
++		return;
++	kus_comm(current, comm);
++	role = kus_role(current, comm);
++	if (!role)
++		return;
++	slot = kus_slot(&kus_origin_next, KUSR_SLOTS);
++	if (slot < 0)
++		return;
++	r = &kus_origins[slot];
++	kus_regs(r, regs, role, comm);
++	r->esr = esr;
++	r->esr_valid = esr_valid;
++	r->insn = insn;
++	r->insn_valid = insn_valid;
++	r->code = code;
++	kus_emit(&kus_raw_budget, "KUSR1 kind=el0 slot=%u role=%s pid=%d tgid=%d comm=%s origin=%u pc=%lx lr=%lx sp=%lx pstate=%lx esr_valid=%u esr=%lx insn_valid=%u insn=%08x code=%d fatal_verdict=0\n",
++		 r->slot, kus_role_name(role), r->pid, r->tgid, r->comm,
++		 origin, r->pc, r->lr, r->sp, r->pstate, r->esr_valid,
++		 r->esr, r->insn_valid, r->insn, r->code);
++	kus_queue_mm(r);
++}
++
++static void kus_signal(void *unused, int sig, struct kernel_siginfo *info,
++		       struct k_sigaction *ka)
++{
++	struct kus_record *r;
++	struct pt_regs *regs;
++	char comm[TASK_COMM_LEN];
++	const char *action = "unknown";
++	unsigned int role;
++	int slot;
++
++	if (!smp_load_acquire(&kus_active) || sig != SIGILL)
++		return;
++	regs = task_pt_regs(current);
++	if (!user_mode(regs))
++		return;
++	kus_comm(current, comm);
++	role = kus_role(current, comm);
++	if (!role)
++		return;
++	slot = kus_slot(&kus_signal_next, KUSR_SLOTS);
++	if (slot < 0)
++		return;
++	r = &kus_signals[slot];
++	kus_regs(r, regs, role, comm);
++	if (info != SEND_SIG_NOINFO && info != SEND_SIG_PRIV) {
++		r->info_valid = 1;
++		r->code = info->si_code;
++		r->layout = siginfo_layout(SIGILL, r->code);
++		if (r->layout == SIL_FAULT) {
++			r->addr_valid = 1;
++			r->fault_addr = (unsigned long)info->si_addr;
++		} else if (r->code == SI_USER || r->code == SI_TKILL) {
++			r->sender_valid = 1;
++			r->sender_pid = info->si_pid;
++			r->sender_uid = info->si_uid;
++		}
++	}
++	if (ka) {
++		r->action_valid = 1;
++		r->handler = (unsigned long)ka->sa.sa_handler;
++		r->sa_flags = ka->sa.sa_flags;
++		action = ka->sa.sa_handler == SIG_DFL ? "default" :
++			 ka->sa.sa_handler == SIG_IGN ? "ignore" : "user";
++	}
++	kus_emit(&kus_raw_budget, "KUSR1 kind=signal slot=%u role=%s pid=%d tgid=%d comm=%s sig=%d info_valid=%u code=%d layout=%d action_valid=%u action=%s handler=%lx flags=%lx fatal_verdict=0\n",
++		 r->slot, kus_role_name(role), r->pid, r->tgid, r->comm,
++		 sig, r->info_valid, r->code, r->layout, r->action_valid,
++		 action, r->handler, r->sa_flags);
++	kus_emit(&kus_raw_budget, "KUSR1 kind=signal-raw slot=%u pid=%d pc=%lx lr=%lx sp=%lx pstate=%lx esr_valid=0 insn_valid=0 addr_valid=%u addr=%lx sender_valid=%u sender_pid=%d sender_uid=%u\n",
++		 r->slot, r->pid, r->pc, r->lr, r->sp, r->pstate,
++		 r->addr_valid, r->fault_addr, r->sender_valid,
++		 r->sender_pid, r->sender_uid);
++	kus_queue_mm(r);
++}
++
++static unsigned int kus_event_role(struct task_struct *p,
++				   char comm[TASK_COMM_LEN])
++{
++	unsigned int role;
++
++	kus_comm(p, comm);
++	rcu_read_lock();
++	role = kus_related(p, comm);
++	rcu_read_unlock();
++	return role;
++}
++
++static void kus_exec(void *unused, struct task_struct *p, pid_t old_pid,
++		     struct linux_binprm *bprm)
++{
++	char comm[TASK_COMM_LEN], filename[KUSR_PATH];
++	unsigned int role;
++	int slot;
++
++	if (!smp_load_acquire(&kus_active))
++		return;
++	role = kus_event_role(p, comm);
++	if (!role)
++		return;
++	slot = kus_slot(&kus_event_next, KUSR_EVENTS);
++	if (slot < 0)
++		return;
++	strscpy(filename, bprm->filename ? bprm->filename : "<null>",
++		sizeof(filename));
++	kus_emit(&kus_event_budget, "KUSR1 kind=exec slot=%d role=%s pid=%d tgid=%d old_pid=%d comm=%s file=%s per_thread=1\n",
++		 slot, kus_role_name(role), task_pid_nr(p), task_tgid_nr(p),
++		 old_pid, comm, filename);
++}
++
++static void kus_exit(void *unused, struct task_struct *p)
++{
++	char comm[TASK_COMM_LEN];
++	unsigned int role;
++	int slot;
++
++	if (!smp_load_acquire(&kus_active))
++		return;
++	role = kus_event_role(p, comm);
++	if (!role)
++		return;
++	slot = kus_slot(&kus_event_next, KUSR_EVENTS);
++	if (slot < 0)
++		return;
++	kus_emit(&kus_event_budget, "KUSR1 kind=exit slot=%d role=%s pid=%d tgid=%d comm=%s raw_wait=0x%x group_flags=0x%x group_exit=0x%x per_thread=1\n",
++		 slot, kus_role_name(role), task_pid_nr(p), task_tgid_nr(p),
++		 comm, (unsigned int)READ_ONCE(p->exit_code),
++		 READ_ONCE(p->signal->flags),
++		 (unsigned int)READ_ONCE(p->signal->group_exit_code));
++}
++
++/* RCU-only collection: references, scalar parent id, no print or stack walk. */
++static void kus_add_task(struct kus_task *tasks, unsigned int *nr,
++			 struct task_struct *p, unsigned int role)
++{
++	unsigned int i;
++
++	if (!role || *nr >= KUSR_TASKS)
++		return;
++	for (i = 0; i < *nr; i++)
++		if (tasks[i].task == p)
++			return;
++	get_task_struct(p);
++	tasks[*nr].task = p;
++	tasks[*nr].ppid = task_pid_nr(rcu_dereference(p->real_parent));
++	tasks[*nr].role = role;
++	(*nr)++;
++}
++
++static void kus_snapshot_work(struct work_struct *work)
++{
++	struct kus_snapshot *s = container_of(to_delayed_work(work),
++					    struct kus_snapshot, work);
++	struct kus_task tasks[KUSR_TASKS] = { };
++	struct task_struct *p, *g;
++	unsigned long frames[KUSR_FRAMES];
++	unsigned int nr = 0, scanned = 0, i, j, nframes, state, exitstate;
++	unsigned int emitted = 0, omitted = 0, emit;
++	unsigned int role;
++	int on_cpu;
++	char comm[TASK_COMM_LEN];
++
++	if (!smp_load_acquire(&kus_active))
++		return;
++	rcu_read_lock();
++	p = find_task_by_pid_ns(1, &init_pid_ns);
++	if (p)
++		kus_add_task(tasks, &nr, p, KUS_INIT);
++	/* Relevant leaders before generic PID1 children, all before threads. */
++	for_each_process(p) {
++		if (++scanned > KUSR_SCAN || nr == KUSR_TASKS)
++			break;
++		kus_comm(p, comm);
++		role = kus_role(p, comm);
++		if (!role && !strncmp(comm, "crash_dump", 10))
++			role = KUS_CRASH;
++		kus_add_task(tasks, &nr, p, role);
++	}
++	scanned = 0;
++	for_each_process(p) {
++		if (++scanned > KUSR_SCAN || nr == KUSR_TASKS)
++			break;
++		if (!(READ_ONCE(p->flags) & PF_KTHREAD) &&
++		    task_pid_nr(rcu_dereference(p->real_parent)) == 1)
++			kus_add_task(tasks, &nr, p, KUS_CHILD);
++	}
++	scanned = 0;
++	for_each_process_thread(g, p) {
++		if (++scanned > KUSR_SCAN || nr == KUSR_TASKS)
++			goto collected;
++		kus_comm(p, comm);
++		role = kus_role(p, comm);
++		if (!role && !strncmp(comm, "crash_dump", 10))
++			role = KUS_CRASH;
++		kus_add_task(tasks, &nr, p, role);
++	}
++collected:
++	rcu_read_unlock();
++	kus_emit(&s->log, "KUSR1 kind=snapshot delay_ms=%u elapsed_ms=%u tasks=%u limit=%u non_atomic=1 running_stack_may_be_stale=1\n",
++		 s->delay_ms, jiffies_to_msecs(jiffies - kus_armed_jiffies),
++		 nr, KUSR_TASKS);
++	for (i = 0; i < nr; i++) {
++		p = tasks[i].task;
++		kus_comm(p, comm);
++		state = READ_ONCE(p->__state);
++		exitstate = READ_ONCE(p->exit_state);
++		kus_emit(&s->log, "KUSR1 kind=task delay_ms=%u role=%s pid=%d tgid=%d ppid=%d comm=%s state=%c raw_state=%x exit_state=%x cpu=%u on_cpu=%d on_rq=%d policy=%u prio=%d nvcsw=%lu nivcsw=%lu non_atomic=1\n",
++			 s->delay_ms, kus_role_name(tasks[i].role), task_pid_nr(p),
++			 task_tgid_nr(p), tasks[i].ppid, comm,
++			 task_index_to_char(__task_state_index(state, exitstate)),
++			 state, exitstate, task_cpu(p), READ_ONCE(p->on_cpu),
++			 READ_ONCE(p->on_rq), READ_ONCE(p->policy),
++			 READ_ONCE(p->prio), READ_ONCE(p->nvcsw),
++			 READ_ONCE(p->nivcsw));
++	}
++	for (i = 0; i < nr; i++) {
++		p = tasks[i].task;
++		state = READ_ONCE(p->__state);
++		nframes = 0;
++		on_cpu = READ_ONCE(p->on_cpu);
++		if (state == TASK_RUNNING || on_cpu) {
++			kus_emit(&s->stack_log, "KUSR1 kind=stack-skip delay_ms=%u pid=%d reason=running-or-on-cpu best_effort=1\n",
++				 s->delay_ms, task_pid_nr(p));
++		} else {
++#ifdef CONFIG_STACKTRACE
++			nframes = stack_trace_save_tsk(p, frames, ARRAY_SIZE(frames), 0);
++#endif
++		}
++		emit = min(nframes, KUSR_SNAPSHOT_FRAMES - emitted);
++		omitted += nframes - emit;
++		for (j = 0; j < emit; j++) {
++			if (kus_emit(&s->stack_log, "KUSR1 kind=stack delay_ms=%u pid=%d frame=%u pc=%lx symbol=%pS best_effort=1\n",
++				     s->delay_ms, task_pid_nr(p), j, frames[j],
++				     (void *)frames[j]))
++				emitted++;
++			else
++				omitted++;
++		}
++		put_task_struct(p);
++	}
++	pr_emerg("KUSR1 kind=snapshot-end delay_ms=%u frames=%u captured_frames_omitted=%u messages_omitted=%d stack_messages_omitted=%d raw_omitted=%d vma_omitted=%d event_omitted=%d\n",
++		 s->delay_ms, emitted, omitted, atomic_read(&s->log.dropped),
++		 atomic_read(&s->stack_log.dropped),
++		 atomic_read(&kus_raw_budget.dropped),
++		 atomic_read(&kus_map_budget.dropped),
++		 atomic_read(&kus_event_budget.dropped));
++}
++
++static int __init kus_init(void)
++{
++	static const unsigned int delays[] = { 5000, 12000, 24000 };
++	unsigned int i;
++	int ret;
++
++	if (!kus_requested || !of_chosen ||
++	    !of_property_read_bool(of_chosen, "linux,booted-from-kexec"))
++		return 0;
++	for (i = 0; i < KUSR_SLOTS; i++) {
++		INIT_WORK(&kus_origins[i].work, kus_vma_work);
++		INIT_WORK(&kus_signals[i].work, kus_vma_work);
++		kus_origins[i].slot = kus_signals[i].slot = i;
++		kus_origins[i].kind = 1;
++		kus_signals[i].kind = 2;
++	}
++	for (i = 0; i < ARRAY_SIZE(kus_snapshots); i++) {
++		INIT_DELAYED_WORK(&kus_snapshots[i].work, kus_snapshot_work);
++		kus_snapshots[i].delay_ms = delays[i];
++		atomic_set(&kus_snapshots[i].log.left, 1536);
++		atomic_set(&kus_snapshots[i].log.dropped, 0);
++		atomic_set(&kus_snapshots[i].stack_log.left, 1024);
++		atomic_set(&kus_snapshots[i].stack_log.dropped, 0);
++	}
++	ret = register_trace_signal_deliver(kus_signal, NULL);
++	if (ret)
++		goto failed;
++	ret = register_trace_sched_process_exec(kus_exec, NULL);
++	if (ret)
++		goto unreg_signal;
++	ret = register_trace_sched_process_exit(kus_exit, NULL);
++	if (ret)
++		goto unreg_exec;
++	kus_armed_jiffies = jiffies;
++	smp_store_release(&kus_active, true);
++	pr_emerg("KUSR1 kind=armed origin_limit=%u signal_limit=%u event_limit=%u task_limit=%u frame_limit=%u delays_ms=5000,12000,24000 fatal_verdict=0\n",
++		 KUSR_SLOTS, KUSR_SLOTS, KUSR_EVENTS, KUSR_TASKS, KUSR_FRAMES);
++	for (i = 0; i < ARRAY_SIZE(kus_snapshots); i++)
++		queue_delayed_work(system_unbound_wq, &kus_snapshots[i].work,
++				   msecs_to_jiffies(delays[i]));
++	return 0;
++
++unreg_exec:
++	unregister_trace_sched_process_exec(kus_exec, NULL);
++unreg_signal:
++	unregister_trace_signal_deliver(kus_signal, NULL);
++	tracepoint_synchronize_unregister();
++failed:
++	pr_emerg("KUSR1 kind=init-failed error=%d active=0\n", ret);
++	return 0;
++}
++late_initcall(kus_init);
+--- a/arch/arm64/kernel/Makefile
++++ b/arch/arm64/kernel/Makefile
+@@ -63,6 +63,7 @@
+ obj-$(CONFIG_KEXEC_CORE)		+= machine_kexec.o relocate_kernel.o	\
+ 					   cpu-reset.o
+ obj-$(CONFIG_KEXEC_FILE)		+= machine_kexec_file.o kexec_image.o
++obj-$(CONFIG_KEXEC_CORE)		+= kexec_user_state.o
+ obj-$(CONFIG_KEXEC_TARGET_TRACE)	+= kexec_target_trace.o
+ KASAN_SANITIZE_kexec_target_trace.o := n
+ KCSAN_SANITIZE_kexec_target_trace.o := n
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -41,6 +41,7 @@
+ #include <asm/extable.h>
+ #include <asm/insn.h>
+ #include <asm/kprobes.h>
++#include <asm/kexec_user_state.h>
+ #include <asm/patching.h>
+ #include <asm/traps.h>
+ #include <asm/smp.h>
+@@ -455,7 +456,8 @@
+ 
+ void do_el0_undef(struct pt_regs *regs, unsigned long esr)
+ {
+-	u32 insn;
++	u32 insn = 0;
++	bool insn_valid = false;
+ 
+ 	/* check for AArch32 breakpoint instructions */
+ 	if (!aarch32_break_handler(regs))
+@@ -463,6 +465,7 @@
+ 
+ 	if (user_insn_read(regs, &insn))
+ 		goto out_err;
++	insn_valid = true;
+ 
+ 	if (try_emulate_mrs(regs, insn))
+ 		return;
+@@ -471,6 +474,8 @@
+ 		return;
+ 
+ out_err:
++	kexec_user_state_fault(regs, esr, 1, insn, insn_valid,
++			       ILL_ILLOPC, KUSR_UNDEF);
+ 	force_signal_inject(SIGILL, ILL_ILLOPC, regs->pc, 0);
+ }
+ 
+@@ -491,6 +496,7 @@
+ 
+ void do_el0_bti(struct pt_regs *regs)
+ {
++	kexec_user_state_fault(regs, 0, 0, 0, 0, ILL_ILLOPC, KUSR_BTI);
+ 	force_signal_inject(SIGILL, ILL_ILLOPC, regs->pc, 0);
+ }
+ 
+@@ -507,6 +513,7 @@
+ 
+ void do_el0_fpac(struct pt_regs *regs, unsigned long esr)
+ {
++	kexec_user_state_fault(regs, esr, 1, 0, 0, ILL_ILLOPN, KUSR_FPAC);
+ 	force_signal_inject(SIGILL, ILL_ILLOPN, regs->pc, esr);
+ }
+ 

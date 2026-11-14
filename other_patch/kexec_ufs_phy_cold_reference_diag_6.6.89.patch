@@ -1,0 +1,63 @@
+From: local kexec diagnosis
+Subject: [DIAG] Add explicit normal-boot PHY reference selection
+
+Requires, in order, kexec_ufs_phy_power_trace_diag_6.6.89.patch
+(41fac91334e9d356d89e9d21a93f85d3b20363cc6342fd583deffcabe83a72fc)
+and kexec_ufs_phy_local_read_diag_6.6.89.patch
+(90f59d038dcc0a2a0d5e50cb32f2d1f594743c72b14ad8138dbfa3242b9d7375).
+The input generic PHY C is SHA256
+657d912514557bd4785993e77f64ed6bc6b52458253faba13a722a6a027f1ddc.
+
+Keep the original kexec predicate as the first independent branch. A new
+default-false0400 option permits the existing diagnostics on a normal boot
+only when powertrace and localread are both explicitly enabled, chosen is
+present without the kexec marker, and exact Sun/major6 still match. Print
+one cold-reference path marker at selection, per power_on invocation.
+No existing sampling point, PHY/BCR/regulator/clock/reset operation, order,
+timeout, cleanup, structure or error handling changes. A normal-boot
+reference is a comparison experiment; no hardware repair is claimed.
+
+--- a/drivers/phy/qualcomm/phy-qcom-ufs.c
++++ b/drivers/phy/qualcomm/phy-qcom-ufs.c
+@@ -8,6 +8,11 @@
+ 
+ /* Diagnostic reads only; use the real vendor API instead of a CONFIG stub. */
+ extern void gdsc_debug_print_regs(struct regulator *regulator);
++
++static bool kexec_ufs_phy_cold_reference_diag;
++module_param(kexec_ufs_phy_cold_reference_diag, bool, 0400);
++MODULE_PARM_DESC(kexec_ufs_phy_cold_reference_diag,
++		"Allow explicit normal-boot Sun PHY power/read reference samples");
+ 
+ static bool kexec_ufs_phy_local_read_diag;
+ module_param(kexec_ufs_phy_local_read_diag, bool, 0400);
+@@ -44,11 +49,25 @@
+ 
+ static bool ufs_qcom_phy_power_trace_enabled(struct ufs_qcom_phy *phy)
+ {
+-	return kexec_ufs_phy_power_trace_diag && of_chosen &&
+-		of_property_read_bool(of_chosen, "linux,booted-from-kexec") &&
+-		of_device_is_compatible(phy->dev->of_node,
++	/* Preserve the original kexec predicate independently of the new option. */
++	if (kexec_ufs_phy_power_trace_diag && of_chosen &&
++	    of_property_read_bool(of_chosen, "linux,booted-from-kexec") &&
++	    of_device_is_compatible(phy->dev->of_node,
+ 					"qcom,ufs-phy-qmp-v4-sun") &&
+-		phy->host_ctrl_rev_major == 6;
++	    phy->host_ctrl_rev_major == 6)
++		return true;
++
++	if (!READ_ONCE(kexec_ufs_phy_cold_reference_diag) ||
++	    !READ_ONCE(kexec_ufs_phy_power_trace_diag) ||
++	    !READ_ONCE(kexec_ufs_phy_local_read_diag) || !of_chosen ||
++	    of_property_read_bool(of_chosen, "linux,booted-from-kexec") ||
++	    !of_device_is_compatible(phy->dev->of_node,
++					 "qcom,ufs-phy-qmp-v4-sun") ||
++	    phy->host_ctrl_rev_major != 6)
++		return false;
++
++	dev_info(phy->dev, "UFSPWR3 stage=guard path=cold-reference major=6\n");
++	return true;
+ }
+ 
+ /* Mask order: GDSC, QREF, REFGEN, PHY, PLL, optional device pad rail. */

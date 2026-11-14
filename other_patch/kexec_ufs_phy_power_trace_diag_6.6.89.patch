@@ -1,0 +1,209 @@
+From: local kexec diagnosis
+Subject: [DIAG] Trace existing Sun UFS PHY power calls and GDSC reads
+
+Default-off target-only observations. Preserve original regulator and clock
+calls, ignored qref result, error propagation, cleanup and ordering. Reuse
+the real GPL GDSC dump API in normal PHY context, without CONFIG stubs,
+new power writes, struct changes or claims of a production handoff fix.
+
+--- a/drivers/phy/qualcomm/phy-qcom-ufs.c
++++ b/drivers/phy/qualcomm/phy-qcom-ufs.c
+@@ -5,6 +5,60 @@
+  */
+ 
+ #include "phy-qcom-ufs-i.h"
++
++/* Diagnostic reads only; use the real vendor API instead of a CONFIG stub. */
++extern void gdsc_debug_print_regs(struct regulator *regulator);
++
++static bool kexec_ufs_phy_power_trace_diag;
++module_param(kexec_ufs_phy_power_trace_diag, bool, 0400);
++MODULE_PARM_DESC(kexec_ufs_phy_power_trace_diag,
++		"Trace existing Sun PHY power calls during explicit kexec diagnosis");
++
++static bool ufs_qcom_phy_power_trace_enabled(struct ufs_qcom_phy *phy)
++{
++	return kexec_ufs_phy_power_trace_diag && of_chosen &&
++		of_property_read_bool(of_chosen, "linux,booted-from-kexec") &&
++		of_device_is_compatible(phy->dev->of_node,
++					"qcom,ufs-phy-qmp-v4-sun") &&
++		phy->host_ctrl_rev_major == 6;
++}
++
++/* Mask order: GDSC, QREF, REFGEN, PHY, PLL, optional device pad rail. */
++static void ufs_qcom_phy_power_trace_state(struct ufs_qcom_phy *phy,
++					 bool diag, const char *stage,
++					 bool ret_valid, int ret)
++{
++	struct ufs_qcom_phy_vreg *rails[] = {
++		&phy->vdd_phy_gdsc, &phy->vdda_qref, &phy->vdda_refgen,
++		&phy->vdda_phy, &phy->vdda_pll, &phy->vddp_ref_clk,
++	};
++	u32 present = 0, enabled = 0;
++	int i;
++
++	if (!diag)
++		return;
++	for (i = 0; i < ARRAY_SIZE(rails); i++) {
++		if (!IS_ERR_OR_NULL(rails[i]->reg))
++			present |= BIT(i);
++		if (rails[i]->enabled)
++			enabled |= BIT(i);
++	}
++	dev_info(phy->dev,
++		 "UFSPWR1 stage=%s major=%u ref_cached=%u iface_cached=%u qref_present=%u aux_present=%u vreg_present_mask=%x vreg_enabled_mask=%x ret_valid=%u ret=%d\n",
++		 stage, phy->host_ctrl_rev_major, phy->is_ref_clk_enabled,
++		 phy->is_iface_clk_enabled, !IS_ERR_OR_NULL(phy->qref_clk),
++		 !IS_ERR_OR_NULL(phy->ref_aux_clk), present, enabled,
++		 ret_valid, ret);
++}
++
++static void ufs_qcom_phy_power_trace_gdsc(struct ufs_qcom_phy *phy,
++					bool diag, const char *stage)
++{
++	if (!diag || IS_ERR_OR_NULL(phy->vdd_phy_gdsc.reg))
++		return;
++	dev_info(phy->dev, "UFSPWR1 stage=%s provider=gdsc-regulator\n", stage);
++	gdsc_debug_print_regs(phy->vdd_phy_gdsc.reg);
++}
+ 
+ #define MAX_PROP_NAME              32
+ #define VDDA_PHY_MIN_UV            880000
+@@ -461,9 +515,13 @@
+ }
+ 
+ static int ufs_qcom_phy_enable_vreg(struct device *dev,
+-			     struct ufs_qcom_phy_vreg *vreg)
++			     struct ufs_qcom_phy_vreg *vreg, bool diag)
+ {
+ 	int ret = 0;
++	bool before_enabled = false;
++
++	if (diag && vreg)
++		before_enabled = vreg->enabled;
+ 
+ 	if (!vreg || vreg->enabled)
+ 		goto out;
+@@ -484,19 +542,29 @@
+ 
+ 	vreg->enabled = true;
+ out:
++	if (diag)
++		dev_info(dev, "UFSPWR1 stage=vreg-return rail=%s reg_present=%u cached_before=%u cached_after=%u ret=%d\n",
++			 vreg ? vreg->name : "(null)",
++			 vreg && !IS_ERR_OR_NULL(vreg->reg), before_enabled,
++			 vreg && vreg->enabled, ret);
+ 	return ret;
+ }
+ 
+-static int ufs_qcom_phy_enable_ref_clk(struct ufs_qcom_phy *phy)
++static int ufs_qcom_phy_enable_ref_clk(struct ufs_qcom_phy *phy, bool diag)
+ {
+ 	int ret = 0;
+ 
+ 	if (phy->is_ref_clk_enabled)
+ 		goto out;
+ 
+-	/* qref clk signal is optional */
+-	if (phy->qref_clk)
+-		clk_prepare_enable(phy->qref_clk);
++	/* qref clk signal is optional; its original error stays ignored. */
++	if (phy->qref_clk) {
++		int qref_ret = clk_prepare_enable(phy->qref_clk);
++
++		if (diag)
++			dev_info(phy->dev, "UFSPWR1 stage=qref-return combined_ret=%d ignored=1\n",
++				 qref_ret);
++	}
+ 	/*
+ 	 * reference clock is propagated in a daisy-chained manner from
+ 	 * source to phy, so ungate them at each stage.
+@@ -540,7 +608,11 @@
+ 	 * before trying to enable the clock.
+ 	 */
+ 	if (phy->ref_aux_clk) {
++		ufs_qcom_phy_power_trace_state(phy, diag, "aux-before", false, 0);
++		ufs_qcom_phy_power_trace_gdsc(phy, diag, "gdsc-before-aux");
+ 		ret = clk_prepare_enable(phy->ref_aux_clk);
++		ufs_qcom_phy_power_trace_state(phy, diag, "aux-after", true, ret);
++		ufs_qcom_phy_power_trace_gdsc(phy, diag, "gdsc-after-aux");
+ 		if (ret) {
+ 			dev_err(phy->dev, "%s: ref_aux_clk enable failed %d\n",
+ 					__func__, ret);
+@@ -756,10 +828,13 @@
+ {
+ 	struct ufs_qcom_phy *phy_common = get_ufs_qcom_phy(generic_phy);
+ 	struct device *dev = phy_common->dev;
++	bool diag = ufs_qcom_phy_power_trace_enabled(phy_common);
+ 	int err;
+ 
++	ufs_qcom_phy_power_trace_state(phy_common, diag, "power-on-enter", false, 0);
++	ufs_qcom_phy_power_trace_gdsc(phy_common, diag, "gdsc-before-vote");
+ 	if (phy_common->vdd_phy_gdsc.reg) {
+-		err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdd_phy_gdsc);
++		err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdd_phy_gdsc, diag);
+ 		if (err) {
+ 			dev_err(dev, "%s enable phy_gdsc failed, err=%d\n",
+ 				__func__, err);
+@@ -768,7 +843,7 @@
+ 	}
+ 
+ 	if (phy_common->vdda_qref.reg) {
+-		err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdda_qref);
++		err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdda_qref, diag);
+ 		if (err) {
+ 			dev_err(dev, "%s enable vdda_qref failed, err=%d\n",
+ 				__func__, err);
+@@ -777,7 +852,7 @@
+ 	}
+ 
+ 	if (phy_common->vdda_refgen.reg) {
+-		err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdda_refgen);
++		err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdda_refgen, diag);
+ 		if (err) {
+ 			dev_err(dev, "%s enable vdda_refgen failed, err=%d\n",
+ 				__func__, err);
+@@ -785,7 +860,7 @@
+ 		}
+ 	}
+ 
+-	err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdda_phy);
++	err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdda_phy, diag);
+ 	if (err) {
+ 		dev_err(dev, "%s enable vdda_phy failed, err=%d\n",
+ 			__func__, err);
+@@ -795,7 +870,7 @@
+ 	phy_common->phy_spec_ops->power_control(phy_common, true);
+ 
+ 	/* vdda_pll also enables ref clock LDOs so enable it first */
+-	err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdda_pll);
++	err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdda_pll, diag);
+ 	if (err) {
+ 		dev_err(dev, "%s enable vdda_pll failed, err=%d\n",
+ 			__func__, err);
+@@ -809,7 +884,7 @@
+ 		goto out_disable_pll;
+ 	}
+ 
+-	err = ufs_qcom_phy_enable_ref_clk(phy_common);
++	err = ufs_qcom_phy_enable_ref_clk(phy_common, diag);
+ 	if (err) {
+ 		dev_err(dev, "%s enable phy ref clock failed, err=%d\n",
+ 			__func__, err);
+@@ -819,7 +894,7 @@
+ 	/* enable device PHY ref_clk pad rail */
+ 	if (phy_common->vddp_ref_clk.reg) {
+ 		err = ufs_qcom_phy_enable_vreg(dev,
+-					       &phy_common->vddp_ref_clk);
++					       &phy_common->vddp_ref_clk, diag);
+ 		if (err) {
+ 			dev_err(dev, "%s enable vddp_ref_clk failed, err=%d\n",
+ 				__func__, err);
+@@ -838,6 +913,7 @@
+ out_disable_phy:
+ 	ufs_qcom_phy_disable_vreg(dev, &phy_common->vdda_phy);
+ out:
++	ufs_qcom_phy_power_trace_state(phy_common, diag, "power-on-return", true, err);
+ 	return err;
+ }
+ EXPORT_SYMBOL(ufs_qcom_phy_power_on);

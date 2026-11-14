@@ -1,0 +1,62 @@
+Diagnostic-only supplement to kexec_secure_sp_tz_reclaim_diag_6.6.89.patch.
+
+Apply directly to the base helper C SHA256
+b99466b05dfc4b360533688b8d442239dcb65c122bffc97f60b8eb126ac45dda;
+do not combine with the SCM tracing supplement for this isolation test.
+
+preserve_for_skip_diag defaults to false and is read-only (0400). Explicit true
+still requires the original armed, identity, live-DT, offline-seal, device/rproc
+locks and exact empty-pool checks. Only after pool=NULL does it bypass SCM and
+the SCM-specific owners==HLOS postcondition, then release the original locks.
+It neither reads/writes backing RAM nor changes firmware ownership. False keeps
+the original SCM arguments, owner postcondition, identity checks and logging.
+
+MANDATORY EXTERNAL PRECONDITION for explicit true: independently audit the
+actual loaded target DT, not merely its input file, to confirm both secure-sp-tz
+and secure-sp-modem heap consumers are disabled while their exact reserved
+regions remain reserved/no-map and unreused. Also complete the normal exact
+source/module/target identity and successful freeze/handoff preflight. This
+module cannot inspect or verify the loaded target DT and does not arm itself.
+
+This is a one-way, single-test mechanism isolation diagnostic, not ownership
+proof or a final fix. It preserves only the existing SP-TZ isolation operation;
+it never touches SP-modem. Seal/pool isolation are not rolled back and must not
+return to Android; all original fail-closed/reset behavior remains. The caller
+must use the verified nonreturning ARM64 kexec handoff and ordinary reset on any
+later failure. A target with either heap enabled is outside this experiment.
+
+--- a/secure_heap_reclaim.c
++++ b/secure_heap_reclaim.c
+@@ -78,6 +78,9 @@
+ static_assert(offsetof(struct rproc, recovery_disabled) == 0x4dc);
+ static_assert(offsetof(struct rproc, auto_boot) == 0x509);
+ 
++static bool preserve_for_skip_diag;
++module_param(preserve_for_skip_diag, bool, 0400);
++MODULE_PARM_DESC(preserve_for_skip_diag, "Preserve isolated SP-TZ ownership without SCM; requires external actual loaded-DT two-heap disable audit");
+ static bool armed;
+ module_param(armed, bool, 0400);
+ MODULE_PARM_DESC(armed, "Required one-use arm; consumed only by the exact frozen kexec restart notification");
+@@ -263,6 +266,14 @@
+ 	pr_emerg("phase=isolated heap=%s base=%pa size=%#lx old_owners=%#llx dst=%u perms=%u\n",
+ 		 SHRC_HEAP, &ctx.sc->carveout.base, SHRC_SIZE, owners,
+ 		 SHRC_HLOS_VMID, SHRC_HLOS_RWX);
++	if (preserve_for_skip_diag) {
++		if (!shrc_rproc_offline() || !shrc_private_identity() ||
++		    READ_ONCE(ctx.sc->carveout.pool))
++			shrc_fatal("post-preserve-identity", -EINVAL);
++		pr_emerg("phase=preserved heap=%s base=%pa size=%#lx no_scm=1 owner_unchanged_by_helper=1 pool_present=0 continue_kexec=1 external_loaded_dtb_two_heap_disabled_required=1\n",
++			 SHRC_HEAP, &ctx.sc->carveout.base, SHRC_SIZE);
++		goto release_locks;
++	}
+ 	ret = qcom_scm_assign_mem(SHRC_BASE, SHRC_SIZE, &owners, &destination, 1);
+ 	if (ret || owners != BIT_ULL(SHRC_HLOS_VMID))
+ 		shrc_fatal("scm-reclaim", ret ?: -EIO);
+@@ -271,6 +282,7 @@
+ 		shrc_fatal("post-reclaim-identity", -EINVAL);
+ 	pr_emerg("phase=reclaimed heap=%s owners_after=%#llx pool_present=0 continue_kexec=1\n",
+ 		 SHRC_HEAP, owners);
++release_locks:
+ 	up_write(&ctx.sc->carveout.mem_sem);
+ 	mutex_unlock(&ctx.rproc->lock);
+ 	device_unlock(ctx.heap_parent);

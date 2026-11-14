@@ -1,0 +1,111 @@
+Diagnostic-only persistence for the existing Normal-WB ramoops console.
+
+Default off and additionally gated by ramoops.console_flush_diag=1. Reuse the
+reviewed target logger in the source kernel so that a failed SCM return and
+intentional reset can be distinguished. No PMSG/dmesg, device permissions,
+watchdogs, secure ownership or handoff instructions are changed.
+
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -183,4 +183,19 @@
+ 	  the computation behind the value provided through the
+ 	  /sys/kernel/crash_elfcorehdr_size attribute.
+ 
++config KEXEC_RAMOOPS_FLUSH_DIAG
++	bool "Diagnostic PoC flush after native ramoops console writes"
++	depends on ARM64 && PSTORE_CONSOLE && PSTORE_RAM=y
++	default n
++	help
++	  Build a temporary kexec diagnostic option for a Normal-WB ramoops
++	  console. It remains disabled unless ramoops.console_flush_diag=1 is
++	  explicitly supplied on the kernel command line. After each console
++	  write, clean its complete validated RAM zone to the point of coherency
++	  and complete a system DSB. PMSG and dmesg writes are unaffected.
++
++	  Cleaning the complete zone after every console write can substantially
++	  slow boot and change timing. This is for a bounded diagnostic test,
++	  not a general-purpose ramoops persistence or kexec fix.
++
+ endmenu
+--- a/fs/pstore/ram.c
++++ b/fs/pstore/ram.c
+@@ -23,6 +23,11 @@
+ #include <linux/of_address.h>
+ #include <linux/mm.h>
+ 
++#ifdef CONFIG_KEXEC_RAMOOPS_FLUSH_DIAG
++#include <asm/barrier.h>
++#include <asm/cacheflush.h>
++#endif
++
+ #include "internal.h"
+ #include "ram_internal.h"
+ 
+@@ -77,6 +82,13 @@
+ module_param_named(dump_oops, ramoops_dump_oops, int, 0400);
+ MODULE_PARM_DESC(dump_oops,
+ 		 "(deprecated: use max_reason instead) set to 1 to dump oopses & panics, 0 to only dump panics");
++
++#ifdef CONFIG_KEXEC_RAMOOPS_FLUSH_DIAG
++static bool ramoops_console_flush_diag;
++module_param_named(console_flush_diag, ramoops_console_flush_diag, bool, 0400);
++MODULE_PARM_DESC(console_flush_diag,
++		 "diagnostic-only PoC clean of a Normal-WB console zone after each write");
++#endif
+ 
+ struct ramoops_context {
+ 	struct persistent_ram_zone **dprzs;	/* Oops dump zones */
+@@ -307,6 +319,45 @@
+ 	return len;
+ }
+ 
++#ifdef CONFIG_KEXEC_RAMOOPS_FLUSH_DIAG
++/* This intentionally expensive diagnostic runs only after a console write.
++ * No allocation, logging, active wait, new mapping or non-console write path.
++ * The normal probe created the zone; recheck its ownership and mapping bounds
++ * before issuing VA cache operations, including its persistent header.
++ */
++static void notrace ramoops_flush_console_diag(struct ramoops_context *cxt)
++{
++	struct persistent_ram_zone *prz = cxt->cprz;
++	unsigned long start, size;
++	phys_addr_t offset;
++
++	if (!READ_ONCE(ramoops_console_flush_diag) || cxt->memtype != 2 ||
++	    !prz || !prz->vaddr || (void *)prz->buffer != prz->vaddr ||
++	    prz->type != PSTORE_TYPE_CONSOLE || prz->ecc_info.ecc_size)
++		return;
++	start = (unsigned long)prz->vaddr;
++	size = prz->size;
++	if (!size || size != cxt->console_size || size <= 12 ||
++	    prz->buffer_size != size - 12 ||
++	    !PAGE_ALIGNED(start) || !PAGE_ALIGNED(size) ||
++	    !PAGE_ALIGNED(prz->paddr) || start + size <= start ||
++	    prz->paddr < cxt->phys_addr)
++		return;
++	offset = prz->paddr - cxt->phys_addr;
++	if (offset > cxt->size || size > cxt->size - offset)
++		return;
++	if (!pfn_valid(prz->paddr >> PAGE_SHIFT))
++		return;
++	/* CVAC covers header plus all data. The helper ends with DSB SY;
++	 * keep the completion explicit here for this diagnostic contract too.
++	 */
++	dcache_clean_poc(start, start + size);
++	dsb(sy);
++}
++#else
++static inline void ramoops_flush_console_diag(struct ramoops_context *cxt) { }
++#endif
++
+ static int notrace ramoops_pstore_write(struct pstore_record *record)
+ {
+ 	struct ramoops_context *cxt = record->psi->data;
+@@ -317,6 +368,7 @@
+ 		if (!cxt->cprz)
+ 			return -ENOMEM;
+ 		persistent_ram_write(cxt->cprz, record->buf, record->size);
++		ramoops_flush_console_diag(cxt);
+ 		return 0;
+ 	} else if (record->type == PSTORE_TYPE_FTRACE) {
+ 		int zonenum;

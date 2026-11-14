@@ -1,0 +1,180 @@
+Diagnostic-only FDT isolation supplement for the frozen8dde source helper.
+
+When both target bootargs tokens kexec_diag.early_ramoops=1 and
+kexec_diag.skip_secure_sp_heaps=1 are explicit, validate the exact two known
+SP heaps and their static NOMAP regions, then disable only their heap child
+nodes in the private kexec FDT. Preserve all reserved-memory properties, the
+rest of the heap tree, and the frozen F93 target Image. Any active mismatch
+fails the load; a failed, partially mutated private FDT is discarded by caller.
+This only isolates known secure-zero aborts and is not a handoff/production fix.
+Without native ramoops selection the existing caller never invokes this helper;
+skip-only is inactive. Execution additionally requires an external audit that
+both actual loaded heap nodes are disabled and both secure regions unchanged.
+
+--- a/drivers/of/kexec_ramoops_native.c
++++ b/drivers/of/kexec_ramoops_native.c
+@@ -8,6 +8,7 @@
+  * reserved_mem/DT and the bound vendor-created ramoops platform data must agree.
+  * This is not a generic reserved-memory relocation interface.
+  */
++#include <linux/ctype.h>
+ #include <linux/errno.h>
+ #include <linux/kernel.h>
+ #include <linux/kmsg_dump.h>
+@@ -423,6 +424,145 @@
+ 	return !ret || ret == -FDT_ERR_NOTFOUND ? 0 : -EINVAL;
+ }
+ 
++
++/* Isolation experiment only: preserve secure ownership/RAM and omit two heaps.
++ * No live OF node, reserved-memory property, source heap or target Image changes.
++ */
++#define KRN_SP_PARENT "/soc/qcom,dma-heaps"
++struct krn_sp_heap {
++	const char *heap, *region, *name;
++	u64 base;
++	u32 token;
++};
++
++static const struct krn_sp_heap krn_sp_heaps[] = {
++	{ KRN_SP_PARENT "/qcom,secure_sp_tz",
++	  "/reserved-memory/spu_secure_shared_memory_region@9b280000",
++	  "qcom,secure-sp-tz", 0x9b280000, 0x01000000 },
++	{ KRN_SP_PARENT "/qcom,secure_sp_modem",
++	  "/reserved-memory/spu_secure_shared_memory_region@9b2c0000",
++	  "qcom,secure-sp-modem", 0x9b2c0000, 0x10800000 },
++};
++
++static bool krn_sp_string(const void *fdt, int node, const char *property,
++			  const char *expected)
++{
++	int len;
++	const char *p = fdt_getprop(fdt, node, property, &len);
++
++	return p && len == strlen(expected) + 1 && !memcmp(p, expected, len);
++}
++
++static bool krn_sp_absent(const void *fdt, int node, const char *property)
++{
++	int len;
++	const void *p = fdt_getprop(fdt, node, property, &len);
++
++	return !p && len == -FDT_ERR_NOTFOUND;
++}
++
++/* Parse bounded target bootargs. Unrequested operation retains the old path. */
++static int krn_sp_requested(const void *fdt)
++{
++	static const char skip[] = "kexec_diag.skip_secure_sp_heaps=1";
++	static const char native[] = "kexec_diag.early_ramoops=1";
++	const char *p;
++	int node, len, used, at, start;
++	bool requested = false, early = false;
++
++	node = fdt_path_offset(fdt, "/chosen");
++	if (node < 0)
++		return 0;
++	p = fdt_getprop(fdt, node, "bootargs", &len);
++	if (!p || len <= 0)
++		return 0;
++	used = strnlen(p, len);
++	for (at = 0; at < used;) {
++		while (at < used && isspace((unsigned char)p[at]))
++			at++;
++		start = at;
++		while (at < used && !isspace((unsigned char)p[at]))
++			at++;
++		if (at - start == sizeof(skip) - 1 && !memcmp(p + start, skip, sizeof(skip) - 1))
++			requested = true;
++		if (at - start == sizeof(native) - 1 && !memcmp(p + start, native, sizeof(native) - 1))
++			early = true;
++	}
++	if (!requested)
++		return 0;
++	return used == len - 1 && early ? 1 : -EINVAL;
++}
++
++static int krn_sp_validate(const void *fdt, bool disabled)
++{
++	static const char * const forbidden[] = {
++		"compatible", "reusable", "size", "alignment", "alloc-ranges", "iommu-addresses",
++	};
++	const fdt32_t *reference;
++	const fdt64_t *reg;
++	const void *nomap;
++	u32 token, type, phandle;
++	unsigned int i, j;
++	int parent, heap, region, len;
++
++	parent = fdt_path_offset(fdt, KRN_SP_PARENT);
++	if (parent < 0 || !krn_fdt_available(fdt, parent) ||
++	    !krn_sp_string(fdt, parent, "compatible", "qcom,dma-heaps"))
++		return -EINVAL;
++	for (i = 0; i < ARRAY_SIZE(krn_sp_heaps); i++) {
++		const struct krn_sp_heap *h = &krn_sp_heaps[i];
++
++		heap = fdt_path_offset(fdt, h->heap);
++		region = fdt_path_offset(fdt, h->region);
++		if (heap < 0 || region < 0 || !krn_fdt_available(fdt, region) ||
++		    !krn_sp_absent(fdt, heap, "compatible") ||
++		    !krn_sp_string(fdt, heap, "qcom,dma-heap-name", h->name) ||
++		    krn_fdt_u32(fdt, heap, "qcom,dma-heap-type", U32_MAX, &type) || type ||
++		    krn_fdt_u32(fdt, heap, "qcom,token", U32_MAX, &token) || token != h->token)
++			return -EINVAL;
++		if (disabled ? !krn_sp_string(fdt, heap, "status", "disabled") :
++		    !krn_fdt_available(fdt, heap))
++			return -EINVAL;
++		phandle = fdt_get_phandle(fdt, region);
++		reference = fdt_getprop(fdt, heap, "memory-region", &len);
++		if (!phandle || phandle == U32_MAX || !reference || len != sizeof(*reference) ||
++		    fdt32_to_cpu(*reference) != phandle ||
++		    fdt_node_offset_by_phandle(fdt, phandle) != region)
++			return -EINVAL;
++		nomap = fdt_getprop(fdt, region, "no-map", &len);
++		if (!nomap || len)
++			return -EINVAL;
++		reg = fdt_getprop(fdt, region, "reg", &len);
++		if (!reg || len != 2 * sizeof(*reg) || fdt64_ld(reg) != h->base ||
++		    fdt64_ld(reg + 1) != SZ_256K)
++			return -EINVAL;
++		for (j = 0; j < ARRAY_SIZE(forbidden); j++)
++			if (!krn_sp_absent(fdt, region, forbidden[j]))
++				return -EINVAL;
++	}
++	return 0;
++}
++
++static int krn_sp_skip(void *fdt)
++{
++	unsigned int i;
++	int ret = krn_sp_requested(fdt);
++
++	if (ret <= 0)
++		return ret;
++	/* Validate both before editing either; caller discards the FDT on failure. */
++	ret = krn_sp_validate(fdt, false);
++	if (ret)
++		return ret;
++	for (i = 0; i < ARRAY_SIZE(krn_sp_heaps); i++) {
++		ret = krn_setprop(fdt, krn_sp_heaps[i].heap, "status",
++				  "disabled", sizeof("disabled"));
++		if (ret)
++			return ret;
++	}
++	return krn_sp_validate(fdt, true);
++}
++
+ int kexec_ramoops_native_fdt(void *fdt)
+ {
+ 	struct krn_layout layout = { };
+@@ -501,5 +641,8 @@
+ 	ret = krn_fdt_region(fdt, &layout, true);
+ 	if (ret)
+ 		return ret;
+-	return krn_fdt_ranges(fdt, &layout);
+-}
++	ret = krn_fdt_ranges(fdt, &layout);
++	if (ret)
++		return ret;
++	return krn_sp_skip(fdt);
++}

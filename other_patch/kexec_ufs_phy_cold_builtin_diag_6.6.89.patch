@@ -1,0 +1,376 @@
+From: local kexec diagnosis
+Subject: [DIAG] Built-in first normal-boot observer of exact stock Sun PHY
+
+Requires the frozen source842 diagnostic source chain. Runtime default is
+off; select with kexec_diag.ufs_cold_probe=1 on a genuine non-kexec boot.
+This diagnostic observes exact module BuildIDda0d and four verified sites.
+Only the two original post-power-control/aux-before boundaries read the
+existing mapped PHY404/408 words; success/error sites observe the original
+combined aux result. No hardware writes, mapping, clock, power, reset,
+timeout, replay or register changes. Device references pin the device
+object, not an unconditional mapping lifetime across arbitrary unbind.
+The original active power_on call, exact resource/driver/metadata guards
+establish the intended observation context; no absolute MMIO safety or
+hardware-ownership claim is made. Print explicit entry/result around reads.
+
+Module BuildID is populated before COMING. Validate all site words before
+registration, publish only after all four pass; GOING and partial failure
+unpublish, unregister/synchronize handlers, then release references. Do not
+hold a module ref to suppress normal GOING. Core kprobe priority0 runs
+before observer priority-1. A new post-power-control encounter cancels any
+unfinished first association, preventing task/frame reuse from being
+mistaken for the same invocation. Samples remain bounded for later PM.
+
+--- a/arch/arm64/kernel/Makefile
++++ b/arch/arm64/kernel/Makefile
+@@ -66,6 +66,12 @@
+ obj-$(CONFIG_ARM64_KEXEC_GIC_TABLES) += kexec_gic.o
+ obj-$(CONFIG_ARM64_KEXEC_TZLOG_DIAG) += kexec_tzlog.o
+ obj-$(CONFIG_KEXEC_TARGET_TRACE)	+= kexec_target_trace.o
++obj-$(CONFIG_KPROBES) += kexec_ufs_cold_probe.o
++KASAN_SANITIZE_kexec_ufs_cold_probe.o := n
++KCSAN_SANITIZE_kexec_ufs_cold_probe.o := n
++UBSAN_SANITIZE_kexec_ufs_cold_probe.o := n
++KCOV_INSTRUMENT_kexec_ufs_cold_probe.o := n
++CFLAGS_REMOVE_kexec_ufs_cold_probe.o := $(CC_FLAGS_FTRACE)
+ KASAN_SANITIZE_kexec_target_trace.o := n
+ KCSAN_SANITIZE_kexec_target_trace.o := n
+ UBSAN_SANITIZE_kexec_target_trace.o := n
+--- /dev/null
++++ b/arch/arm64/kernel/kexec_ufs_cold_probe.c
+@@ -0,0 +1,335 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Explicit normal-boot reference for one exact stock Sun PHY implementation. */
++#include <linux/atomic.h>
++#include <linux/device/driver.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/kprobes.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
++#include <linux/platform_device.h>
++#include <linux/sched/task.h>
++#include <linux/spinlock.h>
++#include <linux/uaccess.h>
++
++#define UCP_PHY_SIZE 1872
++#define UCP_PDC 0x404
++#define UCP_RESET 0x408
++
++static bool ucp_requested;
++
++static int __init ucp_setup(char *value)
++{
++	if (kstrtobool(value, &ucp_requested))
++		ucp_requested = false;
++	return 1;
++}
++__setup("kexec_diag.ufs_cold_probe=", ucp_setup);
++
++enum ucp_stage { UCP_POST, UCP_PRE_AUX, UCP_SUCCESS, UCP_ERROR };
++enum ucp_phase { UCP_UNUSED, UCP_WAIT_AUX, UCP_WAIT_RESULT, UCP_DONE,
++		 UCP_CANCELLED };
++
++struct ucp_site {
++	struct kprobe kp;
++	unsigned int offset;
++	u32 expected;
++};
++
++static struct ucp_site ucp_sites[] = {
++	{ .offset = 0x124, .expected = 0xb1028297 },
++	{ .offset = 0x254, .expected = 0xaa1803e0 },
++	{ .offset = 0x26c, .expected = 0x52800028 },
++	{ .offset = 0x4f0, .expected = 0xf9400a80 },
++};
++
++static DEFINE_RAW_SPINLOCK(ucp_lock);
++static atomic64_t ucp_generation = ATOMIC64_INIT(0);
++static struct {
++	struct module *mod;
++	struct platform_device *pdev;
++	struct task_struct *task;
++	unsigned long phy, sp, mmio, aux, driver;
++	u64 generation;
++	enum ucp_phase phase;
++	unsigned int registered;
++	bool active;
++	bool installed_once;
++} ucp;
++
++struct ucp_meta {
++	unsigned long phy, mmio, aux, driver;
++};
++
++/* Metadata copies are ordinary RAM. They are never used to fetch MMIO words. */
++static bool __kprobes ucp_metadata(struct pt_regs *regs, struct ucp_meta *m)
++{
++	static const char expected_driver[] = "ufs_qcom_phy_qmp_v4_sun";
++	char driver_name[sizeof(expected_driver)];
++	const char *name;
++	struct device *dev;
++	u8 major;
++
++	m->phy = regs->regs[20];
++	if (IS_ERR_OR_NULL((void *)m->phy) || (m->phy & 7) ||
++	    m->phy > ULONG_MAX - 0x170)
++		return false;
++	if (copy_from_kernel_nofault(&dev, (void *)(m->phy + 0x10),
++				     sizeof(dev)) ||
++	    copy_from_kernel_nofault(&m->mmio, (void *)(m->phy + 0x18),
++				     sizeof(m->mmio)) ||
++	    copy_from_kernel_nofault(&m->aux, (void *)(m->phy + 0x58),
++				     sizeof(m->aux)) ||
++	    copy_from_kernel_nofault(&major, (void *)(m->phy + 0x168),
++				     sizeof(major)))
++		return false;
++	if (dev != &ucp.pdev->dev || (unsigned long)dev != regs->regs[19] ||
++	    major != 6 || IS_ERR_OR_NULL((void *)m->mmio) ||
++	    (m->mmio & 3) || m->mmio > ULONG_MAX - 0x40c ||
++	    IS_ERR_OR_NULL((void *)m->aux))
++		return false;
++	if (copy_from_kernel_nofault(&m->driver,
++		(void *)dev + offsetof(struct device, driver), sizeof(m->driver)) ||
++	    IS_ERR_OR_NULL((void *)m->driver) ||
++	    copy_from_kernel_nofault(&name,
++		(void *)m->driver + offsetof(struct device_driver, name),
++		sizeof(name)) ||
++	    copy_from_kernel_nofault(driver_name, name, sizeof(driver_name)))
++		return false;
++	return !memcmp(driver_name, expected_driver, sizeof(expected_driver));
++}
++
++static void __kprobes ucp_read(const char *stage, unsigned long mmio)
++{
++	u32 power_down_control;
++	u32 sw_reset;
++
++	pr_info("KUFSCOLD1 stage=%s action=read-enter sample=1 generation=1\n", stage);
++	power_down_control = readl_relaxed((void __iomem *)mmio + UCP_PDC);
++	sw_reset = readl_relaxed((void __iomem *)mmio + UCP_RESET);
++	pr_info("KUFSCOLD1 stage=%s action=read-result sample=1 generation=1 power_down_control=%08x sw_reset=%08x\n",
++		stage, power_down_control, sw_reset);
++}
++
++/* A pre-handler is atomic even though the original power_on may sleep. */
++static int __kprobes ucp_pre(struct kprobe *kp, struct pt_regs *regs)
++{
++	struct ucp_site *site = container_of(kp, struct ucp_site, kp);
++	enum ucp_stage stage = site - ucp_sites;
++	struct ucp_meta m;
++	unsigned long flags;
++	u64 generation = 0;
++	bool emit = false, cancel = false, missed_first = false;
++	int ret = 0;
++
++	if (!smp_load_acquire(&ucp.active))
++		return 0;
++	/* Even a metadata/trylock-rejected new post invalidates old pending data. */
++	if (stage == UCP_POST)
++		generation = atomic64_inc_return(&ucp_generation);
++	if (!ucp_metadata(regs, &m))
++		return 0;
++	if (!raw_spin_trylock_irqsave(&ucp_lock, flags))
++		return 0;
++	if (!READ_ONCE(ucp.active))
++		goto unlock;
++	if (stage == UCP_POST) {
++		/* A later invocation can reuse the same task/frame/object: invalidate. */
++		if (ucp.phase == UCP_WAIT_AUX || ucp.phase == UCP_WAIT_RESULT) {
++			ucp.phase = UCP_CANCELLED;
++			cancel = true;
++		} else if (ucp.phase == UCP_UNUSED) {
++			if (generation != 1) {
++				ucp.phase = UCP_CANCELLED;
++				missed_first = true;
++				goto unlock;
++			}
++			get_task_struct(current);
++			ucp.task = current;
++			ucp.phy = m.phy;
++			ucp.sp = regs->sp;
++			ucp.mmio = m.mmio;
++			ucp.aux = m.aux;
++			ucp.driver = m.driver;
++			ucp.generation = generation;
++			ucp.phase = UCP_WAIT_AUX;
++			emit = true;
++		}
++		goto unlock;
++	}
++	if ((ucp.phase == UCP_WAIT_AUX || ucp.phase == UCP_WAIT_RESULT) &&
++	    ucp.generation != atomic64_read(&ucp_generation)) {
++		ucp.phase = UCP_CANCELLED;
++		cancel = true;
++		goto unlock;
++	}
++	if (ucp.task != current || ucp.phy != m.phy || ucp.sp != regs->sp ||
++	    ucp.mmio != m.mmio || ucp.aux != m.aux || ucp.driver != m.driver ||
++	    regs->regs[24] != m.aux)
++		goto unlock;
++	if (stage == UCP_PRE_AUX && ucp.phase == UCP_WAIT_AUX) {
++		ucp.phase = UCP_WAIT_RESULT;
++		emit = true;
++	} else if (ucp.phase == UCP_WAIT_RESULT) {
++		if (stage == UCP_SUCCESS && (s32)regs->regs[0] == 0) {
++			ucp.phase = UCP_DONE;
++			emit = true;
++		} else if (stage == UCP_ERROR && (s32)regs->regs[21] < 0) {
++			ret = (s32)regs->regs[21];
++			ucp.phase = UCP_DONE;
++			emit = true;
++		}
++	}
++unlock:
++	raw_spin_unlock_irqrestore(&ucp_lock, flags);
++	if (missed_first)
++		pr_info("KUFSCOLD1 action=association-cancel reason=first-post-missed generation=%llu\n",
++			(unsigned long long)generation);
++	if (cancel)
++		pr_info("KUFSCOLD1 action=association-cancel reason=another-post-power-control sample=1\n");
++	if (emit) {
++		if (stage == UCP_POST)
++			ucp_read("post-power-control", m.mmio);
++		else if (stage == UCP_PRE_AUX)
++			ucp_read("aux-before", m.mmio);
++		else
++			pr_info("KUFSCOLD1 stage=aux-after action=return sample=1 ret=%d result_path=%s\n",
++				ret, stage == UCP_SUCCESS ? "success-w0" : "error-w21");
++	}
++	/* Preserve all pt_regs, NZCV and replay of the original instruction. */
++	return 0;
++}
++
++/* Called only from the blocking module notifier, never from a probe. */
++static void ucp_remove(void)
++{
++	smp_store_release(&ucp.active, false);
++	while (ucp.registered)
++		unregister_kprobe(&ucp_sites[--ucp.registered].kp);
++	/* unregister_kprobe synchronizes handlers before resources are released. */
++	if (ucp.task) {
++		put_task_struct(ucp.task);
++		ucp.task = NULL;
++	}
++	if (ucp.pdev) {
++		put_device(&ucp.pdev->dev);
++		ucp.pdev = NULL;
++	}
++	ucp.mod = NULL;
++}
++
++static int ucp_install(struct module *mod)
++{
++#ifdef CONFIG_STACKTRACE_BUILD_ID
++	static const u8 expected_id[] = {
++		0xda, 0x0d, 0x45, 0xe4, 0x5f, 0x72, 0x7c, 0x03, 0x86, 0x13,
++		0x20, 0xcf, 0x41, 0x32, 0x25, 0x5b, 0x22, 0xa0, 0xcf, 0x5c,
++	};
++	struct device_node *node;
++	struct resource *res;
++	unsigned long fn;
++	u32 word;
++	int i, ret;
++
++	if (ucp.installed_once || ucp.mod ||
++	    memcmp(mod->build_id, expected_id, sizeof(expected_id)))
++		return -EINVAL;
++	fn = find_kallsyms_symbol_value(mod, "ufs_qcom_phy_power_on");
++	if (!fn || (fn & 3) || fn > ULONG_MAX - UCP_PHY_SIZE ||
++	    !within_module_mem_type(fn, mod, MOD_TEXT) ||
++	    !within_module_mem_type(fn + UCP_PHY_SIZE - 1, mod, MOD_TEXT))
++		return -EINVAL;
++	/* Validate all sites before changing any instruction to a breakpoint. */
++	for (i = 0; i < ARRAY_SIZE(ucp_sites); i++) {
++		if (copy_from_kernel_nofault(&word,
++			(void *)(fn + ucp_sites[i].offset), sizeof(word)) ||
++		    word != ucp_sites[i].expected)
++			return -EINVAL;
++	}
++	node = of_find_node_by_path("/soc/ufsphy_mem@1d80000");
++	if (!node)
++		return -ENODEV;
++	if (!of_device_is_available(node) ||
++	    !of_device_is_compatible(node, "qcom,ufs-phy-qmp-v4-sun")) {
++		of_node_put(node);
++		return -EINVAL;
++	}
++	ucp.pdev = of_find_device_by_node(node);
++	of_node_put(node);
++	if (!ucp.pdev)
++		return -ENODEV;
++	res = platform_get_resource_byname(ucp.pdev, IORESOURCE_MEM, "phy_mem");
++	if (!res || res->start != 0x1d80000 || resource_size(res) != 0x2000) {
++		ret = -EINVAL;
++		goto fail;
++	}
++	ucp.mod = mod;
++	for (i = 0; i < ARRAY_SIZE(ucp_sites); i++) {
++		struct kprobe *kp = &ucp_sites[i].kp;
++
++		kp->addr = (kprobe_opcode_t *)(fn + ucp_sites[i].offset);
++		kp->pre_handler = ucp_pre;
++		ret = register_kprobe(kp);
++		if (ret)
++			goto fail;
++		ucp.registered++;
++		if ((unsigned long)kp->addr != fn + ucp_sites[i].offset ||
++		    kp->opcode != ucp_sites[i].expected) {
++			ret = -EINVAL;
++			goto fail;
++		}
++	}
++	ucp.installed_once = true;
++	smp_store_release(&ucp.active, true);
++	pr_info("KUFSCOLD1 action=installed module=phy_qcom_ufs build_id=da0d45e45f727c03861320cf4132255b22a0cf5c sites=4 phy_mem=01d80000 size=2000\n");
++	return 0;
++fail:
++	ucp_remove();
++	return ret;
++#else
++	return -EOPNOTSUPP;
++#endif
++}
++
++static int ucp_module_event(struct notifier_block *nb, unsigned long event,
++			    void *data)
++{
++	struct module *mod = data;
++	int ret;
++
++	if (strcmp(mod->name, "phy_qcom_ufs"))
++		return NOTIFY_DONE;
++	if (event == MODULE_STATE_COMING) {
++		ret = ucp_install(mod);
++		if (ret)
++			pr_info("KUFSCOLD1 action=install-refused ret=%d\n", ret);
++	} else if (event == MODULE_STATE_GOING && ucp.mod == mod) {
++		ucp_remove();
++		pr_info("KUFSCOLD1 action=removed\n");
++	}
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block ucp_module_nb = {
++	.notifier_call = ucp_module_event,
++	/* Core priority0 installs blacklists before us and kills on GOING. */
++	.priority = -1,
++};
++
++static int __init ucp_init(void)
++{
++	int ret;
++
++	if (!ucp_requested)
++		return 0;
++	if (!of_chosen ||
++	    of_property_read_bool(of_chosen, "linux,booted-from-kexec")) {
++		pr_info("KUFSCOLD1 action=init-refused reason=not-normal-boot\n");
++		return 0;
++	}
++	ret = register_module_notifier(&ucp_module_nb);
++	pr_info("KUFSCOLD1 action=notifier-ready ret=%d\n", ret);
++	return 0;
++}
++core_initcall(ucp_init);

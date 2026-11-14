@@ -1,0 +1,119 @@
+Diagnostic-only read-only UFS warm-handoff samples; default off.
+
+Apply to the complete five-object vendor UFS baseline with core from primary
+4553152f62a3bd9f39bb6d068a4d94a15a8c07fd and the frozen per-file provenance
+(including the original fe7332c9 ufsfeature.h used by that baseline).
+Unmodified core SHA256: 743e98e7981b35178a3c91452f66730224d89627c195b144117f7aca9f630669.
+
+kexec_handoff_diag defaults false and is read-only (0400). Samples require
+explicit module load option kexec_handoff_diag=1 and the existing
+/chosen/linux,booted-from-kexec property, and only cover hardware-major>=6.
+Keep the target initrd module/options identity audit external to this patch.
+
+The five stages are device-reset entry before the original external GPIO
+action, host-reset before BCR assert, after successful original BCR assert,
+after the original PHY power-on return (including failure), and after a
+successful original BCR deassert. Each reads the existing HBA mapping at
+AHIT0x18/HCE0x34/CFG10xdc/HW_VERSION0xe4/AH8_CFG0xfc and emits one UFSKH1 line.
+No extra hardware writes, reset/clock/PHY calls, error recovery or reordering.
+
+These offsets are already covered by normal driver reads/dumps. That is not
+an absolute hardware-safety proof during an asserted or unpowered window.
+Zero values there do not prove previous AH8 state was cleared. MMIO reads
+and printk also perturb timing. This is a bounded diagnostic, not a fix.
+
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -94,6 +94,11 @@
+ };
+ 
+ static char android_boot_dev[ANDROID_BOOT_DEV_MAX];
++
++static bool kexec_handoff_diag;
++module_param(kexec_handoff_diag, bool, 0400);
++MODULE_PARM_DESC(kexec_handoff_diag,
++		 "Diagnostic-only UFS handoff register samples for kexec boots");
+ 
+ static DEFINE_PER_CPU(struct freq_qos_request, qos_min_req);
+ 
+@@ -974,6 +979,39 @@
+ }
+ 
+ /*
++ * Diagnostic reads use the existing HBA mapping and registers already covered
++ * by the normal HBA dumps. This is not a hardware safety guarantee for reads
++ * while BCR is asserted: zero there can describe a reset/unpowered window,
++ * rather than prove that the previous boot's clock-request state was cleared.
++ */
++static void ufs_qcom_kexec_handoff_trace(struct ufs_hba *hba,
++		const char *stage, int ret)
++{
++	struct ufs_qcom_host *host;
++	u32 ahit, hce, cfg1, hw_version, ah8_cfg;
++
++	if (!READ_ONCE(kexec_handoff_diag) || !of_chosen ||
++	    !of_property_read_bool(of_chosen, "linux,booted-from-kexec"))
++		return;
++
++	host = ufshcd_get_variant(hba);
++	if (host->hw_ver.major < 0x6)
++		return;
++
++	ahit = ufshcd_readl(hba, REG_AUTO_HIBERNATE_IDLE_TIMER);
++	hce = ufshcd_readl(hba, REG_CONTROLLER_ENABLE);
++	cfg1 = ufshcd_readl(hba, REG_UFS_CFG1);
++	hw_version = ufshcd_readl(hba, REG_UFS_HW_VERSION);
++	ah8_cfg = ufshcd_readl(hba, UFS_AH8_CFG);
++
++	dev_info(hba->dev,
++		 "UFSKH1 stage=%s major=%u ret=%d is_phy_pwr_on=%u ahit=%08x hce=%08x cfg1=%08x hw_version=%08x ah8_cfg=%08x\n",
++		 stage, (unsigned int)host->hw_ver.major, ret,
++		 (unsigned int)READ_ONCE(host->is_phy_pwr_on),
++		 ahit, hce, cfg1, hw_version, ah8_cfg);
++}
++
++/*
+  * ufs_qcom_host_reset - reset host controller and PHY
+  */
+ static int ufs_qcom_host_reset(struct ufs_hba *hba)
+@@ -990,6 +1028,7 @@
+ 	}
+ 
+ 	if (host->hw_ver.major >= 0x6) {
++		ufs_qcom_kexec_handoff_trace(hba, "pre-bcr-assert", ret);
+ 		reenable_intr = hba->is_irq_enabled;
+ 		disable_irq(hba->irq);
+ 		hba->is_irq_enabled = false;
+@@ -1006,12 +1045,14 @@
+ 					 __func__, ret);
+ 			goto out;
+ 		}
++		ufs_qcom_kexec_handoff_trace(hba, "post-bcr-assert", ret);
+ 
+ 		/*
+ 		 * If the PHY has already been powered, the ufs_qcom_phy_power_on()
+ 		 * would be a nop because the flag is_phy_pwr_on would be true.
+ 		 */
+ 		ret = ufs_qcom_phy_power_on(hba);
++		ufs_qcom_kexec_handoff_trace(hba, "post-phy-power-on", ret);
+ 		if (ret) {
+ 			dev_err(hba->dev, "%s: phy power on failed, ret = %d\n",
+ 				__func__, ret);
+@@ -1049,6 +1090,8 @@
+ 	usleep_range(200, 210);
+ 
+ 	ret = reset_control_deassert(host->core_reset);
++	if (!ret && host->hw_ver.major >= 0x6)
++		ufs_qcom_kexec_handoff_trace(hba, "post-bcr-deassert", ret);
+ 	if (ret)
+ 		dev_err(hba->dev, "%s: core_reset deassert failed, err = %d\n",
+ 				 __func__, ret);
+@@ -5316,6 +5359,8 @@
+ 	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
+ 	int ret = 0;
+ 
++	ufs_qcom_kexec_handoff_trace(hba, "device-reset-enter", ret);
++
+ #if defined(CONFIG_UFSFEATURE)
+ 	if (hba->dev_quirks & (UFS_DEVICE_QUIRK_SAMSUNG_QLC))
+ 		ufsf_reset_host(ufs_qcom_get_ufsf(hba));

@@ -1,0 +1,637 @@
+--- /dev/null
++++ b/include/linux/kexec_tzlog.h
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_KEXEC_TZLOG_H
++#define _LINUX_KEXEC_TZLOG_H
++
++struct kimage;
++#ifdef CONFIG_ARM64_KEXEC_TZLOG_DIAG
++int arm64_kexec_tzlog_capture(struct kimage *image, const char *cmdline);
++unsigned int arm64_kexec_tzlog_fdt_size(struct kimage *image);
++int arm64_kexec_tzlog_fdt_setup(struct kimage *image, void *fdt);
++int arm64_kexec_tzlog_check(struct kimage *image, bool late);
++bool arm64_kexec_tzlog_active(struct kimage *image);
++void arm64_kexec_tzlog_cleanup(struct kimage *image);
++#else
++static inline int arm64_kexec_tzlog_capture(struct kimage *image,
++					 const char *cmdline) { return 0; }
++static inline unsigned int arm64_kexec_tzlog_fdt_size(struct kimage *image)
++{ return 0; }
++static inline int arm64_kexec_tzlog_fdt_setup(struct kimage *image, void *fdt)
++{ return 0; }
++static inline int arm64_kexec_tzlog_check(struct kimage *image, bool late)
++{ return 0; }
++static inline bool arm64_kexec_tzlog_active(struct kimage *image)
++{ return false; }
++static inline void arm64_kexec_tzlog_cleanup(struct kimage *image) { }
++#endif
++#endif
+--- /dev/null
++++ b/arch/arm64/kernel/kexec_tzlog.c
+@@ -0,0 +1,416 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* One exact vendor TZ log ABI, for a single diagnostic warm handoff only.
++ * Preserve allocations, not permissions: no SMC and no DMA payload access.
++ */
++#define pr_fmt(fmt) "kexec-tzlog: " fmt
++
++#include <linux/bitmap.h>
++#include <linux/buildid.h>
++#include <linux/cma.h>
++#include <linux/ctype.h>
++#include <linux/dma-map-ops.h>
++#include <linux/freezer.h>
++#include <linux/kexec.h>
++#include <linux/kexec_tzlog.h>
++#include <linux/libfdt.h>
++#include <linux/module.h>
++#include <linux/of.h>
++#include <linux/of_platform.h>
++#include <linux/overflow.h>
++#include <linux/slab.h>
++#include <linux/uaccess.h>
++#include <linux/vmalloc.h>
++#include <asm/memory.h>
++/* Diagnostic-only common-kernel allocator metadata, not a vendor ABI. */
++#include "../../../mm/cma.h"
++
++#define KTZ_NODE "kexec-tzlog-preserved"
++#define KTZ_VERSION "linux,kexec-tzlog-version"
++#define KTZ_NR 4
++#define KTZ_MODULE "tz_log_dlkm"
++
++enum ktz_symbol {
++	KTZ_STATE, KTZ_PA, KTZ_VA, KTZ_VA2, KTZ_SIZE, KTZ_ENC_QSEE,
++	KTZ_ENC_TZ, KTZ_DISP_PA, KTZ_DISP_SIZE, KTZ_DEBUG_SIZE, KTZ_PROBE,
++	KTZ_SYMBOLS,
++};
++static const char * const ktz_names[KTZ_SYMBOLS] = {
++	"tz_log_dlkm:tzdbg", "tz_log_dlkm:coh_pmem",
++	"tz_log_dlkm:g_qsee_log", "tz_log_dlkm:g_qsee_log_v2",
++	"tz_log_dlkm:qseelog_buf_size", "tz_log_dlkm:enc_qseelog_info",
++	"tz_log_dlkm:enc_tzlog_info", "tz_log_dlkm:disp_buf_paddr",
++	"tz_log_dlkm:display_buf_size", "tz_log_dlkm:debug_rw_buf_size",
++	"tz_log_dlkm:tz_log_probe",
++};
++static const unsigned int ktz_symbol_sizes[KTZ_SYMBOLS] = {
++	0x280, 8, 8, 8, 4, 32, 32, 8, 4, 4, 16,
++};
++static const u8 ktz_build_id[BUILD_ID_SIZE_MAX] = {
++	0x44, 0xd5, 0xbc, 0x60, 0x26, 0xc7, 0x4b, 0x53, 0x1a, 0xe0,
++	0x50, 0x68, 0xa8, 0x06, 0xc8, 0x47, 0xa6, 0xb2, 0x59, 0x2f,
++};
++
++/* Actual encrypted_log_info layout: PA, VA, byte size, bridge handle. */
++struct ktz_buffer {
++	u64 pa, va, size, handle;
++};
++struct ktz_metadata {
++	struct ktz_buffer buf[KTZ_NR];
++	u64 va2;
++	u32 debug_size;
++	u8 encrypted, enlarged;
++};
++struct arm64_kexec_tzlog {
++	struct module *module;
++	struct platform_device *pdev;
++	struct device_driver *driver;
++	struct device_node *node;
++	struct cma *cma;
++	phys_addr_t cma_base;
++	unsigned long cma_size;
++	unsigned long symbol[KTZ_SYMBOLS];
++	struct ktz_metadata captured;
++	bool fdt_ready;
++};
++
++static bool ktz_token(const char *cmdline, const char *token)
++{
++	const char *start;
++	size_t len = strlen(token);
++
++	if (!cmdline)
++		return false;
++	while (*cmdline) {
++		while (isspace(*cmdline))
++			cmdline++;
++		start = cmdline;
++		while (*cmdline && !isspace(*cmdline))
++			cmdline++;
++		if (cmdline - start == len && !memcmp(start, token, len))
++			return true;
++	}
++	return false;
++}
++
++static int ktz_read(void *to, unsigned long from, size_t size)
++{
++	return copy_from_kernel_nofault(to, (const void *)from, size) ? -EFAULT : 0;
++}
++
++static int ktz_metadata(struct arm64_kexec_tzlog *t, struct ktz_metadata *m)
++{
++	unsigned long *s = t->symbol;
++	u32 size, display;
++
++	memset(m, 0, sizeof(*m));
++	if (ktz_read(&m->buf[0].pa, s[KTZ_PA], 8) ||
++	    ktz_read(&m->buf[0].va, s[KTZ_VA], 8) ||
++	    ktz_read(&m->va2, s[KTZ_VA2], 8) ||
++	    ktz_read(&size, s[KTZ_SIZE], 4) ||
++	    ktz_read(&m->buf[1], s[KTZ_ENC_QSEE], 32) ||
++	    ktz_read(&m->buf[2], s[KTZ_ENC_TZ], 32) ||
++	    ktz_read(&m->buf[3].pa, s[KTZ_DISP_PA], 8) ||
++	    ktz_read(&m->buf[3].va, s[KTZ_STATE] + 0x40, 8) ||
++	    ktz_read(&display, s[KTZ_DISP_SIZE], 4) ||
++	    ktz_read(&m->debug_size, s[KTZ_DEBUG_SIZE], 4) ||
++	    ktz_read(&m->encrypted, s[KTZ_STATE] + 0x240, 1) ||
++	    ktz_read(&m->enlarged, s[KTZ_STATE] + 0x241, 1))
++		return -EFAULT;
++	m->buf[0].size = size;
++	m->buf[3].size = display;
++	return 0;
++}
++
++static int ktz_ranges(const struct ktz_metadata *m, u64 base, u64 bytes)
++{
++	static const u64 sizes[KTZ_NR] = { 0x20000, 0x21000, 0x3000, 0x80000 };
++	u64 limit, end[KTZ_NR];
++	unsigned int i, j;
++
++	if (!bytes || check_add_overflow(base, bytes, &limit) ||
++	    m->encrypted != 1 || m->enlarged != 1 ||
++	    m->debug_size != sizes[2] || m->va2 != m->buf[0].va ||
++	    !m->buf[1].handle || !m->buf[2].handle)
++		return -EINVAL;
++	for (i = 0; i < KTZ_NR; i++) {
++		if (m->buf[i].size != sizes[i] || !m->buf[i].pa ||
++		    !IS_ALIGNED(m->buf[i].pa, PAGE_SIZE) ||
++		    !IS_ALIGNED(m->buf[i].size, PAGE_SIZE) ||
++		    !m->buf[i].va || !IS_ALIGNED(m->buf[i].va, 8) ||
++		    check_add_overflow(m->buf[i].pa, m->buf[i].size, &end[i]) ||
++		    m->buf[i].pa < base || end[i] > limit)
++			return -EINVAL;
++		for (j = 0; j < i; j++)
++			if (m->buf[i].pa < end[j] && end[i] > m->buf[j].pa)
++				return -EINVAL;
++	}
++	return 0;
++}
++
++/* Read allocator descriptors only. No access through the captured DMA VAs. */
++static int ktz_allocated(struct arm64_kexec_tzlog *t,
++			 const struct ktz_metadata *m)
++{
++	struct cma *cma = t->cma;
++	unsigned long flags, first, count, pfn;
++	unsigned int i;
++	int ret = 0;
++
++	if (cma != dev_get_cma_area(NULL) ||
++	    cma_get_base(cma) != t->cma_base ||
++	    cma_get_size(cma) != t->cma_size || cma->order_per_bit ||
++	    strcmp(cma_get_name(cma), "linux,cma") || !cma->bitmap)
++		return -ESTALE;
++	if (!spin_trylock_irqsave(&cma->lock, flags))
++		return -EBUSY;
++	for (i = 0; i < KTZ_NR && !ret; i++) {
++		first = (m->buf[i].pa - t->cma_base) >> PAGE_SHIFT;
++		count = m->buf[i].size >> PAGE_SHIFT;
++		if (find_next_zero_bit(cma->bitmap, first + count, first) !=
++		    first + count) {
++			ret = -ESTALE;
++			break;
++		}
++		for (pfn = m->buf[i].pa >> PAGE_SHIFT;
++		     pfn < (m->buf[i].pa + m->buf[i].size) >> PAGE_SHIFT; pfn++) {
++			if (!pfn_valid(pfn) || !pfn_is_map_memory(pfn) ||
++			    !is_migrate_cma_page(pfn_to_page(pfn)) ||
++			    page_count(pfn_to_page(pfn)) < 1) {
++				ret = -ESTALE;
++				break;
++			}
++		}
++	}
++	spin_unlock_irqrestore(&cma->lock, flags);
++	return ret;
++}
++
++static bool ktz_binding(struct arm64_kexec_tzlog *t)
++{
++	return READ_ONCE(t->module->state) == MODULE_STATE_LIVE &&
++		!strcmp(t->module->name, KTZ_MODULE) &&
++		!memcmp(t->module->build_id, ktz_build_id, sizeof(ktz_build_id)) &&
++		READ_ONCE(t->pdev->dev.driver) == t->driver &&
++		t->driver->owner == t->module &&
++		t->pdev->dev.of_node == t->node &&
++		of_device_is_available(t->node);
++}
++
++void arm64_kexec_tzlog_cleanup(struct kimage *image)
++{
++	struct arm64_kexec_tzlog *t = image->arch.tzlog;
++
++	if (!t)
++		return;
++	image->arch.tzlog = NULL;
++	if (t->pdev)
++		put_device(&t->pdev->dev);
++	if (t->module)
++		module_put(t->module);
++	kfree(t);
++}
++
++/* kimage_file_alloc_init failure does not reach machine_kexec_cleanup. */
++void arch_kimage_file_alloc_cleanup(struct kimage *image)
++{
++	arm64_kexec_tzlog_cleanup(image);
++	arm64_kexec_gic_cleanup(image);
++}
++
++int arm64_kexec_tzlog_capture(struct kimage *image, const char *cmdline)
++{
++	struct arm64_kexec_tzlog *t;
++	struct device_node *np, *next;
++	struct module *mod;
++	unsigned long end;
++	unsigned int i;
++	int ret = -ENODEV;
++
++	if (!ktz_token(cmdline, "kexec_diag.early_ramoops=1") ||
++	    !ktz_token(cmdline, "kexec_diag.preserve_tzlog=1"))
++		return 0;
++	if (!image->file_mode || image->type != KEXEC_TYPE_DEFAULT ||
++	    image->arch.tzlog)
++		return -EINVAL;
++	t = kzalloc(sizeof(*t), GFP_KERNEL);
++	if (!t)
++		return -ENOMEM;
++	image->arch.tzlog = t;
++	np = of_find_compatible_node(NULL, NULL, "qcom,tz-log");
++	if (!np)
++		goto fail;
++	/* Exactly one static SoC instance; no OF overlay/device replacement. */
++	next = of_find_compatible_node(of_node_get(np), NULL, "qcom,tz-log");
++	if (next) {
++		of_node_put(next);
++		of_node_put(np);
++		goto fail;
++	}
++	t->pdev = of_find_device_by_node(np);
++	of_node_put(np);
++	if (!t->pdev)
++		goto fail;
++	if (!device_trylock(&t->pdev->dev)) {
++		ret = -EBUSY;
++		goto fail;
++	}
++	t->node = t->pdev->dev.of_node;
++	t->driver = t->pdev->dev.driver;
++	/* Keep lookup, module identification and initial pin in one RCU-sched
++	 * interval. try_module_get alone also permits COMING: reject explicitly.
++	 */
++	preempt_disable();
++	t->symbol[KTZ_STATE] = module_kallsyms_lookup_name(ktz_names[KTZ_STATE]);
++	mod = __module_address(t->symbol[KTZ_STATE]);
++	if (mod && mod->state == MODULE_STATE_LIVE &&
++	    !strcmp(mod->name, KTZ_MODULE) &&
++	    !memcmp(mod->build_id, ktz_build_id, sizeof(ktz_build_id)) &&
++	    t->driver && t->driver->owner == mod && try_module_get(mod))
++		t->module = mod;
++	preempt_enable();
++	if (!t->module)
++		goto unlock;
++	for (i = 0; i < KTZ_SYMBOLS; i++) {
++		t->symbol[i] = module_kallsyms_lookup_name(ktz_names[i]);
++		if (check_add_overflow(t->symbol[i],
++				       (unsigned long)ktz_symbol_sizes[i] - 1, &end) ||
++		    !within_module_mem_type(t->symbol[i], t->module,
++					    i == KTZ_PROBE ? MOD_TEXT : MOD_DATA) ||
++		    !within_module_mem_type(end, t->module,
++					    i == KTZ_PROBE ? MOD_TEXT : MOD_DATA))
++			goto unlock;
++	}
++	if (!ktz_binding(t))
++		goto unlock;
++	t->cma = dev_get_cma_area(NULL);
++	if (!t->cma)
++		goto unlock;
++	t->cma_base = cma_get_base(t->cma);
++	t->cma_size = cma_get_size(t->cma);
++	ret = ktz_metadata(t, &t->captured);
++	if (!ret)
++		ret = ktz_ranges(&t->captured, t->cma_base, t->cma_size);
++	if (!ret)
++		ret = ktz_allocated(t, &t->captured);
++unlock:
++	device_unlock(&t->pdev->dev);
++	if (!ret) {
++		pr_info("captured four current TZ log buffers (diagnostic only)\n");
++		return 0;
++	}
++fail:
++	arm64_kexec_tzlog_cleanup(image);
++	return ret;
++}
++
++bool arm64_kexec_tzlog_active(struct kimage *image)
++{
++	return !!image->arch.tzlog;
++}
++
++unsigned int arm64_kexec_tzlog_fdt_size(struct kimage *image)
++{
++	return image->arch.tzlog ? SZ_1K : 0;
++}
++
++int arm64_kexec_tzlog_fdt_setup(struct kimage *image, void *fdt)
++{
++	struct arm64_kexec_tzlog *t = image->arch.tzlog;
++	fdt64_t reg[KTZ_NR * 2];
++	const void *p;
++	int root, node, len, ret;
++	unsigned int i;
++
++	if (!t)
++		return 0;
++	t->fdt_ready = false;
++	if (!fdt || fdt_check_header(fdt))
++		return -EINVAL;
++	root = fdt_path_offset(fdt, "/reserved-memory");
++	if (root < 0 || fdt_address_cells(fdt, 0) != 2 ||
++	    fdt_size_cells(fdt, 0) != 2 || fdt_address_cells(fdt, root) != 2 ||
++	    fdt_size_cells(fdt, root) != 2)
++		return -EINVAL;
++	p = fdt_getprop(fdt, root, "ranges", &len);
++	if (!p || len)
++		return -EINVAL;
++	/* No recursive warm-adoption protocol is claimed by this diagnostic. */
++	fdt_for_each_subnode(node, fdt, root) {
++		p = fdt_get_name(fdt, node, &len);
++		if (!p)
++			return -EINVAL;
++		if (!strncmp(p, KTZ_NODE, sizeof(KTZ_NODE) - 1))
++			return -EEXIST;
++	}
++	if (node != -FDT_ERR_NOTFOUND)
++		return node;
++	for (i = 0; i < KTZ_NR; i++) {
++		reg[2 * i] = cpu_to_fdt64(t->captured.buf[i].pa);
++		reg[2 * i + 1] = cpu_to_fdt64(t->captured.buf[i].size);
++	}
++	node = fdt_add_subnode(fdt, root, KTZ_NODE);
++	if (node < 0)
++		return node;
++	ret = fdt_setprop_u32(fdt, node, KTZ_VERSION, 1);
++	if (!ret)
++		ret = fdt_setprop(fdt, node, "reg", reg, sizeof(reg));
++	if (!ret)
++		ret = fdt_setprop(fdt, node, "no-map", NULL, 0);
++	if (!ret)
++		t->fdt_ready = true;
++	return ret;
++}
++
++static int ktz_segments(struct kimage *image, struct arm64_kexec_tzlog *t)
++{
++	unsigned long end;
++	unsigned int i, j;
++
++	for (i = 0; i < image->nr_segments; i++) {
++		if (!image->segment[i].memsz ||
++		    check_add_overflow(image->segment[i].mem,
++				       image->segment[i].memsz, &end))
++			return -EINVAL;
++		for (j = 0; j < KTZ_NR; j++)
++			if (image->segment[i].mem < t->captured.buf[j].pa +
++						   t->captured.buf[j].size &&
++			    end > t->captured.buf[j].pa)
++				return -EADDRINUSE;
++	}
++	return 0;
++}
++
++int arm64_kexec_tzlog_check(struct kimage *image, bool late)
++{
++	struct arm64_kexec_tzlog *t = image->arch.tzlog;
++	struct ktz_metadata now;
++	int ret;
++
++	if (!t)
++		return 0;
++	if (!t->fdt_ready || !image->file_mode)
++		return -EINVAL;
++	if (late && (!READ_ONCE(pm_freezing) || !READ_ONCE(kexec_in_progress) ||
++		     num_online_cpus() != 1 || !irqs_disabled() || preemptible()))
++		return -EPERM;
++	ret = ktz_segments(image, t);
++	if (ret)
++		return ret;
++	/* Pinning a module is not an unbind seal. The real device mutex
++	 * serializes remove/free. Late callers keep IRQs and preemption masked
++	 * from this trylock through the final jump; userspace is frozen.
++	 */
++	if (!device_trylock(&t->pdev->dev))
++		return -EBUSY;
++	ret = -ESTALE;
++	if (!ktz_binding(t))
++		goto out;
++	ret = ktz_metadata(t, &now);
++	if (!ret && memcmp(&now, &t->captured, sizeof(now)))
++		ret = -ESTALE;
++	if (!ret)
++		ret = ktz_allocated(t, &now);
++out:
++	device_unlock(&t->pdev->dev);
++	return ret;
++}
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -68,6 +68,18 @@
+ 	  ramoops reserved region to the native driver and disable its vendor
+ 	  consumer. The running FDT is not modified. This diagnostic intentionally
+ 	  changes which target driver owns the persistent console; say N normally.
++
++config ARM64_KEXEC_TZLOG_DIAG
++	bool "Preserve exact vendor TZ log allocations (diagnostic only)"
++	depends on ARM64 && KEXEC_FILE && KEXEC_NATIVE_RAMOOPS_DIAG
++	depends on KALLSYMS_ALL && MODULES && STACKTRACE_BUILD_ID && CMA && FREEZER
++	default n
++	help
++	  With BOTH kexec_diag.early_ramoops=1 and
++	  kexec_diag.preserve_tzlog=1, preserve four validated current allocations
++	  of the exact tz_log_dlkm diagnostic ABI in a private target FDT. Require
++	  userspace freezing and revalidate before jumping. This does not reclaim
++	  firmware memory or implement repeated warm adoption. Say N normally.
+ 
+ config KEXEC_TARGET_TRACE
+ 	bool "ARM64 kexec target startup trace (diagnostic only)"
+--- a/arch/arm64/kernel/Makefile
++++ b/arch/arm64/kernel/Makefile
+@@ -64,6 +64,7 @@
+ 					   cpu-reset.o
+ obj-$(CONFIG_KEXEC_FILE)		+= machine_kexec_file.o kexec_image.o
+ obj-$(CONFIG_ARM64_KEXEC_GIC_TABLES) += kexec_gic.o
++obj-$(CONFIG_ARM64_KEXEC_TZLOG_DIAG) += kexec_tzlog.o
+ obj-$(CONFIG_KEXEC_TARGET_TRACE)	+= kexec_target_trace.o
+ KASAN_SANITIZE_kexec_target_trace.o := n
+ KCSAN_SANITIZE_kexec_target_trace.o := n
+--- a/arch/arm64/include/asm/kexec.h
++++ b/arch/arm64/include/asm/kexec.h
+@@ -96,6 +96,7 @@
+ struct kimage;
+ struct kexec_buf;
+ struct arm64_kexec_gic;
++struct arm64_kexec_tzlog;
+ 
+ #if defined(CONFIG_KEXEC_CORE)
+ void cpu_soft_restart(unsigned long el2_switch, unsigned long entry,
+@@ -122,6 +123,9 @@
+ 	/* Survives file post-load cleanup until kimage destruction. */
+ 	struct arm64_kexec_gic *gic_tables;
+ #endif
++#if defined(CONFIG_ARM64_KEXEC_TZLOG_DIAG) && !defined(__GENKSYMS__)
++	struct arm64_kexec_tzlog *tzlog;
++#endif
+ };
+ 
+ #ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
+@@ -147,6 +151,11 @@
+ }
+ #endif
+ 
++#ifdef CONFIG_ARM64_KEXEC_TZLOG_DIAG
++void arch_kimage_file_alloc_cleanup(struct kimage *image);
++#define arch_kimage_file_alloc_cleanup arch_kimage_file_alloc_cleanup
++#endif
++
+ #ifdef CONFIG_KEXEC_FILE
+ extern const struct kexec_file_ops kexec_image_ops;
+ 
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -209,6 +209,10 @@
+ }
+ #endif
+ 
++#ifndef arch_kimage_file_alloc_cleanup
++static inline void arch_kimage_file_alloc_cleanup(struct kimage *image) { }
++#endif
++
+ #ifndef arch_kimage_file_post_load_cleanup
+ static inline int arch_kimage_file_post_load_cleanup(struct kimage *image)
+ {
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -318,6 +318,7 @@
+ out_free_post_load_bufs:
+ 	kimage_file_post_load_cleanup(image);
+ out_free_image:
++	arch_kimage_file_alloc_cleanup(image);
+ 	kfree(image);
+ 	return ret;
+ }
+--- a/arch/arm64/kernel/kexec_image.c
++++ b/arch/arm64/kernel/kexec_image.c
+@@ -12,6 +12,7 @@
+ #include <linux/errno.h>
+ #include <linux/kernel.h>
+ #include <linux/kexec.h>
++#include <linux/kexec_tzlog.h>
+ #include <linux/pe.h>
+ #include <linux/string.h>
+ #include <asm/byteorder.h>
+@@ -70,6 +71,10 @@
+ 	    ((value == ARM64_IMAGE_FLAG_PAGE_SIZE_16K) &&
+ 			!system_supports_16kb_granule()))
+ 		return ERR_PTR(-EINVAL);
++
++	ret = arm64_kexec_tzlog_capture(image, cmdline);
++	if (ret)
++		return ERR_PTR(ret);
+ 
+ 	/* Load the kernel */
+ 	kbuf.image = image;
+--- a/arch/arm64/kernel/machine_kexec_file.c
++++ b/arch/arm64/kernel/machine_kexec_file.c
+@@ -14,6 +14,7 @@
+ #include <linux/ioport.h>
+ #include <linux/kernel.h>
+ #include <linux/kexec.h>
++#include <linux/kexec_tzlog.h>
+ #include <linux/kexec_ramoops_native.h>
+ #include <linux/libfdt.h>
+ #include <linux/memblock.h>
+@@ -179,6 +180,7 @@
+ 	dtb = of_kexec_alloc_and_setup_fdt(image, initrd_load_addr,
+ 					   initrd_len, cmdline,
+ 					   arm64_kexec_gic_fdt_size(image) +
++					   arm64_kexec_tzlog_fdt_size(image) +
+ 					   (native_ramoops ? SZ_1K : 0));
+ 	if (!dtb) {
+ 		pr_err("Preparing for new dtb failed\n");
+@@ -198,6 +200,10 @@
+ 			goto out_err;
+ 		}
+ 	}
++
++	ret = arm64_kexec_tzlog_fdt_setup(image, dtb);
++	if (ret)
++		goto out_err;
+ 
+ 	/* trim it */
+ 	fdt_pack(dtb);
+--- a/arch/arm64/kernel/machine_kexec.c
++++ b/arch/arm64/kernel/machine_kexec.c
+@@ -10,6 +10,7 @@
+ #include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <linux/kexec.h>
++#include <linux/kexec_tzlog.h>
+ #include <linux/page-flags.h>
+ #include <linux/reboot.h>
+ #include <linux/set_memory.h>
+@@ -57,6 +58,7 @@
+ 
+ void machine_kexec_cleanup(struct kimage *kimage)
+ {
++	arm64_kexec_tzlog_cleanup(kimage);
+ 	arm64_kexec_gic_cleanup(kimage);
+ }
+ 
+@@ -79,7 +81,7 @@
+ 		return -EBUSY;
+ 	}
+ 
+-	return 0;
++	return arm64_kexec_tzlog_check(kimage, false);
+ }
+ 
+ /**
+@@ -221,6 +223,11 @@
+ 	WARN(in_kexec_crash && (stuck_cpus || smp_crash_stop_failed()),
+ 		"Some CPUs may be stale, kdump will be unreliable.\n");
+ 
++	/* Active TZ quarantine must not schedule a remove after validation. */
++	if (arm64_kexec_tzlog_active(kimage)) {
++		preempt_disable();
++		local_daif_mask();
++	}
+ 	/* Keep normal mappings until the nonblocking hardware snapshot ends. */
+ 	ret = arm64_kexec_gic_validate(kimage);
+ 	if (ret) {
+@@ -228,6 +235,13 @@
+ 			 ret);
+ 		machine_restart(NULL);
+ 		panic("Normal restart returned after unsafe GIC snapshot");
++	}
++
++	ret = arm64_kexec_tzlog_check(kimage, true);
++	if (ret) {
++		pr_emerg("TZ log metadata no longer safe (%d); restarting normally.\n", ret);
++		machine_restart(NULL);
++		panic("Normal restart returned after unsafe TZ log metadata");
+ 	}
+ 
+ 	pr_info("Bye!\n");

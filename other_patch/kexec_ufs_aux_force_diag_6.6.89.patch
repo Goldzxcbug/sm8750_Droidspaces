@@ -1,0 +1,79 @@
+Diagnostic candidate only: keep the single UFS auxiliary RCG enabled.
+
+Input: official OnePlusOSS android_kernel_oneplus_sm8750 commit
+4553152f62a3bd9f39bb6d068a4d94a15a8c07fd drivers/clk/qcom/gcc-sun.c,
+SHA256 8e2198b7ee9dfd306bafb5ff2343d38128ceb2bae98b676f7ebbcb0f16ad1326.
+Require a separately verified untouched matching vendor-module baseline
+before applying this patch to a new output copy. Generation is not build,
+application, module loading, hardware execution or a successful repair.
+
+The new bool defaults false/0400. Only an explicit module option together
+with /chosen/linux,booted-from-kexec and the exact qcom,sun-gcc device enables
+the experiment. Immediately before the existing clock registration call,
+OR the existing FORCE_ENABLE_RCG flag into gcc_ufs_phy_phy_aux_clk_src.flags
+and log the old/new software flags. No other clock is changed. Keep the
+existing HW_CLK_CTRL_MODE, safe configuration, rate and parent definitions.
+
+The unchanged actual clk_rcg2_ops provider then retains ROOT_EN during its
+normal enable lifecycle; its original disable still parks at CXO and clears
+force. There are no new MMIO accesses, retries or resets in this patch, and
+no error-handling bypass. Original provider return-value limitations remain:
+force-enable polling may warn and return zero, and configure errors may leave
+the force bit set. A zero callback return is not hardware-on proof. Inspect
+actual clock status and the original leaf/PHY/UFS errors during a bounded
+reversible boot experiment. This is not a production power-management fix.
+
+--- a/drivers/clk/qcom/gcc-sun.c
++++ b/drivers/clk/qcom/gcc-sun.c
+@@ -24,6 +24,11 @@
+ #include "common.h"
+ #include "reset.h"
+ #include "vdd-level.h"
++
++static bool kexec_ufs_aux_force_diag;
++module_param(kexec_ufs_aux_force_diag, bool, 0400);
++MODULE_PARM_DESC(kexec_ufs_aux_force_diag,
++                "Kexec-only UFS auxiliary RCG force-enable experiment; default off");
+ 
+ static DEFINE_VDD_REGULATORS(vdd_cx, VDD_HIGH + 1, 1, vdd_corner);
+ static DEFINE_VDD_REGULATORS(vdd_mx, VDD_HIGH + 1, 1, vdd_corner);
+@@ -3674,6 +3679,30 @@
+ };
+ MODULE_DEVICE_TABLE(of, gcc_sun_match_table);
+ 
++/*
++ * Causal diagnostic only: keep this one RCG forced on while CCF enables it.
++ * Use the existing provider lifecycle, including its original disable and
++ * error handling; retain safe configuration and hardware clock-control mode.
++ */
++static void gcc_sun_kexec_aux_force_diag(struct platform_device *pdev)
++{
++	unsigned long old_flags;
++
++	if (!READ_ONCE(kexec_ufs_aux_force_diag) || !of_chosen ||
++	    !of_property_read_bool(of_chosen, "linux,booted-from-kexec") ||
++	    !of_device_is_compatible(pdev->dev.of_node, "qcom,sun-gcc"))
++		return;
++
++	old_flags = gcc_ufs_phy_phy_aux_clk_src.flags;
++	gcc_ufs_phy_phy_aux_clk_src.flags |= FORCE_ENABLE_RCG;
++	dev_info(&pdev->dev,
++		 "KUFSAUX1 stage=before-clock-registration clock=gcc_ufs_phy_phy_aux_clk_src old_rcg_flags=%lx new_rcg_flags=%lx force_mask=%lx hw_ctl_kept=%u\n",
++		 old_flags,
++		 (unsigned long)gcc_ufs_phy_phy_aux_clk_src.flags,
++		 (unsigned long)FORCE_ENABLE_RCG,
++		 !!(gcc_ufs_phy_phy_aux_clk_src.flags & HW_CLK_CTRL_MODE));
++}
++
+ static int gcc_sun_probe(struct platform_device *pdev)
+ {
+ 	struct regmap *regmap;
+@@ -3718,6 +3747,8 @@
+ 	regmap_update_bits(regmap, gcc_ufs_phy_ice_core_clk.halt_reg,
+ 			   BIT(14), BIT(14));
+ 
++	gcc_sun_kexec_aux_force_diag(pdev);
++
+ 	ret = qcom_cc_really_probe(pdev, &gcc_sun_desc, regmap);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to register GCC clocks\n");

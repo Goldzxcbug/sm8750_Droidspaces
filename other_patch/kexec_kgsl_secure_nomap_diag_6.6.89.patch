@@ -1,0 +1,255 @@
+From: kexec diagnostics <local>
+Subject: [DIAG] arm64: opt-in bounded sampled secure-GPU page isolation
+
+Parent: frozen SEA-memory337 target. Source842 is unchanged.
+Strict bare-hex PFN+pagecount list, <=256 value characters, <=32 ascending
+nonoverlap ranges, <=64MiB total; chosen kexec boolean is mandatory.
+Reject invalid/colliding metadata before applying any range; panic on partial
+memblock failure. No payload/PTE/ACL reads, SCM, GPU or other hardware calls.
+Only a conservative diagnostic quarantine of externally sampled positive pages:
+no capture, seal, GPU quiescence, complete ownership claim, or production fix.
+Host loaded-FDT/page disjointness and a fresh exact-source SG snapshot remain
+mandatory. This hook runs after existing earlier EFI/dynamic-SCS activity;
+it does not claim to prevent every earlier allocation or access.
+
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -32,6 +32,10 @@
+ #include <linux/hugetlb.h>
+ #include <linux/acpi_iort.h>
+ #include <linux/kmemleak.h>
++#ifndef __GENKSYMS__
++#include <linux/libfdt.h>
++#include <linux/overflow.h>
++#endif
+ 
+ #include <asm/boot.h>
+ #include <asm/fixmap.h>
+@@ -330,6 +334,219 @@
+ }
+ early_param("mem", early_mem);
+ 
++/* Diagnostic isolation of positively sampled pages, not an ownership query. */
++#define KGPUM_MAX_RANGES 32
++#define KGPUM_MAX_INPUT 256
++#define KGPUM_MAX_BYTES SZ_64M
++struct kgpum_range { phys_addr_t base, size; };
++static struct kgpum_range kgpum_ranges[KGPUM_MAX_RANGES] __initdata;
++static unsigned int kgpum_count __initdata;
++static u64 kgpum_total __initdata;
++static bool kgpum_seen __initdata;
++static bool kgpum_bad __initdata;
++
++static int __init kgpum_hex(const char **cursor, u64 *value)
++{
++	const char *p = *cursor;
++	u64 v = 0;
++	unsigned int n = 0, digit;
++
++	for (;;) {
++		if (*p >= '0' && *p <= '9')
++			digit = *p - '0';
++		else if (*p >= 'a' && *p <= 'f')
++			digit = *p - 'a' + 10;
++		else if (*p >= 'A' && *p <= 'F')
++			digit = *p - 'A' + 10;
++		else
++			break;
++		if (++n > 16)
++			return -EINVAL;
++		v = (v << 4) | digit;
++		p++;
++	}
++	if (!n)
++		return -EINVAL;
++	*cursor = p;
++	*value = v;
++	return 0;
++}
++
++static int __init kgpum_setup(char *arg)
++{
++	const char *p = arg;
++	u64 pfn, pages, base, size, end, total;
++
++	/* Presence arms fail-closed validation, even for malformed/duplicate input. */
++	if (kgpum_seen) {
++		kgpum_bad = true;
++		return 0;
++	}
++	kgpum_seen = true;
++	if (!arg || !*arg || strnlen(arg, KGPUM_MAX_INPUT + 1) > KGPUM_MAX_INPUT)
++		goto bad;
++	for (;;) {
++		if (kgpum_count == KGPUM_MAX_RANGES || kgpum_hex(&p, &pfn) ||
++		    *p++ != '+' || kgpum_hex(&p, &pages) || !pages ||
++		    pfn > (PHYS_ADDR_MAX >> PAGE_SHIFT) ||
++		    pages > (PHYS_ADDR_MAX >> PAGE_SHIFT))
++			goto bad;
++		base = pfn << PAGE_SHIFT;
++		size = pages << PAGE_SHIFT;
++		if (check_add_overflow(base, size, &end) || end <= base ||
++		    check_add_overflow(kgpum_total, size, &total) || total > KGPUM_MAX_BYTES ||
++		    (kgpum_count && base < kgpum_ranges[kgpum_count - 1].base +
++					kgpum_ranges[kgpum_count - 1].size))
++			goto bad;
++		kgpum_ranges[kgpum_count++] = (struct kgpum_range) { base, size };
++		kgpum_total = total;
++		if (!*p)
++			return 0;
++		if (*p++ != ',' || !*p)
++			goto bad;
++	}
++bad:
++	kgpum_bad = true;
++	return 0;
++}
++early_param("kexec_diag.kgsl_nomap", kgpum_setup);
++
++static void __init kgpum_reject(const char *reason)
++{
++	pr_emerg("KGPUM1 action=reject reason=%s sampled_only=1\n", reason);
++	panic("KGPUM1 armed diagnostic isolation rejected");
++}
++
++static void __init kgpum_check_collision(u64 base, u64 size)
++{
++	u64 end;
++	unsigned int i;
++
++	if (!size)
++		return;
++	if (check_add_overflow(base, size, &end))
++		kgpum_reject("DT-range-overflow");
++	for (i = 0; i < kgpum_count; i++)
++		if (base < kgpum_ranges[i].base + kgpum_ranges[i].size &&
++		    kgpum_ranges[i].base < end)
++			kgpum_reject("boot-or-DT-collision");
++}
++
++static void __init kgpum_check_fdt(void)
++{
++	const void *fdt = initial_boot_params;
++	const fdt32_t *prop;
++	const char *status;
++	u64 base, size;
++	int chosen, node, child, len, ac, sc, n, count, tuple;
++
++	if (!fdt || fdt_check_header(fdt))
++		kgpum_reject("FDT-header");
++	chosen = fdt_path_offset(fdt, "/chosen");
++	if (chosen < 0 || !fdt_getprop(fdt, chosen, "linux,booted-from-kexec", NULL))
++		kgpum_reject("not-kexec");
++	kgpum_check_collision(__pa_symbol(_text), _end - _text);
++	kgpum_check_collision(initial_boot_params_pa, fdt_totalsize(fdt));
++	if (IS_ENABLED(CONFIG_BLK_DEV_INITRD) && phys_initrd_size)
++		kgpum_check_collision(phys_initrd_start, phys_initrd_size);
++	count = fdt_num_mem_rsv(fdt);
++	if (count < 0)
++		kgpum_reject("FDT-memreserve");
++	for (n = 0; n < count; n++) {
++		if (fdt_get_mem_rsv(fdt, n, &base, &size))
++			kgpum_reject("FDT-memreserve");
++		kgpum_check_collision(base, size);
++	}
++
++	/* These static entries have not yet all reached memblock.reserved. */
++	node = fdt_path_offset(fdt, "/reserved-memory");
++	if (node == -FDT_ERR_NOTFOUND)
++		return;
++	if (node < 0)
++		kgpum_reject("DT-reserved-root");
++	ac = fdt_address_cells(fdt, 0);
++	sc = fdt_size_cells(fdt, 0);
++	if (ac < 1 || ac > 2 || sc < 1 || sc > 2)
++		kgpum_reject("DT-cells");
++	prop = fdt_getprop(fdt, node, "#address-cells", &len);
++	if (!prop || len != 4 || fdt32_to_cpu(*prop) != ac)
++		kgpum_reject("DT-address-cells");
++	prop = fdt_getprop(fdt, node, "#size-cells", &len);
++	if (!prop || len != 4 || fdt32_to_cpu(*prop) != sc)
++		kgpum_reject("DT-size-cells");
++	if (!fdt_getprop(fdt, node, "ranges", &len) || len)
++		kgpum_reject("DT-nonidentity-ranges");
++	tuple = (ac + sc) * sizeof(*prop);
++	for (child = fdt_first_subnode(fdt, node); child >= 0;
++	     child = fdt_next_subnode(fdt, child)) {
++		status = fdt_getprop(fdt, child, "status", &len);
++		if (status) {
++			if (len <= 0 || status[len - 1])
++				kgpum_reject("DT-status");
++			if (!((len == 3 && !memcmp(status, "ok", 3)) ||
++			      (len == 5 && !memcmp(status, "okay", 5))))
++				continue;
++		} else if (len != -FDT_ERR_NOTFOUND) {
++			kgpum_reject("DT-status");
++		}
++		prop = fdt_getprop(fdt, child, "reg", &len);
++		if (!prop) {
++			if (len != -FDT_ERR_NOTFOUND)
++				kgpum_reject("DT-reg");
++			/* Size-only dynamic allocation will exclude reserved/NOMAP. */
++			continue;
++		}
++		if (len <= 0 || len % tuple)
++			kgpum_reject("DT-reg-length");
++		for (; len; len -= tuple, prop += ac + sc) {
++			base = of_read_number(prop, ac);
++			size = of_read_number(prop + ac, sc);
++			kgpum_check_collision(base, size);
++		}
++	}
++	if (child != -FDT_ERR_NOTFOUND)
++		kgpum_reject("DT-child-walk");
++}
++
++static void __init kgpum_apply(void)
++{
++	unsigned int i;
++	int ret;
++	phys_addr_t base, size;
++
++	if (!kgpum_seen)
++		return;
++	if (kgpum_bad || !kgpum_count)
++		kgpum_reject("parameter");
++	kgpum_check_fdt();
++	/* Validate every range before mutating either memblock table. */
++	for (i = 0; i < kgpum_count; i++) {
++		base = kgpum_ranges[i].base;
++		size = kgpum_ranges[i].size;
++		if (!memblock_is_region_memory(base, size) ||
++		    !memblock_is_map_memory(base) ||
++		    !memblock_is_map_memory(base + size - 1) ||
++		    memblock_is_region_reserved(base, size))
++			kgpum_reject("RAM-map-or-reserved");
++	}
++	pr_info("KGPUM1 action=validated ranges=%u bytes=%llu sampled_only=1\n",
++		kgpum_count, (unsigned long long)kgpum_total);
++	for (i = 0; i < kgpum_count; i++) {
++		base = kgpum_ranges[i].base;
++		size = kgpum_ranges[i].size;
++		ret = memblock_reserve(base, size);
++		if (!ret)
++			ret = memblock_mark_nomap(base, size);
++		if (ret) {
++			pr_emerg("KGPUM1 action=apply-failed index=%u error=%d\n", i, ret);
++			panic("KGPUM1 partial isolation cannot continue");
++		}
++		pr_info("KGPUM1 action=nomap index=%u pfn=%llx pages=%llx sampled_only=1\n",
++			i, (unsigned long long)(base >> PAGE_SHIFT),
++			(unsigned long long)(size >> PAGE_SHIFT));
++	}
++}
++
+ void __init arm64_memblock_init(void)
+ {
+ 	s64 linear_region_size = PAGE_END - _PAGE_OFFSET(vabits_actual);
+@@ -454,6 +671,7 @@
+ 		initrd_end = initrd_start + phys_initrd_size;
+ 	}
+ 
++	kgpum_apply();
+ 	early_init_fdt_scan_reserved_mem();
+ 
+ 	high_memory = __va(memblock_end_of_DRAM() - 1) + 1;

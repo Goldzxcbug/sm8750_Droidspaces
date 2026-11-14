@@ -1,0 +1,677 @@
+Historical diagnostic-only ARM64 target trace baseline; no new logic.
+
+Apply after the current kexec_kabi_6.6.89.patch. This packages exactly
+the already-built late-boot/source KTT tracer, callers and config. It
+writes only the explicitly validated persistent console and stops
+before the native ramoops driver. CONFIG_KEXEC_TARGET_TRACE defaults n;
+its runtime early parameter and matching reserved-memory validation
+are still required. This is diagnostic instrumentation, not a fix.
+No head.S, cpu-reset.S or relocation assembly is changed.
+
+--- a/arch/arm64/kernel/Makefile
++++ b/arch/arm64/kernel/Makefile
+@@ -63,6 +63,13 @@
+ obj-$(CONFIG_KEXEC_CORE)		+= machine_kexec.o relocate_kernel.o	\
+ 					   cpu-reset.o
+ obj-$(CONFIG_KEXEC_FILE)		+= machine_kexec_file.o kexec_image.o
++obj-$(CONFIG_KEXEC_TARGET_TRACE)	+= kexec_target_trace.o
++KASAN_SANITIZE_kexec_target_trace.o := n
++KCSAN_SANITIZE_kexec_target_trace.o := n
++UBSAN_SANITIZE_kexec_target_trace.o := n
++KCOV_INSTRUMENT_kexec_target_trace.o := n
++CFLAGS_REMOVE_kexec_target_trace.o := $(CC_FLAGS_FTRACE) -fstack-protector -fstack-protector-strong
++CFLAGS_kexec_target_trace.o += -fno-stack-protector
+ obj-$(CONFIG_ARM64_RELOC_TEST)		+= arm64-reloc-test.o
+ arm64-reloc-test-y := reloc_test_core.o reloc_test_syms.o
+ obj-$(CONFIG_CRASH_DUMP)		+= crash_dump.o
+--- /dev/null
++++ b/arch/arm64/kernel/kexec_target_trace.c
+@@ -0,0 +1,411 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Bounded, single-owner target-startup trace for this diagnostic image only.
++ *
++ * This does not fix a kexec handoff.  It writes only an existing, validated
++ * qcom,ramoops console, after the incoming kernel allocated reserved memory.
++ * Source-side preparation must additionally verify that the existing zone has
++ * no ECC and that its complete physical parameters match the five fields.
++ * All code, state and BTMAP page tables are part of the linked kernel image.
++ */
++#include <linux/errno.h>
++#include <linux/init.h>
++#include <linux/irqflags.h>
++#include <linux/kconfig.h>
++#include <linux/kernel.h>
++#include <linux/kexec_target_trace.h>
++#include <linux/memblock.h>
++#include <linux/of.h>
++#include <linux/of_reserved_mem.h>
++#include <linux/sched.h>
++#include <linux/sizes.h>
++
++#include <asm/barrier.h>
++#include <asm/cputype.h>
++#include <asm/early_ioremap.h>
++#include <asm/page.h>
++#include <asm/sysreg.h>
++
++#if !IS_BUILTIN(CONFIG_PSTORE_RAM)
++#error "KEXEC_TARGET_TRACE requires built-in ramoops_init() close guard"
++#endif
++
++/* Retain init lifetime while applying the same attributes as noinstr. */
++#define KTT_FN __noinstr_section(".init.text") __no_stack_protector
++#define KTT_SIG 0x43474244U
++#define KTT_CONSOLE_SIZE SZ_256K
++#define KTT_HEADER_SIZE 12U
++#define KTT_LINE_SIZE 256U
++
++struct ktt_ring {
++	u32 sig;
++	u32 start;
++	u32 used;
++	u8 data[];
++};
++
++struct ktt_config {
++	u64 base;
++	u64 region_size;
++	u64 console_size;
++	u64 capacity;
++	u64 run_id;
++	bool seen;
++	bool valid;
++};
++
++struct ktt_context {
++	struct ktt_ring *ring;
++	struct task_struct *owner;
++	u64 sequence;
++	unsigned long cache_line;
++	unsigned int error;
++	bool active;
++	bool busy;
++	bool closed;
++};
++
++/* No shared register-save area: each mark uses its caller's real C stack. */
++static struct ktt_config cfg __initdata;
++static struct ktt_context ctx __initdata;
++
++/* Exact syntax: five 0x-prefixed unsigned hexadecimal fields, comma-separated. */
++static KTT_FN int ktt_parse(char *arg)
++{
++	u64 fields[5];
++	unsigned int n, digits, d;
++	const char *p = arg;
++	u64 value;
++
++	/* Duplicate, malformed, or unsupported input never enables the trace. */
++	if (cfg.seen) {
++		cfg.valid = false;
++		return -EINVAL;
++	}
++	cfg.seen = true;
++	if (!p)
++		return -EINVAL;
++	for (n = 0; n < ARRAY_SIZE(fields); n++) {
++		if (p[0] != '0' || p[1] != 'x')
++			return -EINVAL;
++		p += 2;
++		value = 0;
++		for (digits = 0; ; digits++, p++) {
++			if (*p >= '0' && *p <= '9')
++				d = *p - '0';
++			else if (*p >= 'a' && *p <= 'f')
++				d = *p - 'a' + 10;
++			else if (*p >= 'A' && *p <= 'F')
++				d = *p - 'A' + 10;
++			else
++				break;
++			if (digits == 16)
++				return -EINVAL;
++			value = (value << 4) | d;
++		}
++		if (!digits)
++			return -EINVAL;
++		fields[n] = value;
++		if (n + 1 == ARRAY_SIZE(fields)) {
++			if (*p)
++				return -EINVAL;
++		} else if (*p++ != ',') {
++			return -EINVAL;
++		}
++	}
++	if (!fields[0] || !IS_ALIGNED(fields[0], PAGE_SIZE) ||
++	    !fields[1] || !IS_ALIGNED(fields[1], PAGE_SIZE) ||
++	    fields[1] > SZ_16M || fields[1] < fields[2] ||
++	    fields[0] + fields[1] < fields[0] ||
++	    fields[2] != KTT_CONSOLE_SIZE ||
++	    fields[3] != KTT_CONSOLE_SIZE - KTT_HEADER_SIZE || !fields[4])
++		return -EINVAL;
++	cfg.base = fields[0];
++	cfg.region_size = fields[1];
++	cfg.console_size = fields[2];
++	cfg.capacity = fields[3];
++	cfg.run_id = fields[4];
++	cfg.valid = true;
++	return 0;
++}
++early_param("kexec_late_trace", ktt_parse);
++
++/* Optional numeric properties must be well-formed zero, not merely unreadable. */
++static KTT_FN bool ktt_optional_zero(const struct device_node *np,
++				   const char *name)
++{
++	const struct property *prop;
++	int len;
++
++	prop = of_find_property(np, name, &len);
++	if (!prop)
++		return true;
++	return len == sizeof(__be32) && prop->value &&
++		be32_to_cpup(prop->value) == 0;
++}
++
++static KTT_FN bool ktt_validate_reserved_console(void)
++{
++	struct device_node *region, *consumer, *reference, *chosen;
++	struct reserved_mem *rmem;
++	phys_addr_t at;
++	u32 console, pmsg, memtype;
++	bool valid = false;
++
++	chosen = of_find_node_by_path("/chosen");
++	valid = chosen && of_property_read_bool(chosen, "linux,booted-from-kexec");
++	of_node_put(chosen);
++	if (!valid)
++		return false;
++	valid = false;
++	region = of_find_node_by_path("/reserved-memory/ramoops-region");
++	consumer = of_find_node_by_path("/soc/qcom_ramoops");
++	if (!region || !consumer)
++		goto out;
++	if (!of_device_is_available(region) ||
++	    !of_device_is_available(consumer) ||
++	    !of_device_is_compatible(consumer, "qcom,ramoops") ||
++	    !of_property_read_bool(region, "no-map") ||
++	    of_property_read_bool(region, "reusable"))
++		goto out;
++	reference = of_parse_phandle(consumer, "memory-region", 0);
++	if (reference != region) {
++		of_node_put(reference);
++		goto out;
++	}
++	of_node_put(reference);
++	rmem = of_reserved_mem_lookup(region);
++	if (!rmem || rmem->base != cfg.base || rmem->size != cfg.region_size)
++		goto out;
++	if (of_property_read_u32(consumer, "console-size", &console) ||
++	    of_property_read_u32(consumer, "pmsg-size", &pmsg) ||
++	    of_property_read_u32(consumer, "mem-type", &memtype) ||
++	    console != cfg.console_size || pmsg != cfg.region_size - console ||
++	    memtype != 2 ||
++	    !ktt_optional_zero(consumer, "record-size") ||
++	    !ktt_optional_zero(consumer, "ftrace-size") ||
++	    !ktt_optional_zero(consumer, "ecc-size") ||
++	    !ktt_optional_zero(region, "ecc-size"))
++		goto out;
++	/* RAM, completely NOMAP.  is_region_reserved() only tests any overlap. */
++	if (!memblock_is_region_memory(cfg.base, cfg.region_size))
++		goto out;
++	for (at = cfg.base; at < cfg.base + cfg.region_size; at += PAGE_SIZE)
++		if (memblock_is_map_memory(at))
++			goto out;
++	valid = true;
++out:
++	of_node_put(consumer);
++	of_node_put(region);
++	return valid;
++}
++
++static KTT_FN void ktt_cache_range(unsigned long start, unsigned long end,
++				 bool invalidate)
++{
++	unsigned long p;
++
++	for (p = start & ~(ctx.cache_line - 1); p < end; p += ctx.cache_line) {
++		if (invalidate)
++			asm volatile("dc civac, %0" : : "r" (p) : "memory");
++		else
++			asm volatile("dc cvac, %0" : : "r" (p) : "memory");
++	}
++	dsb(sy);
++}
++
++static KTT_FN bool ktt_header_valid(u32 *start, u32 *used)
++{
++	if (READ_ONCE(ctx.ring->sig) != KTT_SIG)
++		return false;
++	*start = READ_ONCE(ctx.ring->start);
++	*used = READ_ONCE(ctx.ring->used);
++	return *start < cfg.capacity && *used <= cfg.capacity && *start <= *used;
++}
++
++static KTT_FN unsigned int ktt_text(char *out, unsigned int pos,
++				 const char *text)
++{
++	while (*text && pos < KTT_LINE_SIZE)
++		out[pos++] = *text++;
++	return pos;
++}
++
++static KTT_FN unsigned int ktt_hex(char *out, unsigned int pos, u64 value,
++				unsigned int digits)
++{
++	unsigned int d;
++
++	while (digits && pos < KTT_LINE_SIZE) {
++		d = (value >> (--digits * 4)) & 15;
++		out[pos++] = d < 10 ? '0' + d : 'a' + d - 10;
++	}
++	return pos;
++}
++
++/* Called with local IRQs saved, the unique owner checked, and busy set. */
++static KTT_FN void ktt_emit(enum kexec_target_trace_stage stage,
++			 u64 a, u64 b, s64 result)
++{
++	char line[KTT_LINE_SIZE];
++	volatile u8 *data = ctx.ring->data;
++	unsigned int len = 0, i, first;
++	u32 start, used, next, new_used, sum = 2166136261U;
++	unsigned long base = (unsigned long)ctx.ring;
++
++	if (!ktt_header_valid(&start, &used)) {
++		ctx.error = 4;
++		ctx.active = false;
++		return;
++	}
++	len = ktt_text(line, len, "\nKEXEC_LATE_V1 run=");
++	len = ktt_hex(line, len, cfg.run_id, 16);
++	len = ktt_text(line, len, " seq=");
++	len = ktt_hex(line, len, ++ctx.sequence, 16);
++	len = ktt_text(line, len, " stage=");
++	len = ktt_hex(line, len, stage, 8);
++	len = ktt_text(line, len, " mpidr=");
++	len = ktt_hex(line, len, read_sysreg(mpidr_el1) & MPIDR_HWID_BITMASK, 16);
++	len = ktt_text(line, len, " a=");
++	len = ktt_hex(line, len, a, 16);
++	len = ktt_text(line, len, " b=");
++	len = ktt_hex(line, len, b, 16);
++	len = ktt_text(line, len, " ret=");
++	len = ktt_hex(line, len, (u64)result, 16);
++	for (i = 0; i < len; i++)
++		sum = (sum ^ (u8)line[i]) * 16777619U;
++	len = ktt_text(line, len, " sum=");
++	len = ktt_hex(line, len, sum, 8);
++	len = ktt_text(line, len, "\n");
++	/* Fixed format fits 256 bytes.  Refuse rather than publish truncation. */
++	if (len >= KTT_LINE_SIZE) {
++		ctx.error = 5;
++		ctx.active = false;
++		return;
++	}
++	first = min_t(unsigned int, len, cfg.capacity - start);
++	for (i = 0; i < first; i++)
++		data[start + i] = line[i];
++	ktt_cache_range(base + KTT_HEADER_SIZE + start,
++			base + KTT_HEADER_SIZE + start + first, false);
++	for (i = first; i < len; i++)
++		data[i - first] = line[i];
++	if (len > first)
++		ktt_cache_range(base + KTT_HEADER_SIZE,
++				base + KTT_HEADER_SIZE + len - first, false);
++	next = start + len;
++	if (next >= cfg.capacity)
++		next -= cfg.capacity;
++	new_used = min_t(u32, cfg.capacity, used + len);
++	/* Data is already at PoC.  Growing used before advancing start keeps
++	 * each intermediate header structurally bounded across interruption.
++	 * A reset can still leave an incomplete record; the FNV sum detects it.
++	 */
++	WRITE_ONCE(ctx.ring->used, new_used);
++	ktt_cache_range(base, base + KTT_HEADER_SIZE, false);
++	WRITE_ONCE(ctx.ring->start, next);
++	ktt_cache_range(base, base + KTT_HEADER_SIZE, false);
++}
++
++KTT_FN void kexec_target_trace_mark(enum kexec_target_trace_stage stage,
++				  u64 a, u64 b, s64 result)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	if (!ctx.closed && ctx.active && ctx.owner == current && !ctx.busy) {
++		ctx.busy = true;
++		ktt_emit(stage, a, b, result);
++		ctx.busy = false;
++	}
++	local_irq_restore(flags);
++}
++
++KTT_FN void kexec_target_trace_start(void)
++{
++	u32 start, used;
++	unsigned long line;
++
++	if (ctx.closed || ctx.ring || !cfg.valid || current != &init_task)
++		return;
++	if (!ktt_validate_reserved_console()) {
++		ctx.error = 1;
++		return;
++	}
++	line = 4UL << ((read_sysreg(ctr_el0) >> 16) & 15);
++	if (line < 16 || line > PAGE_SIZE) {
++		ctx.error = 2;
++		return;
++	}
++	ctx.cache_line = line;
++	/* PAGE_KERNEL/Normal-WB mapping, not the default Device early_ioremap. */
++	ctx.ring = early_memremap(cfg.base, cfg.console_size);
++	if (!ctx.ring) {
++		ctx.error = 3;
++		return;
++	}
++	ktt_cache_range((unsigned long)ctx.ring,
++			(unsigned long)ctx.ring + cfg.console_size, true);
++	if (!ktt_header_valid(&start, &used)) {
++		ctx.error = 4;
++		early_memunmap(ctx.ring, cfg.console_size);
++		ctx.ring = NULL;
++		return;
++	}
++	ctx.owner = &init_task;
++	ctx.active = true;
++	kexec_target_trace_mark(KTT_SETUP_ARCH_DONE, cfg.base, cfg.region_size, 0);
++}
++
++KTT_FN void kexec_target_trace_handoff(void)
++{
++	unsigned long flags;
++	bool transferred = false;
++
++	local_irq_save(flags);
++	/* A rejected header can disable output while still holding the lease. */
++	if (!ctx.closed && ctx.ring && !ctx.busy &&
++	    ctx.owner == &init_task && current->pid == 1) {
++		ctx.owner = current;
++		transferred = true;
++	}
++	local_irq_restore(flags);
++	if (transferred)
++		kexec_target_trace_mark(KTT_INIT_OWNER, 1, 0, 0);
++}
++
++/* Both call sites execute sequentially in the boot control task, before any
++ * ramoops backend registration.  The built-in postcore guard is a backstop
++ * even when no trace was requested or a previous validation rejected it.
++ */
++KTT_FN bool kexec_target_trace_stop(unsigned int reason)
++{
++	unsigned long flags;
++	void *mapping;
++	bool closed = false;
++
++	local_irq_save(flags);
++	/* A recursive/non-owner stop must not unmap an outer emit's storage.
++	 * The backend caller checks false and refuses to register its writer.
++	 */
++	if (ctx.busy || (ctx.owner && ctx.owner != current))
++		goto out;
++	if (!ctx.closed) {
++		if (ctx.active && !ctx.busy && ctx.owner == current) {
++			ctx.busy = true;
++			ktt_emit(KTT_STOP, reason, 0, 0);
++			ctx.busy = false;
++		}
++		ctx.active = false;
++		ctx.closed = true;
++		mapping = ctx.ring;
++		ctx.ring = NULL;
++		ctx.owner = NULL;
++		if (mapping)
++			early_memunmap(mapping, cfg.console_size);
++	}
++	closed = true;
++out:
++	local_irq_restore(flags);
++	return closed;
++}
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -6,6 +6,7 @@
+ 
+ #define pr_fmt(fmt)	"GICv3: " fmt
+ 
++#include <linux/kexec_target_trace.h>
+ #include <linux/acpi.h>
+ #include <linux/cpu.h>
+ #include <linux/cpu_pm.h>
+@@ -2087,14 +2088,24 @@
+ 
+ 	gic_update_rdist_properties();
+ 
++	kexec_target_trace_mark(KTT_GIC_DIST_BEFORE, 0, 0, 0);
+ 	gic_dist_init();
++	kexec_target_trace_mark(KTT_GIC_DIST_AFTER, 0, 0, 0);
++	kexec_target_trace_mark(KTT_GIC_CPU_BEFORE, 0, 0, 0);
+ 	gic_cpu_init();
++	kexec_target_trace_mark(KTT_GIC_CPU_AFTER, 0, 0, 0);
+ 	gic_smp_init();
+ 	gic_cpu_pm_init();
+ 
+ 	if (gic_dist_supports_lpis()) {
+-		its_init(handle, &gic_data.rdists, gic_data.domain);
+-		its_cpu_init();
++		int its_ret;
++
++		kexec_target_trace_mark(KTT_ITS_INIT_BEFORE, 0, 0, 0);
++		its_ret = its_init(handle, &gic_data.rdists, gic_data.domain);
++		kexec_target_trace_mark(KTT_ITS_INIT_AFTER, 0, 0, its_ret);
++		kexec_target_trace_mark(KTT_ITS_CPU_BEFORE, 0, 0, 0);
++		its_ret = its_cpu_init();
++		kexec_target_trace_mark(KTT_ITS_CPU_AFTER, 0, 0, its_ret);
+ 		its_lpi_memreserve_init();
+ 	} else {
+ 		if (IS_ENABLED(CONFIG_ARM_GIC_V2M))
+--- a/fs/pstore/ram.c
++++ b/fs/pstore/ram.c
+@@ -8,6 +8,7 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/kexec_target_trace.h>
+ #include <linux/kernel.h>
+ #include <linux/err.h>
+ #include <linux/module.h>
+@@ -962,6 +963,9 @@
+ {
+ 	int ret;
+ 
++	/* No raw diagnostic writer may survive backend registration/probe. */
++	if (!kexec_target_trace_stop(KTT_STOP_BACKEND_INIT))
++		return -EBUSY;
+ 	ramoops_register_dummy();
+ 	ret = platform_driver_register(&ramoops_driver);
+ 	if (ret != 0)
+--- /dev/null
++++ b/include/linux/kexec_target_trace.h
+@@ -0,0 +1,54 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_KEXEC_TARGET_TRACE_H
++#define _LINUX_KEXEC_TARGET_TRACE_H
++
++#include <linux/init.h>
++#include <linux/types.h>
++
++/* Diagnostic stage IDs are part of the host decoder's versioned format. */
++enum kexec_target_trace_stage {
++	KTT_SETUP_ARCH_DONE = 1,
++	KTT_MM_CORE_BEFORE,
++	KTT_MM_CORE_AFTER,
++	KTT_INIT_IRQ_BEFORE,
++	KTT_INIT_IRQ_AFTER,
++	KTT_GIC_DIST_BEFORE,
++	KTT_GIC_DIST_AFTER,
++	KTT_GIC_CPU_BEFORE,
++	KTT_GIC_CPU_AFTER,
++	KTT_ITS_INIT_BEFORE,
++	KTT_ITS_INIT_AFTER,
++	KTT_ITS_CPU_BEFORE,
++	KTT_ITS_CPU_AFTER,
++	KTT_IRQ_ENABLE_BEFORE,
++	KTT_IRQ_ENABLE_AFTER,
++	KTT_INIT_OWNER,
++	KTT_SMP_PREPARE_BEFORE,
++	KTT_SMP_PREPARE_AFTER,
++	KTT_SMP_BEFORE,
++	KTT_CPU_UP_BEFORE,
++	KTT_CPU_UP_AFTER,
++	KTT_SMP_AFTER,
++	KTT_STOP,
++};
++
++enum kexec_target_trace_stop_reason {
++	KTT_STOP_SMP_DONE = 1,
++	KTT_STOP_BACKEND_INIT,
++};
++
++#ifdef CONFIG_KEXEC_TARGET_TRACE
++void __init kexec_target_trace_start(void);
++void __init kexec_target_trace_mark(enum kexec_target_trace_stage stage,
++				 u64 a, u64 b, s64 result);
++void __init kexec_target_trace_handoff(void);
++bool __init kexec_target_trace_stop(unsigned int reason);
++#else
++static inline void kexec_target_trace_start(void) { }
++static inline void kexec_target_trace_mark(enum kexec_target_trace_stage stage,
++					u64 a, u64 b, s64 result) { }
++static inline void kexec_target_trace_handoff(void) { }
++static inline bool kexec_target_trace_stop(unsigned int reason) { return true; }
++#endif
++
++#endif /* _LINUX_KEXEC_TARGET_TRACE_H */
+--- a/init/main.c
++++ b/init/main.c
+@@ -12,6 +12,7 @@
+ 
+ #define DEBUG		/* Enable initcall_debug */
+ 
++#include <linux/kexec_target_trace.h>
+ #include <linux/types.h>
+ #include <linux/extable.h>
+ #include <linux/module.h>
+@@ -897,6 +898,7 @@
+ 	pr_notice("%s", linux_banner);
+ 	early_security_init();
+ 	setup_arch(&command_line);
++	kexec_target_trace_start();
+ 	setup_boot_config();
+ 	setup_command_line(command_line);
+ 	setup_nr_cpu_ids();
+@@ -931,7 +933,9 @@
+ 	vfs_caches_init_early();
+ 	sort_main_extable();
+ 	trap_init();
++	kexec_target_trace_mark(KTT_MM_CORE_BEFORE, 0, 0, 0);
+ 	mm_core_init();
++	kexec_target_trace_mark(KTT_MM_CORE_AFTER, 0, 0, 0);
+ 	poking_init();
+ 	ftrace_init();
+ 
+@@ -975,7 +979,9 @@
+ 	context_tracking_init();
+ 	/* init some links before init_ISA_irqs() */
+ 	early_irq_init();
++	kexec_target_trace_mark(KTT_INIT_IRQ_BEFORE, 0, 0, 0);
+ 	init_IRQ();
++	kexec_target_trace_mark(KTT_INIT_IRQ_AFTER, 0, 0, 0);
+ 	tick_init();
+ 	rcu_init_nohz();
+ 	init_timers();
+@@ -998,7 +1004,9 @@
+ 	WARN(!irqs_disabled(), "Interrupts were enabled early\n");
+ 
+ 	early_boot_irqs_disabled = false;
++	kexec_target_trace_mark(KTT_IRQ_ENABLE_BEFORE, 0, 0, 0);
+ 	local_irq_enable();
++	kexec_target_trace_mark(KTT_IRQ_ENABLE_AFTER, 0, 0, 0);
+ 
+ 	kmem_cache_init_late();
+ 
+@@ -1523,6 +1531,7 @@
+ 
+ static noinline void __init kernel_init_freeable(void)
+ {
++	kexec_target_trace_handoff();
+ 	/* Now the scheduler is fully set up and can do blocking allocations */
+ 	gfp_allowed_mask = __GFP_BITS_MASK;
+ 
+@@ -1533,7 +1542,9 @@
+ 
+ 	cad_pid = get_pid(task_pid(current));
+ 
++	kexec_target_trace_mark(KTT_SMP_PREPARE_BEFORE, setup_max_cpus, 0, 0);
+ 	smp_prepare_cpus(setup_max_cpus);
++	kexec_target_trace_mark(KTT_SMP_PREPARE_AFTER, setup_max_cpus, 0, 0);
+ 
+ 	workqueue_init();
+ 
+@@ -1543,7 +1554,10 @@
+ 	do_pre_smp_initcalls();
+ 	lockup_detector_init();
+ 
++	kexec_target_trace_mark(KTT_SMP_BEFORE, 0, 0, 0);
+ 	smp_init();
++	kexec_target_trace_mark(KTT_SMP_AFTER, num_online_cpus(), 0, 0);
++	kexec_target_trace_stop(KTT_STOP_SMP_DONE);
+ 	sched_init_smp();
+ 
+ 	workqueue_init_topology();
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -44,6 +44,18 @@
+ 	  file based and takes file descriptors as system call argument
+ 	  for kernel and initramfs as opposed to list of segments as
+ 	  accepted by kexec system call.
++
++config KEXEC_TARGET_TRACE
++	bool "ARM64 kexec target startup trace (diagnostic only)"
++	depends on ARM64 && OF_RESERVED_MEM && GENERIC_EARLY_IOREMAP
++	depends on PSTORE_CONSOLE && PSTORE_RAM = y
++	default n
++	help
++	  Record bounded primary boot stages in a validated existing qcom,ramoops
++	  console after setup_arch. This does not repair a kexec handoff.
++	  The diagnostic is inactive without an explicit kexec_late_trace early
++	  parameter. It closes before SMP observation ends and before the built-in
++	  ramoops postcore initcall can register a writer. Say N for normal builds.
+ 
+ config KEXEC_SIG
+ 	bool "Verify kernel signature during kexec_file_load() syscall"
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -3,6 +3,7 @@
+  *
+  * This code is licenced under the GPL.
+  */
++#include <linux/kexec_target_trace.h>
+ #include <linux/sched/mm.h>
+ #include <linux/proc_fs.h>
+ #include <linux/smp.h>
+@@ -1774,8 +1775,12 @@
+ 
+ 	for_each_cpu(cpu, mask) {
+ 		struct cpuhp_cpu_state *st = per_cpu_ptr(&cpuhp_state, cpu);
+-
+-		if (cpu_up(cpu, target) && can_rollback_cpu(st)) {
++		int ret;
++
++		kexec_target_trace_mark(KTT_CPU_UP_BEFORE, cpu, target, 0);
++		ret = cpu_up(cpu, target);
++		kexec_target_trace_mark(KTT_CPU_UP_AFTER, cpu, target, ret);
++		if (ret && can_rollback_cpu(st)) {
+ 			/*
+ 			 * If this failed then cpu_up() might have only
+ 			 * rolled back to CPUHP_BP_KICK_AP for the final

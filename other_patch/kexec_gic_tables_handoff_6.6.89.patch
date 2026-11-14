@@ -1,0 +1,1231 @@
+Historical bounded ARM64 GICv3 table handoff baseline; no new logic.
+
+Apply after kexec_target_trace_diag_6.6.89.patch. This packages the
+already-built gic-fix/source owned-table snapshot, allocator exclusion,
+target FDT reservation and final snapshot verification. The native
+ramoops additions are in the following separate diagnostic patch.
+CONFIG_ARM64_KEXEC_GIC_TABLES defaults n. This preserves bounded table
+memory only and does not establish complete GIC/ITS/DMA quiescence.
+No shutdown control bits, head.S, reset or relocation assembly change.
+
+--- a/arch/arm64/include/asm/kexec.h
++++ b/arch/arm64/include/asm/kexec.h
+@@ -94,6 +94,8 @@
+ #endif
+ 
+ struct kimage;
++struct kexec_buf;
++struct arm64_kexec_gic;
+ 
+ #if defined(CONFIG_KEXEC_CORE)
+ void cpu_soft_restart(unsigned long el2_switch, unsigned long entry,
+@@ -116,7 +118,34 @@
+ 	phys_addr_t zero_page;
+ 	unsigned long phys_offset;
+ 	unsigned long t0sz;
++#if defined(CONFIG_ARM64_KEXEC_GIC_TABLES) && !defined(__GENKSYMS__)
++	/* Survives file post-load cleanup until kimage destruction. */
++	struct arm64_kexec_gic *gic_tables;
++#endif
+ };
++
++#ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
++int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
++				 unsigned long buf_len);
++#define arch_kexec_kernel_image_probe arch_kexec_kernel_image_probe
++int arch_kexec_locate_mem_hole(struct kexec_buf *kbuf);
++#define arch_kexec_locate_mem_hole arch_kexec_locate_mem_hole
++void arm64_kexec_gic_cleanup(struct kimage *image);
++int arm64_kexec_gic_validate(struct kimage *image);
++unsigned int arm64_kexec_gic_fdt_size(struct kimage *image);
++int arm64_kexec_gic_fdt_setup(struct kimage *image, void *fdt);
++#else
++static inline void arm64_kexec_gic_cleanup(struct kimage *image) { }
++static inline int arm64_kexec_gic_validate(struct kimage *image) { return 0; }
++static inline unsigned int arm64_kexec_gic_fdt_size(struct kimage *image)
++{
++	return 0;
++}
++static inline int arm64_kexec_gic_fdt_setup(struct kimage *image, void *fdt)
++{
++	return 0;
++}
++#endif
+ 
+ #ifdef CONFIG_KEXEC_FILE
+ extern const struct kexec_file_ops kexec_image_ops;
+--- a/arch/arm64/kernel/Makefile
++++ b/arch/arm64/kernel/Makefile
+@@ -63,6 +63,7 @@
+ obj-$(CONFIG_KEXEC_CORE)		+= machine_kexec.o relocate_kernel.o	\
+ 					   cpu-reset.o
+ obj-$(CONFIG_KEXEC_FILE)		+= machine_kexec_file.o kexec_image.o
++obj-$(CONFIG_ARM64_KEXEC_GIC_TABLES) += kexec_gic.o
+ obj-$(CONFIG_KEXEC_TARGET_TRACE)	+= kexec_target_trace.o
+ KASAN_SANITIZE_kexec_target_trace.o := n
+ KCSAN_SANITIZE_kexec_target_trace.o := n
+--- /dev/null
++++ b/arch/arm64/kernel/kexec_gic.c
+@@ -0,0 +1,443 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Preserve GIC-owned memory; this does not quiesce a GIC or an ITS. */
++#define pr_fmt(fmt) "kexec-gic: " fmt
++
++#include <linux/errno.h>
++#include <linux/kexec.h>
++#include <linux/kexec_gic.h>
++#include <linux/libfdt.h>
++#include <linux/of_fdt.h>
++#include <linux/overflow.h>
++#include <linux/slab.h>
++#include <linux/sort.h>
++
++#define GIC_NODE "kexec-gic-tables"
++#define GIC_VERSION "linux,kexec-gic-tables-version"
++#define GIC_VERSION_1 1
++
++struct arm64_kexec_gic {
++	unsigned int nr;
++	unsigned int address_cells;
++	unsigned int size_cells;
++	bool fdt_ready;
++	struct kexec_gic_range captured[KEXEC_GIC_MAX_RANGES];
++	/* Preallocated: final validation runs with interrupts disabled. */
++	struct kexec_gic_range scratch[KEXEC_GIC_MAX_RANGES];
++};
++
++static int range_compare(const void *a, const void *b)
++{
++	const struct kexec_gic_range *x = a, *y = b;
++
++	if (x->start != y->start)
++		return x->start < y->start ? -1 : 1;
++	return x->end == y->end ? 0 : (x->end < y->end ? -1 : 1);
++}
++
++static int normalize_ranges(struct kexec_gic_range *ranges, int nr,
++			    unsigned int max)
++{
++	unsigned int i, out = 0;
++
++	if (nr < 0)
++		return nr;
++	if (nr > max)
++		return -E2BIG;
++	for (i = 0; i < nr; i++) {
++		if (ranges[i].start >= ranges[i].end ||
++		    !IS_ALIGNED(ranges[i].start, PAGE_SIZE) ||
++		    !IS_ALIGNED(ranges[i].end, PAGE_SIZE))
++			return -EINVAL;
++	}
++	sort(ranges, nr, sizeof(*ranges), range_compare, NULL);
++	for (i = 0; i < nr; i++) {
++		if (out && ranges[i].start <= ranges[out - 1].end) {
++			ranges[out - 1].end = max(ranges[out - 1].end,
++						 ranges[i].end);
++		} else {
++			ranges[out++] = ranges[i];
++		}
++	}
++	return out;
++}
++
++/* Both inputs are normalized; adjacent captured intervals are already merged. */
++static bool ranges_subset(const struct kexec_gic_range *small, unsigned int ns,
++			  const struct kexec_gic_range *large, unsigned int nl)
++{
++	unsigned int i, j = 0;
++
++	for (i = 0; i < ns; i++) {
++		while (j < nl && large[j].end <= small[i].start)
++			j++;
++		if (j == nl || small[i].start < large[j].start ||
++		    small[i].end > large[j].end)
++			return false;
++	}
++	return true;
++}
++
++static int get_cells(const void *fdt, int node, const char *name)
++{
++	const fdt32_t *p;
++	int len;
++
++	p = fdt_getprop(fdt, node, name, &len);
++	if (!p || len != sizeof(*p))
++		return -EINVAL;
++	len = fdt32_to_cpu(*p);
++	return len == 1 || len == 2 ? len : -EINVAL;
++}
++
++/* Match the standard early reserved-memory scanner, including empty ranges. */
++static int check_root(const void *fdt, unsigned int *ac, unsigned int *sc)
++{
++	const void *p;
++	int a, s, node, len;
++
++	if (!fdt || fdt_check_header(fdt))
++		return -EINVAL;
++	a = get_cells(fdt, 0, "#address-cells");
++	s = get_cells(fdt, 0, "#size-cells");
++	if (a < 0 || s < 0)
++		return -EINVAL;
++	*ac = a;
++	*sc = s;
++	node = fdt_path_offset(fdt, "/reserved-memory");
++	if (node == -FDT_ERR_NOTFOUND)
++		return node;
++	if (node < 0 || get_cells(fdt, node, "#address-cells") != a ||
++	    get_cells(fdt, node, "#size-cells") != s)
++		return -EINVAL;
++	p = fdt_getprop(fdt, node, "ranges", &len);
++	if (!p || len)
++		return -EINVAL;
++	/* A disabled parent would prevent the generic scanner from reserving. */
++	p = fdt_getprop(fdt, node, "status", &len);
++	if (p && !((len == 5 && !memcmp(p, "okay", 5)) ||
++		   (len == 3 && !memcmp(p, "ok", 3))))
++		return -EINVAL;
++	return node;
++}
++
++/* libfdt's normal subnode lookup ignores unit addresses: require our exact name. */
++static int find_owned_node(const void *fdt, int root)
++{
++	int node, found = -FDT_ERR_NOTFOUND;
++
++	fdt_for_each_subnode(node, fdt, root) {
++		const char *name = fdt_get_name(fdt, node, NULL);
++		size_t len = strlen(GIC_NODE);
++
++		if (!name)
++			return -EINVAL;
++		if (strncmp(name, GIC_NODE, len) || (name[len] && name[len] != '@'))
++			continue;
++		if (name[len] || found != -FDT_ERR_NOTFOUND)
++			return -EINVAL;
++		found = node;
++	}
++	return node == -FDT_ERR_NOTFOUND ? found : -EINVAL;
++}
++
++static int check_owned_node(const void *fdt, int node)
++{
++	const fdt32_t *version;
++	const void *status;
++	int len;
++
++	version = fdt_getprop(fdt, node, GIC_VERSION, &len);
++	if (!version || len != sizeof(*version) ||
++	    fdt32_to_cpu(*version) != GIC_VERSION_1 ||
++	    fdt_getprop(fdt, node, "no-map", NULL) ||
++	    fdt_getprop(fdt, node, "reusable", NULL) ||
++	    fdt_first_subnode(fdt, node) != -FDT_ERR_NOTFOUND)
++		return -EINVAL;
++	status = fdt_getprop(fdt, node, "status", &len);
++	if (status && !((len == 5 && !memcmp(status, "okay", 5)) ||
++			(len == 3 && !memcmp(status, "ok", 3))))
++		return -EINVAL;
++	return 0;
++}
++
++static u64 next_cell(const fdt32_t **p, unsigned int cells)
++{
++	u64 value = fdt32_to_cpu(*(*p)++);
++
++	if (cells == 2)
++		value = (value << 32) | fdt32_to_cpu(*(*p)++);
++	return value;
++}
++
++static int read_ranges(const void *fdt, int node, const char *name,
++		       struct kexec_gic_range *out, unsigned int max,
++		       unsigned int ac, unsigned int sc)
++{
++	const fdt32_t *p;
++	unsigned int i, nr, tuple = (ac + sc) * sizeof(*p);
++	int len;
++
++	p = fdt_getprop(fdt, node, name, &len);
++	if (!p || len < 0 || len % tuple)
++		return -EINVAL;
++	nr = len / tuple;
++	if (nr > max)
++		return -E2BIG;
++	for (i = 0; i < nr; i++) {
++		u64 start = next_cell(&p, ac), size = next_cell(&p, sc), end;
++
++		if (check_add_overflow(start, size, &end) || !size)
++			return -EINVAL;
++		out[i].start = start;
++		out[i].end = end;
++	}
++	return normalize_ranges(out, nr, max);
++}
++
++static bool ranges_encodable(const struct kexec_gic_range *r, unsigned int nr,
++			     unsigned int ac, unsigned int sc)
++{
++	unsigned int i;
++
++	for (i = 0; i < nr; i++)
++		if ((ac == 1 && r[i].start > U32_MAX) ||
++		    (sc == 1 && r[i].end - r[i].start > U32_MAX))
++			return false;
++	return true;
++}
++
++/* Prior reg is validated for ownership, never accumulated into this snapshot. */
++static int validate_source_fdt(struct arm64_kexec_gic *gic)
++{
++	const void *fdt = initial_boot_params;
++	int root, node, ret;
++
++	root = check_root(fdt, &gic->address_cells, &gic->size_cells);
++	if (root < 0 && root != -FDT_ERR_NOTFOUND)
++		return root;
++	if (root >= 0) {
++		node = find_owned_node(fdt, root);
++		if (node < 0 && node != -FDT_ERR_NOTFOUND)
++			return node;
++		if (node >= 0) {
++			ret = check_owned_node(fdt, node);
++			if (ret)
++				return ret;
++			ret = read_ranges(fdt, node, "reg", gic->scratch,
++					  KEXEC_GIC_MAX_RANGES,
++					  gic->address_cells, gic->size_cells);
++			if (ret < 0)
++				return ret;
++		}
++	}
++	if (!ranges_encodable(gic->captured, gic->nr, gic->address_cells,
++			      gic->size_cells))
++		return -ERANGE;
++	return 0;
++}
++
++int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
++				 unsigned long buf_len)
++{
++	struct arm64_kexec_gic *gic;
++	int ret;
++
++	ret = kexec_image_probe_default(image, buf, buf_len);
++	if (ret)
++		return ret;
++	if (image->arch.gic_tables)
++		return -EEXIST;
++	gic = kzalloc(sizeof(*gic), GFP_KERNEL);
++	if (!gic)
++		return -ENOMEM;
++	ret = gic_v3_kexec_snapshot(gic->captured, KEXEC_GIC_MAX_RANGES);
++	ret = normalize_ranges(gic->captured, ret, KEXEC_GIC_MAX_RANGES);
++	if (ret < 0)
++		goto fail;
++	gic->nr = ret;
++	ret = validate_source_fdt(gic);
++	if (ret)
++		goto fail;
++	/* Probe precedes IMA and every image/initrd/DTB kexec_add_buffer call. */
++	image->arch.gic_tables = gic;
++	pr_info("captured %u hardware table ranges\n", gic->nr);
++	return 0;
++fail:
++	pr_err("cannot capture table reservations (%d)\n", ret);
++	kfree(gic);
++	return ret;
++}
++
++void arm64_kexec_gic_cleanup(struct kimage *image)
++{
++	kfree(image->arch.gic_tables);
++	image->arch.gic_tables = NULL;
++}
++
++static const struct kexec_gic_range *overlap(const struct arm64_kexec_gic *gic,
++					    unsigned long start,
++					    unsigned long end, bool top_down)
++{
++	const struct kexec_gic_range *found = NULL;
++	unsigned int i;
++
++	for (i = 0; i < gic->nr; i++) {
++		if (gic->captured[i].start >= end)
++			break;
++		if (gic->captured[i].end <= start)
++			continue;
++		found = &gic->captured[i];
++		if (top_down)
++			break;
++	}
++	return found;
++}
++
++int arch_kexec_locate_mem_hole(struct kexec_buf *kbuf)
++{
++	struct arm64_kexec_gic *gic = kbuf->image->arch.gic_tables;
++	const struct kexec_gic_range *hit;
++	unsigned long min = kbuf->buf_min, max = kbuf->buf_max, end;
++	bool fixed = kbuf->mem != KEXEC_BUF_MEM_UNKNOWN;
++	int ret;
++
++	if (!gic || !kbuf->memsz || min > max)
++		return -EINVAL;
++	for (;;) {
++		ret = kexec_locate_mem_hole(kbuf);
++		if (ret)
++			break;
++		if (check_add_overflow(kbuf->mem, kbuf->memsz, &end)) {
++			ret = -EOVERFLOW;
++			break;
++		}
++		if (kbuf->mem < kbuf->buf_min || end - 1 > kbuf->buf_max) {
++			ret = -EADDRNOTAVAIL;
++			break;
++		}
++		hit = overlap(gic, kbuf->mem, end, kbuf->top_down);
++		if (!hit)
++			break;
++		ret = -EADDRNOTAVAIL;
++		if (fixed)
++			break;
++		if (kbuf->top_down) {
++			if (!hit->start || hit->start - 1 < kbuf->buf_min)
++				break;
++			kbuf->buf_max = hit->start - 1;
++		} else {
++			if (hit->end > kbuf->buf_max)
++				break;
++			kbuf->buf_min = hit->end;
++		}
++		kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
++	}
++	/* Do not change the caller's placement policy for the next segment. */
++	kbuf->buf_min = min;
++	kbuf->buf_max = max;
++	if (ret && !fixed)
++		kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
++	return ret;
++}
++
++unsigned int arm64_kexec_gic_fdt_size(struct kimage *image)
++{
++	struct arm64_kexec_gic *gic = image->arch.gic_tables;
++
++	if (!gic)
++		return 0;
++	/* Actual tuple count plus node/property names and a possible new root. */
++	return gic->nr *
++		(gic->address_cells + gic->size_cells) * sizeof(fdt32_t) + 512;
++}
++
++static fdt32_t *put_cell(fdt32_t *p, u64 value, unsigned int cells)
++{
++	if (cells == 2)
++		*p++ = cpu_to_fdt32(value >> 32);
++	*p++ = cpu_to_fdt32(value);
++	return p;
++}
++
++static int write_ranges(void *fdt, int node, const char *name,
++			const struct kexec_gic_range *ranges, unsigned int nr,
++			unsigned int ac, unsigned int sc)
++{
++	fdt32_t *p;
++	void *data;
++	unsigned int i;
++	int ret;
++
++	ret = fdt_setprop_placeholder(fdt, node, name,
++				      nr * (ac + sc) * sizeof(*p), &data);
++	if (ret)
++		return ret;
++	p = data;
++	for (i = 0; i < nr; i++) {
++		p = put_cell(p, ranges[i].start, ac);
++		p = put_cell(p, ranges[i].end - ranges[i].start, sc);
++	}
++	return 0;
++}
++
++int arm64_kexec_gic_fdt_setup(struct kimage *image, void *fdt)
++{
++	struct arm64_kexec_gic *gic = image->arch.gic_tables;
++	unsigned int ac, sc;
++	int root, node, ret;
++
++	if (!gic)
++		return -EINVAL;
++	gic->fdt_ready = false;
++	root = check_root(fdt, &ac, &sc);
++	if (root < 0 && root != -FDT_ERR_NOTFOUND)
++		return root;
++	if (ac != gic->address_cells || sc != gic->size_cells)
++		return -EINVAL;
++	if (root == -FDT_ERR_NOTFOUND) {
++		root = fdt_add_subnode(fdt, 0, "reserved-memory");
++		if (root < 0)
++			return root;
++		ret = fdt_setprop_u32(fdt, root, "#address-cells", ac);
++		if (!ret)
++			ret = fdt_setprop_u32(fdt, root, "#size-cells", sc);
++		if (!ret)
++			ret = fdt_setprop(fdt, root, "ranges", NULL, 0);
++		if (ret)
++			return ret;
++	}
++	node = find_owned_node(fdt, root);
++	if (node == -FDT_ERR_NOTFOUND)
++		node = fdt_add_subnode(fdt, root, GIC_NODE);
++	else if (node >= 0) {
++		ret = check_owned_node(fdt, node);
++		if (ret)
++			return ret;
++	}
++	if (node < 0)
++		return node;
++	ret = fdt_setprop_u32(fdt, node, GIC_VERSION, GIC_VERSION_1);
++	if (!ret)
++		ret = write_ranges(fdt, node, "reg", gic->captured,
++				   gic->nr, ac, sc);
++	if (ret)
++		return ret;
++	gic->fdt_ready = true;
++	return 0;
++}
++
++int arm64_kexec_gic_validate(struct kimage *image)
++{
++	struct arm64_kexec_gic *gic = image->arch.gic_tables;
++	int nr;
++
++	if (!image->file_mode || !gic || !gic->fdt_ready)
++		return -EINVAL;
++	nr = gic_v3_kexec_snapshot(gic->scratch, KEXEC_GIC_MAX_RANGES);
++	nr = normalize_ranges(gic->scratch, nr, KEXEC_GIC_MAX_RANGES);
++	if (nr < 0)
++		return nr;
++	if (!ranges_subset(gic->scratch, nr, gic->captured, gic->nr))
++		return -ESTALE;
++	return 0;
++}
+--- a/arch/arm64/kernel/machine_kexec.c
++++ b/arch/arm64/kernel/machine_kexec.c
+@@ -57,7 +57,7 @@
+ 
+ void machine_kexec_cleanup(struct kimage *kimage)
+ {
+-	/* Empty routine needed to avoid build errors. */
++	arm64_kexec_gic_cleanup(kimage);
+ }
+ 
+ /**
+@@ -69,6 +69,11 @@
+  */
+ int machine_kexec_prepare(struct kimage *kimage)
+ {
++	if (IS_ENABLED(CONFIG_ARM64_KEXEC_GIC_TABLES) && !kimage->file_mode) {
++		pr_err("GIC table preservation requires kexec_file_load.\n");
++		return -EOPNOTSUPP;
++	}
++
+ 	if (kimage->type != KEXEC_TYPE_CRASH && cpus_are_stuck_in_kernel()) {
+ 		pr_err("Can't kexec: CPUs are stuck in the kernel.\n");
+ 		return -EBUSY;
+@@ -197,6 +202,7 @@
+ {
+ 	bool in_kexec_crash = (kimage == kexec_crash_image);
+ 	bool stuck_cpus = cpus_are_stuck_in_kernel();
++	int ret;
+ 
+ 	/*
+ 	 * New cpus may have become stuck_in_kernel after we loaded the image.
+@@ -215,6 +221,15 @@
+ 	WARN(in_kexec_crash && (stuck_cpus || smp_crash_stop_failed()),
+ 		"Some CPUs may be stale, kdump will be unreliable.\n");
+ 
++	/* Keep normal mappings until the nonblocking hardware snapshot ends. */
++	ret = arm64_kexec_gic_validate(kimage);
++	if (ret) {
++		pr_emerg("GIC table snapshot no longer safe (%d); restarting normally.\n",
++			 ret);
++		machine_restart(NULL);
++		panic("Normal restart returned after unsafe GIC snapshot");
++	}
++
+ 	pr_info("Bye!\n");
+ 
+ 	local_daif_mask();
+--- a/arch/arm64/kernel/machine_kexec_file.c
++++ b/arch/arm64/kernel/machine_kexec_file.c
+@@ -154,10 +154,16 @@
+ 
+ 	/* load dtb */
+ 	dtb = of_kexec_alloc_and_setup_fdt(image, initrd_load_addr,
+-					   initrd_len, cmdline, 0);
++					   initrd_len, cmdline,
++					   arm64_kexec_gic_fdt_size(image));
+ 	if (!dtb) {
+ 		pr_err("Preparing for new dtb failed\n");
+ 		ret = -EINVAL;
++		goto out_err;
++	}
++	ret = arm64_kexec_gic_fdt_setup(image, dtb);
++	if (ret) {
++		pr_err("Preparing GIC table reservations failed (%d)\n", ret);
+ 		goto out_err;
+ 	}
+ 
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -16,6 +16,7 @@
+ #include <linux/iommu.h>
+ #include <linux/iopoll.h>
+ #include <linux/irqdomain.h>
++#include <linux/kexec_gic.h>
+ #include <linux/list.h>
+ #include <linux/log2.h>
+ #include <linux/memblock.h>
+@@ -26,6 +27,7 @@
+ #include <linux/of_irq.h>
+ #include <linux/of_pci.h>
+ #include <linux/of_platform.h>
++#include <linux/overflow.h>
+ #include <linux/percpu.h>
+ #include <linux/slab.h>
+ #include <linux/syscore_ops.h>
+@@ -186,6 +188,73 @@
+ static DEFINE_RAW_SPINLOCK(its_lock);
+ static struct rdists *gic_rdists;
+ static struct irq_domain *its_parent;
++
++#ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
++/*
++ * An ownership change announces itself before allocation or freeing, but
++ * never holds this lock across that work.  The snapshot holds the lock only
++ * for its bounded scan, and rejects an already announced change.  This also
++ * covers indirect L2 creation before its_device_list insertion, which the
++ * existing its->lock alone cannot serialize.  Lock order for the snapshot is
++ * snapshot_lock -> its_lock -> its->lock.  Mutators drop snapshot_lock before
++ * taking any of those existing locks (and before any sleeping operation).
++ */
++static DEFINE_RAW_SPINLOCK(its_kexec_snapshot_lock);
++static unsigned int its_kexec_mutators;
++static bool its_kexec_probe_ready;
++static bool its_kexec_untracked;
++static bool its_kexec_inherited_prop_valid;
++static DEFINE_PER_CPU(phys_addr_t, its_kexec_inherited_pending);
++static DEFINE_PER_CPU(bool, its_kexec_inherited_pending_valid);
++
++static void its_kexec_mutation_begin(void)
++{
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&its_kexec_snapshot_lock, flags);
++	its_kexec_mutators++;
++	raw_spin_unlock_irqrestore(&its_kexec_snapshot_lock, flags);
++}
++
++static void its_kexec_mutation_end(void)
++{
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&its_kexec_snapshot_lock, flags);
++	its_kexec_mutators--;
++	raw_spin_unlock_irqrestore(&its_kexec_snapshot_lock, flags);
++}
++
++/* Used only to record provenance during the existing early init paths. */
++static bool its_kexec_reserved(phys_addr_t addr, unsigned long size)
++{
++	phys_addr_t start, end;
++	unsigned int scanned = 0;
++	u64 i;
++
++	if (!addr || !size || addr + size < addr ||
++	    !memblock_is_region_memory(addr, size))
++		return false;
++	for_each_reserved_mem_range(i, &start, &end) {
++		if (++scanned > 1024)
++			return false;
++		if (addr >= start && addr + size <= end)
++			return true;
++	}
++	return false;
++}
++
++static void its_kexec_record_pending(phys_addr_t addr)
++{
++	this_cpu_write(its_kexec_inherited_pending, addr);
++	this_cpu_write(its_kexec_inherited_pending_valid,
++		       its_kexec_reserved(addr, LPI_PENDBASE_SZ));
++}
++#else
++static inline void its_kexec_mutation_begin(void) { }
++static inline void its_kexec_mutation_end(void) { }
++static inline void its_kexec_record_pending(phys_addr_t addr) { }
++#endif
+ 
+ static unsigned long its_list_map;
+ static u16 vmovp_seq_num;
+@@ -2251,6 +2320,11 @@
+ 		lpi_id_bits = (val & GICR_PROPBASER_IDBITS_MASK) + 1;
+ 
+ 		gic_rdists->prop_table_pa = val & GENMASK_ULL(51, 12);
++#ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
++		its_kexec_inherited_prop_valid =
++			its_kexec_reserved(gic_rdists->prop_table_pa,
++					   LPI_PROPBASE_SZ);
++#endif
+ 		gic_rdists->prop_table_va = memremap(gic_rdists->prop_table_pa,
+ 						     LPI_PROPBASE_SZ,
+ 						     MEMREMAP_WB);
+@@ -3103,6 +3177,7 @@
+ 		paddr = gicr_read_pendbaser(rbase + GICR_PENDBASER);
+ 		paddr &= GENMASK_ULL(51, 16);
+ 
++		its_kexec_record_pending(paddr);
+ 		WARN_ON(!gic_check_reserved_range(paddr, LPI_PENDBASE_SZ));
+ 		gic_data_rdist()->flags |= RD_LOCAL_PENDTABLE_PREALLOCATED;
+ 
+@@ -3404,8 +3479,11 @@
+ 	int nr_ites;
+ 	int sz;
+ 
+-	if (!its_alloc_device_table(its, dev_id))
++	its_kexec_mutation_begin();
++	if (!its_alloc_device_table(its, dev_id)) {
++		its_kexec_mutation_end();
+ 		return NULL;
++	}
+ 
+ 	if (WARN_ON(!is_power_of_2(nvecs)))
+ 		nvecs = roundup_pow_of_two(nvecs);
+@@ -3435,6 +3513,7 @@
+ 		kfree(itt);
+ 		bitmap_free(lpi_map);
+ 		kfree(col_map);
++		its_kexec_mutation_end();
+ 		return NULL;
+ 	}
+ 
+@@ -3458,6 +3537,7 @@
+ 	/* Map device to its ITT */
+ 	its_send_mapd(dev, 1);
+ 
++	its_kexec_mutation_end();
+ 	return dev;
+ }
+ 
+@@ -3465,13 +3545,361 @@
+ {
+ 	unsigned long flags;
+ 
++	its_kexec_mutation_begin();
+ 	raw_spin_lock_irqsave(&its_dev->its->lock, flags);
+ 	list_del(&its_dev->entry);
+ 	raw_spin_unlock_irqrestore(&its_dev->its->lock, flags);
+ 	kfree(its_dev->event_map.col_map);
+ 	kfree(its_dev->itt);
+ 	kfree(its_dev);
+-}
++	its_kexec_mutation_end();
++}
++
++#ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
++/* All limits apply to work inspected, not only to merged output intervals. */
++#define ITS_KEXEC_MAX_NODES	8
++#define ITS_KEXEC_MAX_DEVICES	256
++#define ITS_KEXEC_MAX_TABLE_SIZE	SZ_1M
++#define ITS_KEXEC_MAX_L1_ENTRIES	(SZ_1M / GITS_LVL1_ENTRY_SIZE)
++
++struct its_kexec_snapshot {
++	struct kexec_gic_range *ranges;
++	unsigned int nr_ranges;
++	unsigned int max_ranges;
++	unsigned int nr_devices;
++	unsigned int nr_l2_tables;
++	unsigned int l1_entries;
++};
++
++/* Keep sorted, merged intervals, without an allocation or a large stack. */
++static int its_kexec_add_range(struct its_kexec_snapshot *s,
++			       phys_addr_t start, unsigned long size)
++{
++	phys_addr_t end;
++	unsigned int i, j;
++
++	if (!start || !size || check_add_overflow(start, size, &end) ||
++	    check_add_overflow(end, (phys_addr_t)PAGE_SIZE - 1, &end))
++		return -ERANGE;
++	start = round_down(start, PAGE_SIZE);
++	end = round_down(end, PAGE_SIZE);
++	if (end <= start)
++		return -ERANGE;
++
++	for (i = 0; i < s->nr_ranges && s->ranges[i].end < start; i++)
++		;
++	for (j = i; j < s->nr_ranges && s->ranges[j].start <= end; j++) {
++		start = min(start, s->ranges[j].start);
++		end = max(end, s->ranges[j].end);
++	}
++	if (j == i) {
++		if (s->nr_ranges == s->max_ranges)
++			return -E2BIG;
++		memmove(s->ranges + i + 1, s->ranges + i,
++			(s->nr_ranges - i) * sizeof(*s->ranges));
++		s->nr_ranges++;
++	} else {
++		memmove(s->ranges + i + 1, s->ranges + j,
++			(s->nr_ranges - j) * sizeof(*s->ranges));
++		s->nr_ranges -= j - i - 1;
++	}
++	s->ranges[i].start = start;
++	s->ranges[i].end = end;
++	return 0;
++}
++
++/* These pointers come from live driver allocations, never from an MMIO PA. */
++static int its_kexec_add_owned(struct its_kexec_snapshot *s, void *ptr,
++			       unsigned long size, phys_addr_t *pa)
++{
++	unsigned long va = (unsigned long)ptr;
++	phys_addr_t addr;
++
++	if (!ptr || !size || size > ITS_KEXEC_MAX_TABLE_SIZE ||
++	    va + size - 1 < va || !virt_addr_valid(ptr) ||
++	    !virt_addr_valid((void *)(va + size - 1)))
++		return -EOPNOTSUPP;
++	addr = virt_to_phys(ptr);
++	if (!page_count(compound_head(virt_to_page(ptr))))
++		return -EOPNOTSUPP;
++	if (pa)
++		*pa = addr;
++	return its_kexec_add_range(s, addr, size);
++}
++
++static int its_kexec_lpi_ranges(struct its_kexec_snapshot *s)
++{
++	phys_addr_t prop = gic_rdists->prop_table_pa, pa;
++	bool inherited = gic_rdists->flags & RDIST_FLAGS_RD_TABLES_PREALLOCATED;
++	unsigned int ncpus = 0;
++	int cpu, ret;
++
++	if (lpi_id_bits < 14 || lpi_id_bits > ITS_MAX_LPI_NRBITS ||
++	    !prop || !IS_ALIGNED(prop, SZ_64K) ||
++	    !gic_rdists->prop_table_va ||
++	    gic_rdists->has_vlpis || gic_rdists->has_rvpeid)
++		return -EOPNOTSUPP;
++	if (inherited) {
++		if (!its_kexec_inherited_prop_valid)
++			return -EOPNOTSUPP;
++		ret = its_kexec_add_range(s, prop, LPI_PROPBASE_SZ);
++	} else {
++		ret = its_kexec_add_owned(s, gic_rdists->prop_table_va,
++					 LPI_PROPBASE_SZ, &pa);
++		if (!ret && pa != prop)
++			ret = -EIO;
++	}
++	if (ret)
++		return ret;
++
++	for_each_possible_cpu(cpu) {
++		void __iomem *base = gic_data_rdist_cpu(cpu)->rd_base;
++		struct page *pend = gic_data_rdist_cpu(cpu)->pend_page;
++		u64 flags = gic_data_rdist_cpu(cpu)->flags;
++		u64 propbaser, pendbaser, typer;
++		u32 ctlr;
++
++		if (++ncpus > KEXEC_GIC_MAX_RANGES || !base ||
++		    !(flags & RD_LOCAL_LPI_ENABLED) ||
++		    gic_data_rdist_cpu(cpu)->vpe_l1_base)
++			return -EOPNOTSUPP;
++		typer = gic_read_typer(base + GICR_TYPER);
++		if (!(typer & GICR_TYPER_PLPIS) || (typer & GICR_TYPER_VLPIS))
++			return -EOPNOTSUPP;
++		ctlr = readl_relaxed(base + GICR_CTLR);
++		if (!(ctlr & GICR_CTLR_ENABLE_LPIS) || (ctlr & GICR_CTLR_RWP))
++			return -EBUSY;
++		propbaser = gicr_read_propbaser(base + GICR_PROPBASER);
++		pendbaser = gicr_read_pendbaser(base + GICR_PENDBASER);
++		if (GICR_PROPBASER_ADDRESS(propbaser) != prop ||
++		    (propbaser & GICR_PROPBASER_IDBITS_MASK) + 1 != lpi_id_bits)
++			return -EIO;
++
++		/* Keep spare allocations too, including those of offline CPUs. */
++		if (pend) {
++			ret = its_kexec_add_owned(s, page_address(pend),
++						 LPI_PENDBASE_SZ, &pa);
++			if (ret)
++				return ret;
++		}
++		if (flags & RD_LOCAL_PENDTABLE_PREALLOCATED) {
++			if (!inherited ||
++			    !per_cpu(its_kexec_inherited_pending_valid, cpu))
++				return -EOPNOTSUPP;
++			pa = per_cpu(its_kexec_inherited_pending, cpu);
++			ret = its_kexec_add_range(s, pa, LPI_PENDBASE_SZ);
++			if (ret)
++				return ret;
++		} else if (!pend) {
++			return -EOPNOTSUPP;
++		}
++		if (!IS_ALIGNED(pa, SZ_64K) ||
++		    GICR_PENDBASER_ADDRESS(pendbaser) != pa)
++			return -EIO;
++		ctlr = readl_relaxed(base + GICR_CTLR);
++		if (!(ctlr & GICR_CTLR_ENABLE_LPIS) || (ctlr & GICR_CTLR_RWP))
++			return -EBUSY;
++	}
++	return ncpus ? 0 : -EOPNOTSUPP;
++}
++
++static int its_kexec_baser_ranges(struct its_kexec_snapshot *s,
++				 struct its_node *its, struct its_baser *baser)
++{
++	unsigned long size, entries, i;
++	phys_addr_t pa, hwpa;
++	u64 val = its_read_baser(its, baser);
++	int ret;
++
++	if (!(val & GITS_BASER_VALID))
++		return (baser->base || (baser->val & GITS_BASER_VALID)) ? -EIO : 0;
++	if (val != baser->val || !baser->base ||
++	    baser->order > get_order(ITS_KEXEC_MAX_TABLE_SIZE) ||
++	    (GITS_BASER_TYPE(val) != GITS_BASER_TYPE_DEVICE &&
++	     GITS_BASER_TYPE(val) != GITS_BASER_TYPE_COLLECTION))
++		return -EOPNOTSUPP;
++	size = PAGE_ORDER_TO_SIZE(baser->order);
++	switch (val & GITS_BASER_PAGE_SIZE_MASK) {
++	case GITS_BASER_PAGE_SIZE_4K:
++		if (baser->psz != SZ_4K)
++			return -EIO;
++		hwpa = val & GENMASK_ULL(47, 12);
++		break;
++	case GITS_BASER_PAGE_SIZE_16K:
++		if (baser->psz != SZ_16K)
++			return -EIO;
++		hwpa = val & GENMASK_ULL(47, 12);
++		break;
++	case GITS_BASER_PAGE_SIZE_64K:
++		if (baser->psz != SZ_64K)
++			return -EIO;
++		hwpa = GITS_BASER_ADDR_48_to_52(val);
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++	if (GITS_BASER_NR_PAGES(val) * baser->psz != size)
++		return -EIO;
++	ret = its_kexec_add_owned(s, baser->base, size, &pa);
++	if (ret)
++		return ret;
++	if (hwpa != pa || !IS_ALIGNED(pa, baser->psz))
++		return -EIO;
++	if (!(val & GITS_BASER_INDIRECT))
++		return 0;
++	if (GITS_BASER_TYPE(val) != GITS_BASER_TYPE_DEVICE)
++		return -EOPNOTSUPP;
++	entries = size / GITS_LVL1_ENTRY_SIZE;
++	if (entries > ITS_KEXEC_MAX_L1_ENTRIES - s->l1_entries)
++		return -E2BIG;
++	s->l1_entries += entries;
++	for (i = 0; i < entries; i++) {
++		/* Only the driver writes L1 entries; snapshot_lock holds them stable. */
++		u64 entry = le64_to_cpu(READ_ONCE(((__le64 *)baser->base)[i]));
++
++		if (!entry)
++			continue;
++		if (++s->nr_l2_tables > KEXEC_GIC_MAX_RANGES)
++			return -E2BIG;
++		if (!(entry & GITS_BASER_VALID) ||
++		    (entry & ~(GITS_BASER_VALID | GENMASK_ULL(51, PAGE_SHIFT))))
++			return -EOPNOTSUPP;
++		pa = entry & ~GITS_BASER_VALID;
++		if (!pa || !IS_ALIGNED(pa, baser->psz) ||
++		    !pfn_valid(PHYS_PFN(pa)) ||
++		    !pfn_valid(PHYS_PFN(pa + baser->psz - 1)))
++			return -EOPNOTSUPP;
++		/* The driver's own L1 entry is the ownership record for this L2. */
++		ret = its_kexec_add_owned(s, phys_to_virt(pa), baser->psz, NULL);
++		if (ret)
++			return ret;
++	}
++	return 0;
++}
++
++static int its_kexec_node_ranges(struct its_kexec_snapshot *s, struct its_node *its)
++{
++	struct its_device *dev;
++	phys_addr_t pa;
++	u64 cbaser, rd, wr;
++	unsigned long write, base;
++	unsigned int i;
++	int ret;
++
++	if (!its->base || is_v4(its) || is_v4_1(its) || its->pre_its_base ||
++	    gic_read_typer(its->base + GITS_TYPER) != its->typer ||
++	    !(its->typer & GITS_TYPER_PLPIS))
++		return -EOPNOTSUPP;
++	if (!(readl_relaxed(its->base + GITS_CTLR) & GITS_CTLR_ENABLE))
++		return -EBUSY;
++	cbaser = gits_read_cbaser(its->base + GITS_CBASER);
++	if (!(cbaser & GITS_CBASER_VALID) ||
++	    ((cbaser & 0xff) + 1) * SZ_4K != ITS_CMD_QUEUE_SZ)
++		return -EIO;
++	ret = its_kexec_add_owned(s, its->cmd_base, ITS_CMD_QUEUE_SZ, &pa);
++	if (ret)
++		return ret;
++	if (GITS_CBASER_ADDRESS(cbaser) != pa)
++		return -EIO;
++	base = (unsigned long)its->cmd_base;
++	write = (unsigned long)its->cmd_write;
++	if (write < base || write - base >= ITS_CMD_QUEUE_SZ ||
++	    !IS_ALIGNED(write - base, sizeof(struct its_cmd_block)))
++		return -EIO;
++	wr = readq_relaxed(its->base + GITS_CWRITER);
++	rd = readq_relaxed(its->base + GITS_CREADR);
++	/* Reject pending or stalled commands; never poll for completion here. */
++	if (wr != write - base || rd != wr)
++		return -EBUSY;
++
++	for (i = 0; i < GITS_BASER_NR_REGS; i++) {
++		ret = its_kexec_baser_ranges(s, its, &its->tables[i]);
++		if (ret)
++			return ret;
++	}
++	list_for_each_entry(dev, &its->its_device_list, entry) {
++		unsigned long size;
++
++		if (++s->nr_devices > ITS_KEXEC_MAX_DEVICES)
++			return -E2BIG;
++		if (dev->its != its || dev->nr_ites < 2 ||
++		    dev->nr_ites > BIT(ITS_MAX_LPI_NRBITS) ||
++		    !is_power_of_2(dev->nr_ites) || dev->event_map.vm ||
++		    dev->event_map.vlpi_maps || dev->event_map.nr_vlpis)
++			return -EOPNOTSUPP;
++		size = dev->nr_ites *
++			(FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
++		size = max_t(unsigned long, size, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
++		/* Preserve the whole raw allocation, including hardware alignment slack. */
++		ret = its_kexec_add_owned(s, dev->itt, size, NULL);
++		if (ret)
++			return ret;
++	}
++	return 0;
++}
++
++int gic_v3_kexec_snapshot(struct kexec_gic_range *ranges,
++			 unsigned int max_ranges)
++{
++	struct its_kexec_snapshot s = {
++		.ranges = ranges,
++		.max_ranges = max_ranges,
++	};
++	struct its_node *its;
++	unsigned int nr_nodes = 0;
++	unsigned long flags;
++	int ret;
++
++	if (!ranges || !max_ranges || max_ranges > KEXEC_GIC_MAX_RANGES)
++		return -EINVAL;
++	local_irq_save(flags);
++	if (!raw_spin_trylock(&its_kexec_snapshot_lock)) {
++		ret = -EBUSY;
++		goto irq_out;
++	}
++	if (its_kexec_mutators) {
++		ret = -EBUSY;
++		goto gate_out;
++	}
++	if (!its_kexec_probe_ready || !gic_rdists || !gic_rdists->rdist) {
++		ret = -EOPNOTSUPP;
++		goto gate_out;
++	}
++	if (!raw_spin_trylock(&its_lock)) {
++		ret = -EBUSY;
++		goto gate_out;
++	}
++	if (list_empty(&its_nodes)) {
++		ret = -EOPNOTSUPP;
++		goto nodes_out;
++	}
++	ret = its_kexec_lpi_ranges(&s);
++	if (ret)
++		goto nodes_out;
++	list_for_each_entry(its, &its_nodes, entry) {
++		if (++nr_nodes > ITS_KEXEC_MAX_NODES) {
++			ret = -E2BIG;
++			goto nodes_out;
++		}
++		if (!raw_spin_trylock(&its->lock)) {
++			ret = -EBUSY;
++			goto nodes_out;
++		}
++		ret = its_kexec_node_ranges(&s, its);
++		raw_spin_unlock(&its->lock);
++		if (ret)
++			goto nodes_out;
++	}
++	ret = s.nr_ranges;
++nodes_out:
++	raw_spin_unlock(&its_lock);
++gate_out:
++	raw_spin_unlock(&its_kexec_snapshot_lock);
++irq_out:
++	local_irq_restore(flags);
++	return ret;
++}
++#endif /* CONFIG_ARM64_KEXEC_GIC_TABLES */
+ 
+ static int its_alloc_device_irq(struct its_device *dev, int nvecs, irq_hw_number_t *hwirq)
+ {
+@@ -5255,18 +5683,21 @@
+ 
+ int its_cpu_init(void)
+ {
++	int ret = 0;
++
++	its_kexec_mutation_begin();
+ 	if (!list_empty(&its_nodes)) {
+-		int ret;
+-
+ 		ret = redist_disable_lpis();
+ 		if (ret)
+-			return ret;
++			goto out;
+ 
+ 		its_cpu_init_lpis();
+ 		its_cpu_init_collections();
+ 	}
+ 
+-	return 0;
++out:
++	its_kexec_mutation_end();
++	return ret;
+ }
+ 
+ static void rdist_memreserve_cpuhp_cleanup_workfn(struct work_struct *work)
+@@ -5287,6 +5718,7 @@
+ 	if (gic_data_rdist()->flags & RD_LOCAL_MEMRESERVE_DONE)
+ 		return 0;
+ 
++	its_kexec_mutation_begin();
+ 	pend_page = gic_data_rdist()->pend_page;
+ 	if (WARN_ON(!pend_page)) {
+ 		ret = -ENOMEM;
+@@ -5312,6 +5744,7 @@
+ 		schedule_work(&rdist_memreserve_cpuhp_cleanup_work);
+ 
+ 	gic_data_rdist()->flags |= RD_LOCAL_MEMRESERVE_DONE;
++	its_kexec_mutation_end();
+ 	return ret;
+ }
+ 
+@@ -5412,12 +5845,18 @@
+ 		if (!of_device_is_available(np))
+ 			continue;
+ 		if (!of_property_read_bool(np, "msi-controller")) {
++#ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
++			its_kexec_untracked = true;
++#endif
+ 			pr_warn("%pOF: no msi-controller property, ITS ignored\n",
+ 				np);
+ 			continue;
+ 		}
+ 
+ 		if (of_address_to_resource(np, 0, &res)) {
++#ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
++			its_kexec_untracked = true;
++#endif
+ 			pr_warn("%pOF: no regs?\n", np);
+ 			continue;
+ 		}
+@@ -5657,10 +6096,19 @@
+ 
+ 	its_parent = parent_domain;
+ 	of_node = to_of_node(handle);
+-	if (of_node)
+-		its_of_probe(of_node);
+-	else
++	if (of_node) {
++		err = its_of_probe(of_node);
++#ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
++		if (err)
++			its_kexec_untracked = true;
++#endif
++	} else {
+ 		its_acpi_probe();
++#ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
++		/* This candidate implements only the DT ownership handoff. */
++		its_kexec_untracked = true;
++#endif
++	}
+ 
+ 	if (list_empty(&its_nodes)) {
+ 		pr_warn("ITS: No ITS available, not enabling LPIs\n");
+@@ -5697,5 +6145,8 @@
+ 
+ 	register_syscore_ops(&its_syscore_ops);
+ 
++#ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
++	its_kexec_probe_ready = !its_kexec_untracked;
++#endif
+ 	return 0;
+ }
+--- /dev/null
++++ b/include/linux/kexec_gic.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_KEXEC_GIC_H
++#define _LINUX_KEXEC_GIC_H
++
++#include <linux/types.h>
++
++#define KEXEC_GIC_MAX_RANGES 256
++
++/* Page-aligned physical intervals, with an exclusive end. */
++struct kexec_gic_range {
++	phys_addr_t start;
++	phys_addr_t end;
++};
++
++#ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
++/*
++ * A bounded, allocation-free, nonblocking snapshot of the driver's physical
++ * GIC table ownership.  Negative results invalidate the entire output.  A
++ * successful snapshot does not establish DMA or interrupt quiescence.
++ */
++int gic_v3_kexec_snapshot(struct kexec_gic_range *ranges,
++			 unsigned int max_ranges);
++#else
++static inline int gic_v3_kexec_snapshot(struct kexec_gic_range *ranges,
++				      unsigned int max_ranges)
++{
++	return 0;
++}
++#endif
++
++#endif /* _LINUX_KEXEC_GIC_H */
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -44,6 +44,18 @@
+ 	  file based and takes file descriptors as system call argument
+ 	  for kernel and initramfs as opposed to list of segments as
+ 	  accepted by kexec system call.
++
++config ARM64_KEXEC_GIC_TABLES
++	bool "Preserve active ARM64 GICv3 table memory across kexec_file_load"
++	depends on ARM64 && KEXEC_FILE && ARM_GIC_V3_ITS
++	default n
++	help
++	  Exclude a bounded snapshot of GICv3/ITS hardware table memory from
++	  every file-loader segment and reserve it in the next kernel's FDT.
++	  The snapshot is checked again immediately before the physical jump;
++	  an unknown or changed table set causes a normal machine restart.
++	  This preserves memory only and does not claim to quiesce the GIC.
++	  The legacy kexec_load interface is rejected while this is enabled.
+ 
+ config KEXEC_TARGET_TRACE
+ 	bool "ARM64 kexec target startup trace (diagnostic only)"

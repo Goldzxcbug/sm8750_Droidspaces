@@ -1,0 +1,33 @@
+Subject: [PATCH] dmaengine: qcom: msm_gpi: reject timed-out event commands before channel fallback
+
+gpi_alloc_ev_chan() calls gpi_send_cmd() with a NULL channel argument.
+Event commands use the GPII event registers and do not have a channel.
+The command timeout fallback nevertheless calls gpi_read_ch_state()
+unconditionally, dereferencing that NULL argument.
+
+Report an event command timeout and return -EIO before the channel-only
+fallback. Keep the existing channel fallback and successful command paths
+unchanged. This prevents the secondary NULL dereference; it does not make
+the timed-out command succeed or repair the underlying completion failure.
+
+Applies to the OnePlus vendor driver drivers/dma/qcom/msm_gpi.c, including
+reference revision 4553152f62a3bd9f39bb6d068a4d94a15a8c07fd. The generic
+common-kernel drivers/dma/qcom/gpi.c is a different driver. Rebuilding and
+deploying a matching msm_gpi.ko is required for this change to take effect.
+
+diff --git a/drivers/dma/qcom/msm_gpi.c b/drivers/dma/qcom/msm_gpi.c
+--- a/drivers/dma/qcom/msm_gpi.c
++++ b/drivers/dma/qcom/msm_gpi.c
+@@ -1700,6 +1700,12 @@ static int gpi_send_cmd(struct gpii *gpii,
+ 	if (!timeout) {
+ 		offset = GPI_GPII_n_CNTXT_TYPE_IRQ_OFFS(gpii->gpii_id);
+ 		irq_stat = gpi_read_reg(gpii, gpii->regs + offset);
++		if (!IS_CHAN_CMD(gpi_cmd)) {
++			GPII_ERR(gpii, chid,
++				 "event cmd: %s completion timeout irq_status=0x%x\n",
++				 TO_GPI_CMD_STR(gpi_cmd), irq_stat);
++			return -EIO;
++		}
+ 		state = gpi_read_ch_state(gpii_chan);
+ 		/* Fallback mechanism for verifying the state of the register */
+ 		if (irq_stat & GPI_GPII_n_CNTXT_TYPE_IRQ_MSK_CH_CTRL) {

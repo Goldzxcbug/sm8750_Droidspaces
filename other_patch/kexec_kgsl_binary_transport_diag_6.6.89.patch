@@ -1,0 +1,632 @@
+From: kexec diagnostics <local@invalid>
+Subject: [PATCH] arm64: carry bounded sampled GPU ranges through file-load FDT
+
+Diagnostic only. An explicit target selector accepts a versioned initrd trailer,
+copies its metadata before IMA placement, strips only the validated suffix and
+carries the blob into /chosen. Separate per-image ranges participate in the
+existing GIC-aware placement search and survive until kimage destruction.
+No GPU/SCM operation, DMA backing access, ownership or quiescence claim.
+Default disabled behavior does not inspect or strip the supplied initrd.
+
+--- a/arch/arm64/include/asm/kexec.h
++++ b/arch/arm64/include/asm/kexec.h
+@@ -97,6 +97,7 @@
+ struct kexec_buf;
+ struct arm64_kexec_gic;
+ struct arm64_kexec_tzlog;
++struct arm64_kexec_kgsl;
+ 
+ #if defined(CONFIG_KEXEC_CORE)
+ void cpu_soft_restart(unsigned long el2_switch, unsigned long entry,
+@@ -126,7 +127,15 @@
+ #if defined(CONFIG_ARM64_KEXEC_TZLOG_DIAG) && !defined(__GENKSYMS__)
+ 	struct arm64_kexec_tzlog *tzlog;
+ #endif
++#if defined(CONFIG_ARM64_KEXEC_KGSL_DIAG) && !defined(__GENKSYMS__)
++	struct arm64_kexec_kgsl *kgsl;
++#endif
+ };
++
++#ifdef CONFIG_ARM64_KEXEC_KGSL_DIAG
++int arch_kexec_prepare_file_buffers(struct kimage *image);
++#define arch_kexec_prepare_file_buffers arch_kexec_prepare_file_buffers
++#endif
+ 
+ #ifdef CONFIG_ARM64_KEXEC_GIC_TABLES
+ int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
+--- /dev/null
++++ b/arch/arm64/include/asm/kexec_kgsl.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _ASM_ARM64_KEXEC_KGSL_H
++#define _ASM_ARM64_KEXEC_KGSL_H
++
++#include <linux/types.h>
++
++struct kimage;
++#ifdef CONFIG_ARM64_KEXEC_KGSL_DIAG
++unsigned int arm64_kexec_kgsl_fdt_size(struct kimage *image);
++int arm64_kexec_kgsl_fdt_setup(struct kimage *image, void *fdt);
++int arm64_kexec_kgsl_overlap(struct kimage *image, unsigned long start,
++		unsigned long end, bool top_down, unsigned long *hit_start,
++		unsigned long *hit_end);
++int arm64_kexec_kgsl_check(struct kimage *image);
++void arm64_kexec_kgsl_cleanup(struct kimage *image);
++#else
++static inline unsigned int arm64_kexec_kgsl_fdt_size(struct kimage *image)
++{ return 0; }
++static inline int arm64_kexec_kgsl_fdt_setup(struct kimage *image, void *fdt)
++{ return 0; }
++static inline int arm64_kexec_kgsl_overlap(struct kimage *image,
++		unsigned long start, unsigned long end, bool top_down,
++		unsigned long *hit_start, unsigned long *hit_end)
++{ return 0; }
++static inline int arm64_kexec_kgsl_check(struct kimage *image) { return 0; }
++static inline void arm64_kexec_kgsl_cleanup(struct kimage *image) { }
++#endif
++#endif
+--- a/arch/arm64/kernel/Makefile
++++ b/arch/arm64/kernel/Makefile
+@@ -65,6 +65,7 @@
+ obj-$(CONFIG_KEXEC_FILE)		+= machine_kexec_file.o kexec_image.o
+ obj-$(CONFIG_ARM64_KEXEC_GIC_TABLES) += kexec_gic.o
+ obj-$(CONFIG_ARM64_KEXEC_TZLOG_DIAG) += kexec_tzlog.o
++obj-$(CONFIG_ARM64_KEXEC_KGSL_DIAG) += kexec_kgsl.o
+ obj-$(CONFIG_KEXEC_TARGET_TRACE)	+= kexec_target_trace.o
+ KASAN_SANITIZE_kexec_target_trace.o := n
+ KCSAN_SANITIZE_kexec_target_trace.o := n
+--- a/arch/arm64/kernel/kexec_gic.c
++++ b/arch/arm64/kernel/kexec_gic.c
+@@ -10,6 +10,7 @@
+ #include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/sort.h>
++#include <asm/kexec_kgsl.h>
+ 
+ #define GIC_NODE "kexec-gic-tables"
+ #define GIC_VERSION "linux,kexec-gic-tables-version"
+@@ -298,6 +299,8 @@
+ 	struct arm64_kexec_gic *gic = kbuf->image->arch.gic_tables;
+ 	const struct kexec_gic_range *hit;
+ 	unsigned long min = kbuf->buf_min, max = kbuf->buf_max, end;
++	unsigned long hit_start, hit_end, gpu_start, gpu_end;
++	int gpu_hit;
+ 	bool fixed = kbuf->mem != KEXEC_BUF_MEM_UNKNOWN;
+ 	int ret;
+ 
+@@ -316,19 +319,32 @@
+ 			break;
+ 		}
+ 		hit = overlap(gic, kbuf->mem, end, kbuf->top_down);
+-		if (!hit)
+-			break;
++		gpu_hit = arm64_kexec_kgsl_overlap(kbuf->image, kbuf->mem, end,
++				kbuf->top_down, &gpu_start, &gpu_end);
++		if (gpu_hit < 0) {
++			ret = gpu_hit;
++			break;
++		}
++		if (!hit && !gpu_hit)
++			break;
++		hit_start = hit ? hit->start : gpu_start;
++		hit_end = hit ? hit->end : gpu_end;
++		if (gpu_hit && (!hit || (kbuf->top_down ?
++		    gpu_start < hit_start : gpu_end > hit_end))) {
++			hit_start = gpu_start;
++			hit_end = gpu_end;
++		}
+ 		ret = -EADDRNOTAVAIL;
+ 		if (fixed)
+ 			break;
+ 		if (kbuf->top_down) {
+-			if (!hit->start || hit->start - 1 < kbuf->buf_min)
++			if (!hit_start || hit_start - 1 < kbuf->buf_min)
+ 				break;
+-			kbuf->buf_max = hit->start - 1;
++			kbuf->buf_max = hit_start - 1;
+ 		} else {
+-			if (hit->end > kbuf->buf_max)
++			if (hit_end > kbuf->buf_max)
+ 				break;
+-			kbuf->buf_min = hit->end;
++			kbuf->buf_min = hit_end;
+ 		}
+ 		kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
+ 	}
+--- /dev/null
++++ b/arch/arm64/kernel/kexec_kgsl.c
+@@ -0,0 +1,336 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Diagnostic transport of positive metadata; not an owner or quiescence seal. */
++#define pr_fmt(fmt) "kexec-kgsl: " fmt
++
++#include <linux/errno.h>
++#include <linux/kernel.h>
++#include <linux/kexec.h>
++#include <linux/libfdt.h>
++#include <linux/memblock.h>
++#include <linux/memory_hotplug.h>
++#include <linux/of_fdt.h>
++#include <linux/overflow.h>
++#include <linux/sizes.h>
++#include <linux/slab.h>
++#include <asm/kexec_kgsl.h>
++#include <asm/memory.h>
++#include <asm/sections.h>
++
++#define KGSL_KEY "kexec_diag.kgsl_nomap_fdt"
++#define KGSL_LEGACY "kexec_diag.kgsl_nomap"
++#define KGSL_PROPERTY "linux,kexec-kgsl-ranges"
++#define KGSL_HEADER 32U
++#define KGSL_ENTRY 16U
++#define KGSL_FOOTER 32U
++#define KGSL_MAX_RANGES 512U
++#define KGSL_MAX_BLOB (KGSL_HEADER + KGSL_MAX_RANGES * KGSL_ENTRY)
++
++struct kgsl_range {
++	u64 start;
++	u64 end;
++};
++
++struct arm64_kexec_kgsl {
++	u32 nr;
++	u32 blob_len;
++	u32 blob_crc;
++	u32 body_crc;
++	u64 total;
++	u64 initrd_prefix_len;
++	bool fdt_ready;
++	struct kgsl_range ranges[KGSL_MAX_RANGES];
++	u8 blob[KGSL_MAX_BLOB];
++};
++
++/* IEEE CRC32, identical to zlib.crc32; bounded metadata, not authentication. */
++static u32 kgsl_crc(const u8 *p, unsigned int bytes)
++{
++	u32 crc = ~0U;
++	unsigned int bit;
++
++	while (bytes--) {
++		crc ^= *p++;
++		for (bit = 0; bit < 8; bit++)
++			crc = (crc >> 1) ^ (0xedb88320U & (0U - (crc & 1)));
++	}
++	return crc ^ ~0U;
++}
++
++static u32 kgsl_u32(const void *p)
++{
++	return fdt32_ld(p);
++}
++
++static u64 kgsl_u64(const void *p)
++{
++	return fdt64_ld(p);
++}
++
++/* Do not inspect the initrd or allocate a cache without the explicit selector. */
++static int kgsl_requested(const char *cmdline)
++{
++	char *copy, *next, *param, *val;
++	unsigned int seen = 0;
++	bool bad = false, legacy = false;
++
++	if (!cmdline || !strstr(cmdline, KGSL_KEY))
++		return 0;
++	copy = kstrdup(cmdline, GFP_KERNEL);
++	if (!copy)
++		return -ENOMEM;
++	next = copy;
++	while (*next) {
++		next = next_arg(next, &param, &val);
++		if (!strcmp(param, KGSL_LEGACY))
++			legacy = true;
++		if (strcmp(param, KGSL_KEY))
++			continue;
++		seen++;
++		if (!val || strcmp(val, "1"))
++			bad = true;
++	}
++	kfree(copy);
++	if (!seen)
++		return 0;
++	return seen == 1 && !bad && !legacy ? 1 : -EINVAL;
++}
++
++static int kgsl_no_inherited_property(void)
++{
++	const struct fdt_property *p;
++	int chosen, len;
++
++	if (!initial_boot_params || fdt_check_header(initial_boot_params))
++		return -EINVAL;
++	chosen = fdt_path_offset(initial_boot_params, "/chosen");
++	if (chosen < 0)
++		return -EINVAL;
++	p = fdt_get_property(initial_boot_params, chosen, KGSL_PROPERTY, &len);
++	return !p && len == -FDT_ERR_NOTFOUND ? 0 : -EEXIST;
++}
++
++/* Fill only once, before publication; never round, merge, or drop a tuple. */
++static int kgsl_decode(struct arm64_kexec_kgsl *g)
++{
++	u64 total = 0, previous = 0;
++	unsigned int i;
++
++	if (g->blob_len < KGSL_HEADER || g->blob_len > KGSL_MAX_BLOB ||
++	    memcmp(g->blob, "KGPURNG1", 8) || kgsl_u32(g->blob + 8) != 1 ||
++	    kgsl_u32(g->blob + 12) != KGSL_ENTRY)
++		return -EINVAL;
++	g->nr = kgsl_u32(g->blob + 16);
++	if (!g->nr || g->nr > KGSL_MAX_RANGES ||
++	    g->blob_len != KGSL_HEADER + g->nr * KGSL_ENTRY)
++		return -E2BIG;
++	g->body_crc = kgsl_u32(g->blob + 20);
++	if (kgsl_crc(g->blob + KGSL_HEADER, g->nr * KGSL_ENTRY) != g->body_crc)
++		return -EBADMSG;
++	for (i = 0; i < g->nr; i++) {
++		const u8 *entry = g->blob + KGSL_HEADER + i * KGSL_ENTRY;
++		u64 start = kgsl_u64(entry), size = kgsl_u64(entry + 8), end;
++
++		if (!size || !IS_ALIGNED(start, SZ_4K) || !IS_ALIGNED(size, SZ_4K) ||
++		    check_add_overflow(start, size, &end) || end - 1 > PHYS_MASK ||
++		    (i && start < previous) ||
++		    check_add_overflow(total, size, &total) || total > SZ_64M)
++			return -ERANGE;
++		g->ranges[i].start = start;
++		g->ranges[i].end = end;
++		previous = end;
++	}
++	if (!total || kgsl_u64(g->blob + 24) != total)
++		return -EINVAL;
++	g->total = total;
++	return 0;
++}
++
++static int kgsl_source_ram(const struct arm64_kexec_kgsl *g)
++{
++	u64 kernel = __pa_symbol(_text), kernel_end = __pa_symbol(_end);
++	u64 fdt_start = initial_boot_params_pa, fdt_end;
++	unsigned int i;
++	int ret = 0;
++
++	if (check_add_overflow(fdt_start, (u64)fdt_totalsize(initial_boot_params),
++			       &fdt_end))
++		return -EOVERFLOW;
++	/* Prevent hotplug replacing/frees of the ordinary memblock arrays here. */
++	get_online_mems();
++	for (i = 0; i < g->nr; i++) {
++		u64 p, start = g->ranges[i].start, end = g->ranges[i].end;
++
++		if ((start < kernel_end && end > kernel) ||
++		    (start < fdt_end && end > fdt_start) ||
++		    !memblock_is_region_memory(start, end - start)) {
++			ret = -EADDRINUSE;
++			break;
++		}
++		for (p = start; p < end; p += SZ_4K)
++			if (!memblock_is_map_memory(p)) {
++				ret = -EADDRNOTAVAIL;
++				break;
++			}
++		if (ret)
++			break;
++	}
++	put_online_mems();
++	return ret;
++}
++
++int arch_kexec_prepare_file_buffers(struct kimage *image)
++{
++	struct arm64_kexec_kgsl *g;
++	const u8 *footer, *blob;
++	u64 prefix, expected;
++	u32 blob_len, blob_crc;
++	int ret;
++
++	ret = kgsl_requested(image->cmdline_buf);
++	if (ret <= 0)
++		return ret;
++	if (!image->file_mode || image->type != KEXEC_TYPE_DEFAULT ||
++	    PAGE_SIZE != SZ_4K || image->arch.kgsl || image->nr_segments ||
++	    !image->initrd_buf || image->initrd_buf_len < KGSL_FOOTER)
++		return -EINVAL;
++	ret = kgsl_no_inherited_property();
++	if (ret)
++		return ret;
++	footer = (u8 *)image->initrd_buf + image->initrd_buf_len - KGSL_FOOTER;
++	if (memcmp(footer, "KGPULT01", 8) || kgsl_u32(footer + 8) != 1 ||
++	    kgsl_u32(footer + 28))
++		return -EINVAL;
++	blob_len = kgsl_u32(footer + 12);
++	prefix = kgsl_u64(footer + 16);
++	blob_crc = kgsl_u32(footer + 24);
++	if (blob_len < KGSL_HEADER || blob_len > KGSL_MAX_BLOB || !prefix ||
++	    check_add_overflow(prefix, (u64)blob_len + KGSL_FOOTER, &expected) ||
++	    expected != image->initrd_buf_len)
++		return -EINVAL;
++	blob = (u8 *)image->initrd_buf + prefix;
++	if (kgsl_crc(blob, blob_len) != blob_crc)
++		return -EBADMSG;
++	g = kvzalloc(sizeof(*g), GFP_KERNEL);
++	if (!g)
++		return -ENOMEM;
++	g->blob_len = blob_len;
++	g->blob_crc = blob_crc;
++	g->initrd_prefix_len = prefix;
++	memcpy(g->blob, blob, blob_len);
++	ret = kgsl_decode(g);
++	if (!ret)
++		ret = kgsl_source_ram(g);
++	if (ret) {
++		kvfree(g);
++		return ret;
++	}
++	/* Own the copy through kimage destruction, not file post-load cleanup. */
++	image->arch.kgsl = g;
++	image->initrd_buf_len = prefix;
++	pr_info("KGPUS1 action=capture ranges=%u total=%llu blob_crc32=%08x initrd_prefix=%llu historical=1 non_atomic=1\n",
++		g->nr, g->total, g->blob_crc, g->initrd_prefix_len);
++	return 0;
++}
++
++unsigned int arm64_kexec_kgsl_fdt_size(struct kimage *image)
++{
++	struct arm64_kexec_kgsl *g = image->arch.kgsl;
++
++	return g ? g->blob_len + sizeof(KGSL_PROPERTY) + 128 : 0;
++}
++
++int arm64_kexec_kgsl_fdt_setup(struct kimage *image, void *fdt)
++{
++	struct arm64_kexec_kgsl *g = image->arch.kgsl;
++	const void *prop;
++	int chosen, len, ret;
++
++	if (!g)
++		return 0;
++	g->fdt_ready = false;
++	chosen = fdt_path_offset(fdt, "/chosen");
++	if (chosen < 0)
++		return -EINVAL;
++	if (fdt_get_property(fdt, chosen, KGSL_PROPERTY, &len) ||
++	    len != -FDT_ERR_NOTFOUND)
++		return -EEXIST;
++	ret = fdt_setprop(fdt, chosen, KGSL_PROPERTY, g->blob, g->blob_len);
++	if (ret)
++		return ret;
++	chosen = fdt_path_offset(fdt, "/chosen");
++	prop = fdt_getprop(fdt, chosen, KGSL_PROPERTY, &len);
++	if (!prop || len != g->blob_len || memcmp(prop, g->blob, len))
++		return -EBADMSG;
++	g->fdt_ready = true;
++	return 0;
++}
++
++int arm64_kexec_kgsl_overlap(struct kimage *image, unsigned long start,
++		unsigned long end, bool top_down, unsigned long *hit_start,
++		unsigned long *hit_end)
++{
++	struct arm64_kexec_kgsl *g = image->arch.kgsl;
++	unsigned int i;
++	int found = 0;
++
++	if (!g)
++		return 0;
++	if (!g->nr || g->nr > KGSL_MAX_RANGES || start >= end)
++		return -EINVAL;
++	for (i = 0; i < g->nr; i++) {
++		if (g->ranges[i].start >= end)
++			break;
++		if (g->ranges[i].end <= start)
++			continue;
++		*hit_start = g->ranges[i].start;
++		*hit_end = g->ranges[i].end;
++		found = 1;
++		if (top_down)
++			break;
++	}
++	return found;
++}
++
++/* Cache/segment consistency only: this never queries live GPU ownership. */
++int arm64_kexec_kgsl_check(struct kimage *image)
++{
++	struct arm64_kexec_kgsl *g = image->arch.kgsl;
++	unsigned int i;
++
++	if (!g)
++		return 0;
++	if (!image->file_mode || !g->fdt_ready || !g->nr ||
++	    g->nr > KGSL_MAX_RANGES || g->blob_len != KGSL_HEADER + g->nr * KGSL_ENTRY ||
++	    g->blob_len > KGSL_MAX_BLOB || !g->initrd_prefix_len ||
++	    !g->total || g->total > SZ_64M ||
++	    kgsl_crc(g->blob, g->blob_len) != g->blob_crc ||
++	    kgsl_u32(g->blob + 16) != g->nr || kgsl_u64(g->blob + 24) != g->total)
++		return -ESTALE;
++	for (i = 0; i < g->nr; i++) {
++		const u8 *entry = g->blob + KGSL_HEADER + i * KGSL_ENTRY;
++
++		if (g->ranges[i].start != kgsl_u64(entry) ||
++		    g->ranges[i].end - g->ranges[i].start != kgsl_u64(entry + 8))
++			return -ESTALE;
++	}
++	if (image->nr_segments > KEXEC_SEGMENT_MAX)
++		return -EINVAL;
++	for (i = 0; i < image->nr_segments; i++) {
++		unsigned long start = image->segment[i].mem, end, a, b;
++		int ret;
++
++		if (!image->segment[i].memsz ||
++		    check_add_overflow(start, image->segment[i].memsz, &end))
++			return -EINVAL;
++		ret = arm64_kexec_kgsl_overlap(image, start, end, false, &a, &b);
++		if (ret)
++			return ret < 0 ? ret : -EADDRINUSE;
++	}
++	return 0;
++}
++
++void arm64_kexec_kgsl_cleanup(struct kimage *image)
++{
++	kvfree(image->arch.kgsl);
++	image->arch.kgsl = NULL;
++}
+--- a/arch/arm64/kernel/kexec_tzlog.c
++++ b/arch/arm64/kernel/kexec_tzlog.c
+@@ -12,6 +12,7 @@
+ #include <linux/freezer.h>
+ #include <linux/kexec.h>
+ #include <linux/kexec_tzlog.h>
++#include <asm/kexec_kgsl.h>
+ #include <linux/libfdt.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
+@@ -215,6 +216,7 @@
+ {
+ 	arm64_kexec_tzlog_cleanup(image);
+ 	arm64_kexec_gic_cleanup(image);
++	arm64_kexec_kgsl_cleanup(image);
+ }
+ 
+ int arm64_kexec_tzlog_capture(struct kimage *image, const char *cmdline)
+--- a/arch/arm64/kernel/machine_kexec.c
++++ b/arch/arm64/kernel/machine_kexec.c
+@@ -11,6 +11,7 @@
+ #include <linux/kernel.h>
+ #include <linux/kexec.h>
+ #include <linux/kexec_tzlog.h>
++#include <asm/kexec_kgsl.h>
+ #include <linux/page-flags.h>
+ #include <linux/reboot.h>
+ #include <linux/set_memory.h>
+@@ -60,6 +61,7 @@
+ {
+ 	arm64_kexec_tzlog_cleanup(kimage);
+ 	arm64_kexec_gic_cleanup(kimage);
++	arm64_kexec_kgsl_cleanup(kimage);
+ }
+ 
+ /**
+@@ -71,6 +73,8 @@
+  */
+ int machine_kexec_prepare(struct kimage *kimage)
+ {
++	int ret;
++
+ 	if (IS_ENABLED(CONFIG_ARM64_KEXEC_GIC_TABLES) && !kimage->file_mode) {
+ 		pr_err("GIC table preservation requires kexec_file_load.\n");
+ 		return -EOPNOTSUPP;
+@@ -81,7 +85,8 @@
+ 		return -EBUSY;
+ 	}
+ 
+-	return arm64_kexec_tzlog_check(kimage, false);
++	ret = arm64_kexec_tzlog_check(kimage, false);
++	return ret ? ret : arm64_kexec_kgsl_check(kimage);
+ }
+ 
+ /**
+@@ -244,6 +249,13 @@
+ 		panic("Normal restart returned after unsafe TZ log metadata");
+ 	}
+ 
++	ret = arm64_kexec_kgsl_check(kimage);
++	if (ret) {
++		pr_emerg("GPU metadata transport no longer consistent (%d); restarting normally.\n", ret);
++		machine_restart(NULL);
++		panic("Normal restart returned after inconsistent GPU metadata");
++	}
++
+ 	pr_info("Bye!\n");
+ 
+ 	local_daif_mask();
+--- a/arch/arm64/kernel/machine_kexec_file.c
++++ b/arch/arm64/kernel/machine_kexec_file.c
+@@ -15,6 +15,7 @@
+ #include <linux/kernel.h>
+ #include <linux/kexec.h>
+ #include <linux/kexec_tzlog.h>
++#include <asm/kexec_kgsl.h>
+ #include <linux/kexec_ramoops_native.h>
+ #include <linux/libfdt.h>
+ #include <linux/memblock.h>
+@@ -181,6 +182,7 @@
+ 					   initrd_len, cmdline,
+ 					   arm64_kexec_gic_fdt_size(image) +
+ 					   arm64_kexec_tzlog_fdt_size(image) +
++					   arm64_kexec_kgsl_fdt_size(image) +
+ 					   (native_ramoops ? SZ_1K : 0));
+ 	if (!dtb) {
+ 		pr_err("Preparing for new dtb failed\n");
+@@ -205,9 +207,19 @@
+ 	if (ret)
+ 		goto out_err;
+ 
++	ret = arm64_kexec_kgsl_fdt_setup(image, dtb);
++	if (ret)
++		goto out_err;
++
+ 	/* trim it */
+-	fdt_pack(dtb);
++	ret = fdt_pack(dtb);
++	if (ret)
++		goto out_err;
+ 	dtb_len = fdt_totalsize(dtb);
++	if (dtb_len > SZ_2M) {
++		ret = -E2BIG;
++		goto out_err;
++	}
+ 	kbuf.buffer = dtb;
+ 	kbuf.bufsz = dtb_len;
+ 	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -209,6 +209,11 @@
+ }
+ #endif
+ 
++#ifndef arch_kexec_prepare_file_buffers
++static inline int arch_kexec_prepare_file_buffers(struct kimage *image)
++{ return 0; }
++#endif
++
+ #ifndef arch_kimage_file_alloc_cleanup
+ static inline void arch_kimage_file_alloc_cleanup(struct kimage *image) { }
+ #endif
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -80,6 +80,19 @@
+ 	  of the exact tz_log_dlkm diagnostic ABI in a private target FDT. Require
+ 	  userspace freezing and revalidate before jumping. This does not reclaim
+ 	  firmware memory or implement repeated warm adoption. Say N normally.
++
++config ARM64_KEXEC_KGSL_DIAG
++	bool "Binary sampled GPU memory quarantine transport (diagnostic only)"
++	depends on ARM64 && KEXEC_FILE && ARM64_4K_PAGES && ARCH_KEEP_MEMBLOCK
++	depends on ARM64_KEXEC_GIC_TABLES && ARM64_KEXEC_TZLOG_DIAG
++	default n
++	help
++	  With the unique kexec_diag.kgsl_nomap_fdt=1 target token, validate a
++	  bounded exact binary range trailer on the initrd file, retain it per
++	  kimage, exclude its ranges from segment placement and pass its blob in
++	  /chosen. Strip only the validated trailer from the target initrd size.
++	  This carries positive historical metadata, not a GPU ownership seal or
++	  complete secure allocation census. Say N for normal builds.
+ 
+ config KEXEC_TARGET_TRACE
+ 	bool "ARM64 kexec target startup trace (diagnostic only)"
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -246,6 +246,11 @@
+ 				  image->cmdline_buf_len - 1);
+ 	}
+ 
++	/* Capture architecture metadata before IMA or any segment placement. */
++	ret = arch_kexec_prepare_file_buffers(image);
++	if (ret)
++		goto out;
++
+ 	/* IMA needs to pass the measurement list to the next kernel. */
+ 	ima_add_kexec_buffer(image);
+ 

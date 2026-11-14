@@ -1,0 +1,53 @@
+diff --git a/out/kexec-boot-fix/gh-vmid-readonly/Makefile b/out/kexec-boot-fix/gh-vmid-readonly/Makefile
+new file mode 100644
+--- /dev/null
++++ b/out/kexec-boot-fix/gh-vmid-readonly/Makefile
+@@ -0,0 +1 @@
++obj-m += gh_vmid_readonly.o
+diff --git a/out/kexec-boot-fix/gh-vmid-readonly/vendor.symvers b/out/kexec-boot-fix/gh-vmid-readonly/vendor.symvers
+new file mode 100644
+--- /dev/null
++++ b/out/kexec-boot-fix/gh-vmid-readonly/vendor.symvers
+@@ -0,0 +1 @@
++0x31f38dd6	gh_rm_get_this_vmid	gh_rm_drv	EXPORT_SYMBOL_GPL	
+diff --git a/out/kexec-boot-fix/gh-vmid-readonly/gh_vmid_readonly.c b/out/kexec-boot-fix/gh-vmid-readonly/gh_vmid_readonly.c
+new file mode 100644
+--- /dev/null
++++ b/out/kexec-boot-fix/gh-vmid-readonly/gh_vmid_readonly.c
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Read-only query of the current Gunyah VMID; no SCM assignment or notifier. */
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/printk.h>
++#include <linux/types.h>
++
++/*
++ * Exact type chain independently reproduces vendor CRC 0x31f38dd6.
++ * ABI was checked against gh_rm_drv.ko build ID
++ * 2081487b8b1b5eee1f6bf25ee4e4bfcde7a9a198 (.text+0x3690).
++ * The vendor getter returns its cached u16, or queries RM opcode 0x56000024.
++ */
++typedef u16 gh_vmid_t;
++extern int gh_rm_get_this_vmid(gh_vmid_t *vmid);
++
++static int __init gh_vmid_readonly_init(void)
++{
++	gh_vmid_t vmid = 0xffff;
++	int ret;
++
++	ret = gh_rm_get_this_vmid(&vmid);
++	pr_info("GH_VMID_READONLY ret=%d this_vmid=%u hex=0x%04x\n",
++		ret, (unsigned int)vmid, (unsigned int)vmid);
++	return ret;
++}
++
++static void __exit gh_vmid_readonly_exit(void)
++{
++	pr_info("GH_VMID_READONLY unloaded\n");
++}
++
++module_init(gh_vmid_readonly_init);
++module_exit(gh_vmid_readonly_exit);
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Read-only current Gunyah VMID query for kexec diagnosis");

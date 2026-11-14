@@ -1,0 +1,18 @@
+Subject: [PATCH] boot: restore full graphics in the kexec source baseline
+
+Apply to the one-line boot-header-cmdline.txt extracted from the verified
+8b3a4a3a source boot image, then repack only the v4 cmdline field in a fresh
+copy. Remove the source GPU blacklist and page-owner profiling. Keep the
+Image, header sizes, ramdisk and padding unchanged. This does not remove
+compiled diagnostic hooks or establish that kexec itself is repaired.
+
+The new source baseline must boot full Android with the original GPU
+module, SurfaceFlinger and system_server running. Do not use the former
+KGSL-blocked runners: those intentionally stop SurfaceFlinger and require
+GPU absence. No helper, kexec load or jump belongs to this boot-only check.
+
+--- a/boot-header-cmdline.txt
++++ b/boot-header-cmdline.txt
+@@ -1 +1 @@
+-ramoops.console_flush_diag=1 page_owner=on module_blacklist=msm_kgsl
++ramoops.console_flush_diag=1

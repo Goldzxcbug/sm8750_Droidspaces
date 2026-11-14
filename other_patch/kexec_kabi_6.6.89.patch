@@ -1,3 +1,12 @@
+Keep kexec diagnostics out of the primary boot and MMU-off paths.
+
+Do not write to an assumed-free IMEM offset: a device-tree window does not
+establish ownership or non-secure write access to every byte in that window.
+primary_entry runs on every normal boot, before the kernel has installed its
+exception vectors. Keep head.S and cpu-reset.S unchanged, and do not allocate
+an ioremap during the final kexec handoff. Retain the KABI/CFI fixes and the
+printk diagnostics that run before switching translation tables.
+
 --- a/include/linux/kexec.h
 +++ b/include/linux/kexec.h
 @@ -30,10 +30,19 @@
@@ -35,16 +44,40 @@
  				struct device_attribute *attr,
 --- a/arch/arm64/kernel/machine_kexec.c
 +++ b/arch/arm64/kernel/machine_kexec.c
-@@ -24,6 +24,8 @@
+@@ -24,6 +24,7 @@
  #include <asm/page.h>
  #include <asm/sections.h>
  #include <asm/trans_pgd.h>
 +#include <asm/virt.h>
-+#include <asm/kexec_trace.h>
  
  /**
   * kexec_image_info - For debugging output.
-@@ -176,14 +178,43 @@
+@@ -119,6 +120,7 @@
+ int machine_kexec_post_load(struct kimage *kimage)
+ {
+ 	int rc;
++	unsigned long i;
+ 	pgd_t *trans_pgd;
+ 	void *reloc_code = page_to_virt(kimage->control_code_page);
+ 	long reloc_size;
+@@ -127,6 +129,16 @@
+ 		.trans_alloc_arg	= kimage,
+ 	};
+ 
++	/* Capture the layout at load time, before the shutdown log can be lost. */
++	pr_emerg("KT: post_load file=%d path=%s head=%#lx start=%#lx dtb=%pa\n",
++		 kimage->file_mode,
++		 kimage->head & IND_DONE ? "direct" : "relocate",
++		 kimage->head, kimage->start, &kimage->arch.dtb_mem);
++	for (i = 0; i < kimage->nr_segments; i++)
++		pr_emerg("KT: segment[%lu] mem=%#lx memsz=%#zx bufsz=%#zx\n",
++			 i, kimage->segment[i].mem, kimage->segment[i].memsz,
++			 kimage->segment[i].bufsz);
++
+ 	/* If in place, relocation is not used, only flush next kernel */
+ 	if (kimage->head & IND_DONE) {
+ 		kexec_segment_flush(kimage);
+@@ -176,7 +188,12 @@
   *
   * Called from the core kexec code for a sys_reboot with LINUX_REBOOT_CMD_KEXEC.
   */
@@ -54,49 +87,27 @@
 + * The copied relocation assembly has no preceding KCFI type word. Checking
 + * it can fault before the entry is reached. Keep CFI enabled elsewhere.
 + */
-+/**
-+ * kexec_trace_mark - record a handoff stage in the SoC IMEM window
-+ * @stage: KX_STAGE_* value
-+ *
-+ * ioremap keeps the write legal while the MMU is still on.  The assembly
-+ * side writes the same slot with plain physical stores once translation is
-+ * off, so the last value found after the reset names the furthest stage.
-+ */
-+void kexec_trace_mark(unsigned int stage)
-+{
-+	void __iomem *slot;
-+
-+	slot = ioremap(KEXEC_TRACE_PHYS, sizeof(u32));
-+	if (!slot)
-+		return;
-+	writel(stage, slot);
-+	dsb(sy);
-+	iounmap(slot);
-+}
-+
 +void __nocfi machine_kexec(struct kimage *kimage)
  {
  	bool in_kexec_crash = (kimage == kexec_crash_image);
  	bool stuck_cpus = cpus_are_stuck_in_kernel();
- 
-+	kexec_trace_mark(KX_STAGE_ENTER);
-+
+@@ -184,6 +201,16 @@
  	/*
  	 * New cpus may have become stuck_in_kernel after we loaded the image.
  	 */
 +	pr_emerg("KT: machine_kexec stuck=%d online=%d pkm=%d\n",
 +		 stuck_cpus, num_online_cpus(), is_protected_kvm_enabled());
++	/* Log the actual path while the normal mappings still apply. */
++	pr_emerg("KT: machine_kexec path=%s head=%#lx start=%#lx dtb=%pa\n",
++		 kimage->head & IND_DONE ? "direct" : "relocate",
++		 kimage->head, kimage->start, &kimage->arch.dtb_mem);
++	pr_emerg("KT: machine_kexec reloc=%pa ttbr0=%pa ttbr1=%pa el2=%d\n",
++		 &kimage->arch.kern_reloc, &kimage->arch.ttbr0,
++		 &kimage->arch.ttbr1, is_hyp_nvhe());
++
  	BUG_ON(!in_kexec_crash && (stuck_cpus || (num_online_cpus() > 1)));
  	WARN(in_kexec_crash && (stuck_cpus || smp_crash_stop_failed()),
  		"Some CPUs may be stale, kdump will be unreliable.\n");
-@@ -205,6 +236,7 @@
- 		typeof(cpu_soft_restart) *restart;
- 
- 		cpu_install_idmap();
-+		kexec_trace_mark(KX_STAGE_AFTER_IDMAP);
- 		restart = (void *)__pa_symbol(cpu_soft_restart);
- 		restart(is_hyp_nvhe(), kimage->start, kimage->arch.dtb_mem,
- 			0, 0);
 --- a/kernel/kexec_core.c
 +++ b/kernel/kexec_core.c
 @@ -14,6 +14,7 @@
@@ -183,110 +194,3 @@
  		pm_runtime_get_noresume(dev);
  		pm_runtime_barrier(dev);
  
---- a/arch/arm64/include/asm/kexec_trace.h
-+++ b/arch/arm64/include/asm/kexec_trace.h
-@@ -0,0 +1,60 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Kexec handoff trace markers.
-+ *
-+ * Once machine_kexec() reaches cpu_soft_restart() the MMU and caches are being
-+ * torn down and printk stops being a reliable observer.  Write a small value
-+ * straight into the SoC IMEM window instead: fixed physical address, not
-+ * cacheable by the kernel, and it survives the hard reset the watchdog issues
-+ * when the handoff fails.
-+ *
-+ * Only the dedicated offset below is touched.  Every documented IMEM sub-node
-+ * on this device sits far under it.
-+ */
-+#ifndef __ASM_KEXEC_TRACE_H
-+#define __ASM_KEXEC_TRACE_H
-+
-+/* Base and size from /proc/device-tree/soc/qcom,msm-imem. */
-+#define KEXEC_TRACE_IMEM_BASE	0x68140000UL
-+#define KEXEC_TRACE_IMEM_SIZE	0x00100000UL
-+
-+/*
-+ * 0xe000 is above every documented sub-node: mem_dump_table 0x010,
-+ * dload_type 0x01c, diag_dload 0x0c8, restart_reason 0x65c, boot_stats 0x6b0,
-+ * kaslr_offset 0x6d0, pil 0x6dc and 0x94c, sys_dbg 0xaf8.
-+ */
-+#define KEXEC_TRACE_OFFSET	0x0000e000UL
-+#define KEXEC_TRACE_PHYS	(KEXEC_TRACE_IMEM_BASE + KEXEC_TRACE_OFFSET)
-+
-+/* Stage values, in the order the handoff passes through them. */
-+#define KX_STAGE_ENTER			0x10
-+#define KX_STAGE_AFTER_IDMAP		0x13
-+#define KX_STAGE_SOFT_RESTART_ENTER	0x20
-+#define KX_STAGE_MMU_OFF		0x21
-+#define KX_STAGE_ABOUT_TO_BRANCH	0x22
-+#define KX_STAGE_NEW_KERNEL		0x50
-+
-+#ifndef __ASSEMBLY__
-+
-+void kexec_trace_mark(unsigned int stage);
-+
-+#else
-+
-+/*
-+ * Clobbers x9 and x10 only.  Both are dead at every call site:
-+ * cpu_soft_restart() uses x0-x4, x8 and x12, and primary_entry() has not
-+ * consumed anything beyond x0 yet.  Only call with the MMU off or through the
-+ * identity map, otherwise the store faults.
-+ */
-+.macro kx_mark_asm stage
-+	movz	x9, #((KEXEC_TRACE_PHYS >> 0) & 0xffff)
-+	movk	x9, #((KEXEC_TRACE_PHYS >> 16) & 0xffff), lsl #16
-+	movk	x9, #((KEXEC_TRACE_PHYS >> 32) & 0xffff), lsl #32
-+	mov	w10, #\stage
-+	str	w10, [x9]
-+	dsb	sy
-+.endm
-+
-+#endif /* __ASSEMBLY__ */
-+
-+#endif /* __ASM_KEXEC_TRACE_H */
---- a/arch/arm64/kernel/cpu-reset.S
-+++ b/arch/arm64/kernel/cpu-reset.S
-@@ -11,6 +11,7 @@
- #include <linux/cfi_types.h>
- #include <asm/assembler.h>
- #include <asm/sysreg.h>
-+#include <asm/kexec_trace.h>
- #include <asm/virt.h>
- 
- .text
-@@ -38,6 +39,7 @@
- 	 */
- 	msr	sctlr_el1, x12
- 	isb
-+	kx_mark_asm KX_STAGE_MMU_OFF
- 
- 	cbz	x0, 1f				// el2_switch?
- 	mov	x0, #HVC_SOFT_RESTART
-@@ -47,6 +49,7 @@
- 	mov	x0, x2				// arg0
- 	mov	x1, x3				// arg1
- 	mov	x2, x4				// arg2
-+	kx_mark_asm KX_STAGE_ABOUT_TO_BRANCH
- 	br	x8
- SYM_FUNC_END(cpu_soft_restart)
- 
---- a/arch/arm64/kernel/head.S
-+++ b/arch/arm64/kernel/head.S
-@@ -19,6 +19,7 @@
- #include <asm/bug.h>
- #include <asm/ptrace.h>
- #include <asm/asm-offsets.h>
-+#include <asm/kexec_trace.h>
- #include <asm/cache.h>
- #include <asm/cputype.h>
- #include <asm/el2_setup.h>
-@@ -87,6 +88,7 @@
- 	 *  x28        create_idmap()                           callee preserved temp register
- 	 */
- SYM_CODE_START(primary_entry)
-+	kx_mark_asm KX_STAGE_NEW_KERNEL
- 	bl	record_mmu_state
- 	bl	preserve_boot_args
- 	bl	create_idmap

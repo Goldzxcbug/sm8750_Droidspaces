@@ -1,0 +1,24 @@
+Subject: [PATCH] initramfs: explicitly load the packaged diagnostic GPI module
+
+Replacing lib/modules/msm_gpi.ko does not select it for normal first-stage
+loading: the original normal modules.load and its dependency closure omit
+GPI. Add the module to that list so the first-stage loader attempts the
+packaged module and its modules.options before later vendor loading.
+The existing dependency table supplies its providers. Parallel loading
+means this list position does not guarantee the last execution position.
+
+Use with the matching NULL-safe diagnostic msm_gpi.ko and its explicit
+kexec_first_event_diag option. This moves GPI loading/probing into the
+first-stage loading set; it does not fix the original command timeout or
+prove that the module successfully initialized on the device.
+
+This patch targets the unpacked diagnostic initramfs, not kernel source.
+
+diff --git a/lib/modules/modules.load b/lib/modules/modules.load
+--- a/lib/modules/modules.load
++++ b/lib/modules/modules.load
+@@ -151,3 +151,4 @@
+ oplus_mdmfeature.ko
+ oplus_bsp_fpga_monitor.ko
+ ipclite.ko
++msm_gpi.ko

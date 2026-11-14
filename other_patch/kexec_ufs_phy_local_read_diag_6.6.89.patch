@@ -1,0 +1,82 @@
+From: local kexec diagnosis
+Subject: [DIAG] Read two existing Sun PHY words at normal powered boundaries
+
+Requires kexec_ufs_phy_power_trace_diag_6.6.89.patch, SHA256
+41fac91334e9d356d89e9d21a93f85d3b20363cc6342fd583deffcabe83a72fc.
+Its resulting generic PHY C is SHA256
+87f28e4fe7056abc244c1189a5bdcbf96a1590cb08a92d35ea9af384d95bcee7.
+
+An independent default-false0400 option additionally requires the original
+complete kexec/Sun/major6 diagnostic guard and a valid existing PHY mapping.
+Read POWER_DOWN_CONTROL then local SW_RESET, using two ordinary u32 locals,
+after the original power_control(true) return and before the original aux
+call. Log read-enter before the two reads and read-result with their raw
+values afterward. Keep existing UFSPWR1/GDSC/qref/error/cleanup code in order.
+
+The offsets are the existing official4553152f Sun header definitions:
+drivers/phy/qualcomm/phy-qcom-ufs-qmp-v4-sun.h defines PHY_BASE0x400,
+UFS_PHY_POWER_DOWN_CONTROL=PHY_OFF(0x4), UFS_PHY_SW_RESET=PHY_OFF(0x8).
+Both fit the saved actual PHY reg PA1d80000/size2000. Normal earlier power
+votes and existing writes establish the intended sampling context; they
+are not an absolute MMIO read-safety or hardware ownership proof. Do not
+confuse the local word with HBA CFG1 bit1 reset or the expected major6 GCC
+BCR assertion. No new writes, mapping, clocks, regulators, reset, delay,
+retry, error override or production repair claim is introduced.
+
+--- a/drivers/phy/qualcomm/phy-qcom-ufs.c
++++ b/drivers/phy/qualcomm/phy-qcom-ufs.c
+@@ -9,10 +9,38 @@
+ /* Diagnostic reads only; use the real vendor API instead of a CONFIG stub. */
+ extern void gdsc_debug_print_regs(struct regulator *regulator);
+ 
++static bool kexec_ufs_phy_local_read_diag;
++module_param(kexec_ufs_phy_local_read_diag, bool, 0400);
++MODULE_PARM_DESC(kexec_ufs_phy_local_read_diag,
++		"Read two existing Sun PHY words during explicit power diagnosis");
++
+ static bool kexec_ufs_phy_power_trace_diag;
+ module_param(kexec_ufs_phy_power_trace_diag, bool, 0400);
+ MODULE_PARM_DESC(kexec_ufs_phy_power_trace_diag,
+ 		"Trace existing Sun PHY power calls during explicit kexec diagnosis");
++
++/* Existing phy-qcom-ufs-qmp-v4-sun.h: PHY_BASE0x400 +0x4/+0x8. */
++#define UFS_QCOM_DIAG_SUN_POWER_DOWN_CONTROL 0x404
++#define UFS_QCOM_DIAG_SUN_SW_RESET 0x408
++
++static void ufs_qcom_phy_local_read(struct ufs_qcom_phy *phy,
++				  bool diag, const char *stage)
++{
++	u32 power_down_control;
++	u32 sw_reset;
++
++	if (!diag || !READ_ONCE(kexec_ufs_phy_local_read_diag) ||
++	    IS_ERR_OR_NULL(phy->mmio))
++		return;
++
++	dev_info(phy->dev, "UFSPWR2 stage=%s action=read-enter\n", stage);
++	power_down_control = readl_relaxed(phy->mmio +
++					 UFS_QCOM_DIAG_SUN_POWER_DOWN_CONTROL);
++	sw_reset = readl_relaxed(phy->mmio + UFS_QCOM_DIAG_SUN_SW_RESET);
++	dev_info(phy->dev,
++		 "UFSPWR2 stage=%s action=read-result power_down_control=%08x sw_reset=%08x\n",
++		 stage, power_down_control, sw_reset);
++}
+ 
+ static bool ufs_qcom_phy_power_trace_enabled(struct ufs_qcom_phy *phy)
+ {
+@@ -610,6 +638,7 @@
+ 	if (phy->ref_aux_clk) {
+ 		ufs_qcom_phy_power_trace_state(phy, diag, "aux-before", false, 0);
+ 		ufs_qcom_phy_power_trace_gdsc(phy, diag, "gdsc-before-aux");
++		ufs_qcom_phy_local_read(phy, diag, "aux-before");
+ 		ret = clk_prepare_enable(phy->ref_aux_clk);
+ 		ufs_qcom_phy_power_trace_state(phy, diag, "aux-after", true, ret);
+ 		ufs_qcom_phy_power_trace_gdsc(phy, diag, "gdsc-after-aux");
+@@ -868,6 +897,7 @@
+ 	}
+ 
+ 	phy_common->phy_spec_ops->power_control(phy_common, true);
++	ufs_qcom_phy_local_read(phy_common, diag, "post-power-control");
+ 
+ 	/* vdda_pll also enables ref clock LDOs so enable it first */
+ 	err = ufs_qcom_phy_enable_vreg(dev, &phy_common->vdda_pll, diag);

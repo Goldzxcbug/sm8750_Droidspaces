@@ -1,0 +1,104 @@
+From: Codex <codex@local>
+Subject: [PATCH] arm64: add opt-in first SEA context diagnostics before fixups
+
+Diagnostic only. Explicit kexec_diag.sea_context=1 plus an actual chosen
+linux,booted-from-kexec marker arms at core init. On the first kernel
+current-EL data SEA (FSC 0x10), print saved ESR/FAR/register scalars and
+PC/LR symbols before the original vendor fixup hook. Do not touch the
+faulting VA/MMIO, instructions, page tables, saved registers, fixups,
+notifiers or handler return semantics. All original do_sea statements
+remain in their original order after the additional observation.
+
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -8,11 +8,16 @@
+  */
+ 
+ #include <linux/acpi.h>
++#include <linux/atomic.h>
+ #include <linux/bitfield.h>
+ #include <linux/extable.h>
+ #include <linux/kfence.h>
+ #include <linux/signal.h>
+ #include <linux/mm.h>
++#ifndef __GENKSYMS__
++#include <linux/of.h>
++#endif
++#include <linux/string.h>
+ #include <linux/hardirq.h>
+ #include <linux/init.h>
+ #include <linux/kasan.h>
+@@ -757,11 +762,73 @@
+ 	return 1; /* "fault" */
+ }
+ 
++/* Diagnostic only: copy the first kernel SEA context before vendor fixups. */
++static bool kexec_sea_context_requested __initdata;
++static bool kexec_sea_context_active __ro_after_init;
++static atomic_t kexec_sea_context_once = ATOMIC_INIT(0);
++
++static int __init kexec_sea_context_setup(char *str)
++{
++	/* Only the explicit value 1 opts in; absent/malformed values stay off. */
++	kexec_sea_context_requested = str && !strcmp(str, "1");
++	return 1;
++}
++__setup("kexec_diag.sea_context=", kexec_sea_context_setup);
++
++static int __init kexec_sea_context_init(void)
++{
++	if (!kexec_sea_context_requested || !of_chosen ||
++	    !of_property_read_bool(of_chosen, "linux,booted-from-kexec"))
++		return 0;
++
++	WRITE_ONCE(kexec_sea_context_active, true);
++	pr_info("KSEA1 action=armed current_el_data_sea=1 first_only=1\n");
++	return 0;
++}
++core_initcall(kexec_sea_context_init);
++
++static void kexec_sea_context(unsigned long far, unsigned long esr,
++			      const struct pt_regs *regs)
++{
++	if (!READ_ONCE(kexec_sea_context_active))
++		return;
++	if (user_mode(regs) || ESR_ELx_EC(esr) != ESR_ELx_EC_DABT_CUR ||
++	    (esr & ESR_ELx_FSC) != ESR_ELx_FSC_EXTABT)
++		return;
++	if (atomic_cmpxchg(&kexec_sea_context_once, 0, 1))
++		return;
++
++	/* Read only the supplied pt_regs, never FAR, instructions, or page tables. */
++	pr_emerg("KSEA1 action=context esr=%016lx far=%016lx far_valid=%u fnv=%u pc=%016lx lr=%016lx sp=%016lx pstate=%016lx\n",
++		 esr, far, !(esr & ESR_ELx_FnV), !!(esr & ESR_ELx_FnV),
++		 (unsigned long)regs->pc, (unsigned long)regs->regs[30],
++		 (unsigned long)regs->sp, (unsigned long)regs->pstate);
++	pr_emerg("KSEA1 action=symbols pc=%pS lr=%pS\n",
++		 (void *)regs->pc, (void *)regs->regs[30]);
++	pr_emerg("KSEA1 x0=%016lx x1=%016lx x2=%016lx x3=%016lx\n",
++		 (unsigned long)regs->regs[0], (unsigned long)regs->regs[1],
++		 (unsigned long)regs->regs[2], (unsigned long)regs->regs[3]);
++	pr_emerg("KSEA1 x4=%016lx x5=%016lx x6=%016lx x7=%016lx\n",
++		 (unsigned long)regs->regs[4], (unsigned long)regs->regs[5],
++		 (unsigned long)regs->regs[6], (unsigned long)regs->regs[7]);
++	pr_emerg("KSEA1 x19=%016lx x20=%016lx x21=%016lx x22=%016lx\n",
++		 (unsigned long)regs->regs[19], (unsigned long)regs->regs[20],
++		 (unsigned long)regs->regs[21], (unsigned long)regs->regs[22]);
++	pr_emerg("KSEA1 x23=%016lx x24=%016lx x25=%016lx x26=%016lx\n",
++		 (unsigned long)regs->regs[23], (unsigned long)regs->regs[24],
++		 (unsigned long)regs->regs[25], (unsigned long)regs->regs[26]);
++	pr_emerg("KSEA1 x27=%016lx x28=%016lx fp=%016lx\n",
++		 (unsigned long)regs->regs[27], (unsigned long)regs->regs[28],
++		 (unsigned long)regs->regs[29]);
++}
++
+ static int do_sea(unsigned long far, unsigned long esr, struct pt_regs *regs)
+ {
+ 	const struct fault_info *inf;
+ 	unsigned long siaddr;
+ 	bool can_fixup = false;
++
++	kexec_sea_context(far, esr, regs);
+ 
+ 	trace_android_vh_try_fixup_sea(far, esr, regs, &can_fixup);
+ 	if (can_fixup && fixup_exception(regs))

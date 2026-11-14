@@ -1,0 +1,176 @@
+Subject: [PATCH] dmaengine: qcom: msm_gpi: observe one SPI event allocation
+
+Add an explicit default-off, read-only diagnostic option for the first
+a00000/SE4 SPI event allocation. Record submission, the original wait
+result, the first global error and the first EV completion, at most once
+each. Use only existing register reads and keep the original read, clear,
+callback, completion and return ordering. Do not reset hardware or turn a
+failed command into success.
+
+Publish one software observation window before the command write and
+close it when the wait result is recorded. IRQ eligibility captured before
+completion allows that IRQ record to print after the waiter closes the
+window. A pending old IRQ can be observed; a missing record does not prove
+that an IRQ never arrived. The window does not identify a unique hardware
+transaction. Logging itself can affect timing.
+
+Apply after kexec_gpi_event_timeout_null_fix_6.6.89.patch to the OnePlus
+vendor drivers/dma/qcom/msm_gpi.c. Rebuild a matching msm_gpi.ko and enable
+with the module option kexec_first_event_diag=1 for a diagnostic test.
+
+diff --git a/drivers/dma/qcom/msm_gpi.c b/drivers/dma/qcom/msm_gpi.c
+--- a/drivers/dma/qcom/msm_gpi.c
++++ b/drivers/dma/qcom/msm_gpi.c
+@@ -650,6 +650,76 @@
+ 	bool is_multi_desc;
+ 	int num_msgs;
+ };
++
++/* Explicit, bounded observation of one DT-selected event allocation. */
++static bool kexec_first_event_diag;
++module_param(kexec_first_event_diag, bool, 0400);
++MODULE_PARM_DESC(kexec_first_event_diag,
++	"Observe the first a00000/SE4 SPI event allocation without changing it");
++
++static atomic_t gpi_diag_claim = ATOMIC_INIT(0);
++static atomic_t gpi_diag_global_once = ATOMIC_INIT(0);
++static atomic_t gpi_diag_ev_once = ATOMIC_INIT(0);
++static struct gpii *gpi_diag_owner;
++
++static bool gpi_diag_owned(struct gpii *gpii)
++{
++	return smp_load_acquire(&gpi_diag_owner) == gpii;
++}
++
++static bool gpi_diag_begin(struct gpii *gpii, struct gpii_chan *chan,
++			   enum gpi_cmd cmd, u32 word)
++{
++	if (!READ_ONCE(kexec_first_event_diag) || cmd != GPI_EV_CMD_ALLOCATE ||
++	    chan || !gpii->gpi_dev->res ||
++	    gpii->gpi_dev->res->start != 0xa00000 ||
++	    gpii->gpii_chan[0].seid != 4 || gpii->gpii_chan[1].seid != 4 ||
++	    gpii->gpii_chan[0].protocol != SE_PROTOCOL_SPI ||
++	    gpii->gpii_chan[1].protocol != SE_PROTOCOL_SPI ||
++	    atomic_cmpxchg(&gpi_diag_claim, 0, 1))
++		return false;
++
++	pr_info("KGPICMD1 event=submit provider=a00000 seid=4 proto=1 gpii=%u irq=%d cmd=%u word=%08x null=1 pm=%u ev=%u irq_cfg=%u mask_sw=%08x\n",
++		gpii->gpii_id, gpii->irq, cmd, word, gpii->pm_state,
++		gpii->ev_state, gpii->configured_irq, gpii->cntxt_type_irq_msk);
++	smp_store_release(&gpi_diag_owner, gpii);
++	return true;
++}
++
++static void gpi_diag_wait(struct gpii *gpii, unsigned long result,
++			  bool irq_valid, u32 irq_status)
++{
++	smp_store_release(&gpi_diag_owner, NULL);
++	pr_info("KGPICMD1 event=wait gpii=%u irq=%d attempt_cmd=10 result=%lu irq_valid=%u irq_status=%08x ev_sw=%u\n",
++		gpii->gpii_id, gpii->irq, result, irq_valid, irq_status,
++		gpii->ev_state);
++}
++
++static void gpi_diag_global(struct gpii *gpii, bool selected,
++			    u32 irq_status, bool error_valid, u32 error_log)
++{
++	if (!selected || atomic_cmpxchg(&gpi_diag_global_once, 0, 1))
++		return;
++	if (!error_valid) {
++		pr_info("KGPICMD1 event=global-error gpii=%u irq=%d attempt_cmd=10 irq_status=%08x error_valid=0\n",
++			gpii->gpii_id, gpii->irq, irq_status);
++		return;
++	}
++	pr_info("KGPICMD1 event=global-error gpii=%u irq=%d attempt_cmd=10 irq_status=%08x error_valid=1 error_log=%08x routine=%u type=%u code=%u chid=%u chtype=%u ee=%u\n",
++		gpii->gpii_id, gpii->irq, irq_status, error_log,
++		error_log & 0xf, (error_log >> 4) & 0xf,
++		(error_log >> 12) & 0xf, (error_log >> 19) & 0x1f,
++		(error_log >> 25) & 1, (error_log >> 26) & 1);
++}
++
++static void gpi_diag_ev(struct gpii *gpii, bool selected, u32 irq_status,
++			 u32 raw_context, u32 state)
++{
++	if (!selected || atomic_cmpxchg(&gpi_diag_ev_once, 0, 1))
++		return;
++	pr_info("KGPICMD1 event=ev-complete gpii=%u irq=%d attempt_cmd=10 ev_irq=%08x ev_context=%08x ev_state=%u complete_after=1\n",
++		gpii->gpii_id, gpii->irq, irq_status, raw_context, state);
++}
+ 
+ struct gpi_desc {
+ 	struct virt_dma_desc vd;
+@@ -1675,6 +1745,7 @@
+ 	u32 irq_stat, offset, ch_irq;
+ 	unsigned long timeout;
+ 	void __iomem *cmd_reg;
++	bool diag;
+ 
+ 	if (gpi_cmd >= GPI_MAX_CMD)
+ 		return -EINVAL;
+@@ -1693,13 +1764,18 @@
+ 	cmd = IS_CHAN_CMD(gpi_cmd) ?
+ 		GPI_GPII_n_CH_CMD(gpi_cmd_info[gpi_cmd].opcode, chid) :
+ 		GPI_GPII_n_EV_CH_CMD(gpi_cmd_info[gpi_cmd].opcode, 0);
++	diag = gpi_diag_begin(gpii, gpii_chan, gpi_cmd, cmd);
+ 	gpi_write_reg(gpii, cmd_reg, cmd);
+ 	timeout = wait_for_completion_timeout(&gpii->cmd_completion,
+ 			msecs_to_jiffies(gpi_cmd_info[gpi_cmd].timeout_ms));
++	if (diag && timeout)
++		gpi_diag_wait(gpii, timeout, false, 0);
+ 
+ 	if (!timeout) {
+ 		offset = GPI_GPII_n_CNTXT_TYPE_IRQ_OFFS(gpii->gpii_id);
+ 		irq_stat = gpi_read_reg(gpii, gpii->regs + offset);
++		if (diag)
++			gpi_diag_wait(gpii, timeout, true, irq_stat);
+ 		if (!IS_CHAN_CMD(gpi_cmd)) {
+ 			GPII_ERR(gpii, chid,
+ 				 "event cmd: %s completion timeout irq_status=0x%x\n",
+@@ -2043,12 +2119,14 @@
+ 	struct msm_gpi_cb msm_gpi_cb;
+ 	struct gpi_error_log_entry *log_entry =
+ 		(struct gpi_error_log_entry *)&error_log;
++	bool diag = gpi_diag_owned(gpii);
+ 
+ 	offset = GPI_GPII_n_CNTXT_GLOB_IRQ_CLR_OFFS(gpii_id);
+ 	gpi_write_reg(gpii, gpii->regs + offset, irq_stts);
+ 
+ 	/* only error interrupt should be set */
+ 	if (irq_stts & ~GPI_GLOB_IRQ_ERROR_INT_MSK) {
++		gpi_diag_global(gpii, diag, irq_stts, false, 0);
+ 		GPII_ERR(gpii, GPI_DBG_COMMON, "invalid error status:0x%x\n",
+ 			 irq_stts);
+ 		goto error_irq;
+@@ -2057,6 +2135,7 @@
+ 	offset = GPI_GPII_n_ERROR_LOG_OFFS(gpii_id);
+ 	error_log = gpi_read_reg(gpii, gpii->regs + offset);
+ 	gpi_write_reg(gpii, gpii->regs + offset, 0);
++	gpi_diag_global(gpii, diag, irq_stts, true, error_log);
+ 
+ 	/* get channel info */
+ 	chid = ((struct gpi_error_log_entry *)&error_log)->chid;
+@@ -2145,6 +2224,8 @@
+ 		if (type & GPI_GPII_n_CNTXT_TYPE_IRQ_MSK_EV_CTRL) {
+ 			u32 ev_state;
+ 			u32 ev_ch_irq;
++			u32 diag_raw_context;
++			bool diag_ev = gpi_diag_owned(gpii);
+ 
+ 			GPII_INFO(gpii, GPI_DBG_COMMON,
+ 				  "processing EV CTRL interrupt\n");
+@@ -2156,6 +2237,7 @@
+ 			gpi_write_reg(gpii, gpii->regs + offset, ev_ch_irq);
+ 			ev_state = gpi_read_reg(gpii, gpii->ev_cntxt_base_reg +
+ 						CNTXT_0_CONFIG);
++			diag_raw_context = ev_state;
+ 			ev_state &= GPI_GPII_n_EV_CH_k_CNTXT_0_CHSTATE_BMSK;
+ 			ev_state >>= GPI_GPII_n_EV_CH_k_CNTXT_0_CHSTATE_SHFT;
+ 
+@@ -2172,6 +2254,8 @@
+ 				  "setting EV state to %s\n",
+ 				  TO_GPI_EV_STATE_STR(gpii->ev_state));
+ 			complete_all(&gpii->cmd_completion);
++			gpi_diag_ev(gpii, diag_ev, ev_ch_irq,
++				    diag_raw_context, ev_state);
+ 			type &= ~(GPI_GPII_n_CNTXT_TYPE_IRQ_MSK_EV_CTRL);
+ 		}
+ 

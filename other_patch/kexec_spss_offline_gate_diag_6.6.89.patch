@@ -1,0 +1,355 @@
+Diagnostic-only SPSS offline seal for the secure-heap kexec experiment.
+
+Default off. This does not reclaim memory by itself and is not the final Android
+kexec fix. Preserve the existing vendor ABI and use only after freezing userspace
+inside normal kexec. The test build also uses the separately validated GIC handoff.
+Apply to the kernel tree after the base kexec KABI patch; no source checkout is
+modified by storing this patch.
+
+--- a/drivers/remoteproc/Kconfig
++++ b/drivers/remoteproc/Kconfig
+@@ -14,6 +14,18 @@
+ 
+ if REMOTEPROC
+ 
++config REMOTEPROC_KEXEC_OFFLINE_GATE
++	bool "One-shot offline remoteproc seal for kexec diagnostics"
++	depends on ARM64 && KEXEC_CORE && FREEZER && OF
++	default n
++	help
++	  Permit a kexec-only caller, after freezing userspace, to permanently
++	  block Linux boot, attach and recovery of one already offline remote
++	  processor. The remoteproc must remain unused with automatic boot off
++	  and recovery disabled. No remote processor is stopped by this option.
++	  A successful seal cannot be undone before reset. This is intended for
++	  controlled kexec diagnostics, not normal remoteproc lifecycle control.
++
+ config REMOTEPROC_CDEV
+ 	bool "Remoteproc character device interface"
+ 	help
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -29,6 +29,15 @@
+ #include <linux/debugfs.h>
+ #include <linux/rculist.h>
+ #include <linux/remoteproc.h>
++#include <linux/remoteproc_kexec.h>
++#include <linux/freezer.h>
++/*
++ * An implementation dependency only: kexec.h completes nsproxy/pid_namespace
++ * behind existing exported rproc types. Preserve their original genksyms view.
++ */
++#ifndef __GENKSYMS__
++#include <linux/kexec.h>
++#endif
+ #include <linux/iommu.h>
+ #include <linux/idr.h>
+ #include <linux/elf.h>
+@@ -59,6 +68,165 @@
+ /* Unique indices for remoteproc devices */
+ static DEFINE_IDA(rproc_dev_index);
+ static struct workqueue_struct *rproc_recovery_wq;
++
++#if IS_ENABLED(CONFIG_REMOTEPROC_KEXEC_OFFLINE_GATE)
++/* Immutable after release publication. Keep all references until reset. */
++struct rproc_kexec_gate {
++	struct rproc *rproc;
++	struct device *parent;
++	struct device_node *node;
++	struct module *owner;
++};
++
++static struct rproc_kexec_gate rproc_kexec_gate;
++static struct rproc_kexec_gate *rproc_kexec_sealed;
++static DEFINE_RAW_SPINLOCK(rproc_kexec_gate_lock);
++static unsigned int rproc_kexec_active;
++
++static bool rproc_kexec_matches(struct rproc *rproc,
++				const struct rproc_kexec_gate *gate)
++{
++	struct device *parent = rproc->dev.parent;
++
++	return gate && (rproc == gate->rproc || parent == gate->parent ||
++		       (parent && gate->node && dev_of_node(parent) == gate->node));
++}
++
++static bool rproc_kexec_blocked(struct rproc *rproc)
++{
++	return rproc_kexec_matches(rproc, smp_load_acquire(&rproc_kexec_sealed));
++}
++
++/*
++ * Count whole core operations, without holding a new lock across callbacks.
++ * Sealing conservatively refuses any active operation, including one on an
++ * unrelated remoteproc. This closes registration/auto-boot publication races.
++ */
++static int rproc_kexec_begin(struct rproc *rproc)
++{
++	unsigned long flags;
++	int ret = 0;
++
++	raw_spin_lock_irqsave(&rproc_kexec_gate_lock, flags);
++	if (rproc_kexec_matches(rproc, rproc_kexec_sealed))
++		ret = -ESHUTDOWN;
++	else if (rproc_kexec_active == UINT_MAX)
++		ret = -EOVERFLOW;
++	else
++		rproc_kexec_active++;
++	raw_spin_unlock_irqrestore(&rproc_kexec_gate_lock, flags);
++	return ret;
++}
++
++static void rproc_kexec_end(void)
++{
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&rproc_kexec_gate_lock, flags);
++	if (!WARN_ON_ONCE(!rproc_kexec_active))
++		rproc_kexec_active--;
++	raw_spin_unlock_irqrestore(&rproc_kexec_gate_lock, flags);
++}
++
++int rproc_kexec_seal_offline(struct rproc *rproc)
++{
++	struct rproc_kexec_gate candidate = {};
++	struct device *parent;
++	struct rproc *entry;
++	unsigned long flags;
++	bool registered = false;
++	int ret = -EBUSY;
++
++	if (!rproc)
++		return -EINVAL;
++	if (!READ_ONCE(kexec_in_progress) || !READ_ONCE(pm_freezing))
++		return -EPERM;
++	if (smp_load_acquire(&rproc_kexec_sealed))
++		return -EALREADY;
++
++	parent = rproc->dev.parent;
++	if (!parent)
++		return -ENODEV;
++	/* Match driver removal order; never keep either mutex after returning. */
++	if (!device_trylock(parent))
++		return -EBUSY;
++	if (!parent->driver || !dev_of_node(parent)) {
++		ret = -ENODEV;
++		goto unlock_parent;
++	}
++	if (!mutex_trylock(&rproc->lock))
++		goto unlock_parent;
++	if (rproc->state != RPROC_OFFLINE || atomic_read(&rproc->power) ||
++	    rproc->auto_boot || !rproc->recovery_disabled)
++		goto unlock_rproc;
++	if (!mutex_trylock(&rproc_list_mutex))
++		goto unlock_rproc;
++
++	candidate.rproc = rproc;
++	candidate.parent = parent;
++	candidate.node = dev_of_node(parent);
++	candidate.owner = parent->driver->owner;
++	list_for_each_entry(entry, &rproc_list, node) {
++		if (entry == rproc)
++			registered = true;
++		else if (rproc_kexec_matches(entry, &candidate))
++			goto unlock_list;
++	}
++	if (!registered) {
++		ret = -ENODEV;
++		goto unlock_list;
++	}
++	if (!try_module_get(candidate.owner)) {
++		ret = -ENODEV;
++		goto unlock_list;
++	}
++	get_device(&rproc->dev);
++	get_device(parent);
++	of_node_get(candidate.node);
++
++	raw_spin_lock_irqsave(&rproc_kexec_gate_lock, flags);
++	if (rproc_kexec_sealed) {
++		ret = -EALREADY;
++	} else if (rproc_kexec_active) {
++		ret = -EBUSY;
++	} else {
++		rproc_kexec_gate = candidate;
++		smp_store_release(&rproc_kexec_sealed, &rproc_kexec_gate);
++		ret = 0;
++	}
++	raw_spin_unlock_irqrestore(&rproc_kexec_gate_lock, flags);
++	if (ret) {
++		of_node_put(candidate.node);
++		put_device(parent);
++		put_device(&rproc->dev);
++		/* Do not rediscover owner through rproc_put() after unbind. */
++		module_put(candidate.owner);
++	}
++
++unlock_list:
++	mutex_unlock(&rproc_list_mutex);
++unlock_rproc:
++	mutex_unlock(&rproc->lock);
++unlock_parent:
++	device_unlock(parent);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(rproc_kexec_seal_offline);
++#else
++static bool rproc_kexec_blocked(struct rproc *rproc)
++{
++	return false;
++}
++
++static int rproc_kexec_begin(struct rproc *rproc)
++{
++	return 0;
++}
++
++static void rproc_kexec_end(void)
++{
++}
++#endif
+ 
+ static const char * const rproc_crash_names[] = {
+ 	[RPROC_MMUFAULT]	= "mmufault",
+@@ -1270,6 +1438,9 @@
+ 	struct device *dev = &rproc->dev;
+ 	int ret;
+ 
++	if (rproc_kexec_blocked(rproc))
++		return -ESHUTDOWN;
++
+ 	/* load the ELF segments to memory */
+ 	ret = rproc_load_segments(rproc, fw);
+ 	if (ret) {
+@@ -1333,6 +1504,9 @@
+ {
+ 	struct device *dev = &rproc->dev;
+ 	int ret;
++
++	if (rproc_kexec_blocked(rproc))
++		return -ESHUTDOWN;
+ 
+ 	ret = rproc_prepare_subdevices(rproc);
+ 	if (ret) {
+@@ -1838,6 +2012,10 @@
+ 	if (ret)
+ 		return ret;
+ 
++	ret = rproc_kexec_begin(rproc);
++	if (ret)
++		goto unlock_only;
++
+ 	/* State could have changed before we got the mutex */
+ 	if (rproc->state != RPROC_CRASHED)
+ 		goto unlock_mutex;
+@@ -1850,6 +2028,8 @@
+ 		ret = rproc_boot_recovery(rproc);
+ 
+ unlock_mutex:
++	rproc_kexec_end();
++unlock_only:
+ 	mutex_unlock(&rproc->lock);
+ 	return ret;
+ }
+@@ -1869,6 +2049,13 @@
+ 	dev_dbg(dev, "enter %s\n", __func__);
+ 
+ 	mutex_lock(&rproc->lock);
++
++	if (rproc_kexec_blocked(rproc)) {
++		mutex_unlock(&rproc->lock);
++		/* A sealed processor stays offline; do not invoke recovery hooks. */
++		pm_relax(rproc->dev.parent);
++		return;
++	}
+ 
+ 	if (rproc->state == RPROC_CRASHED) {
+ 		/* handle only the first crash detected */
+@@ -1926,6 +2113,10 @@
+ 		dev_err(dev, "can't lock rproc %s: %d\n", rproc->name, ret);
+ 		return ret;
+ 	}
++
++	ret = rproc_kexec_begin(rproc);
++	if (ret)
++		goto unlock_only;
+ 
+ 	if (rproc->state == RPROC_DELETED) {
+ 		ret = -ENODEV;
+@@ -1962,6 +2153,8 @@
+ 	if (ret)
+ 		atomic_dec(&rproc->power);
+ unlock_mutex:
++	rproc_kexec_end();
++unlock_only:
+ 	mutex_unlock(&rproc->lock);
+ 	return ret;
+ }
+@@ -2275,14 +2468,18 @@
+ 	struct device *dev = &rproc->dev;
+ 	int ret;
+ 
++	ret = rproc_kexec_begin(rproc);
++	if (ret)
++		return ret;
++
+ 	ret = rproc_validate(rproc);
+ 	if (ret < 0)
+-		return ret;
++		goto kexec_end;
+ 
+ 	/* add char device for this remoteproc */
+ 	ret = rproc_char_device_add(rproc);
+ 	if (ret < 0)
+-		return ret;
++		goto kexec_end;
+ 
+ 	ret = device_add(dev);
+ 	if (ret < 0) {
+@@ -2307,6 +2504,7 @@
+ 	list_add_rcu(&rproc->node, &rproc_list);
+ 	mutex_unlock(&rproc_list_mutex);
+ 
++	rproc_kexec_end();
+ 	return 0;
+ 
+ rproc_remove_dev:
+@@ -2314,6 +2512,8 @@
+ 	device_del(dev);
+ rproc_remove_cdev:
+ 	rproc_char_device_remove(rproc);
++kexec_end:
++	rproc_kexec_end();
+ 	return ret;
+ }
+ EXPORT_SYMBOL(rproc_add);
+--- /dev/null
++++ b/include/linux/remoteproc_kexec.h
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_REMOTEPROC_KEXEC_H
++#define _LINUX_REMOTEPROC_KEXEC_H
++
++#include <linux/errno.h>
++#include <linux/kconfig.h>
++
++struct rproc;
++
++/*
++ * Seal one registered, bound, offline remoteproc for this kexec only.
++ * The caller must own a live rproc reference, have completed freeze_processes(),
++ * and hold neither the parent device lock nor rproc->lock. Requires an active
++ * normal kexec. Refuses busy locks or any in-flight core boot/recovery/add.
++ * Success retains references until reset; there is deliberately no unseal API.
++ * This blocks Linux core startup paths, not an external firmware agent.
++ */
++#if IS_ENABLED(CONFIG_REMOTEPROC_KEXEC_OFFLINE_GATE)
++int rproc_kexec_seal_offline(struct rproc *rproc);
++#else
++static inline int rproc_kexec_seal_offline(struct rproc *rproc)
++{
++	return -EOPNOTSUPP;
++}
++#endif
++
++#endif /* _LINUX_REMOTEPROC_KEXEC_H */

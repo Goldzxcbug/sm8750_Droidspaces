@@ -1,0 +1,19 @@
+From: Codex <codex@local>
+Subject: [PATCH] driver core: remove diagnostic per-device emergency shutdown log
+
+Remove only the pre-existing unconditional KT device-name emergency log.
+Its shutdown flood overwrote the earlier diagnostic context in the fixed
+ramoops console ring. Retain every existing lock, PM operation, shutdown
+callback, conditional debug message, and their ordering. No new headers,
+parameters, hardware operations or callback changes.
+
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -4865,7 +4865,6 @@
+ 		device_lock(dev);
+ 
+ 		/* Don't allow any more runtime suspends */
+-		pr_emerg("KT: dev %s\n", dev_name(dev));
+ 		pm_runtime_get_noresume(dev);
+ 		pm_runtime_barrier(dev);
+ 
