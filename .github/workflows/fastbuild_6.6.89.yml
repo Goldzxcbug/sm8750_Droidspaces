@@ -533,15 +533,13 @@ jobs:
             # 开启 NTSync
             echo "CONFIG_NTSYNC=y" >> ./arch/arm64/configs/gki_defconfig
             if [[ "${{ github.event.inputs.droidspaces_enable }}" == "extend" ]]; then
-              echo "正在启用容器环境扩展支持..."
-              # 开启虚拟 HCI 设备支持
-              echo "CONFIG_BT_HCIVHCI=y" >> ./arch/arm64/configs/gki_defconfig
-              # 开启 systemd-coredump 支持
-              echo "CONFIG_STATIC_USERMODEHELPER=n" >> ./arch/arm64/configs/gki_defconfig
-              # 添加 Lindroid EVDI DRM 驱动
-              wget https://github.com/$GITHUB_REPOSITORY/raw/refs/heads/$GITHUB_REF_NAME/droidspaces_patch/evdi_drm.patch
-              patch -p1 -F 3 < evdi_drm.patch || true
-              echo "CONFIG_DRM_LINDROID_EVDI=y" >> ./arch/arm64/configs/gki_defconfig
+              echo "CONFIG_MD=y" >> ./arch/arm64/configs/gki_defconfig
+              echo "CONFIG_BLK_DEV_MD=y" >> ./arch/arm64/configs/gki_defconfig
+              echo "CONFIG_MD_LINEAR=y" >> ./arch/arm64/configs/gki_defconfig
+              echo "CONFIG_MD_RAID0=y" >> ./arch/arm64/configs/gki_defconfig
+              echo "CONFIG_MD_RAID1=y" >> ./arch/arm64/configs/gki_defconfig
+              echo "CONFIG_MD_RAID10=y" >> ./arch/arm64/configs/gki_defconfig
+              echo "CONFIG_MD_RAID456=y" >> ./arch/arm64/configs/gki_defconfig
             fi
           fi
 
